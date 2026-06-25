@@ -1,26 +1,596 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #7a0019;
+  --primary-dark: #5a0012;
+  --primary-light: #a11233;
+  --gold: #d8b04c;
+  --white: #ffffff;
+  --off-white: #f8f8f8;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-500: #6b7280;
+  --gray-900: #111827;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: #ffffff;
+  color: var(--gray-900);
+  font-family: var(--font-inter), Inter, Arial, sans-serif;
+}
+
+ 
+
+button {
+  cursor: pointer;
+}
+
+.pds-page {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #ffffff;
+}
+
+.pds-p-mark {
+  display: none;
+}
+
+/* Programs */
+
+.pds-programs-section {
+  width: min(1320px, calc(100% - 96px));
+  margin: 28px auto 0;
+}
+
+.pds-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.pds-section-heading h2 {
+  margin: 0;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 30px;
+  line-height: 1;
+  color: #111111;
+}
+
+.pds-section-heading span {
+  width: 58px;
+  height: 3px;
+  display: block;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.pds-section-heading a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.pds-program-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.pds-program-card {
+  min-height: 250px;
+  padding: 26px 18px 22px;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: 0.3s ease;
+}
+
+.pds-program-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.pds-program-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+}
+
+.pds-program-icon svg {
+  stroke-width: 1.9;
+}
+
+.pds-program-card h3 {
+  max-width: 150px;
+  min-height: 44px;
+  margin: 14px auto 10px;
+  font-size: 15px;
+  line-height: 1.24;
+  color: #171717;
+}
+
+.pds-program-card p {
+  max-width: 178px;
+  min-height: 64px;
+  margin: 0 auto;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #3f3f46;
+}
+
+.pds-card-arrow {
+  width: 42px;
+  height: 42px;
+  margin: 18px auto 0;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--gray-200);
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--primary);
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.pds-card-arrow:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* Feature Cards */
+
+.pds-feature-grid {
+  width: min(1320px, calc(100% - 96px));
+  margin: 20px auto 0;
+  display: grid;
+  grid-template-columns: 1.18fr 0.82fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.pds-promo-card,
+.pds-excellence-card {
+  min-height: 290px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light));
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+}
+
+.pds-promo-card {
+  min-height: 360px;
+  display: grid;
+  grid-template-columns: 0.95fr 1.1fr;
+  align-items: stretch;
+  border-radius: 24px;
+  position: relative;
+}
+
+.pds-promo-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 210px;
+  height: 90px;
+  z-index: 3;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1.5px, transparent 1.5px);
+  background-size: 13px 13px;
+  opacity: 0.45;
+}
+
+.pds-promo-content {
+  padding: 54px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.pds-promo-content h2,
+.pds-excellence-card h2 {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.pds-promo-content p,
+.pds-excellence-card p {
+  max-width: 420px;
+  margin: 22px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.pds-promo-content a {
+  width: fit-content;
+  min-height: 54px;
+  margin-top: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 26px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.pds-promo-image {
+  position: relative;
+  height: 100%;
+  min-height: 360px;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.pds-promo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.pds-excellence-card {
+  padding: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    radial-gradient(circle at 70% 15%, rgba(216, 176, 76, 0.2), transparent 26%),
+    linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+
+.pds-award-icon {
+  width: 88px;
+  height: 72px;
+  margin-bottom: 14px;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-size: 62px;
+  line-height: 1;
+}
+
+/* Why + Testimonial */
+
+.pds-why-testimonial {
+  width: min(1320px, calc(100% - 96px));
+  margin: 20px auto 0;
+  display: grid;
+  grid-template-columns: 1.05fr 0.62fr 0.78fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.pds-why-card,
+.pds-testimonial-card,
+.pds-campus-card {
+  min-height: 170px;
+  border-radius: 18px;
+  border: 1px solid var(--gray-200);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.pds-why-card {
+  padding: 24px 28px;
+}
+
+.pds-small-label {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.pds-why-card h2 {
+  margin: 4px 0 18px;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.pds-why-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.pds-why-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  text-align: center;
+  color: #18181b;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.pds-why-item svg {
+  color: var(--primary);
+  stroke-width: 1.8;
+}
+
+.pds-campus-card {
+  position: relative;
+}
+
+.pds-campus-image {
+  object-fit: cover;
+}
+
+.pds-testimonial-card {
+  display: grid;
+  grid-template-columns: 70px 1fr 148px;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.pds-quote {
+  color: var(--primary);
+  font-family: Georgia, serif;
+  font-size: 76px;
+  line-height: 0.5;
+}
+
+.pds-testimonial-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #27272a;
+}
+
+.pds-student-review {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pds-avatar {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.pds-student-review strong {
+  display: block;
+  font-size: 14px;
+}
+
+.pds-student-review span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #52525b;
+}
+
+.pds-student-review small {
+  display: block;
+  margin-top: 5px;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+/* Tablet */
+
+@media (max-width: 1180px) {
+  .pds-programs-section,
+  .pds-feature-grid,
+  .pds-why-testimonial {
+    width: min(100% - 48px, 1320px);
+  }
+
+  .pds-program-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pds-feature-grid,
+  .pds-why-testimonial {
+    grid-template-columns: 1fr;
+  }
+
+  .pds-promo-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .pds-promo-content {
+    padding: 34px 30px 24px;
+  }
+
+  .pds-promo-image {
+    min-height: 320px;
+  }
+
+  .pds-why-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .pds-campus-card {
+    min-height: 260px;
+  }
+
+  .pds-testimonial-card {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .pds-student-review {
+    grid-column: 2;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 720px) {
+  .pds-programs-section,
+  .pds-feature-grid,
+  .pds-why-testimonial,
+  .pds-footer {
+    width: min(100% - 28px, 1320px);
+  }
+
+  .pds-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pds-program-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pds-program-card {
+    min-height: auto;
+  }
+
+  .pds-feature-grid {
+    gap: 16px;
+  }
+
+  .pds-promo-card {
+    grid-template-columns: 1fr;
+    border-radius: 22px;
+  }
+
+  .pds-promo-content {
+    padding: 28px 24px 20px;
+  }
+
+  .pds-promo-content h2 {
+    font-size: 28px;
+    line-height: 1.12;
+  }
+
+  .pds-promo-content p {
+    font-size: 15px;
+  }
+
+  .pds-promo-content a {
+    min-height: 50px;
+    padding: 0 22px;
+    font-size: 14px;
+  }
+
+  .pds-promo-image {
+    min-height: 260px;
+  }
+
+  .pds-excellence-card {
+    padding: 32px 24px;
+  }
+
+  .pds-why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pds-why-item:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .pds-testimonial-card {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .pds-student-review {
+    grid-column: auto;
+  }
+
+  .pds-footer {
+    padding: 30px 22px 0;
+    border-radius: 22px;
+  }
+
+  .pds-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .pds-footer-logo-card {
+    width: 100%;
+    min-height: 190px;
+  }
+
+  .pds-footer-brand p {
+    font-size: 15px;
+  }
+
+  .pds-footer-column h4 {
+    margin-bottom: 15px;
+  }
+
+  .pds-footer-map-card {
+    height: 230px;
+  }
+
+  .pds-footer-bottom {
+    margin-top: 30px;
+    padding: 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .pds-footer-bottom p {
+    white-space: normal;
+    font-size: 13.5px;
+  }
+
+  .pds-footer-legal {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .pds-footer-legal a {
+    font-size: 13.5px;
+  }
 }
