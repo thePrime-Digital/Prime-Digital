@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { Inter, Playfair_Display } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,9 +34,11 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`} style={{ colorScheme: "light" }}>
       <body>
+        <Navbar />
         {children}
+        <Footer />
         <SpeedInsights />
         <Analytics />
       </body>

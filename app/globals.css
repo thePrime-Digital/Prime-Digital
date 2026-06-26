@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 
 :root {
+  color-scheme: light only;
+  forced-color-adjust: none;
+  -ms-high-contrast-adjust: none;
   --primary: #7a0019;
   --primary-dark: #5a0012;
   --primary-light: #a11233;
@@ -28,6 +31,8 @@ body {
   margin: 0;
   background: #ffffff;
   color: var(--gray-900);
+  forced-color-adjust: none;
+  -ms-high-contrast-adjust: none;
   font-family: var(--font-inter), Inter, Arial, sans-serif;
 }
 
@@ -52,6 +57,7 @@ button {
 .pds-programs-section {
   width: min(1320px, calc(100% - 96px));
   margin: 28px auto 0;
+  margin-top: 80px;
 }
 
 .pds-section-heading {
@@ -167,7 +173,7 @@ button {
   width: min(1320px, calc(100% - 96px));
   margin: 20px auto 0;
   display: grid;
-  grid-template-columns: 1.18fr 0.82fr;
+  grid-template-columns:  0.82fr 1.18fr;
   gap: 20px;
   align-items: stretch;
 }
@@ -298,7 +304,7 @@ button {
   width: min(1320px, calc(100% - 96px));
   margin: 20px auto 0;
   display: grid;
-  grid-template-columns: 1.05fr 0.62fr 0.78fr;
+  grid-template-columns: 1.05fr 0.62fr ;
   gap: 20px;
   align-items: stretch;
 }
@@ -592,5 +598,62 @@ button {
 
   .pds-footer-legal a {
     font-size: 13.5px;
+  }
+}
+
+/* ─── Testimonials scroll ─── */
+
+.pds-testimonials-scroll {
+  width: 100%;
+  overflow: hidden;
+  padding: 48px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #fff 8%, #fff 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #fff 8%, #fff 92%, transparent 100%);
+}
+
+.pds-testimonials-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: pds-scroll 60s linear infinite;
+}
+
+.pds-testimonials-track:hover {
+  animation-play-state: paused;
+}
+
+.pds-review-card {
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  border: 1px solid var(--gray-200);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.pds-review-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #27272a;
+}
+
+@keyframes pds-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 720px) {
+  .pds-review-card {
+    width: 280px;
+    padding: 18px;
   }
 }

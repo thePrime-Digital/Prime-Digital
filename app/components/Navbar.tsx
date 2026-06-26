@@ -32,7 +32,7 @@ export default function Navbar() {
   return (
     <header className="w-full absolute top-0 z-50 bg-transparent">
       <div className="max-w-full mx-auto flex items-center justify-end gap-5 py-2 px-6">
-        <div className="flex items-center justify-end gap-5 w-full border backdrop-blur-sm rounded-xl border-0 max-[1180px]:gap-3 max-[720px]:hidden">
+        <div className="flex items-center w-2/3  justify-end gap-5 backdrop-blur-sm rounded-xl max-[1180px]:gap-3 max-[720px]:hidden">
           <nav className="flex items-center gap-7 max-[1180px]:gap-4 max-[900px]:gap-2" aria-label="Main Navigation">
             {navItems.map(({ href, label }) => {
               const isActive = pathname === href;
