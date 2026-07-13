@@ -144,8 +144,8 @@ export default function Home() {
           <Image
             src="/pds-assets/pds-logo.jpeg"
             alt="Prime Digital School"
-            width={320}
-            height={100}
+            width={640}
+            height={200}
             priority
             className="w-full h-full object-contain object-left block border "
           />
@@ -182,7 +182,8 @@ export default function Home() {
             alt="Prime Digital School students"
             fill
             priority
-            sizes="40vw"
+            quality={95}
+            sizes="(max-width: 600px) 100vw, (max-width: 900px) 65vw, 82vw"
             className="object-cover object-[80%_center]"
           />
         </div>

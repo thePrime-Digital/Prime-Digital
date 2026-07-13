@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`} style={{ colorScheme: "light" }}>
-      <body>
+      <body suppressHydrationWarning>
         <Navbar />
         {children}
         <Footer />

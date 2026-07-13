@@ -44,7 +44,7 @@ export default function Footer() {
 
       <div className="w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)] mx-auto relative z-[3] grid grid-cols-[1.15fr_0.42fr_0.42fr_1.1fr_0.7fr] max-[1180px]:grid-cols-2 max-[720px]:grid-cols-1 gap-[38px] max-[1180px]:gap-[34px] max-[720px]:gap-[30px] items-start pt-[48px] px-0 max-[1180px]:pt-[42px] max-[720px]:pt-[30px]">
         <div className="max-w-[390px] max-[1180px]:max-w-full max-[1180px]:col-span-2 max-[720px]:col-span-1">
-          <div className="w-[min(360px,100%)] max-[1180px]:w-[330px] max-[720px]:w-full min-h-[250px] max-[1180px]:min-h-[220px] max-[720px]:min-h-[190px] p-4 flex items-center justify-center rounded-[22px] bg-[rgba(255,255,255,0.96)] border border-[rgba(255,255,255,0.75)] shadow-[0_22px_42px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.9)]">
+          <div className="w-full flex items-center justify-center rounded-[16px] bg-[rgba(255,255,255,0.96)] border border-[rgba(255,255,255,0.75)] shadow-[0_22px_42px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.9)] overflow-hidden">
             <Image
               src="/pds-assets/pds-logo.jpeg"
               alt="Prime Digital School"
@@ -118,7 +118,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="w-full h-[250px] max-[1180px]:h-[280px] max-[720px]:h-[230px] min-w-0 overflow-hidden rounded-[24px] relative z-[3] bg-[rgba(255,255,255,0.92)] border border-[rgba(255,255,255,0.24)] shadow-[0_22px_48px_rgba(0,0,0,0.18)] max-[1180px]:col-span-2 max-[720px]:col-span-1">
+        <div className="w-full h-[140px] max-[1180px]:h-[160px] max-[720px]:h-[140px] min-w-0 overflow-hidden rounded-[24px] relative z-[3] bg-[rgba(255,255,255,0.92)] border border-[rgba(255,255,255,0.24)] shadow-[0_22px_48px_rgba(0,0,0,0.18)] max-[1180px]:col-span-2 max-[720px]:col-span-1">
           <iframe
             title="Prime Digital School Location"
             src="https://maps.google.com/maps?q=Sector%2017%2C%20Vashi%2C%20Navi%20Mumbai%2C%20Maharashtra%20400703&z=15&output=embed"
