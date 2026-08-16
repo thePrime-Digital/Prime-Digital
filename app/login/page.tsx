@@ -12,14 +12,48 @@ const LOGIN_HERO_IMAGE = "/login/login-hero.jpeg";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
+    setError("");
 
-    setTimeout(() => {
-      window.location.href = "/dashboard";
-    }, 900);
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        cache: "no-store",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = (await response.json()) as {
+        error?: string;
+        redirectTo?: string;
+      };
+
+      if (!response.ok) {
+        setError(data.error || "Unable to log in. Please try again.");
+        return;
+      }
+
+      window.location.assign(data.redirectTo || "/dashboard");
+    } catch (requestError) {
+      console.error("Login request failed:", requestError);
+      setError("Unable to connect to the server. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -112,7 +146,9 @@ export default function LoginPage() {
 
                 <input
                   id="email"
+                  name="email"
                   type="email"
+                  autoComplete="email"
                   required
                   placeholder="Enter your email"
                   className="h-14 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#9b0023] focus:bg-white focus:ring-4 focus:ring-[#9b0023]/10"
@@ -142,7 +178,9 @@ export default function LoginPage() {
 
                 <input
                   id="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   required
                   placeholder="Enter your password"
                   className="h-14 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-14 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#9b0023] focus:bg-white focus:ring-4 focus:ring-[#9b0023]/10"
@@ -171,6 +209,15 @@ export default function LoginPage() {
                 Forgot Password?
               </a>
             </div>
+
+            {error && (
+              <div
+                role="alert"
+                className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"
+              >
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"
