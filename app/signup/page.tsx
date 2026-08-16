@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 const CAMPUS_IMAGE = "/pds-assets/campus-building.jpg";
@@ -36,14 +37,94 @@ const roles: {
 ];
 
 export default function SignupPage() {
+  const router = useRouter();
+
   const [role, setRole] = useState<SignupRole>("student");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
+
+    if (isSubmitting) {
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const phone = String(formData.get("phone") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+    const confirmPassword = String(formData.get("confirmPassword") ?? "");
+
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Password and confirm password do not match.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          password,
+          role,
+        }),
+      });
+
+      const data = (await response.json().catch(() => null)) as
+        | {
+            message?: string;
+            error?: string;
+            requiresApproval?: boolean;
+          }
+        | null;
+
+      if (!response.ok) {
+        throw new Error(
+          data?.error ?? "Unable to create your account right now.",
+        );
+      }
+
+      setSuccessMessage(
+        data?.message ??
+          (role === "faculty"
+            ? "Your faculty application has been submitted for approval."
+            : "Your account has been created successfully."),
+      );
+      setSubmitted(true);
+      form.reset();
+
+      if (role !== "faculty") {
+        window.setTimeout(() => {
+          router.push("/login?registered=1");
+        }, 1500);
+      }
+    } catch (error: unknown) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Unable to create your account right now.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -159,7 +240,11 @@ export default function SignupPage() {
                       <button
                         key={item.id}
                         type="button"
-                        onClick={() => setRole(item.id)}
+                        disabled={isSubmitting}
+                        onClick={() => {
+                          setRole(item.id);
+                          setErrorMessage("");
+                        }}
                         className={[
                           "rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-1",
                           active
@@ -194,6 +279,7 @@ export default function SignupPage() {
                         ♙
                       </span>
                       <input
+                        name="name"
                         type="text"
                         required
                         placeholder={
@@ -216,6 +302,7 @@ export default function SignupPage() {
                           ✉
                         </span>
                         <input
+                          name="email"
                           type="email"
                           required
                           placeholder="Enter your email"
@@ -233,6 +320,7 @@ export default function SignupPage() {
                           ☎
                         </span>
                         <input
+                          name="phone"
                           type="tel"
                           required
                           placeholder="Enter your phone number"
@@ -252,8 +340,11 @@ export default function SignupPage() {
                           🔒
                         </span>
                         <input
+                          name="password"
                           type={showPassword ? "text" : "password"}
                           required
+                          minLength={8}
+                          autoComplete="new-password"
                           placeholder="Create password"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-12 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                         />
@@ -276,8 +367,11 @@ export default function SignupPage() {
                           🔒
                         </span>
                         <input
+                          name="confirmPassword"
                           type={showConfirmPassword ? "text" : "password"}
                           required
+                          minLength={8}
+                          autoComplete="new-password"
                           placeholder="Confirm password"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-12 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                         />
@@ -301,6 +395,7 @@ export default function SignupPage() {
                           Select Program
                         </label>
                         <select
+                          name="program"
                           defaultValue=""
                           required
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
@@ -321,6 +416,7 @@ export default function SignupPage() {
                           Parent Phone Number
                         </label>
                         <input
+                          name="parentPhone"
                           type="tel"
                           placeholder="Parent contact number"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
@@ -336,6 +432,7 @@ export default function SignupPage() {
                           Subject Expertise
                         </label>
                         <input
+                          name="subjectExpertise"
                           type="text"
                           required
                           placeholder="Maths, Coding, AI, English..."
@@ -348,6 +445,7 @@ export default function SignupPage() {
                           Experience
                         </label>
                         <select
+                          name="experience"
                           defaultValue=""
                           required
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
@@ -370,6 +468,7 @@ export default function SignupPage() {
                         Interest
                       </label>
                       <select
+                        name="interest"
                         defaultValue=""
                         required
                         className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
@@ -411,12 +510,22 @@ export default function SignupPage() {
                     </span>
                   </label>
 
+                  {errorMessage && (
+                    <div
+                      role="alert"
+                      className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700"
+                    >
+                      {errorMessage}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="flex h-13 min-h-[52px] w-full items-center justify-center gap-3 rounded-xl bg-[#8f0024] text-sm font-black text-white shadow-[0_14px_28px_rgba(143,0,36,0.24)] transition hover:bg-[#70001c]"
+                    disabled={isSubmitting}
+                    className="flex h-13 min-h-[52px] w-full items-center justify-center gap-3 rounded-xl bg-[#8f0024] text-sm font-black text-white shadow-[0_14px_28px_rgba(143,0,36,0.24)] transition hover:bg-[#70001c] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Create Account
-                    <span className="text-lg">→</span>
+                    {isSubmitting ? "Creating Account..." : "Create Account"}
+                    {!isSubmitting && <span className="text-lg">→</span>}
                   </button>
                 </form>
 
@@ -472,9 +581,10 @@ export default function SignupPage() {
                 </h2>
 
                 <p className="mx-auto mt-3 max-w-sm text-sm leading-7 text-slate-500">
-                  {role === "faculty"
-                    ? "Your faculty account has been submitted for admin approval. You will be notified once approved."
-                    : "Your account has been created successfully. You can now continue to login."}
+                  {successMessage ||
+                    (role === "faculty"
+                      ? "Your faculty account has been submitted for admin approval. You will be notified once approved."
+                      : "Your account has been created successfully. You will be redirected to login.")}
                 </p>
 
                 <Link
