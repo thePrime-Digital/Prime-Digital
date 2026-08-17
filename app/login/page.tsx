@@ -3,13 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { useContactAuth } from "self-iam";
+import { SelfIAMProvider } from "../providers";
 
 const CAMPUS_IMAGE = "/login/campus-building.png";
 const NORMAL_SHIELD = "/login/normal-shield.png";
 const SPINNING_3D_LOGO = "/login/logo-3d-transparent.png";
 const LOGIN_HERO_IMAGE = "/login/login-hero.jpeg";
 
-export default function LoginPage() {
+function LoginForm() {
+  const auth = useContactAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,10 +40,12 @@ export default function LoginPage() {
         }),
       });
 
-      const data = (await response.json()) as {
-        error?: string;
-        redirectTo?: string;
-      };
+      let data: { error?: string; redirectTo?: string } = {};
+      try {
+        data = (await response.json()) as typeof data;
+      } catch {
+        // Server returned non-JSON (e.g. HTML error page)
+      }
 
       if (!response.ok) {
         setError(data.error || "Unable to log in. Please try again.");
@@ -57,7 +62,7 @@ export default function LoginPage() {
   }
 
   return (
-<main className="login-page relative min-h-screen isolate overflow-hidden bg-[#220009] pt-[118px]">
+    <main className="login-page relative min-h-screen isolate overflow-hidden bg-[#220009] pt-[118px]">
       {/* Background */}
       <Image
         src={CAMPUS_IMAGE}
@@ -242,6 +247,7 @@ export default function LoginPage() {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
+              onClick={() => auth.isConfigured && auth.signInWithGoogle()}
               className="flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-700 transition hover:bg-slate-50"
             >
               <span className="font-black text-[#4285F4]">G</span>
@@ -310,8 +316,6 @@ export default function LoginPage() {
       </section>
 
       <style>{`
-
-
   .premium-logo-spin {
     animation: shieldFullSpin 22s linear infinite;
     transform-origin: center center;
@@ -350,5 +354,13 @@ export default function LoginPage() {
   }
 `}</style>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <SelfIAMProvider>
+      <LoginForm />
+    </SelfIAMProvider>
   );
 }

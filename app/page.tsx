@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
@@ -154,20 +156,6 @@ export default function Home() {
     <main className="min-h-[40dvh] overflow-x-hidden w-full">
       <section className="w-full md:h-[40dvh] lg:h-[100dvh] mt-1 lg:mt-0 mx-auto relative flex items-center overflow-hidden ml-2 md:ml-4 md:pl-4  max-[600px]:flex-col max-[600px]:items-stretch max-[600px]:overflow-visible max-[600px]:pt-2">
         <div className="w-[36%] max-[900px]:w-[45%] max-[600px]:w-full relative z-[5] pb-[92px] max-[900px]:pb-[60px] max-[600px]:pb-5">
-          <Link
-            href="/"
-            className="w-[600px] h-[150px] max-[900px]:w-[200px] max-[900px]:h-[100px] flex items-center justify-start shrink-0 overflow-visible no-underline"
-            aria-label="Prime Digital School Home"
-          >
-            <Image
-              src="/pds-assets/pds-logo.png"
-              alt="Prime Digital School"
-              width={640}
-              height={200}
-              priority
-              className="w-full h-full object-contain object-left block border "
-            />
-          </Link>
           <div className="w-fit inline-flex items-center gap-2.5 px-[18px] py-[9px] border border-[rgba(122,0,25,0.32)] rounded-full bg-white text-[var(--primary)] text-[10px] font-black uppercase tracking-[0.04em]">
             <GraduationCap size={17} />
             Future-Ready Education

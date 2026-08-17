@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -17,30 +17,35 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = requestAnimationFrame(() => {
+      setVisible(true);
+    });
+    return () => cancelAnimationFrame(timer);
   }, []);
 
-  if (
-    !mounted ||
-    pathname === "/services"
-  ) {
+  const isActive = useCallback(
+    (href: string) => {
+      if (href === "/") return pathname === "/";
+      return pathname.startsWith(href);
+    },
+    [pathname],
+  );
+
+  if (!visible || pathname === "/services") {
     return null;
   }
 
-  function isActive(href: string) {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
-  }
-
   return (
-    <header className="fixed left-0 right-0 top-0 z-[1000] px-4 py-3">
+    <header
+      suppressHydrationWarning
+      className="fixed left-0 right-0 top-0 z-[1000] px-4 py-3"
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between rounded-[1.4rem] border border-[#8b0022]/15 bg-white/95 px-5 py-3 shadow-[0_18px_45px_rgba(30,10,18,0.10)] backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-3">
-
-          <span className="text-xl font-black tracking-tight text-[#7c001d]">
+          <span className="text-xl font-black tracking-tight text-[#7c001d] max-[480px]:text-base">
             Prime Digital School
           </span>
         </Link>

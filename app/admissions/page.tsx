@@ -1,4 +1,6 @@
-﻿import {
+﻿"use client";
+
+import {
   ArrowRight,
   Code,
   FileText,

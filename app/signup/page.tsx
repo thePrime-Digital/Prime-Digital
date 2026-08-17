@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { useContactAuth } from "self-iam";
+import { SelfIAMProvider } from "../providers";
 
 const CAMPUS_IMAGE = "/pds-assets/campus-building.jpg";
 const LOGO_IMAGE = "/pds-assets/pds-logo-real-transparent.png";
@@ -36,8 +38,9 @@ const roles: {
   },
 ];
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const auth = useContactAuth();
 
   const [role, setRole] = useState<SignupRole>("student");
   const [showPassword, setShowPassword] = useState(false);
@@ -538,6 +541,7 @@ export default function SignupPage() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   <button
                     type="button"
+                    onClick={() => auth.isConfigured && auth.signInWithGoogle()}
                     className="flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-black text-slate-700 transition hover:bg-slate-50"
                   >
                     <span className="font-black text-[#4285F4]">G</span>
@@ -599,5 +603,13 @@ export default function SignupPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <SelfIAMProvider>
+      <SignupForm />
+    </SelfIAMProvider>
   );
 }

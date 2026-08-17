@@ -1,4 +1,6 @@
-﻿import {
+﻿"use client";
+
+import {
   CalendarDays,
   CheckCircle2,
   Clock3,
