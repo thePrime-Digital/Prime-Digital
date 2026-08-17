@@ -1,91 +1,123 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Menu, X } from "lucide-react";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-type NavItem = {
-  href: string;
-  label: string;
-  hideAt?: string;
-};
-
-const navItems: NavItem[] = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/programs", label: "Programs" },
-  { href: "/admissions", label: "Admissions" },
-  { href: "/careers", label: "Careers" },
-  { href: "/support", label: "Support" },
-  { href: "/contact", label: "Contact" },
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Programs", href: "/programs" },
+  { label: "Admissions", href: "/admissions" },
+  { label: "Careers", href: "/careers" },
+  { label: "Support", href: "/support" },
+  { label: "Contact", href: "/contact" },
 ];
-
-const linkBaseClass =
-  "text-sm max-[1180px]:text-[12px] max-[900px]:text-[11px] font-bold no-underline transition-all duration-300 ease-in-out relative";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (
+    !mounted ||
+    pathname === "/services"
+  ) {
+    return null;
+  }
+
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  }
 
   return (
-    <header className="w-full absolute top-0 z-50 bg-transparent">
-      <div className="max-w-full mx-auto flex items-center justify-end gap-5 py-2 px-6">
-        <div className="flex items-center w-2/3  justify-end gap-5 backdrop-blur-sm rounded-xl max-[1180px]:gap-3 max-[720px]:hidden">
-          <nav className="flex items-center gap-7 max-[1180px]:gap-4 max-[900px]:gap-2" aria-label="Main Navigation">
-            {navItems.map(({ href, label }) => {
-              const isActive = pathname === href;
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`${linkBaseClass} ${isActive ? "text-[var(--gold)]" : "text-black hover:text-[var(--gold)]"}`}
-                >
-                  {label}
-                </Link>
-              );
-            })}
-          </nav>
+    <header className="fixed left-0 right-0 top-0 z-[1000] px-4 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between rounded-[1.4rem] border border-[#8b0022]/15 bg-white/95 px-5 py-3 shadow-[0_18px_45px_rgba(30,10,18,0.10)] backdrop-blur-xl">
+        <Link href="/" className="flex items-center gap-3">
 
-          <Link href="/signup" className="min-h-[46px] max-[1180px]:min-h-[38px] max-[900px]:min-h-[32px] inline-flex items-center justify-center gap-2 px-[22px] max-[1180px]:px-[16px] max-[900px]:px-[12px] rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] text-white text-sm max-[1180px]:text-[12px] max-[900px]:text-[11px] font-extrabold no-underline shadow-[0_12px_24px_rgba(122,0,25,0.22)] hover:-translate-y-1 transition-all duration-300 ease-in-out">
-            Apply Now <ArrowRight size={18} />
-          </Link>
+          <span className="text-xl font-black tracking-tight text-[#7c001d]">
+            Prime Digital School
+          </span>
+        </Link>
+
+        <div className="hidden items-center gap-8 lg:flex">
+          {navItems.map((item) => {
+            const active = isActive(item.href);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={[
+                  "relative text-sm font-semibold transition",
+                  active
+                    ? "text-[#7c001d]"
+                    : "text-slate-600 hover:text-[#7c001d]",
+                ].join(" ")}
+              >
+                {item.label}
+
+                {active && (
+                  <span className="absolute -bottom-3 left-0 h-[3px] w-full rounded-full bg-[#7c001d]" />
+                )}
+              </Link>
+            );
+          })}
         </div>
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="hidden max-[720px]:flex items-center justify-center w-[40px] h-[40px] rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] text-white shadow-[0_12px_24px_rgba(122,0,25,0.22)]"
-          aria-label={isOpen ? "Close menu" : "Open menu"}
+        <Link
+          href="/admissions"
+          className="hidden rounded-xl bg-[#7c001d] px-7 py-3 text-sm font-bold text-white shadow-[0_12px_24px_rgba(124,0,29,0.20)] transition hover:bg-[#5f0016] lg:inline-flex"
         >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
+          Apply Now
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#7c001d]/15 text-[#7c001d] lg:hidden"
+          aria-label="Toggle menu"
+        >
+          {open ? "✕" : "☰"}
         </button>
       </div>
 
-      {isOpen && (
-        <div className="hidden max-[720px]:block absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg border-t border-gray-200">
-          <nav className="flex flex-col gap-0" aria-label="Mobile Navigation">
-            {navItems.map(({ href, label }) => {
-              const isActive = pathname === href;
+      {open && (
+        <div className="mx-auto mt-3 max-w-7xl rounded-[1.4rem] border border-[#8b0022]/15 bg-white p-4 shadow-[0_18px_45px_rgba(30,10,18,0.12)] backdrop-blur-xl lg:hidden">
+          <div className="grid gap-2">
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+
               return (
                 <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setIsOpen(false)}
-                  className={`px-6 py-4 text-sm font-bold no-underline border-b border-gray-100 transition-all ${isActive ? "text-[var(--gold)] bg-gray-50" : "text-[#18181b] hover:text-[var(--primary)] hover:bg-gray-50"}`}
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={[
+                    "rounded-xl px-4 py-3 text-sm font-bold transition",
+                    active
+                      ? "bg-[#7c001d] text-white"
+                      : "text-slate-700 hover:bg-[#fff4f7] hover:text-[#7c001d]",
+                  ].join(" ")}
                 >
-                  {label}
+                  {item.label}
                 </Link>
               );
             })}
+
             <Link
-              href="/signup"
-              onClick={() => setIsOpen(false)}
-              className="px-6 py-4 text-sm font-bold text-white no-underline bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] hover:opacity-90 transition-all text-center"
+              href="/admissions"
+              onClick={() => setOpen(false)}
+              className="mt-2 rounded-xl bg-[#7c001d] px-4 py-3 text-center text-sm font-bold text-white"
             >
-              Apply Now <ArrowRight size={16} className="inline" />
+              Apply Now
             </Link>
-          </nav>
+          </div>
         </div>
       )}
     </header>

@@ -46,7 +46,7 @@ export default function Footer() {
         <div className="max-w-[390px] max-[1180px]:max-w-full max-[1180px]:col-span-2 max-[720px]:col-span-1">
           <div className="w-full flex items-center justify-center rounded-[16px] bg-[rgba(255,255,255,0.96)] border border-[rgba(255,255,255,0.75)] shadow-[0_22px_42px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.9)] overflow-hidden">
             <Image
-              src="/pds-assets/pds-logo.jpeg"
+              src="/pds-assets/pds-logo.png"
               alt="Prime Digital School"
               width={360}
               height={120}
