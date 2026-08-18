@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.14 — Fix env keys and login images for Vercel
+- .env.local: unified both publishable keys to same value, added SELFIAM_SECRET_KEY placeholder
+- .env.example: documented key naming convention (NEXT_PUBLIC_ for browser, server-only without prefix)
+- app/login/page.tsx: added `unoptimized` to campus background and spinning 3D logo (fixes Vercel image optimization failures on large PNGs)
+
 ## 0.0.13 — Fix useContactAuth crash when key is empty
 - app/providers.tsx: always render ContactAuthProvider (handles missing keys gracefully)
 - app/login/page.tsx: guard Google button with isConfigured check

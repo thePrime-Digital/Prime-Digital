@@ -69,6 +69,7 @@ function LoginForm() {
         alt="Prime Digital School campus"
         fill
         priority
+        unoptimized
         sizes="100vw"
         className="object-cover object-center"
       />
@@ -86,6 +87,7 @@ function LoginForm() {
             fill
             priority
             loading="eager"
+            unoptimized
             sizes="34vw"
             className="premium-logo-spin object-contain"
           />
