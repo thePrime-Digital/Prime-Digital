@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MapPin, Phone, Mail } from "lucide-react";
 
 const socialLinks = [
@@ -26,6 +27,13 @@ const supportLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // All Digital Solutions has its own custom footer
+  if (pathname === "/services") {
+    return null;
+  }
+
   return (
     <footer className="w-full mt-[70px] max-[720px]:mt-10 relative overflow-hidden rounded-none bg-gradient-to-br from-[#1a0006] via-[#2d000b] to-[#3d0010] text-white shadow-[0_28px_70px_rgba(93,0,20,0.24)]">
       <div className="absolute inset-0 pointer-events-none opacity-20"

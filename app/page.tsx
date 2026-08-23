@@ -371,66 +371,74 @@ export default function Home() {
           ))}
         </div>
       </section>
-      {/* Home ↔ Services Connection */}
+      {/* ALL DIGITAL ↔ PRIME DIGITAL SCHOOL */}
       <section className="bg-white px-6 py-16 md:px-12 md:py-20">
-        <div className="mx-auto max-w-[1232px] overflow-hidden rounded-[34px] bg-[#0b0d10] shadow-[0_28px_80px_rgba(0,0,0,0.28)]">
-          <div className="grid min-h-[330px] grid-cols-1 md:grid-cols-2">
-            {/* Services side */}
-            <div className="relative flex flex-col justify-center overflow-hidden bg-[#111316] px-8 py-12 md:px-16">
-              <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.12),transparent_34%)]" />
+        <div className="mx-auto max-w-[1232px] overflow-hidden rounded-[34px] border border-slate-200 bg-white shadow-[0_30px_85px_rgba(15,23,42,0.12)]">
+          <div className="grid min-h-[370px] grid-cols-1 md:grid-cols-2">
+            {/* ====================================== */}
+            {/* ALL DIGITAL SOLUTIONS — LIGHT */}
+            {/* ====================================== */}
+            <div className="relative flex flex-col justify-center overflow-hidden border-b border-slate-200 bg-gradient-to-br from-cyan-50 via-white to-sky-50 px-8 py-12 md:border-b-0 md:border-r md:px-16">
+              <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-cyan-200/55 blur-[100px]" />
+
+              <div className="pointer-events-none absolute -bottom-28 -right-20 h-72 w-72 rounded-full bg-blue-100/70 blur-[110px]" />
 
               <div className="relative z-10">
-                <div className="mb-5 inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-cyan-300">
-                  Digital Services
+                <div className="mb-6 inline-flex h-10 items-center rounded-full border border-cyan-200 bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-700">
+                  All Digital Solutions
                 </div>
 
-                <h2 className="max-w-[360px] text-4xl font-light leading-[1.12] tracking-[-1px] text-white md:text-5xl">
+                <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-slate-950 md:text-5xl">
                   The Platform
                   <br />
                   Solutions
                 </h2>
 
-                <p className="mt-7 max-w-[360px] text-sm leading-7 text-white/50">
+                <p className="mt-7 max-w-[400px] text-sm leading-7 text-slate-500">
                   Access our complete digital architecture built for websites,
                   apps, dashboards, AI systems, and high-performance operations.
                 </p>
 
                 <Link
                   href="/services"
-                  className="mt-9 inline-flex h-14 items-center justify-center gap-8 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-8 text-sm font-black text-[#061014] shadow-[0_18px_40px_rgba(34,211,238,0.24)] transition hover:-translate-y-1"
+                  className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-8 text-sm font-black text-white shadow-[0_18px_40px_rgba(6,182,212,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(6,182,212,0.32)]"
                 >
                   Enter Portal
-                  <ArrowRight size={22} />
+                  <span className="text-2xl leading-none">→</span>
                 </Link>
               </div>
             </div>
 
-            {/* School side */}
-            <div className="relative flex flex-col justify-center overflow-hidden bg-[#8f1730] px-8 py-12 md:px-16">
-              <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-white/10 blur-[90px]" />
+            {/* ====================================== */}
+            {/* PRIME DIGITAL SCHOOL — MAROON */}
+            {/* ====================================== */}
+            <div className="relative flex flex-col justify-center overflow-hidden bg-[#9f1735] px-8 py-12 md:px-16">
+              <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-white/10 blur-[95px]" />
+
+              <div className="pointer-events-none absolute -bottom-32 left-10 h-64 w-64 rounded-full bg-[#d8b04c]/10 blur-[100px]" />
 
               <div className="relative z-10">
-                <div className="mb-5 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/80">
+                <div className="mb-6 inline-flex h-10 items-center rounded-full border border-white/20 bg-white/10 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white/90">
                   Prime Digital School
                 </div>
 
-                <h2 className="max-w-[360px] text-4xl font-light leading-[1.12] tracking-[-1px] text-white md:text-5xl">
+                <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-white md:text-5xl">
                   The Executive
                   <br />
                   School
                 </h2>
 
-                <p className="mt-7 max-w-[360px] text-sm leading-7 text-white/60">
+                <p className="mt-7 max-w-[400px] text-sm leading-7 text-white/65">
                   Upskill students and future leaders with structured programs,
                   digital education, expert mentors, and practical learning.
                 </p>
 
                 <Link
                   href="/programs"
-                  className="mt-9 inline-flex h-14 items-center justify-center gap-8 rounded-xl bg-[#d7b43f] px-8 text-sm font-black text-[#351509] shadow-[0_18px_40px_rgba(0,0,0,0.16)] transition hover:-translate-y-1 hover:bg-[#e6c64f]"
+                  className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-[#e0b938] px-8 text-sm font-black text-[#321508] shadow-[0_18px_38px_rgba(46,15,5,0.18)] transition duration-300 hover:-translate-y-1 hover:bg-[#edc84d]"
                 >
                   Enroll Now
-                  <GraduationCap size={21} />
+                  <span className="text-xl leading-none">◇</span>
                 </Link>
               </div>
             </div>
