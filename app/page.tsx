@@ -461,7 +461,7 @@ export default function Home() {
           <div className="group w-full max-w-[560px]">
             <div className="relative h-[330px] md:h-[470px] overflow-hidden rounded-[28px] bg-[#E5E2E1] shadow-[0_24px_70px_rgba(107,0,37,0.16)]">
               <Image
-                src="/pds-assets/founder.jpeg"
+                src="/pds-assets/Founder.jpeg"
                 alt="Founder of Prime Digital School"
                 fill
                 sizes="(max-width: 768px) 100vw, 560px"

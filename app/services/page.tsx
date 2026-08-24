@@ -63,14 +63,17 @@ const projects = [
   {
     title: "Learning Management Platform",
     desc: "A complete student, teacher, parent, and admin ecosystem for modern digital education.",
+    image: "/services/projects/learning-management-platform.png",
   },
   {
     title: "Admissions Growth Engine",
     desc: "Lead capture, enquiry tracking, follow-up automation, forms, and conversion-focused landing pages.",
+    image: "/services/projects/admissions-growth-engine.png",
   },
   {
     title: "AI Support Desk",
     desc: "Instant FAQ handling, student support, parent queries, and automated service workflows.",
+    image: "/services/projects/ai-support-desk.png",
   },
 ];
 
@@ -109,7 +112,7 @@ const pricing = [
 const faqs = [
   "Can you build a complete school website?",
   "Can you build student, parent, educator, and admin dashboards?",
-  "Can Prime Digital Solutions build AI automation?",
+  "Can All Digital Solutions build AI automation?",
   "Can this later become a mobile app?",
   "How long does a basic website take?",
 ];
@@ -181,7 +184,7 @@ export default function ServicesPage() {
         <div className="relative mx-auto grid max-w-[1180px] items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
             <div className="mb-5 inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-cyan-700">
-              Prime Digital Solutions
+              ALL Digital Solutions
             </div>
 
             <h1 className="max-w-3xl text-4xl font-black leading-[1.03] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
@@ -381,7 +384,7 @@ export default function ServicesPage() {
               </h2>
 
               <p className="mt-5 text-sm leading-7 text-slate-500 sm:text-base">
-                Prime Digital Solutions connects frontend design, backend logic,
+                All Digital Solutions connects frontend design, backend logic,
                 databases, automation, dashboards, and reporting into one clean
                 digital workflow.
               </p>
@@ -440,66 +443,14 @@ export default function ServicesPage() {
                 key={item.title}
                 className="group overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.07)] transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300 hover:shadow-[0_28px_70px_rgba(6,182,212,0.14)]"
               >
-                <div className="relative h-[230px] overflow-hidden border-b border-slate-200 bg-gradient-to-br from-cyan-50 via-white to-blue-50">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_18%,rgba(34,211,238,0.22),transparent_34%),radial-gradient(circle_at_85%_80%,rgba(59,130,246,0.13),transparent_36%)]" />
+                <div className="relative h-[230px] overflow-hidden border-b border-slate-200 bg-slate-100">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
 
-                  <div className="absolute left-5 right-5 top-5 rounded-2xl border border-white/80 bg-white/80 p-4 shadow-xl backdrop-blur">
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="h-2.5 w-24 rounded-full bg-cyan-400" />
-
-                      <span className="rounded-full bg-cyan-100 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-cyan-700">
-                        Live
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="h-2.5 w-full rounded-full bg-slate-200" />
-                      <div className="h-2.5 w-[76%] rounded-full bg-slate-200" />
-                      <div className="h-2.5 w-[52%] rounded-full bg-slate-200" />
-                    </div>
-
-                    <div className="mt-6 grid grid-cols-3 gap-3">
-                      <div className="h-14 rounded-xl border border-cyan-200 bg-cyan-100" />
-                      <div className="h-14 rounded-xl border border-slate-200 bg-slate-100" />
-                      <div className="h-14 rounded-xl border border-rose-200 bg-rose-100" />
-                    </div>
-                  </div>
-
-                  <div className="absolute bottom-5 left-5 right-5 grid grid-cols-3 gap-3">
-                    <div className="rounded-xl border border-white bg-white/90 p-3 shadow-sm backdrop-blur">
-                      <p className="text-[10px] font-bold text-slate-400">
-                        Users
-                      </p>
-
-                      <p className="mt-1 text-sm font-black text-cyan-600">
-                        {index === 0 ? "10K+" : index === 1 ? "4.8K" : "24/7"}
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl border border-white bg-white/90 p-3 shadow-sm backdrop-blur">
-                      <p className="text-[10px] font-bold text-slate-400">
-                        Speed
-                      </p>
-
-                      <p className="mt-1 text-sm font-black text-slate-800">
-                        {index === 0
-                          ? "Fast"
-                          : index === 1
-                            ? "Auto"
-                            : "Instant"}
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl border border-white bg-white/90 p-3 shadow-sm backdrop-blur">
-                      <p className="text-[10px] font-bold text-slate-400">
-                        Status
-                      </p>
-
-                      <p className="mt-1 text-sm font-black text-amber-500">
-                        Ready
-                      </p>
-                    </div>
-                  </div>
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/10 via-transparent to-transparent" />
                 </div>
 
                 <div className="p-7">
@@ -735,7 +686,7 @@ export default function ServicesPage() {
             </h2>
 
             <p className="mx-auto mt-5 max-w-2xl text-sm font-semibold leading-7 text-slate-600 sm:text-base">
-              Let Prime Digital Solutions build your website, app, AI system,
+              Let All Digital Solutions build your website, app, AI system,
               student portal, CRM, or complete digital ecosystem.
             </p>
 
