@@ -46,6 +46,21 @@ const solutions = [
     title: "Analytics & Performance Reports",
     desc: "Dashboards that track learning, revenue, users, leads, attendance, results, and operational performance.",
   },
+  {
+    number: "07",
+    title: "Marketing",
+    desc: "Strategic campaigns, audience targeting, lead generation, promotional planning, and growth-focused marketing solutions.",
+  },
+  {
+    number: "08",
+    title: "Social Media Marketing",
+    desc: "Content strategy, social campaigns, posting, audience engagement, brand growth, and performance across major platforms.",
+  },
+  {
+    number: "09",
+    title: "PR Team",
+    desc: "Public relations, media outreach, brand communication, reputation management, partnerships, and visibility-focused campaigns.",
+  },
 ];
 
 const systems = [
