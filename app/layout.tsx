@@ -23,9 +23,6 @@ export const metadata: Metadata = {
   title: "Prime Digital School",
   description:
     "Future-ready digital education for students from 6th to 12th standard.",
-  icons: {
-    icon: "/pds-assets/pds-logo.jpeg",
-  },
 };
 
 export default function RootLayout({
