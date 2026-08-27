@@ -127,7 +127,7 @@ const pricing = [
 const faqs = [
   "Can you build a complete school website?",
   "Can you build student, parent, educator, and admin dashboards?",
-  "Can All Digital Solutions build AI automation?",
+  "Can Prime Technology Studios build AI automation?",
   "Can this later become a mobile app?",
   "How long does a basic website take?",
 ];
@@ -138,24 +138,12 @@ export default function ServicesPage() {
       {/* NAVBAR */}
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[76px] max-w-[1180px] items-center justify-between px-5 sm:px-8 lg:px-0">
-          <Link href="/services" className="flex items-center gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl">
-              <img
-                src="/all-digital-logo.svg"
-                alt="All Digital Solutions"
-                className="h-full w-full object-contain"
-              />
-            </div>
-
-            <div className="leading-none">
-              <p className="text-sm font-black tracking-tight text-slate-950">
-                ALL DIGITAL
-              </p>
-
-              <p className="mt-1 text-[10px] font-black uppercase tracking-[0.28em] text-cyan-600">
-                Solutions
-              </p>
-            </div>
+          <Link href="/" className="flex items-center">
+            <img
+              src="/logo-pts.jpeg"
+              alt="Prime Technology Studios"
+              className="h-14 w-auto object-contain"
+            />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
@@ -199,7 +187,7 @@ export default function ServicesPage() {
         <div className="relative mx-auto grid max-w-[1180px] items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
             <div className="mb-5 inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-cyan-700">
-              ALL Digital Solutions
+              Prime Technology Studios
             </div>
 
             <h1 className="max-w-3xl text-4xl font-black leading-[1.03] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
@@ -399,9 +387,9 @@ export default function ServicesPage() {
               </h2>
 
               <p className="mt-5 text-sm leading-7 text-slate-500 sm:text-base">
-                All Digital Solutions connects frontend design, backend logic,
-                databases, automation, dashboards, and reporting into one clean
-                digital workflow.
+                Prime Technology Studios connects frontend design, backend
+                logic, databases, automation, dashboards, and reporting into one
+                clean digital workflow.
               </p>
             </div>
 
@@ -509,7 +497,7 @@ export default function ServicesPage() {
 
               <div className="relative z-10">
                 <div className="mb-6 inline-flex h-10 items-center rounded-full border border-cyan-200 bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-700">
-                  All Digital Solutions
+                  Prime Technology Studios
                 </div>
 
                 <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-slate-950 md:text-5xl">
@@ -701,7 +689,7 @@ export default function ServicesPage() {
             </h2>
 
             <p className="mx-auto mt-5 max-w-2xl text-sm font-semibold leading-7 text-slate-600 sm:text-base">
-              Let All Digital Solutions build your website, app, AI system,
+              Let Prime Technology Studios build your website, app, AI system,
               student portal, CRM, or complete digital ecosystem.
             </p>
 
@@ -735,24 +723,12 @@ export default function ServicesPage() {
           <div className="grid gap-12 lg:grid-cols-[1.35fr_0.8fr_0.8fr_0.9fr]">
             {/* BRAND */}
             <div className="max-w-[330px]">
-              <Link href="/services" className="inline-flex items-center gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl">
-                  <img
-                    src="/all-digital-logo.svg"
-                    alt="All Digital Solutions"
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-
-                <div className="leading-none">
-                  <p className="text-sm font-black tracking-tight text-slate-950">
-                    ALL DIGITAL
-                  </p>
-
-                  <p className="mt-1 text-[10px] font-black uppercase tracking-[0.28em] text-cyan-600">
-                    SOLUTIONS
-                  </p>
-                </div>
+              <Link href="/" className="inline-flex items-center">
+                <img
+                  src="/logo-pts.jpeg"
+                  alt="Prime Technology Studios"
+                  className="h-20 w-auto object-contain"
+                />
               </Link>
 
               <p className="mt-6 max-w-[290px] text-sm leading-7 text-slate-500">
@@ -920,7 +896,7 @@ export default function ServicesPage() {
           {/* BOTTOM BAR */}
           <div className="flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between">
             <p className="text-[9px] font-semibold text-slate-400">
-              © 2026 All Digital Solutions. All rights reserved.
+              © 2026 Prime Technology Studios. All rights reserved.
             </p>
 
             <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
