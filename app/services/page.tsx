@@ -127,7 +127,7 @@ const pricing = [
 const faqs = [
   "Can you build a complete school website?",
   "Can you build student, parent, educator, and admin dashboards?",
-  "Can Prime Technology Studios build AI automation?",
+  "Can Prime Digital Agency build AI automation?",
   "Can this later become a mobile app?",
   "How long does a basic website take?",
 ];
@@ -140,8 +140,8 @@ export default function ServicesPage() {
         <div className="mx-auto flex h-[76px] max-w-[1180px] items-center justify-between px-5 sm:px-8 lg:px-0">
           <Link href="/" className="flex items-center">
             <img
-              src="/logo-pts.jpeg"
-              alt="Prime Technology Studios"
+              src="/logoPDA.png"
+              alt="Prime Digital Agency"
               className="h-14 w-auto object-contain"
             />
           </Link>
@@ -187,7 +187,7 @@ export default function ServicesPage() {
         <div className="relative mx-auto grid max-w-[1180px] items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
             <div className="mb-5 inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-cyan-700">
-              Prime Technology Studios
+              Prime Digital Agency
             </div>
 
             <h1 className="max-w-3xl text-4xl font-black leading-[1.03] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
@@ -387,7 +387,7 @@ export default function ServicesPage() {
               </h2>
 
               <p className="mt-5 text-sm leading-7 text-slate-500 sm:text-base">
-                Prime Technology Studios connects frontend design, backend
+                Prime Digital Agency connects frontend design, backend
                 logic, databases, automation, dashboards, and reporting into one
                 clean digital workflow.
               </p>
@@ -497,7 +497,7 @@ export default function ServicesPage() {
 
               <div className="relative z-10">
                 <div className="mb-6 inline-flex h-10 items-center rounded-full border border-cyan-200 bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-700">
-                  Prime Technology Studios
+                  Prime Digital Agency
                 </div>
 
                 <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-slate-950 md:text-5xl">
@@ -689,7 +689,7 @@ export default function ServicesPage() {
             </h2>
 
             <p className="mx-auto mt-5 max-w-2xl text-sm font-semibold leading-7 text-slate-600 sm:text-base">
-              Let Prime Technology Studios build your website, app, AI system,
+              Let Prime Digital Agency build your website, app, AI system,
               student portal, CRM, or complete digital ecosystem.
             </p>
 
@@ -725,8 +725,8 @@ export default function ServicesPage() {
             <div className="max-w-[330px]">
               <Link href="/" className="inline-flex items-center">
                 <img
-                  src="/logo-pts.jpeg"
-                  alt="Prime Technology Studios"
+                  src="/logoPDA.png"
+                  alt="Prime Digital Agency"
                   className="h-20 w-auto object-contain"
                 />
               </Link>
@@ -896,7 +896,7 @@ export default function ServicesPage() {
           {/* BOTTOM BAR */}
           <div className="flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between">
             <p className="text-[9px] font-semibold text-slate-400">
-              © 2026 Prime Technology Studios. All rights reserved.
+              © 2026 Prime Digital Agency. All rights reserved.
             </p>
 
             <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
