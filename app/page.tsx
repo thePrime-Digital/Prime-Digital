@@ -444,42 +444,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Founder */}
-      <section className="bg-white py-16 md:py-[100px] px-6 md:px-12 flex justify-center border-t border-[#E5E2E1]">
-        <div className="w-full max-w-[1100px] flex flex-col items-center">
-          <div className="mb-10 text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#6B0025]">
-              Meet Our Founder
-            </p>
 
-            <h2 className="mt-3 text-3xl md:text-[42px] font-black text-[#6B0025] leading-tight">
-              The Vision Behind Prime Digital School
-            </h2>
-          </div>
-
-          <div className="group w-full max-w-[560px]">
-            <div className="relative h-[330px] md:h-[470px] overflow-hidden rounded-[28px] bg-[#E5E2E1] shadow-[0_24px_70px_rgba(107,0,37,0.16)]">
-              <Image
-                src="/pds-assets/founder.jpeg"
-                alt="Founder of Prime Digital School"
-                fill
-                sizes="(max-width: 768px) 100vw, 560px"
-                className="object-cover object-top transition duration-500 group-hover:scale-105"
-              />
-
-              <div className="absolute inset-0 bg-gradient-to-t from-[#6B0025]/85 via-[#6B0025]/10 to-transparent" />
-
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
-                <h3 className="text-2xl md:text-3xl font-black">Ravi Rana</h3>
-
-                <p className="mt-2 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-white/80">
-                  Founder, Prime Digital School
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       {/* Gallery & Contact */}
       <section className="bg-[#FCF9F8] pt-16 md:pt-[110px] pb-24 px-6 md:px-12 flex flex-col items-center">
         <div className="w-full max-w-[1280px] flex flex-col gap-10">
