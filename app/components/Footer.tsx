@@ -58,16 +58,31 @@ export default function Footer() {
 
       <div className="w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)] mx-auto relative z-[3] grid grid-cols-[1.15fr_0.42fr_0.42fr_1.1fr_0.7fr] max-[1180px]:grid-cols-2 max-[720px]:grid-cols-1 gap-[38px] max-[1180px]:gap-[34px] max-[720px]:gap-[30px] items-start pt-[48px] px-0 max-[1180px]:pt-[42px] max-[720px]:pt-[30px]">
         <div className="max-w-[390px] max-[1180px]:max-w-full max-[1180px]:col-span-2 max-[720px]:col-span-1">
-          <div className="w-full flex items-center justify-center rounded-[16px] bg-[rgba(255,255,255,0.96)] border border-[rgba(255,255,255,0.75)] shadow-[0_22px_42px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.9)] overflow-hidden">
-            <Image
-              src="/pds-assets/pds-logo.png"
-              alt="Prime Digital School"
-              width={360}
-              height={120}
-              className="w-full h-auto object-contain object-center block bg-transparent"
-            />
-          </div>
+          <div className="flex items-center gap-4">
+  <div className="relative h-[115px] w-[115px] shrink-0 overflow-hidden rounded-[18px] border border-white/20 shadow-[0_18px_38px_rgba(0,0,0,0.25)]">
+    <Image
+      src="/pds-assets/founder.jpeg"
+      alt="Ravi Rana, Founder of Prime Digital School"
+      fill
+      sizes="115px"
+      className="object-cover object-top"
+    />
+  </div>
 
+  <div>
+    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60">
+      Meet Our Founder
+    </p>
+
+    <h3 className="mt-2 text-[22px] font-black leading-none text-white">
+      Ravi Rana
+    </h3>
+
+    <p className="mt-2 text-[10px] font-black uppercase tracking-[0.16em] text-[#f0d58a]">
+      Founder, Prime Digital School
+    </p>
+  </div>
+</div>
           <p className="mt-[26px] m-0 max-w-[390px] text-[16px] max-[720px]:text-[15px] leading-[1.55] text-[rgba(255,255,255,0.92)]">
             Empowering students with future-ready skills through innovation,
             creativity and digital education.
@@ -149,44 +164,8 @@ export default function Footer() {
           />
         </div>
       </div>
-      {/* FOUNDER */}
-      <div className="relative z-[3] w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)] mx-auto mt-[38px]">
-        <div className="rounded-[24px] border border-white/15 bg-white/[0.07] px-6 py-6 backdrop-blur-md shadow-[0_18px_45px_rgba(0,0,0,0.16)] md:px-8">
-          <div className="flex items-center gap-6 max-[600px]:items-start max-[600px]:gap-4">
-            {/* Founder Image */}
-            <div className="relative h-[120px] w-[120px] shrink-0 overflow-hidden rounded-[18px] border border-white/20 bg-white/10 shadow-[0_12px_30px_rgba(0,0,0,0.22)] max-[600px]:h-[95px] max-[600px]:w-[95px]">
-              <Image
-                src="/pds-assets/founder.jpeg"
-                alt="Ravi Rana, Founder of Prime Digital School"
-                fill
-                sizes="120px"
-                className="object-cover object-top"
-              />
-            </div>
-
-            {/* Founder Content */}
-            <div className="min-w-0 flex-1">
-              <div className="mb-2 inline-flex w-fit items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[8px] font-black uppercase tracking-[0.2em] text-white/70">
-                Meet Our Founder
-              </div>
-
-              <h3 className="text-xl font-black tracking-tight text-white md:text-2xl">
-                Ravi Rana
-              </h3>
-
-              <p className="mt-1 text-[9px] font-black uppercase tracking-[0.18em] text-[#f0d58a] md:text-[10px]">
-                Founder, Prime Digital School
-              </p>
-
-              <p className="mt-3 max-w-[760px] text-[13px] leading-6 text-white/70 md:text-[14px]">
-                Leading Prime Digital School with a vision to build practical,
-                future-ready education that prepares students for an
-                increasingly digital world.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+     
+          
       <div className="relative z-[3] w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)] mx-auto mt-[46px] max-[720px]:mt-[30px] py-[22px] max-[720px]:py-5 flex items-center justify-between gap-6 max-[720px]:flex-col max-[720px]:items-start border-t border-[rgba(255,255,255,0.18)]">
         <p className="m-0 max-w-none text-[rgba(255,255,255,0.9)] text-[15px] max-[720px]:text-[13.5px] max-[720px]:whitespace-normal leading-[1.4]">
           &copy; 2026 Prime Digital School. All rights reserved.
