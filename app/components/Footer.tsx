@@ -36,17 +36,21 @@ export default function Footer() {
 
   return (
     <footer className="w-full mt-[70px] max-[720px]:mt-10 relative overflow-hidden rounded-none bg-gradient-to-br from-[#1a0006] via-[#2d000b] to-[#3d0010] text-white shadow-[0_28px_70px_rgba(93,0,20,0.24)]">
-      <div className="absolute inset-0 pointer-events-none opacity-20"
+      <div
+        className="absolute inset-0 pointer-events-none opacity-20"
         style={{
           backgroundImage: `radial-gradient(rgba(255,255,255,0.28) 1.2px, transparent 1.2px), linear-gradient(135deg, rgba(255,255,255,0.06), transparent 45%)`,
           backgroundSize: "18px 18px, 100% 100%",
-          maskImage: "linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent)",
+          maskImage:
+            "linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent)",
         }}
       />
 
-      <div className="absolute inset-0 pointer-events-none"
+      <div
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,238,210,0.95), rgba(255,255,255,0.55), rgba(255,255,255,0))",
+          background:
+            "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,238,210,0.95), rgba(255,255,255,0.55), rgba(255,255,255,0))",
           height: "4px",
           top: 0,
         }}
@@ -84,7 +88,9 @@ export default function Footer() {
         </div>
 
         <div className="max-[1180px]:col-span-1">
-          <h4 className="m-0 mb-5 max-[720px]:mb-[15px] text-[18px] leading-none font-black text-white">Quick Links</h4>
+          <h4 className="m-0 mb-5 max-[720px]:mb-[15px] text-[18px] leading-none font-black text-white">
+            Quick Links
+          </h4>
           {quickLinks.map(({ label, href }) => (
             <Link
               key={label}
@@ -97,7 +103,9 @@ export default function Footer() {
         </div>
 
         <div className="max-[1180px]:col-span-1">
-          <h4 className="m-0 mb-5 max-[720px]:mb-[15px] text-[18px] leading-none font-black text-white">Support</h4>
+          <h4 className="m-0 mb-5 max-[720px]:mb-[15px] text-[18px] leading-none font-black text-white">
+            Support
+          </h4>
           {supportLinks.map(({ label, href }) => (
             <Link
               key={label}
@@ -110,7 +118,9 @@ export default function Footer() {
         </div>
 
         <div className="min-w-0 max-[1180px]:col-span-2 max-[720px]:col-span-1">
-          <h4 className="m-0 mb-5 max-[720px]:mb-[15px] text-[18px] leading-none font-black text-white">Contact Us</h4>
+          <h4 className="m-0 mb-5 max-[720px]:mb-[15px] text-[18px] leading-none font-black text-white">
+            Contact Us
+          </h4>
 
           <div className="mb-4 grid grid-cols-[26px_1fr] gap-[14px] items-start text-[rgba(255,255,255,0.92)] text-[15.5px] leading-[1.55]">
             <MapPin size={18} className="mt-[3px] text-white stroke-[2.4]" />
@@ -139,17 +149,60 @@ export default function Footer() {
           />
         </div>
       </div>
+      {/* FOUNDER */}
+      <div className="relative z-[3] w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)] mx-auto mt-[38px]">
+        <div className="rounded-[24px] border border-white/15 bg-white/[0.07] px-6 py-6 backdrop-blur-md shadow-[0_18px_45px_rgba(0,0,0,0.16)] md:px-8">
+          <div className="flex items-center gap-6 max-[600px]:items-start max-[600px]:gap-4">
+            {/* Founder Image */}
+            <div className="relative h-[120px] w-[120px] shrink-0 overflow-hidden rounded-[18px] border border-white/20 bg-white/10 shadow-[0_12px_30px_rgba(0,0,0,0.22)] max-[600px]:h-[95px] max-[600px]:w-[95px]">
+              <Image
+                src="/pds-assets/founder.jpeg"
+                alt="Ravi Rana, Founder of Prime Digital School"
+                fill
+                sizes="120px"
+                className="object-cover object-top"
+              />
+            </div>
 
+            {/* Founder Content */}
+            <div className="min-w-0 flex-1">
+              <div className="mb-2 inline-flex w-fit items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[8px] font-black uppercase tracking-[0.2em] text-white/70">
+                Meet Our Founder
+              </div>
+
+              <h3 className="text-xl font-black tracking-tight text-white md:text-2xl">
+                Ravi Rana
+              </h3>
+
+              <p className="mt-1 text-[9px] font-black uppercase tracking-[0.18em] text-[#f0d58a] md:text-[10px]">
+                Founder, Prime Digital School
+              </p>
+
+              <p className="mt-3 max-w-[760px] text-[13px] leading-6 text-white/70 md:text-[14px]">
+                Leading Prime Digital School with a vision to build practical,
+                future-ready education that prepares students for an
+                increasingly digital world.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="relative z-[3] w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)] mx-auto mt-[46px] max-[720px]:mt-[30px] py-[22px] max-[720px]:py-5 flex items-center justify-between gap-6 max-[720px]:flex-col max-[720px]:items-start border-t border-[rgba(255,255,255,0.18)]">
         <p className="m-0 max-w-none text-[rgba(255,255,255,0.9)] text-[15px] max-[720px]:text-[13.5px] max-[720px]:whitespace-normal leading-[1.4]">
           &copy; 2026 Prime Digital School. All rights reserved.
         </p>
 
         <div className="flex items-center justify-end gap-7 max-[720px]:gap-4 max-[720px]:flex-wrap shrink-0">
-          <Link href="/privacy" className="m-0 text-[rgba(255,255,255,0.9)] text-[15px] max-[720px]:text-[13.5px] leading-[1.4] no-underline whitespace-nowrap transition-colors duration-250 hover:text-white">
+          <Link
+            href="/privacy"
+            className="m-0 text-[rgba(255,255,255,0.9)] text-[15px] max-[720px]:text-[13.5px] leading-[1.4] no-underline whitespace-nowrap transition-colors duration-250 hover:text-white"
+          >
             Privacy Policy
           </Link>
-          <Link href="/terms" className="m-0 text-[rgba(255,255,255,0.9)] text-[15px] max-[720px]:text-[13.5px] leading-[1.4] no-underline whitespace-nowrap transition-colors duration-250 hover:text-white">
+          <Link
+            href="/terms"
+            className="m-0 text-[rgba(255,255,255,0.9)] text-[15px] max-[720px]:text-[13.5px] leading-[1.4] no-underline whitespace-nowrap transition-colors duration-250 hover:text-white"
+          >
             Terms &amp; Conditions
           </Link>
         </div>

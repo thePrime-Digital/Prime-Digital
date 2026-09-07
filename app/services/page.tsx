@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 const navItems = [
   { label: "Solutions", href: "#solutions" },
@@ -95,7 +95,7 @@ const projects = [
 const pricing = [
   {
     name: "Launch",
-    price: "₹9,999",
+    price: "\u20B99,999",
     desc: "For landing pages and small digital launches.",
     features: [
       "1 premium page",
@@ -106,7 +106,7 @@ const pricing = [
   },
   {
     name: "Growth",
-    price: "₹19,999",
+    price: "\u20B919,999",
     desc: "For serious websites and business systems.",
     features: ["Up to 5 pages", "Premium UI", "Lead system", "Basic dashboard"],
     featured: true,
@@ -134,7 +134,7 @@ const faqs = [
 
 export default function ServicesPage() {
   return (
-    <main className="services-page min-h-screen overflow-hidden bg-white text-slate-950">
+    <main className="services-page min-h-screen overflow-hidden bg-white text-[#060C1F]">
       {/* NAVBAR */}
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[76px] max-w-[1180px] items-center justify-between px-5 sm:px-8 lg:px-0">
@@ -151,7 +151,7 @@ export default function ServicesPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-xs font-black uppercase tracking-[0.18em] text-slate-500 transition hover:text-cyan-600"
+                className="text-xs font-black uppercase tracking-[0.18em] text-slate-500 transition hover:text-[#0463EC]"
               >
                 {item.label}
               </Link>
@@ -161,14 +161,14 @@ export default function ServicesPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="hidden rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-black uppercase tracking-[0.14em] text-slate-600 transition hover:border-cyan-300 hover:bg-cyan-50 hover:text-cyan-700 sm:inline-flex"
+              className="hidden rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-black uppercase tracking-[0.14em] text-slate-600 transition hover:border-[#609FF3] hover:bg-[#F2F8FF] hover:text-[#034FC0] sm:inline-flex"
             >
               School Site
             </Link>
 
             <Link
               href="/contact"
-              className="rounded-full bg-cyan-500 px-5 py-2.5 text-xs font-black uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(6,182,212,0.22)] transition hover:-translate-y-0.5 hover:bg-cyan-600"
+              className="rounded-full bg-[#0463EC] px-5 py-2.5 text-xs font-black uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(4,99,236,0.22)] transition hover:-translate-y-0.5 hover:bg-[#034FC0]"
             >
               Start Project
             </Link>
@@ -178,24 +178,24 @@ export default function ServicesPage() {
 
       {/* HERO */}
       <section className="relative px-5 pb-20 pt-36 sm:px-8 lg:px-10">
-        <div className="absolute left-1/2 top-[-160px] h-[620px] w-[900px] -translate-x-1/2 rounded-full bg-cyan-200/40 blur-[150px]" />
+        <div className="absolute left-1/2 top-[-160px] h-[620px] w-[900px] -translate-x-1/2 rounded-full bg-[#A8D1F7]/45 blur-[150px]" />
 
-        <div className="absolute right-[-100px] top-40 h-[420px] w-[420px] rounded-full bg-rose-100/70 blur-[120px]" />
+        <div className="absolute right-[-100px] top-40 h-[420px] w-[420px] rounded-full bg-[#DDEEFF]/70 blur-[120px]" />
 
-        <div className="absolute bottom-0 left-[-160px] h-[360px] w-[360px] rounded-full bg-blue-100/70 blur-[120px]" />
+        <div className="absolute bottom-0 left-[-160px] h-[360px] w-[360px] rounded-full bg-[#DDEEFF]/70 blur-[120px]" />
 
         <div className="relative mx-auto grid max-w-[1180px] items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
-            <div className="mb-5 inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-cyan-700">
+            <div className="mb-5 inline-flex rounded-full border border-[#A8D1F7] bg-[#F2F8FF] px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#034FC0]">
               Prime Digital Agency
             </div>
 
-            <h1 className="max-w-3xl text-4xl font-black leading-[1.03] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
+            <h1 className="max-w-3xl text-4xl font-black leading-[1.03] tracking-tight text-[#060C1F] sm:text-6xl lg:text-7xl">
               One Intelligent
               <br />
               Platform.
               <br />
-              <span className="bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#0895FA] via-[#0463EC] to-[#022D97] bg-clip-text text-transparent">
                 Unlimited Digital
                 <br />
                 Possibilities.
@@ -211,14 +211,14 @@ export default function ServicesPage() {
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="#solutions"
-                className="rounded-xl bg-cyan-500 px-6 py-3 text-sm font-black text-white shadow-[0_14px_35px_rgba(6,182,212,0.22)] transition hover:-translate-y-1 hover:bg-cyan-600"
+                className="rounded-xl bg-[#0463EC] px-6 py-3 text-sm font-black text-white shadow-[0_14px_35px_rgba(4,99,236,0.22)] transition hover:-translate-y-1 hover:bg-[#034FC0]"
               >
                 Explore Solutions
               </Link>
 
               <Link
                 href="/contact"
-                className="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50"
+                className="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-black text-slate-800 shadow-sm transition hover:-translate-y-1 hover:border-[#609FF3] hover:bg-[#F2F8FF]"
               >
                 Book Consultation
               </Link>
@@ -235,12 +235,12 @@ export default function ServicesPage() {
                       Solution Console
                     </p>
 
-                    <p className="mt-1 text-xl font-black text-slate-950">
+                    <p className="mt-1 text-xl font-black text-[#060C1F]">
                       Live Build System
                     </p>
                   </div>
 
-                  <div className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-black text-cyan-700">
+                  <div className="rounded-full bg-[#DDEEFF] px-3 py-1 text-xs font-black text-[#034FC0]">
                     ACTIVE
                   </div>
                 </div>
@@ -257,7 +257,7 @@ export default function ServicesPage() {
                             {item}
                           </p>
 
-                          <p className="text-xs font-black text-cyan-600">
+                          <p className="text-xs font-black text-[#0463EC]">
                             {index === 0 ? "92%" : index === 1 ? "74%" : "88%"}
                           </p>
                         </div>
@@ -265,7 +265,7 @@ export default function ServicesPage() {
                         <div className="h-2 overflow-hidden rounded-full bg-slate-200">
                           <div
                             className={[
-                              "h-full rounded-full bg-gradient-to-r from-cyan-400 to-sky-500",
+                              "h-full rounded-full bg-gradient-to-r from-[#0895FA] to-[#0463EC]",
 
                               index === 0
                                 ? "w-[92%]"
@@ -286,7 +286,7 @@ export default function ServicesPage() {
                       key={item.label}
                       className="rounded-2xl border border-slate-200 bg-white p-4 text-center shadow-sm"
                     >
-                      <p className="text-lg font-black text-cyan-600">
+                      <p className="text-lg font-black text-[#0463EC]">
                         {item.value}
                       </p>
 
@@ -310,7 +310,7 @@ export default function ServicesPage() {
               key={item.label}
               className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_12px_35px_rgba(15,23,42,0.05)]"
             >
-              <p className="text-3xl font-black text-cyan-600">{item.value}</p>
+              <p className="text-3xl font-black text-[#0463EC]">{item.value}</p>
 
               <p className="mt-2 text-xs font-bold text-slate-500">
                 {item.label}
@@ -325,15 +325,15 @@ export default function ServicesPage() {
         id="solutions"
         className="relative bg-slate-50/70 px-5 py-20 sm:px-8 lg:px-10"
       >
-        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-cyan-100 blur-[120px]" />
+        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-[#DDEEFF] blur-[120px]" />
 
         <div className="relative mx-auto max-w-[1180px]">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-600">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#0463EC]">
               Solution Suite
             </p>
 
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#060C1F] sm:text-5xl">
               Digital architecture for high-performance growth.
             </h2>
 
@@ -347,9 +347,9 @@ export default function ServicesPage() {
             {solutions.map((item) => (
               <div
                 key={item.title}
-                className="group rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-[0_14px_40px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300 hover:shadow-[0_24px_60px_rgba(6,182,212,0.12)]"
+                className="group rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-[0_14px_40px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-2 hover:border-[#609FF3] hover:shadow-[0_24px_60px_rgba(4,99,236,0.12)]"
               >
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50 text-sm font-black text-cyan-600 transition group-hover:bg-cyan-500 group-hover:text-white">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F2F8FF] text-sm font-black text-[#0463EC] transition group-hover:bg-[#0463EC] group-hover:text-white">
                   {item.number}
                 </div>
 
@@ -363,9 +363,9 @@ export default function ServicesPage() {
 
                 <Link
                   href="/contact"
-                  className="mt-6 inline-flex text-sm font-black text-cyan-600 transition group-hover:translate-x-1"
+                  className="mt-6 inline-flex text-sm font-black text-[#0463EC] transition group-hover:translate-x-1"
                 >
-                  Discuss Project →
+                  Discuss Project â†’
                 </Link>
               </div>
             ))}
@@ -378,18 +378,18 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-[1180px]">
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-600">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#0463EC]">
                 Intelligent Systems
               </p>
 
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-[#060C1F] sm:text-5xl">
                 We do not just make pages. We build connected systems.
               </h2>
 
               <p className="mt-5 text-sm leading-7 text-slate-500 sm:text-base">
-                Prime Digital Agency connects frontend design, backend
-                logic, databases, automation, dashboards, and reporting into one
-                clean digital workflow.
+                Prime Digital Agency connects frontend design, backend logic,
+                databases, automation, dashboards, and reporting into one clean
+                digital workflow.
               </p>
             </div>
 
@@ -402,11 +402,11 @@ export default function ServicesPage() {
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-black text-slate-800">{item}</p>
 
-                    <span className="h-2.5 w-2.5 rounded-full bg-cyan-500" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#0463EC]" />
                   </div>
 
                   <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full w-[76%] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" />
+                    <div className="h-full w-[76%] rounded-full bg-gradient-to-r from-[#0895FA] to-[#0463EC]" />
                   </div>
                 </div>
               ))}
@@ -423,18 +423,18 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-[1180px]">
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-600">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#0463EC]">
                 Work Examples
               </p>
 
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-[#060C1F] sm:text-5xl">
                 Systems we can build for you.
               </h2>
             </div>
 
             <Link
               href="/contact"
-              className="w-fit rounded-xl border border-cyan-200 bg-white px-5 py-3 text-sm font-black text-cyan-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-cyan-50"
+              className="w-fit rounded-xl border border-[#A8D1F7] bg-white px-5 py-3 text-sm font-black text-[#034FC0] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#F2F8FF]"
             >
               Start Your Project
             </Link>
@@ -444,7 +444,7 @@ export default function ServicesPage() {
             {projects.map((item, index) => (
               <article
                 key={item.title}
-                className="group overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.07)] transition-all duration-300 hover:-translate-y-2 hover:border-cyan-300 hover:shadow-[0_28px_70px_rgba(6,182,212,0.14)]"
+                className="group overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.07)] transition-all duration-300 hover:-translate-y-2 hover:border-[#609FF3] hover:shadow-[0_28px_70px_rgba(4,99,236,0.14)]"
               >
                 <div className="relative h-[230px] overflow-hidden border-b border-slate-200 bg-slate-100">
                   <img
@@ -457,7 +457,7 @@ export default function ServicesPage() {
                 </div>
 
                 <div className="p-7">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-600">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#0463EC]">
                     PROJECT 0{index + 1}
                   </p>
 
@@ -471,10 +471,10 @@ export default function ServicesPage() {
 
                   <Link
                     href="/contact"
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-black text-cyan-600 transition group-hover:gap-4"
+                    className="mt-6 inline-flex items-center gap-2 text-sm font-black text-[#0463EC] transition group-hover:gap-4"
                   >
                     Build Similar System
-                    <span>→</span>
+                    <span>{"\u2192"}</span>
                   </Link>
                 </div>
               </article>
@@ -483,24 +483,24 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ALL DIGITAL ↔ PRIME DIGITAL SCHOOL */}
+      {/* ALL DIGITAL â†” PRIME DIGITAL SCHOOL */}
       <section className="bg-white px-6 py-16 md:px-12 md:py-20">
         <div className="mx-auto max-w-[1232px] overflow-hidden rounded-[34px] border border-slate-200 bg-white shadow-[0_30px_85px_rgba(15,23,42,0.12)]">
           <div className="grid min-h-[370px] grid-cols-1 md:grid-cols-2">
             {/* ====================================== */}
-            {/* ALL DIGITAL SOLUTIONS — LIGHT */}
+            {/* ALL DIGITAL SOLUTIONS â€” LIGHT */}
             {/* ====================================== */}
-            <div className="relative flex flex-col justify-center overflow-hidden border-b border-slate-200 bg-gradient-to-br from-cyan-50 via-white to-sky-50 px-8 py-12 md:border-b-0 md:border-r md:px-16">
-              <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-cyan-200/55 blur-[100px]" />
+            <div className="relative flex flex-col justify-center overflow-hidden border-b border-slate-200 bg-gradient-to-br from-[#F2F8FF] via-white to-[#EAF5FF] px-8 py-12 md:border-b-0 md:border-r md:px-16">
+              <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[#A8D1F7]/55 blur-[100px]" />
 
-              <div className="pointer-events-none absolute -bottom-28 -right-20 h-72 w-72 rounded-full bg-blue-100/70 blur-[110px]" />
+              <div className="pointer-events-none absolute -bottom-28 -right-20 h-72 w-72 rounded-full bg-[#DDEEFF]/70 blur-[110px]" />
 
               <div className="relative z-10">
-                <div className="mb-6 inline-flex h-10 items-center rounded-full border border-cyan-200 bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-700">
+                <div className="mb-6 inline-flex h-10 items-center rounded-full border border-[#A8D1F7] bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-[#034FC0]">
                   Prime Digital Agency
                 </div>
 
-                <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-slate-950 md:text-5xl">
+                <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-[#060C1F] md:text-5xl">
                   The Platform
                   <br />
                   Solutions
@@ -513,16 +513,16 @@ export default function ServicesPage() {
 
                 <Link
                   href="/services"
-                  className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-8 text-sm font-black text-white shadow-[0_18px_40px_rgba(6,182,212,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(6,182,212,0.32)]"
+                  className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-gradient-to-r from-[#0895FA] to-[#0463EC] px-8 text-sm font-black text-white shadow-[0_18px_40px_rgba(4,99,236,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(4,99,236,0.32)]"
                 >
                   Enter Portal
-                  <span className="text-2xl leading-none">→</span>
+                  <span className="text-2xl leading-none">{"\u2192"}</span>
                 </Link>
               </div>
             </div>
 
             {/* ====================================== */}
-            {/* PRIME DIGITAL SCHOOL — MAROON */}
+            {/* PRIME DIGITAL SCHOOL â€” BRAND NAVY */}
             {/* ====================================== */}
             <div className="relative flex flex-col justify-center overflow-hidden bg-[#9f1735] px-8 py-12 md:px-16">
               <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-white/10 blur-[95px]" />
@@ -550,7 +550,7 @@ export default function ServicesPage() {
                   className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-[#e0b938] px-8 text-sm font-black text-[#321508] shadow-[0_18px_38px_rgba(46,15,5,0.18)] transition duration-300 hover:-translate-y-1 hover:bg-[#edc84d]"
                 >
                   Enroll Now
-                  <span className="text-xl leading-none">◇</span>
+                  <span className="text-xl leading-none">{"\u25C7"}</span>
                 </Link>
               </div>
             </div>
@@ -565,11 +565,11 @@ export default function ServicesPage() {
       >
         <div className="mx-auto max-w-[1180px]">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-600">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#0463EC]">
               Pricing
             </p>
 
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#060C1F] sm:text-5xl">
               Choose how you want to start.
             </h2>
 
@@ -587,12 +587,12 @@ export default function ServicesPage() {
                   "relative rounded-[1.5rem] border p-6 transition hover:-translate-y-1",
 
                   plan.featured
-                    ? "border-cyan-300 bg-gradient-to-b from-cyan-50 to-white shadow-[0_24px_60px_rgba(6,182,212,0.15)]"
+                    ? "border-[#609FF3] bg-gradient-to-b from-[#F2F8FF] to-white shadow-[0_24px_60px_rgba(4,99,236,0.15)]"
                     : "border-slate-200 bg-white shadow-[0_14px_35px_rgba(15,23,42,0.05)]",
                 ].join(" ")}
               >
                 {plan.featured && (
-                  <div className="mb-4 w-fit rounded-full bg-cyan-500 px-3 py-1 text-xs font-black text-white">
+                  <div className="mb-4 w-fit rounded-full bg-[#0463EC] px-3 py-1 text-xs font-black text-white">
                     Recommended
                   </div>
                 )}
@@ -605,7 +605,7 @@ export default function ServicesPage() {
                   {plan.desc}
                 </p>
 
-                <p className="mt-6 text-3xl font-black text-cyan-600">
+                <p className="mt-6 text-3xl font-black text-[#0463EC]">
                   {plan.price}
                 </p>
 
@@ -615,8 +615,8 @@ export default function ServicesPage() {
                       key={feature}
                       className="flex items-center gap-3 text-sm text-slate-600"
                     >
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-100 text-[10px] font-black text-cyan-700">
-                        ✓
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#DDEEFF] text-[10px] font-black text-[#034FC0]">
+                        {"\u2713"}
                       </span>
 
                       {feature}
@@ -630,8 +630,8 @@ export default function ServicesPage() {
                     "mt-7 flex h-12 items-center justify-center rounded-xl text-sm font-black transition",
 
                     plan.featured
-                      ? "bg-cyan-500 text-white hover:bg-cyan-600"
-                      : "border border-slate-200 bg-white text-slate-800 hover:border-cyan-300 hover:bg-cyan-50",
+                      ? "bg-[#0463EC] text-white hover:bg-[#034FC0]"
+                      : "border border-slate-200 bg-white text-slate-800 hover:border-[#609FF3] hover:bg-[#F2F8FF]",
                   ].join(" ")}
                 >
                   Start Now
@@ -646,11 +646,11 @@ export default function ServicesPage() {
       <section id="faq" className="px-5 py-20 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-[900px]">
           <div className="text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-600">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#0463EC]">
               FAQ
             </p>
 
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#060C1F] sm:text-5xl">
               Questions before we start?
             </h2>
           </div>
@@ -659,11 +659,11 @@ export default function ServicesPage() {
             {faqs.map((faq) => (
               <div
                 key={faq}
-                className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-5 shadow-sm transition hover:border-cyan-300 hover:shadow-md"
+                className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-5 shadow-sm transition hover:border-[#609FF3] hover:shadow-md"
               >
                 <p className="text-sm font-black text-slate-800">{faq}</p>
 
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-50 text-lg font-black text-cyan-600 transition group-hover:bg-cyan-500 group-hover:text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F2F8FF] text-lg font-black text-[#0463EC] transition group-hover:bg-[#0463EC] group-hover:text-white">
                   +
                 </span>
               </div>
@@ -674,17 +674,17 @@ export default function ServicesPage() {
 
       {/* CTA */}
       <section className="px-5 py-20 sm:px-8 lg:px-10">
-        <div className="relative mx-auto max-w-[1180px] overflow-hidden rounded-[2rem] border border-cyan-200 bg-gradient-to-br from-cyan-50 via-sky-50 to-blue-100 p-8 text-center shadow-[0_30px_80px_rgba(6,182,212,0.15)] sm:p-12">
-          <div className="absolute left-[-80px] top-[-80px] h-64 w-64 rounded-full bg-cyan-300/50 blur-[100px]" />
+        <div className="relative mx-auto max-w-[1180px] overflow-hidden rounded-[2rem] border border-[#A8D1F7] bg-gradient-to-br from-[#F2F8FF] via-[#EAF5FF] to-[#DDEEFF] p-8 text-center shadow-[0_30px_80px_rgba(4,99,236,0.15)] sm:p-12">
+          <div className="absolute left-[-80px] top-[-80px] h-64 w-64 rounded-full bg-[#609FF3]/45 blur-[100px]" />
 
-          <div className="absolute bottom-[-100px] right-[-80px] h-72 w-72 rounded-full bg-blue-300/40 blur-[110px]" />
+          <div className="absolute bottom-[-100px] right-[-80px] h-72 w-72 rounded-full bg-[#609FF3]/35 blur-[110px]" />
 
           <div className="relative">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-700">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#034FC0]">
               Start Building
             </p>
 
-            <h2 className="mx-auto mt-4 max-w-4xl text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
+            <h2 className="mx-auto mt-4 max-w-4xl text-3xl font-black tracking-tight text-[#060C1F] sm:text-5xl">
               Ready to Transform Your Digital Presence?
             </h2>
 
@@ -696,14 +696,14 @@ export default function ServicesPage() {
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link
                 href="/contact"
-                className="rounded-xl bg-cyan-500 px-6 py-3 text-sm font-black text-white shadow-lg transition hover:-translate-y-1 hover:bg-cyan-600"
+                className="rounded-xl bg-[#0463EC] px-6 py-3 text-sm font-black text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#034FC0]"
               >
                 Book Free Consultation
               </Link>
 
               <Link
                 href="/"
-                className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-black text-slate-800 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50"
+                className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-black text-slate-800 transition hover:-translate-y-1 hover:border-[#609FF3] hover:bg-[#F2F8FF]"
               >
                 Back to School Site
               </Link>
@@ -715,8 +715,8 @@ export default function ServicesPage() {
       {/* ALL DIGITAL SOLUTIONS - CUSTOM LIGHT FOOTER */}
       <footer className="relative overflow-hidden border-t border-slate-200 bg-white">
         {/* soft background glow */}
-        <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-cyan-100/70 blur-[120px]" />
-        <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-blue-100/60 blur-[120px]" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-[#DDEEFF]/75 blur-[120px]" />
+        <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-[#DDEEFF]/65 blur-[120px]" />
 
         <div className="relative mx-auto max-w-[1180px] px-5 pb-8 pt-16 sm:px-8 lg:px-0">
           {/* MAIN FOOTER GRID */}
@@ -741,7 +741,7 @@ export default function ServicesPage() {
                 <a
                   href="#"
                   aria-label="Instagram"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-[10px] font-black text-slate-600 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50 hover:text-cyan-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-[10px] font-black text-slate-600 transition hover:-translate-y-1 hover:border-[#609FF3] hover:bg-[#F2F8FF] hover:text-[#0463EC]"
                 >
                   IG
                 </a>
@@ -749,7 +749,7 @@ export default function ServicesPage() {
                 <a
                   href="#"
                   aria-label="Facebook"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-[10px] font-black text-slate-600 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50 hover:text-cyan-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-[10px] font-black text-slate-600 transition hover:-translate-y-1 hover:border-[#609FF3] hover:bg-[#F2F8FF] hover:text-[#0463EC]"
                 >
                   FB
                 </a>
@@ -757,7 +757,7 @@ export default function ServicesPage() {
                 <a
                   href="#"
                   aria-label="LinkedIn"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-[10px] font-black text-slate-600 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50 hover:text-cyan-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-[10px] font-black text-slate-600 transition hover:-translate-y-1 hover:border-[#609FF3] hover:bg-[#F2F8FF] hover:text-[#0463EC]"
                 >
                   IN
                 </a>
@@ -766,42 +766,42 @@ export default function ServicesPage() {
 
             {/* SOLUTIONS */}
             <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-950">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#060C1F]">
                 Solutions
               </p>
 
               <div className="mt-6 flex flex-col gap-4">
                 <Link
                   href="#solutions"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Website Systems
                 </Link>
 
                 <Link
                   href="#systems"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   CRM Ecosystem
                 </Link>
 
                 <Link
                   href="#systems"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   AI Automation
                 </Link>
 
                 <Link
                   href="#projects"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Digital Platforms
                 </Link>
 
                 <Link
                   href="#solutions"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Analytics Systems
                 </Link>
@@ -810,42 +810,42 @@ export default function ServicesPage() {
 
             {/* COMPANY */}
             <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-950">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#060C1F]">
                 Company
               </p>
 
               <div className="mt-6 flex flex-col gap-4">
                 <Link
                   href="/about"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   About Our Mission
                 </Link>
 
                 <Link
                   href="/services"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Strategic Partners
                 </Link>
 
                 <Link
                   href="/careers"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Careers
                 </Link>
 
                 <Link
                   href="/contact"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Contact
                 </Link>
 
                 <Link
                   href="/"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   School Site
                 </Link>
@@ -854,28 +854,28 @@ export default function ServicesPage() {
 
             {/* SUPPORT */}
             <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-950">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#060C1F]">
                 Legal & Support
               </p>
 
               <div className="mt-6 flex flex-col gap-4">
                 <Link
                   href="/contact"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Support Center
                 </Link>
 
                 <Link
                   href="/contact"
-                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:translate-x-1 hover:text-[#0463EC]"
                 >
                   Project Support
                 </Link>
 
                 <a
                   href="mailto:info@primedigitalschool.com"
-                  className="text-xs font-semibold text-slate-500 transition hover:text-cyan-600"
+                  className="text-xs font-semibold text-slate-500 transition hover:text-[#0463EC]"
                 >
                   info@primedigitalschool.com
                 </a>
@@ -883,7 +883,7 @@ export default function ServicesPage() {
 
               <Link
                 href="/contact"
-                className="mt-7 inline-flex h-10 items-center rounded-full bg-cyan-500 px-5 text-[10px] font-black uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(6,182,212,0.18)] transition hover:-translate-y-1 hover:bg-cyan-600"
+                className="mt-7 inline-flex h-10 items-center rounded-full bg-[#0463EC] px-5 text-[10px] font-black uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(4,99,236,0.18)] transition hover:-translate-y-1 hover:bg-[#034FC0]"
               >
                 Start A Project
               </Link>
@@ -896,12 +896,12 @@ export default function ServicesPage() {
           {/* BOTTOM BAR */}
           <div className="flex flex-col gap-5 py-7 md:flex-row md:items-center md:justify-between">
             <p className="text-[9px] font-semibold text-slate-400">
-              © 2026 Prime Digital Agency. All rights reserved.
+              Â© 2026 Prime Digital Agency. All rights reserved.
             </p>
 
             <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
               <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#0463EC]" />
 
                 <span className="text-[8px] font-bold uppercase tracking-wider text-slate-400">
                   Secure Systems
@@ -909,7 +909,7 @@ export default function ServicesPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#0463EC]" />
 
                 <span className="text-[8px] font-bold uppercase tracking-wider text-slate-400">
                   Privacy Focused
@@ -917,7 +917,7 @@ export default function ServicesPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#0463EC]" />
 
                 <span className="text-[8px] font-bold uppercase tracking-wider text-slate-400">
                   Digital Excellence
