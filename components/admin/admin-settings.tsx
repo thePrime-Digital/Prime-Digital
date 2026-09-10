@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 
 import {
-  Bell,
   Building2,
   Loader2,
   Save,
@@ -19,26 +18,15 @@ type SettingsData = {
   timezone: string;
   admissionsOpen: boolean;
   facultySignupOpen: boolean;
-  clientSignupOpen: boolean;
-  announcement: string;
 };
 
 const defaults: SettingsData = {
   schoolName: "Prime Digital School",
-
   supportEmail: "",
-
   supportPhone: "",
-
   timezone: "Asia/Kolkata",
-
   admissionsOpen: true,
-
   facultySignupOpen: true,
-
-  clientSignupOpen: true,
-
-  announcement: "",
 };
 
 export default function AdminSettings() {
@@ -238,7 +226,7 @@ export default function AdminSettings() {
               title="Access & Registration"
               description="Control which public application and registration flows are currently available."
             >
-              <div className="grid gap-3 lg:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <Toggle
                   title="Admissions"
                   description="Allow students to submit new admission applications."
@@ -263,44 +251,11 @@ export default function AdminSettings() {
                   }
                 />
 
-                <Toggle
-                  title="Client Signup"
-                  description="Allow Prime Digital Solutions clients to register."
-                  checked={settings.clientSignupOpen}
-                  onChange={(checked) =>
-                    setSettings((current) => ({
-                      ...current,
-                      clientSignupOpen: checked,
-                    }))
-                  }
-                />
+
               </div>
             </Section>
 
-            <Section
-              icon={Bell}
-              title="Platform Announcement"
-              description="Save an administrative announcement message."
-            >
-              <textarea
-                value={settings.announcement}
-                onChange={(event) =>
-                  setSettings((current) => ({
-                    ...current,
 
-                    announcement: event.target.value,
-                  }))
-                }
-                rows={5}
-                maxLength={500}
-                placeholder="Enter platform announcement..."
-                className="w-full resize-none rounded-lg border border-slate-200 p-3 text-xs leading-5 outline-none focus:border-[#8f0024]/40"
-              />
-
-              <p className="mt-2 text-right text-[9px] text-slate-400">
-                {settings.announcement.length}/500
-              </p>
-            </Section>
 
             <button
               type="button"

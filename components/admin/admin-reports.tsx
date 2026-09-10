@@ -8,7 +8,6 @@ import {
 
 import {
   Activity,
-  BarChart3,
   BookOpen,
   BriefcaseBusiness,
   FileCheck2,
@@ -20,25 +19,24 @@ import {
 } from "lucide-react";
 
 type ReportsData = {
-  users: {
-    total: number;
-    students: number;
-    faculty: number;
-    clients: number;
-    admins: number;
-    active: number;
-    pending: number;
-    blocked: number;
-    newLast30Days: number;
-  };
+users: {
+  total: number;
+  students: number;
+  faculty: number;
+  admins: number;
+  active: number;
+  activeStudents: number;
+  pending: number;
+  blocked: number;
+  newLast30Days: number;
+};
 
-  submissions: {
-    admissions: number;
-    contacts: number;
-    careers: number;
-    serviceLeads: number;
-    total: number;
-  };
+submissions: {
+  admissions: number;
+  contacts: number;
+  careers: number;
+  total: number;
+};
 
   academic: {
     programs: number;
@@ -225,17 +223,17 @@ export default function AdminReports() {
                 note={`${data.users.newLast30Days} new in 30 days`}
               />
 
-              <Metric
-                icon={
-                  GraduationCap
-                }
-                label="Students"
-                value={
-                  data.users
-                    .students
-                }
-                note={`${data.users.active} total active accounts`}
-              />
+<Metric
+  icon={
+    GraduationCap
+  }
+  label="Students"
+  value={
+    data.users
+      .students
+  }
+  note={`${data.users.activeStudents} active students`}
+/>
 
               <Metric
                 icon={
@@ -247,7 +245,7 @@ export default function AdminReports() {
                     .submissions
                     .admissions
                 }
-                note={`${data.submissions.total} total form submissions`}
+                note="Admission applications received"
               />
 
               <Metric
@@ -297,19 +295,6 @@ export default function AdminReports() {
                         .total
                     }
                   />
-
-                  <Progress
-                    label="Clients"
-                    value={
-                      data.users
-                        .clients
-                    }
-                    total={
-                      data.users
-                        .total
-                    }
-                  />
-
                   <Progress
                     label="Admins"
                     value={
@@ -333,7 +318,7 @@ export default function AdminReports() {
                   Form activity received through the website.
                 </p>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   <MiniMetric
                     icon={
                       FileCheck2
@@ -367,18 +352,6 @@ export default function AdminReports() {
                       data
                         .submissions
                         .careers
-                    }
-                  />
-
-                  <MiniMetric
-                    icon={
-                      BarChart3
-                    }
-                    label="Service Leads"
-                    value={
-                      data
-                        .submissions
-                        .serviceLeads
                     }
                   />
                 </div>

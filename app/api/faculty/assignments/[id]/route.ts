@@ -175,6 +175,7 @@ export async function GET(
               assignmentId:
                 owned.assignment._id,
             },
+
             {
               assignmentId:
                 owned.assignment._id.toHexString(),
@@ -182,8 +183,11 @@ export async function GET(
           ],
         })
         .sort({
-          submittedAt: -1,
-          createdAt: -1,
+          submittedAt:
+            -1,
+
+          createdAt:
+            -1,
         })
         .toArray();
 
@@ -356,6 +360,13 @@ export async function GET(
                     : submission.submittedAt ||
                       submission.createdAt ||
                       null,
+
+                gradedAt:
+                  submission.gradedAt instanceof
+                  Date
+                    ? submission.gradedAt.toISOString()
+                    : submission.gradedAt ||
+                      null,
               };
             },
           ),
@@ -423,7 +434,8 @@ export async function PATCH(
 
   try {
     body =
-      (await request.json()) as PatchBody;
+      (await request.json()) as
+        PatchBody;
   } catch {
     return NextResponse.json(
       {
@@ -511,6 +523,7 @@ export async function PATCH(
           {
             $set: {
               status,
+
               updatedAt:
                 new Date(),
             },
@@ -584,28 +597,30 @@ export async function PATCH(
         );
       }
 
-      const submission =
-        await database
-          .collection<Document>(
-            "assignment_submissions",
-          )
-          .findOne({
-            _id:
-              new ObjectId(
-                submissionId,
-              ),
+      const submissions =
+        database.collection<Document>(
+          "assignment_submissions",
+        );
 
-            $or: [
-              {
-                assignmentId:
-                  owned.assignment._id,
-              },
-              {
-                assignmentId:
-                  owned.assignment._id.toHexString(),
-              },
-            ],
-          });
+      const submission =
+        await submissions.findOne({
+          _id:
+            new ObjectId(
+              submissionId,
+            ),
+
+          $or: [
+            {
+              assignmentId:
+                owned.assignment._id,
+            },
+
+            {
+              assignmentId:
+                owned.assignment._id.toHexString(),
+            },
+          ],
+        });
 
       if (!submission) {
         return NextResponse.json(
@@ -619,37 +634,127 @@ export async function PATCH(
         );
       }
 
-      await database
-        .collection<Document>(
-          "assignment_submissions",
+      /*
+       * Grades are permanent.
+       * If any evidence of previous grading exists,
+       * reject another grading request.
+       */
+      if (
+        submission.status ===
+          "graded" ||
+        typeof submission.grade ===
+          "number" ||
+        Boolean(
+          submission.gradedAt,
         )
-        .updateOne(
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "This submission has already been graded. The grade and feedback are final and cannot be changed.",
+          },
+          {
+            status: 409,
+          },
+        );
+      }
+
+      const now =
+        new Date();
+
+      /*
+       * Atomic lock:
+       * the database update only succeeds if the submission
+       * is still ungraded at the moment the write happens.
+       *
+       * This prevents two grading requests from both
+       * changing the grade.
+       */
+      const gradeResult =
+        await submissions.updateOne(
           {
             _id:
               submission._id,
+
+            $and: [
+              {
+                status: {
+                  $ne:
+                    "graded",
+                },
+              },
+
+              {
+                $or: [
+                  {
+                    grade: {
+                      $exists:
+                        false,
+                    },
+                  },
+
+                  {
+                    grade:
+                      null,
+                  },
+                ],
+              },
+
+              {
+                $or: [
+                  {
+                    gradedAt: {
+                      $exists:
+                        false,
+                    },
+                  },
+
+                  {
+                    gradedAt:
+                      null,
+                  },
+                ],
+              },
+            ],
           },
           {
             $set: {
               grade,
               feedback,
+
               status:
                 "graded",
 
               gradedAt:
-                new Date(),
+                now,
 
               gradedBy:
                 authorization.user._id,
 
               updatedAt:
-                new Date(),
+                now,
             },
           },
         );
 
+      if (
+        gradeResult.modifiedCount ===
+        0
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "This submission has already been graded. The grade cannot be changed.",
+          },
+          {
+            status: 409,
+          },
+        );
+      }
+
       return NextResponse.json({
         message:
-          "Submission graded successfully.",
+          "Submission graded successfully. This grade is now final.",
       });
     }
 

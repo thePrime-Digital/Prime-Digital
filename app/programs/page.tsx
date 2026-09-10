@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import React from "react";
@@ -31,7 +31,6 @@ import {
   CheckCircle2,
   ChevronDown,
   Globe,
-  ArrowRight,
   Users,
   Award,
   BookOpen,
@@ -215,27 +214,30 @@ export default function ProgramsPage() {
           </div>
         </div>
       </section>
-
-      {/* Featured Programs Grid */}
+      {/* All Programs */}
       <section className="bg-[#FCF9F8] py-16 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto">
-          <div className="flex justify-between items-end mb-10">
-            <h2 className="text-[32px] font-semibold text-[#1A1A1A] leading-tight">
-              Featured Programs
+          <div className="mb-10">
+            <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#5C021A]">
+              Explore Our Courses
+            </p>
+
+            <h2 className="mt-2 text-[32px] md:text-[40px] font-semibold text-[#1A1A1A] leading-tight">
+              All Programs
             </h2>
-            <a
-              href="#"
-              className="text-base font-bold text-[#5C021A] hidden sm:flex items-center gap-1 hover:gap-2 transition-all"
-            >
-              View All Programs <ArrowRight className="w-4 h-4" />
-            </a>
+
+            <p className="mt-3 max-w-[700px] text-base text-[#5D5F5F] leading-relaxed">
+              Explore our complete collection of technology, design, data,
+              cybersecurity, business, marketing, creative, and software
+              development programs.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {programs.map((prog, i) => (
+            {programs.map((prog) => (
               <div
-                key={i}
-                className="bg-white border border-[#DCC0C1] rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300"
+                key={prog.slug}
+                className="bg-white border border-[#DCC0C1] rounded-xl overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="relative h-48 overflow-hidden bg-gray-100">
                   <Image
@@ -245,30 +247,48 @@ export default function ProgramsPage() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
+
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-1">
                     <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm font-bold text-[#1C1B1B]">4.9</span>
+                    <span className="text-sm font-bold text-[#1C1B1B]">
+                      4.9
+                    </span>
                   </div>
                 </div>
+
                 <div className="p-6 flex flex-col gap-4">
-                  <div className="flex gap-2 text-[#5C021A] text-xs font-semibold">
+                  <div className="flex flex-wrap gap-2 text-[#5C021A] text-xs font-semibold">
                     {prog.tags.map((tag: string) => (
-                      <span key={tag} className="bg-[#5C021A]/5 px-3 py-1 rounded-full">{tag}</span>
+                      <span
+                        key={tag}
+                        className="bg-[#5C021A]/5 px-3 py-1 rounded-full"
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
-                  <h3 className="text-2xl font-semibold text-[#1C1B1B]">{prog.title}</h3>
+
+                  <h3 className="text-2xl font-semibold text-[#1C1B1B]">
+                    {prog.title}
+                  </h3>
+
                   <p className="text-[#5D5F5F] text-base leading-relaxed line-clamp-2 h-12">
                     {prog.desc}
                   </p>
-                  <button className="mt-2 w-full py-3 border border-[#5C021A] text-[#5C021A] rounded-lg font-bold hover:bg-[#5C021A] hover:text-white transition-colors">
+
+                  <Link
+                    href={`/programs/${prog.slug}`}
+                    className="flex h-12 w-full items-center justify-center rounded-lg border border-[#9f1735] text-sm font-bold text-[#9f1735] transition hover:bg-[#9f1735] hover:text-white"
+                  >
                     View Program
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Learning Paths */}
       <section className="bg-[#F6F3F2] py-16 px-6 md:px-20">
@@ -292,10 +312,14 @@ export default function ProgramsPage() {
                   <span className="font-bold text-[#1C1B1B]">HTML & CSS</span>
                 </div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">JavaScript Base</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    JavaScript Base
+                  </span>
                 </div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">React & Next.js</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    React & Next.js
+                  </span>
                 </div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">Backend APIs</span>
@@ -314,7 +338,9 @@ export default function ProgramsPage() {
               <div className="flex flex-col gap-12 relative w-[200px]">
                 <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0"></div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">UI Fundamentals</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    UI Fundamentals
+                  </span>
                 </div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">UX Research</span>
@@ -339,10 +365,14 @@ export default function ProgramsPage() {
               <div className="flex flex-col gap-12 relative w-[200px]">
                 <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0"></div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">Ideation Phase</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    Ideation Phase
+                  </span>
                 </div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">Market Analysis</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    Market Analysis
+                  </span>
                 </div>
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">MVP Building</span>
@@ -744,30 +774,6 @@ export default function ProgramsPage() {
           </div>
         </div>
       </section>
-
-      {/* Final CTA */}
-      <section className="bg-[#5C021A] py-24 px-6 md:px-20 flex flex-col items-center justify-center text-center">
-        <div className="max-w-[800px] flex flex-col items-center gap-6">
-          <h2 className="text-4xl md:text-[48px] font-bold text-white tracking-tight leading-tight">
-            Ready to shape the future?
-          </h2>
-          <p className="text-lg text-white/90 leading-[1.6]">
-            Join over 10,000+ students globally and kickstart your journey into
-            tech, design, and business.
-          </p>
-          <div className="flex flex-wrap justify-center gap-6 mt-6">
-            <button className="px-10 py-4 bg-white text-[#5C021A] text-base font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors">
-              Enroll Now
-            </button>
-            <button className="px-10 py-4 bg-[#7B1C2E] text-white border border-white/20 text-base font-bold rounded-xl hover:bg-[#8A2134] transition-colors">
-              View Syllabus
-            </button>
-            <button className="px-10 py-4 border border-white/40 text-white text-base font-bold rounded-xl hover:bg-white/10 transition-colors">
-              Talk to Advisor
-            </button>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
@@ -776,43 +782,109 @@ export default function ProgramsPage() {
 
 const programs = [
   {
-    title: "AI & Robotics Explorer",
+    slug: "ai-robotics-explorer",
+    title: "AI & Machine Learning",
     image: "/pds-assets/program-ai-robotics.jpg",
-    tags: ["12 Weeks", "Beginner"],
-    desc: "Dive into the world of artificial intelligence and build your first autonomous robots.",
+    tags: ["12 Weeks", "Intermediate"],
+    desc: "Learn artificial intelligence, machine learning, computer vision, intelligent systems, and practical AI applications.",
   },
+
   {
-    title: "Web Development Pro",
+    slug: "web-development-pro",
+    title: "Full-Stack Web Development",
     image: "/pds-assets/program-web-dev.jpg",
-    tags: ["16 Weeks", "Intermediate"],
-    desc: "Master full-stack web development with React, Node.js, and modern database technologies.",
+    tags: ["12 Weeks", "Intermediate"],
+    desc: "Build complete modern web applications using frontend, backend, APIs, databases, and deployment tools.",
   },
+
   {
-    title: "UX/UI Design Mastery",
-    image: "/pds-assets/program-ux-ui.jpg",
-    tags: ["10 Weeks", "All Levels"],
-    desc: "Create stunning, user-centered interfaces and learn industry-standard design tools.",
+    slug: "data-science-analytics-junior",
+    title: "Data Science",
+    image: "/programs/data-science/hero.png",
+    tags: ["12 Weeks", "Intermediate"],
+    desc: "Explore data science with Python, statistics, visualization, machine learning, and real-world datasets.",
   },
+
   {
-    title: "Teen Entrepreneurship",
-    image: "/pds-assets/program-entrepreneurship.jpg",
-    tags: ["8 Weeks", "Beginner"],
-    desc: "Learn the fundamentals of starting a business, pitching ideas, and managing finances.",
+    slug: "cyber-defense-junior",
+    title: "Cybersecurity",
+    image: "/programs/cyber-defense/hero.png",
+    tags: ["12 Weeks", "Beginner"],
+    desc: "Learn cyber safety, networks, threats, security tools, incident response, and ethical security practices.",
   },
+
   {
-    title: "Cyber Defense Junior",
-    image: "/pds-assets/program-cyber.jpg",
-    tags: ["14 Weeks", "Intermediate"],
-    desc: "Protect networks and systems from digital attacks through hands-on cybersecurity labs.",
+    slug: "ux-ui-design-mastery",
+    title: "UI/UX Design",
+    image: "/programs/ux-ui/hero.png",
+    tags: ["12 Weeks", "All Levels"],
+    desc: "Design intuitive digital experiences using research, wireframing, prototyping, usability testing, and Figma.",
   },
+
   {
+    slug: "data-analytics",
+    title: "Data Analytics",
+    image: "/programs/data-analytics/hero.png",
+    tags: ["10 Weeks", "Beginner"],
+    desc: "Turn raw data into useful insights using spreadsheets, SQL, dashboards, visualization, and business analytics.",
+  },
+
+  {
+    slug: "teen-entrepreneurship",
+    title: "Entrepreneurship",
+    image: "/programs/entrepreneurship/hero.png",
+    tags: ["12 Weeks", "Beginner"],
+    desc: "Learn idea validation, business planning, branding, finance, leadership, product development, and pitching.",
+  },
+
+  {
+    slug: "digital-marketing",
+    title: "Digital Marketing",
+    image: "/programs/digital-marketing/hero.png",
+    tags: ["10 Weeks", "Beginner"],
+    desc: "Learn social media marketing, SEO, content strategy, paid campaigns, analytics, branding, and audience growth.",
+  },
+
+  {
+    slug: "graphic-design-motion-graphics",
+    title: "Graphic Design & Motion Graphics",
+    image: "/programs/graphic-design-motion-graphics/hero.png",
+    tags: ["12 Weeks", "All Levels"],
+    desc: "Create visual identities, graphics, digital artwork, animated content, and professional motion-design projects.",
+  },
+
+  {
+    slug: "software-testing",
+    title: "Software Testing",
+    image: "/programs/software-testing/hero.png",
+    tags: ["10 Weeks", "Beginner"],
+    desc: "Learn manual testing, test cases, bug reporting, API testing, quality assurance, and test automation fundamentals.",
+  },
+
+  {
+    slug: "python-programming-explorer",
+    title: "Python Programming Explorer",
+    image: "/programs/python-programming/hero.png",
+    tags: ["10 Weeks", "Beginner"],
+    desc: "Learn Python programming through coding challenges, automation, games, problem solving, and practical projects.",
+  },
+
+  {
+    slug: "mobile-app-development",
+    title: "Mobile App Development",
+    image: "/programs/mobile-app-development/hero.png",
+    tags: ["12 Weeks", "Intermediate"],
+    desc: "Design and build modern mobile applications with interactive interfaces, APIs, state management, and deployment.",
+  },
+
+  {
+    slug: "digital-content-creation",
     title: "Digital Content Creation",
-    image: "/pds-assets/program-content.jpg",
-    tags: ["8 Weeks", "Beginner"],
-    desc: "Produce engaging video, audio, and written content for modern digital platforms.",
+    image: "/programs/digital-content/hero.png",
+    tags: ["12 Weeks", "Beginner"],
+    desc: "Create videos, graphics, social content, digital stories, and a professional creative portfolio.",
   },
 ];
-
 const faqs = [
   "Do I need prior coding experience to join?",
   "What hardware or software requirements are there?",

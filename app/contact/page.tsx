@@ -1,4 +1,8 @@
-﻿import Link from "next/link";
+﻿"use client";
+
+import { useState, type FormEvent } from "react";
+
+import Link from "next/link";
 
 const contactCards = [
   {
@@ -49,6 +53,65 @@ const teams = [
 const socialLinks = ["in", "f", "◎", "✕", "▶"];
 
 export default function ContactPage() {
+  const [submitting, setSubmitting] = useState(false);
+
+  const [formError, setFormError] = useState("");
+
+  const [formSuccess, setFormSuccess] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (submitting) {
+      return;
+    }
+
+    const form = event.currentTarget;
+
+    const formData = new FormData(form);
+
+    setSubmitting(true);
+    setFormError("");
+    setFormSuccess("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+        }),
+      });
+
+      const data = (await response.json()) as {
+        error?: string;
+        message?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to send message.");
+      }
+
+      setFormSuccess(
+        data.message || "Your message has been submitted successfully.",
+      );
+
+      form.reset();
+    } catch (error) {
+      setFormError(
+        error instanceof Error ? error.message : "Unable to send message.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-[#f4f1f1] pt-[175px] text-[#101828]">
       {/* HERO */}
@@ -99,14 +162,16 @@ export default function ContactPage() {
               Send Us a Message
             </h2>
 
-            <form className="mt-6 grid gap-4">
+            <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-xs font-bold text-[#101828]">
                     Full Name
                   </label>
                   <input
+                    name="name"
                     type="text"
+                    required
                     placeholder="Full Name"
                     className="h-12 w-full rounded-lg border border-[#d8c4c6] bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                   />
@@ -117,7 +182,9 @@ export default function ContactPage() {
                     Email Address
                   </label>
                   <input
+                    name="email"
                     type="email"
+                    required
                     placeholder="name@example.com"
                     className="h-12 w-full rounded-lg border border-[#d8c4c6] bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                   />
@@ -130,6 +197,7 @@ export default function ContactPage() {
                     Phone Number
                   </label>
                   <input
+                    name="phone"
                     type="tel"
                     placeholder="+91 99999 00000"
                     className="h-12 w-full rounded-lg border border-[#d8c4c6] bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
@@ -158,6 +226,7 @@ export default function ContactPage() {
                   Subject / Program
                 </label>
                 <select
+                  name="subject"
                   defaultValue="Admissions Inquiry"
                   className="h-12 w-full rounded-lg border border-[#d8c4c6] bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                 >
@@ -174,16 +243,29 @@ export default function ContactPage() {
                   Message
                 </label>
                 <textarea
+                  name="message"
+                  required
                   placeholder="How can we help you?"
                   className="h-36 w-full resize-none rounded-lg border border-[#d8c4c6] bg-white p-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                 />
               </div>
+              {formError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                  {formError}
+                </div>
+              )}
 
+              {formSuccess && (
+                <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+                  {formSuccess}
+                </div>
+              )}
               <button
                 type="submit"
-                className="mt-1 h-12 rounded-lg bg-[#8f0024] text-sm font-bold text-white shadow-[0_12px_25px_rgba(143,0,36,0.22)] transition hover:bg-[#70001c]"
+                disabled={submitting}
+                className="mt-1 h-12 rounded-lg bg-[#8f0024] text-sm font-bold text-white shadow-[0_12px_25px_rgba(143,0,36,0.22)] transition hover:bg-[#70001c] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Send Message
+                {submitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>

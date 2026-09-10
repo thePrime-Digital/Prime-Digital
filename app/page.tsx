@@ -375,7 +375,7 @@ export default function Home() {
         <div className="mx-auto max-w-[1232px] overflow-hidden rounded-[34px] border border-slate-200 bg-white shadow-[0_30px_85px_rgba(15,23,42,0.12)]">
           <div className="grid min-h-[370px] grid-cols-1 md:grid-cols-2">
             {/* ====================================== */}
-            {/* ALL DIGITAL SOLUTIONS — LIGHT */}
+            {/* Prime Digital Agency — LIGHT */}
             {/* ====================================== */}
             <div className="relative flex flex-col justify-center overflow-hidden border-b border-slate-200 bg-gradient-to-br from-cyan-50 via-white to-sky-50 px-8 py-12 md:border-b-0 md:border-r md:px-16">
               <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-cyan-200/55 blur-[100px]" />
@@ -384,7 +384,7 @@ export default function Home() {
 
               <div className="relative z-10">
                 <div className="mb-6 inline-flex h-10 items-center rounded-full border border-cyan-200 bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-700">
-                  All Digital Solutions
+                  Prime Digital Agency
                 </div>
 
                 <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-slate-950 md:text-5xl">
@@ -399,7 +399,7 @@ export default function Home() {
                 </p>
 
                 <Link
-                  href="/services"
+                  href="https://services.primedigitalschool.com/"
                   className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-8 text-sm font-black text-white shadow-[0_18px_40px_rgba(6,182,212,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(6,182,212,0.32)]"
                 >
                   Enter Portal
@@ -433,7 +433,7 @@ export default function Home() {
                 </p>
 
                 <Link
-                  href="/programs"
+                  href="https://primedigitalschool.com/"
                   className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-[#e0b938] px-8 text-sm font-black text-[#321508] shadow-[0_18px_38px_rgba(46,15,5,0.18)] transition duration-300 hover:-translate-y-1 hover:bg-[#edc84d]"
                 >
                   Enroll Now

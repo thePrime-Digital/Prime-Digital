@@ -16,6 +16,7 @@ import type {
 
 export type AdminSafeUser =
   SafeUser & {
+    parentPhone?: string;
     isCurrentAdmin?: boolean;
   };
 
@@ -30,10 +31,19 @@ export function adminSafeUser(
     phone: user.phone,
     role: user.role,
     status: user.status,
+
+    studentLevel: user.studentLevel,
+    currentClass: user.currentClass,
+    degreeName: user.degreeName,
+    program: user.program,
+    parentPhone: user.parentPhone,
+
     createdAt: user.createdAt.toISOString(),
     updatedAt: user.updatedAt.toISOString(),
+
     isCurrentAdmin:
-      currentAdminId === user._id.toHexString(),
+      currentAdminId ===
+      user._id.toHexString(),
   };
 }
 
@@ -68,7 +78,8 @@ export function escapeRegex(
 }
 
 export async function countActiveAdmins(): Promise<number> {
-  const collection = await getUsersCollection();
+  const collection =
+    await getUsersCollection();
 
   return collection.countDocuments({
     role: "admin",
@@ -83,7 +94,8 @@ export async function findAdminUserById(
     return null;
   }
 
-  const collection = await getUsersCollection();
+  const collection =
+    await getUsersCollection();
 
   return collection.findOne({
     _id: new ObjectId(id),

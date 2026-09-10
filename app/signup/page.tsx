@@ -10,7 +10,35 @@ import { SelfIAMProvider } from "../providers";
 const CAMPUS_IMAGE = "/pds-assets/campus-building.jpg";
 const LOGO_IMAGE = "/pds-assets/pds-logo-real-transparent.png";
 
-type SignupRole = "student" | "faculty" | "client";
+type SignupRole = "student" | "faculty";
+
+type StudentLevel = "foundation" | "advanced" | "college";
+
+const studentLevelOptions: {
+  value: StudentLevel;
+  label: string;
+}[] = [
+  {
+    value: "foundation",
+    label: "Foundation Programs (8th–10th Standard)",
+  },
+  {
+    value: "advanced",
+    label: "Advanced Programs (11th–12th Standard)",
+  },
+  {
+    value: "college",
+    label: "College Programs (Degree / Undergraduate)",
+  },
+];
+
+const classOptions: Record<StudentLevel, string[]> = {
+  foundation: ["8th Standard", "9th Standard", "10th Standard"],
+
+  advanced: ["11th Standard", "12th Standard"],
+
+  college: ["1st Year", "2nd Year", "3rd Year", "4th Year"],
+};
 
 const roles: {
   id: SignupRole;
@@ -30,12 +58,6 @@ const roles: {
     desc: "Teach, guide students and manage learning.",
     icon: "👩‍🏫",
   },
-  {
-    id: "client",
-    title: "Client",
-    desc: "Access programs, services and digital solutions.",
-    icon: "💼",
-  },
 ];
 
 function SignupForm() {
@@ -43,11 +65,21 @@ function SignupForm() {
   const auth = useContactAuth();
 
   const [role, setRole] = useState<SignupRole>("student");
+
+  const [studentLevel, setStudentLevel] = useState<StudentLevel>("foundation");
+
+  const [currentClass, setCurrentClass] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
+
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [submitted, setSubmitted] = useState(false);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
+
   const [successMessage, setSuccessMessage] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -61,10 +93,34 @@ function SignupForm() {
     const formData = new FormData(form);
 
     const name = String(formData.get("name") ?? "").trim();
+
     const email = String(formData.get("email") ?? "").trim();
+
     const phone = String(formData.get("phone") ?? "").trim();
+
     const password = String(formData.get("password") ?? "");
+
     const confirmPassword = String(formData.get("confirmPassword") ?? "");
+
+    const selectedStudentLevel = String(
+      formData.get("studentLevel") ?? "",
+    ).trim();
+
+    const selectedCurrentClass = String(
+      formData.get("currentClass") ?? "",
+    ).trim();
+
+    const degreeName = String(formData.get("degreeName") ?? "").trim();
+
+    const program = String(formData.get("program") ?? "").trim();
+
+    const parentPhone = String(formData.get("parentPhone") ?? "").trim();
+
+    const subjectExpertise = String(
+      formData.get("subjectExpertise") ?? "",
+    ).trim();
+
+    const experience = String(formData.get("experience") ?? "").trim();
 
     setErrorMessage("");
     setSuccessMessage("");
@@ -74,30 +130,72 @@ function SignupForm() {
       return;
     }
 
+    if (role === "student" && !selectedStudentLevel) {
+      setErrorMessage("Please select your program level.");
+      return;
+    }
+
+    if (role === "student" && !selectedCurrentClass) {
+      setErrorMessage(
+        studentLevel === "college"
+          ? "Please select your current college year."
+          : "Please select your current standard.",
+      );
+      return;
+    }
+
+    if (role === "student" && studentLevel === "college" && !degreeName) {
+      setErrorMessage("Please enter your degree or course name.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/auth/signup", {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify({
           name,
           email,
           phone,
           password,
           role,
+
+          ...(role === "student"
+            ? {
+                studentLevel: selectedStudentLevel,
+
+                currentClass: selectedCurrentClass,
+
+                degreeName:
+                  selectedStudentLevel === "college" ? degreeName : "",
+
+                program,
+
+                parentPhone:
+                  selectedStudentLevel === "college" ? "" : parentPhone,
+              }
+            : {}),
+
+          ...(role === "faculty"
+            ? {
+                subjectExpertise,
+                experience,
+              }
+            : {}),
         }),
       });
 
-      const data = (await response.json().catch(() => null)) as
-        | {
-            message?: string;
-            error?: string;
-            requiresApproval?: boolean;
-          }
-        | null;
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+        error?: string;
+        requiresApproval?: boolean;
+      } | null;
 
       if (!response.ok) {
         throw new Error(
@@ -111,7 +209,9 @@ function SignupForm() {
             ? "Your faculty application has been submitted for approval."
             : "Your account has been created successfully."),
       );
+
       setSubmitted(true);
+
       form.reset();
 
       if (role !== "faculty") {
@@ -142,6 +242,7 @@ function SignupForm() {
       />
 
       <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/82 to-black/35" />
+
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
       <section className="relative z-10 grid min-h-[calc(100vh-118px)] items-center gap-8 px-5 pb-8 sm:px-8 lg:grid-cols-[1fr_0.95fr] lg:px-14">
@@ -158,8 +259,7 @@ function SignupForm() {
               <br />
               & Start Learning
               <br />
-              With{" "}
-              <span className="text-[#8f0024]">Prime Digital</span>
+              With <span className="text-[#8f0024]">Prime Digital</span>
             </h1>
 
             <p className="mt-6 max-w-md text-base font-medium leading-7 text-[#4b5563]">
@@ -178,6 +278,7 @@ function SignupForm() {
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8f0024] text-xs font-black text-white">
                     ✓
                   </span>
+
                   <span className="text-sm font-black text-[#111827]">
                     {item}
                   </span>
@@ -250,20 +351,24 @@ function SignupForm() {
                         }}
                         className={[
                           "rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-1",
+
                           active
                             ? "border-[#8f0024] bg-[#fff1f4] shadow-[0_14px_28px_rgba(143,0,36,0.12)]"
                             : "border-slate-200 bg-white hover:border-[#8f0024]/35",
                         ].join(" ")}
                       >
                         <div className="text-2xl">{item.icon}</div>
+
                         <p
                           className={[
                             "mt-2 text-sm font-black",
+
                             active ? "text-[#8f0024]" : "text-[#111827]",
                           ].join(" ")}
                         >
                           {item.title}
                         </p>
+
                         <p className="mt-1 text-[11px] leading-4 text-slate-500">
                           {item.desc}
                         </p>
@@ -273,37 +378,39 @@ function SignupForm() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* NAME */}
                   <div>
                     <label className="mb-2 block text-sm font-black text-[#111827]">
-                      {role === "client" ? "Full Name / Company Name" : "Full Name"}
+                      Full Name
                     </label>
+
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8f0024]">
                         ♙
                       </span>
+
                       <input
                         name="name"
                         type="text"
                         required
-                        placeholder={
-                          role === "client"
-                            ? "Enter your name or company name"
-                            : "Enter your full name"
-                        }
+                        placeholder="Enter your full name"
                         className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                       />
                     </div>
                   </div>
 
+                  {/* EMAIL / PHONE */}
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label className="mb-2 block text-sm font-black text-[#111827]">
                         Email Address
                       </label>
+
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8f0024]">
                           ✉
                         </span>
+
                         <input
                           name="email"
                           type="email"
@@ -318,10 +425,12 @@ function SignupForm() {
                       <label className="mb-2 block text-sm font-black text-[#111827]">
                         Phone Number
                       </label>
+
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8f0024]">
                           ☎
                         </span>
+
                         <input
                           name="phone"
                           type="tel"
@@ -333,15 +442,18 @@ function SignupForm() {
                     </div>
                   </div>
 
+                  {/* PASSWORDS */}
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label className="mb-2 block text-sm font-black text-[#111827]">
                         Password
                       </label>
+
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8f0024]">
                           🔒
                         </span>
+
                         <input
                           name="password"
                           type={showPassword ? "text" : "password"}
@@ -351,6 +463,7 @@ function SignupForm() {
                           placeholder="Create password"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-12 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                         />
+
                         <button
                           type="button"
                           onClick={() => setShowPassword((value) => !value)}
@@ -365,10 +478,12 @@ function SignupForm() {
                       <label className="mb-2 block text-sm font-black text-[#111827]">
                         Confirm Password
                       </label>
+
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8f0024]">
                           🔒
                         </span>
+
                         <input
                           name="confirmPassword"
                           type={showConfirmPassword ? "text" : "password"}
@@ -378,6 +493,7 @@ function SignupForm() {
                           placeholder="Confirm password"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-12 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                         />
+
                         <button
                           type="button"
                           onClick={() =>
@@ -391,12 +507,93 @@ function SignupForm() {
                     </div>
                   </div>
 
+                  {/* ============================= */}
+                  {/* STUDENT FIELDS */}
+                  {/* ============================= */}
+
                   {role === "student" && (
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-4">
+                      {/* PROGRAM LEVEL */}
+                      <div>
+                        <label className="mb-2 block text-sm font-black text-[#111827]">
+                          Program Level
+                        </label>
+
+                        <select
+                          name="studentLevel"
+                          value={studentLevel}
+                          required
+                          onChange={(event) => {
+                            const value = event.target.value as StudentLevel;
+
+                            setStudentLevel(value);
+
+                            setCurrentClass("");
+                          }}
+                          className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
+                        >
+                          {studentLevelOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* CLASS / YEAR */}
+                      <div>
+                        <label className="mb-2 block text-sm font-black text-[#111827]">
+                          {studentLevel === "college"
+                            ? "Current College Year"
+                            : "Current Standard"}
+                        </label>
+
+                        <select
+                          name="currentClass"
+                          value={currentClass}
+                          required
+                          onChange={(event) =>
+                            setCurrentClass(event.target.value)
+                          }
+                          className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
+                        >
+                          <option value="" disabled>
+                            {studentLevel === "college"
+                              ? "Select your year"
+                              : "Select your standard"}
+                          </option>
+
+                          {classOptions[studentLevel].map((item) => (
+                            <option key={item} value={item}>
+                              {item}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* DEGREE NAME */}
+                      {studentLevel === "college" && (
+                        <div>
+                          <label className="mb-2 block text-sm font-black text-[#111827]">
+                            Degree / Course Name
+                          </label>
+
+                          <input
+                            name="degreeName"
+                            type="text"
+                            required
+                            placeholder="Example: BSc IT, BBA, BCom, BTech"
+                            className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
+                          />
+                        </div>
+                      )}
+
+                      {/* PROGRAM */}
                       <div>
                         <label className="mb-2 block text-sm font-black text-[#111827]">
                           Select Program
                         </label>
+
                         <select
                           name="program"
                           defaultValue=""
@@ -406,27 +603,43 @@ function SignupForm() {
                           <option value="" disabled>
                             Select a program
                           </option>
+
                           <option>Technology & Coding</option>
+
                           <option>AI, Robotics & Future Tech</option>
+
                           <option>Business & Digital Marketing</option>
+
                           <option>Design & Creative Arts</option>
+
                           <option>Entrepreneurship & Innovation</option>
+
+                          <option>Cybersecurity & Digital Safety</option>
                         </select>
                       </div>
 
-                      <div>
-                        <label className="mb-2 block text-sm font-black text-[#111827]">
-                          Parent Phone Number
-                        </label>
-                        <input
-                          name="parentPhone"
-                          type="tel"
-                          placeholder="Parent contact number"
-                          className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
-                        />
-                      </div>
+                      {/* PARENT PHONE */}
+                      {studentLevel !== "college" && (
+                        <div>
+                          <label className="mb-2 block text-sm font-black text-[#111827]">
+                            Parent Phone Number
+                          </label>
+
+                          <input
+                            name="parentPhone"
+                            type="tel"
+                            required
+                            placeholder="Parent contact number"
+                            className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
+
+                  {/* ============================= */}
+                  {/* FACULTY FIELDS */}
+                  {/* ============================= */}
 
                   {role === "faculty" && (
                     <div className="grid gap-4 sm:grid-cols-2">
@@ -434,6 +647,7 @@ function SignupForm() {
                         <label className="mb-2 block text-sm font-black text-[#111827]">
                           Subject Expertise
                         </label>
+
                         <input
                           name="subjectExpertise"
                           type="text"
@@ -447,6 +661,7 @@ function SignupForm() {
                         <label className="mb-2 block text-sm font-black text-[#111827]">
                           Experience
                         </label>
+
                         <select
                           name="experience"
                           defaultValue=""
@@ -456,45 +671,29 @@ function SignupForm() {
                           <option value="" disabled>
                             Select experience
                           </option>
+
                           <option>0 - 1 Year</option>
+
                           <option>1 - 3 Years</option>
+
                           <option>3 - 5 Years</option>
+
                           <option>5+ Years</option>
                         </select>
                       </div>
                     </div>
                   )}
 
-                  {role === "client" && (
-                    <div>
-                      <label className="mb-2 block text-sm font-black text-[#111827]">
-                        Interest
-                      </label>
-                      <select
-                        name="interest"
-                        defaultValue=""
-                        required
-                        className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
-                      >
-                        <option value="" disabled>
-                          Select your interest
-                        </option>
-                        <option>Prime Digital School Programs</option>
-                        <option>Prime Digital Solutions</option>
-                        <option>Website / App Development</option>
-                        <option>AI Automation</option>
-                        <option>Partnership</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-                  )}
 
+
+                  {/* TERMS */}
                   <label className="flex cursor-pointer items-start gap-3 text-xs font-semibold leading-5 text-slate-600">
                     <input
                       type="checkbox"
                       required
                       className="mt-1 h-4 w-4 accent-[#8f0024]"
                     />
+
                     <span>
                       I agree to the{" "}
                       <Link
@@ -513,6 +712,7 @@ function SignupForm() {
                     </span>
                   </label>
 
+                  {/* ERROR */}
                   {errorMessage && (
                     <div
                       role="alert"
@@ -522,19 +722,24 @@ function SignupForm() {
                     </div>
                   )}
 
+                  {/* SUBMIT */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="flex h-13 min-h-[52px] w-full items-center justify-center gap-3 rounded-xl bg-[#8f0024] text-sm font-black text-white shadow-[0_14px_28px_rgba(143,0,36,0.24)] transition hover:bg-[#70001c] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isSubmitting ? "Creating Account..." : "Create Account"}
+
                     {!isSubmitting && <span className="text-lg">→</span>}
                   </button>
                 </form>
 
+                {/* SOCIAL LOGIN */}
                 <div className="my-5 flex items-center gap-4">
                   <div className="h-px flex-1 bg-slate-200" />
+
                   <span className="text-xs font-bold text-slate-400">OR</span>
+
                   <div className="h-px flex-1 bg-slate-200" />
                 </div>
 

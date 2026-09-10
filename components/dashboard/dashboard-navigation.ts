@@ -1,4 +1,4 @@
-﻿import {
+import {
   BarChart3,
   Bell,
   BookOpen,
@@ -33,6 +33,69 @@ import type {
   DashboardNavigationItem,
   DashboardRole,
 } from "@/components/dashboard/dashboard-types";
+
+export const studentNavigation: DashboardNavigationItem[] = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    label: "My Courses",
+    href: "/dashboard/courses",
+    icon: BookOpen,
+  },
+  {
+    label: "My Classes",
+    href: "/dashboard/classes",
+    icon: School,
+  },
+  {
+    label: "Attendance",
+    href: "/dashboard/attendance",
+    icon: ClipboardCheck,
+  },
+  {
+    label: "Assignments",
+    href: "/dashboard/assignments",
+    icon: CheckSquare,
+  },
+  {
+    label: "Learning Content",
+    href: "/dashboard/learning-content",
+    icon: LibraryBig,
+  },
+  {
+    label: "Live Classes",
+    href: "/dashboard/live-classes",
+    icon: MonitorPlay,
+  },
+  {
+    label: "Performance",
+    href: "/dashboard/performance",
+    icon: BarChart3,
+  },
+  {
+    label: "Fees",
+    href: "/dashboard/fees",
+    icon: ReceiptText,
+  },
+  {
+    label: "Messages",
+    href: "/dashboard/messages",
+    icon: MessageSquare,
+  },
+  {
+    label: "Notifications",
+    href: "/dashboard/notifications",
+    icon: Bell,
+  },
+  {
+    label: "Settings",
+    href: "/dashboard/settings",
+    icon: Settings,
+  },
+];
 
 export const facultyNavigation: DashboardNavigationItem[] = [
   {
@@ -81,6 +144,11 @@ export const facultyNavigation: DashboardNavigationItem[] = [
     icon: BarChart3,
   },
   {
+    label: "Fees",
+    href: "/faculty/fees",
+    icon: ReceiptText,
+  },
+  {
     label: "Messages",
     href: "/faculty/messages",
     icon: MessageSquare,
@@ -104,29 +172,19 @@ export const adminNavigation: DashboardNavigationItem[] = [
     icon: LayoutDashboard,
   },
   {
-    label: "Account Directory",
+    label: "Accounts",
     href: "/admin/users",
     icon: UsersRound,
-  },
-  {
-    label: "Faculty",
-    href: "/admin/faculty",
-    icon: UserCheck,
-  },
-  {
-    label: "Students",
-    href: "/admin/students",
-    icon: GraduationCap,
-  },
-  {
-    label: "Clients",
-    href: "/admin/clients",
-    icon: BriefcaseBusiness,
   },
   {
     label: "Admissions",
     href: "/admin/admissions",
     icon: FileCheck2,
+  },
+  {
+    label: "Careers",
+    href: "/admin/careers",
+    icon: BriefcaseBusiness,
   },
   {
     label: "Programs",
@@ -147,6 +205,11 @@ export const adminNavigation: DashboardNavigationItem[] = [
     label: "Reports",
     href: "/admin/reports",
     icon: BarChart3,
+  },
+  {
+    label: "Fees",
+    href: "/admin/fees",
+    icon: ReceiptText,
   },
   {
     label: "Messages",
@@ -226,30 +289,33 @@ export const clientNavigation: DashboardNavigationItem[] = [
 export function getDashboardNavigation(
   role: DashboardRole,
 ): DashboardNavigationItem[] {
+  if (role === "student") {
+    return studentNavigation;
+  }
+
+  if (role === "faculty") {
+    return facultyNavigation;
+  }
+
   if (role === "admin") {
     return adminNavigation;
   }
 
-  if (role === "client") {
-    return clientNavigation;
-  }
-
-  return facultyNavigation;
+  return clientNavigation;
 }
 
-export function getRoleTitle(
-  role: DashboardRole,
-): string {
+export function getRoleTitle(role: DashboardRole): string {
+  if (role === "student") {
+    return "Student Portal";
+  }
+
+  if (role === "faculty") {
+    return "Faculty Portal";
+  }
+
   if (role === "admin") {
     return "Administrator";
   }
 
-  if (role === "client") {
-    return "Prime Digital Solutions";
-  }
-
-  return "Mathematics Department";
+  return "Client";
 }
-
-
-

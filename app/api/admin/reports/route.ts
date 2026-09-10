@@ -14,8 +14,11 @@ import {
   getUsersCollection,
 } from "@/lib/data/users";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const runtime =
+  "nodejs";
+
+export const dynamic =
+  "force-dynamic";
 
 export async function GET():
   Promise<NextResponse> {
@@ -51,11 +54,6 @@ export async function GET():
         "career_applications",
       );
 
-    const leads =
-      database.collection(
-        "service_leads",
-      );
-
     const programs =
       database.collection(
         "programs",
@@ -71,6 +69,22 @@ export async function GET():
         "admin_audit_logs",
       );
 
+const pdsRoles: (
+  | "student"
+  | "faculty"
+  | "admin"
+)[] = [
+  "student",
+  "faculty",
+  "admin",
+];
+
+    const pdsUserFilter = {
+      role: {
+        $in: pdsRoles,
+      },
+    };
+
     const thirtyDaysAgo =
       new Date();
 
@@ -83,16 +97,16 @@ export async function GET():
       totalUsers,
       students,
       faculty,
-      clients,
       admins,
+
       activeUsers,
+      activeStudents,
       pendingUsers,
       blockedUsers,
 
       admissionCount,
       contactCount,
       careerCount,
-      leadCount,
 
       programCount,
       activePrograms,
@@ -106,7 +120,9 @@ export async function GET():
       recentUsers,
     ] =
       await Promise.all([
-        users.countDocuments(),
+        users.countDocuments(
+          pdsUserFilter,
+        ),
 
         users.countDocuments({
           role: "student",
@@ -117,22 +133,26 @@ export async function GET():
         }),
 
         users.countDocuments({
-          role: "client",
-        }),
-
-        users.countDocuments({
           role: "admin",
         }),
 
         users.countDocuments({
+          ...pdsUserFilter,
           status: "active",
         }),
 
         users.countDocuments({
+          role: "student",
+          status: "active",
+        }),
+
+        users.countDocuments({
+          ...pdsUserFilter,
           status: "pending",
         }),
 
         users.countDocuments({
+          ...pdsUserFilter,
           status: "blocked",
         }),
 
@@ -141,8 +161,6 @@ export async function GET():
         contacts.countDocuments(),
 
         careers.countDocuments(),
-
-        leads.countDocuments(),
 
         programs.countDocuments(),
 
@@ -157,6 +175,8 @@ export async function GET():
         }),
 
         users.countDocuments({
+          ...pdsUserFilter,
+
           createdAt: {
             $gte:
               thirtyDaysAgo,
@@ -167,7 +187,7 @@ export async function GET():
 
         users
           .find(
-            {},
+            pdsUserFilter,
             {
               projection: {
                 passwordHash:
@@ -187,15 +207,19 @@ export async function GET():
         users: {
           total:
             totalUsers,
+
           students,
           faculty,
-          clients,
           admins,
 
           active:
             activeUsers,
+
+          activeStudents,
+
           pending:
             pendingUsers,
+
           blocked:
             blockedUsers,
 
@@ -213,14 +237,10 @@ export async function GET():
           careers:
             careerCount,
 
-          serviceLeads:
-            leadCount,
-
           total:
             admissionCount +
             contactCount +
-            careerCount +
-            leadCount,
+            careerCount,
         },
 
         academic: {
@@ -259,7 +279,8 @@ export async function GET():
                 user.status,
 
               createdAt:
-                user.createdAt instanceof Date
+                user.createdAt instanceof
+                Date
                   ? user.createdAt.toISOString()
                   : user.createdAt,
             }),
