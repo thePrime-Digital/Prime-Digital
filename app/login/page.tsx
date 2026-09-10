@@ -239,36 +239,10 @@ function LoginForm() {
           {/* Divider */}
           <div className="my-5 flex items-center gap-4">
             <div className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-semibold text-slate-400">
-              or continue with
-            </span>
             <div className="h-px flex-1 bg-slate-200" />
           </div>
 
-          {/* Social buttons */}
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => auth.isConfigured && auth.signInWithGoogle()}
-              className="flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-700 transition hover:bg-slate-50"
-            >
-              <span className="font-black text-[#4285F4]">G</span>
-              Google
-            </button>
 
-            <button
-              type="button"
-              className="flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-700 transition hover:bg-slate-50"
-            >
-              <span className="grid grid-cols-2 gap-[2px]">
-                <i className="h-[6px] w-[6px] bg-[#f35325]" />
-                <i className="h-[6px] w-[6px] bg-[#81bc06]" />
-                <i className="h-[6px] w-[6px] bg-[#05a6f0]" />
-                <i className="h-[6px] w-[6px] bg-[#ffba08]" />
-              </span>
-              Microsoft
-            </button>
-          </div>
           <p className="mt-5 text-center text-sm font-semibold text-slate-600">
             Don&apos;t have an account?{" "}
             <Link
