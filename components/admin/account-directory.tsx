@@ -7,6 +7,15 @@ import {
 } from "react";
 
 import {
+  ADVANCED_CLASSES,
+  COLLEGE_YEARS,
+  FOUNDATION_CLASSES,
+  STUDENT_PROGRAMS,
+  type StudentLevel,
+  type StudentProgram,
+} from "@/types/user";
+
+import {
   Ban,
   Check,
   ChevronLeft,
@@ -39,9 +48,33 @@ type Account = {
   phone: string;
   role: UserRole;
   status: UserStatus;
+
+  studentLevel?: StudentLevel;
+  currentClass?: string;
+  degreeName?: string;
+  program?: StudentProgram;
+  parentPhone?: string;
+
   createdAt: string;
   updatedAt: string;
   isCurrentAdmin?: boolean;
+};
+
+type AccountForm = {
+  name: string;
+  email: string;
+  phone: string;
+  role: UserRole;
+  status: UserStatus;
+  password: string;
+
+  studentLevel: StudentLevel;
+  currentClass: string;
+  degreeName: string;
+  program:
+    | StudentProgram
+    | "";
+  parentPhone: string;
 };
 
 type Counts = {
@@ -63,7 +96,9 @@ type SummaryCounts = {
 };
 
 type AccountDirectoryProps = {
-  initialRole?: UserRole | "all";
+  initialRole?:
+    | UserRole
+    | "all";
   lockRole?: boolean;
   title?: string;
   description?: string;
@@ -80,7 +115,8 @@ const emptyCounts: Counts = {
   blocked: 0,
 };
 
-const emptySummary: SummaryCounts = {
+const emptySummary:
+  SummaryCounts = {
   total: 0,
   active: 0,
   pending: 0,
@@ -108,103 +144,180 @@ function roleLabel(
 function statusClasses(
   status: UserStatus,
 ): string {
-  if (status === "active") {
+  if (
+    status === "active"
+  ) {
     return "bg-emerald-50 text-emerald-700 border-emerald-100";
   }
 
-  if (status === "pending") {
+  if (
+    status === "pending"
+  ) {
     return "bg-amber-50 text-amber-700 border-amber-100";
   }
 
   return "bg-red-50 text-red-700 border-red-100";
 }
 
+function createEmptyForm(
+  role:
+    | UserRole
+    | "all",
+): AccountForm {
+  const accountRole:
+    UserRole =
+    role !== "all"
+      ? role
+      : "student";
+
+  return {
+    name: "",
+    email: "",
+    phone: "",
+
+    role:
+      accountRole,
+
+    status:
+      accountRole ===
+      "faculty"
+        ? "pending"
+        : "active",
+
+    password: "",
+
+    studentLevel:
+      "foundation",
+
+    currentClass: "",
+
+    degreeName: "",
+
+    program: "",
+
+    parentPhone: "",
+  };
+}
+
 export default function AccountDirectory({
   initialRole = "all",
   lockRole = false,
-  title = "Account Directory",
+  title =
+    "Account Directory",
   description =
     "Manage registered accounts across Prime Digital School.",
 }: AccountDirectoryProps) {
-  const [accounts, setAccounts] =
-    useState<Account[]>([]);
+  const [
+    accounts,
+    setAccounts,
+  ] =
+    useState<Account[]>(
+      [],
+    );
 
-  const [counts, setCounts] =
-    useState<Counts>(emptyCounts);
+  const [
+    counts,
+    setCounts,
+  ] =
+    useState<Counts>(
+      emptyCounts,
+    );
 
-  const [summary, setSummary] =
+  const [
+    summary,
+    setSummary,
+  ] =
     useState<SummaryCounts>(
       emptySummary,
     );
 
-  const [role, setRole] =
-    useState<UserRole | "all">(
-      initialRole,
-    );
+  const [
+    role,
+    setRole,
+  ] =
+    useState<
+      UserRole | "all"
+    >(initialRole);
 
-  const [status, setStatus] =
-    useState<UserStatus | "all">(
-      "all",
-    );
+  const [
+    status,
+    setStatus,
+  ] =
+    useState<
+      UserStatus | "all"
+    >("all");
 
-  const [search, setSearch] =
+  const [
+    search,
+    setSearch,
+  ] =
     useState("");
 
   const [
     searchInput,
     setSearchInput,
-  ] = useState("");
+  ] =
+    useState("");
 
-  const [page, setPage] =
+  const [
+    page,
+    setPage,
+  ] =
     useState(1);
 
   const [
     totalPages,
     setTotalPages,
-  ] = useState(1);
+  ] =
+    useState(1);
 
-  const [loading, setLoading] =
+  const [
+    loading,
+    setLoading,
+  ] =
     useState(true);
 
-  const [error, setError] =
+  const [
+    error,
+    setError,
+  ] =
     useState("");
 
-  const [success, setSuccess] =
+  const [
+    success,
+    setSuccess,
+  ] =
     useState("");
 
   const [
     modalOpen,
     setModalOpen,
-  ] = useState(false);
+  ] =
+    useState(false);
 
   const [
     editingAccount,
     setEditingAccount,
-  ] = useState<Account | null>(
-    null,
-  );
+  ] =
+    useState<
+      Account | null
+    >(null);
 
-  const [saving, setSaving] =
+  const [
+    saving,
+    setSaving,
+  ] =
     useState(false);
 
-  const [form, setForm] =
-    useState({
-      name: "",
-      email: "",
-      phone: "",
-
-      role:
-        initialRole !== "all"
-          ? initialRole
-          : ("student" as UserRole),
-
-      status:
-        initialRole === "faculty"
-          ? ("pending" as UserStatus)
-          : ("active" as UserStatus),
-
-      password: "",
-    });
+  const [
+    form,
+    setForm,
+  ] =
+    useState<AccountForm>(
+      createEmptyForm(
+        initialRole,
+      ),
+    );
 
   const loadAccounts =
     useCallback(
@@ -216,7 +329,9 @@ export default function AccountDirectory({
           const params =
             new URLSearchParams();
 
-          if (role !== "all") {
+          if (
+            role !== "all"
+          ) {
             params.set(
               "role",
               role,
@@ -253,7 +368,8 @@ export default function AccountDirectory({
             await fetch(
               `/api/admin/users?${params.toString()}`,
               {
-                method: "GET",
+                method:
+                  "GET",
                 credentials:
                   "include",
                 cache:
@@ -264,7 +380,9 @@ export default function AccountDirectory({
           const data =
             await response.json();
 
-          if (!response.ok) {
+          if (
+            !response.ok
+          ) {
             throw new Error(
               data.error ||
                 "Unable to load accounts.",
@@ -272,7 +390,8 @@ export default function AccountDirectory({
           }
 
           setAccounts(
-            data.users || [],
+            data.users ||
+              [],
           );
 
           setCounts(
@@ -283,24 +402,35 @@ export default function AccountDirectory({
           setSummary(
             data.summary || {
               total:
-                data.counts?.total || 0,
+                data.counts
+                  ?.total ||
+                0,
 
               active:
-                data.counts?.active || 0,
+                data.counts
+                  ?.active ||
+                0,
 
               pending:
-                data.counts?.pending || 0,
+                data.counts
+                  ?.pending ||
+                0,
 
               blocked:
-                data.counts?.blocked || 0,
+                data.counts
+                  ?.blocked ||
+                0,
             },
           );
 
           setTotalPages(
             data.pagination
-              ?.totalPages || 1,
+              ?.totalPages ||
+              1,
           );
-        } catch (loadError) {
+        } catch (
+          loadError
+        ) {
           setError(
             loadError instanceof
               Error
@@ -308,7 +438,9 @@ export default function AccountDirectory({
               : "Unable to load accounts.",
           );
         } finally {
-          setLoading(false);
+          setLoading(
+            false,
+          );
         }
       },
       [
@@ -324,26 +456,15 @@ export default function AccountDirectory({
   }, [loadAccounts]);
 
   function openCreate() {
-    setEditingAccount(null);
+    setEditingAccount(
+      null,
+    );
 
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-
-      role:
-        initialRole !== "all"
-          ? initialRole
-          : "student",
-
-      status:
-        initialRole ===
-        "faculty"
-          ? "pending"
-          : "active",
-
-      password: "",
-    });
+    setForm(
+      createEmptyForm(
+        initialRole,
+      ),
+    );
 
     setError("");
     setSuccess("");
@@ -353,15 +474,47 @@ export default function AccountDirectory({
   function openEdit(
     account: Account,
   ) {
-    setEditingAccount(account);
+    setEditingAccount(
+      account,
+    );
 
     setForm({
-      name: account.name,
-      email: account.email,
-      phone: account.phone,
-      role: account.role,
-      status: account.status,
+      name:
+        account.name,
+
+      email:
+        account.email,
+
+      phone:
+        account.phone,
+
+      role:
+        account.role,
+
+      status:
+        account.status,
+
       password: "",
+
+      studentLevel:
+        account.studentLevel ??
+        "foundation",
+
+      currentClass:
+        account.currentClass ??
+        "",
+
+      degreeName:
+        account.degreeName ??
+        "",
+
+      program:
+        account.program ??
+        "",
+
+      parentPhone:
+        account.parentPhone ??
+        "",
     });
 
     setError("");
@@ -385,55 +538,115 @@ export default function AccountDirectory({
           ? "PATCH"
           : "POST";
 
+      const studentData =
+        form.role ===
+        "student"
+          ? {
+              studentLevel:
+                form.studentLevel,
+
+              currentClass:
+                form.currentClass,
+
+              degreeName:
+                form.studentLevel ===
+                "college"
+                  ? form.degreeName
+                  : "",
+
+              program:
+                form.program,
+
+              parentPhone:
+                form.studentLevel ===
+                "college"
+                  ? ""
+                  : form.parentPhone,
+            }
+          : {};
+
       const body =
         editingAccount
           ? {
-              name: form.name,
-              email: form.email,
-              phone: form.phone,
-              role: form.role,
-              status: form.status,
+              name:
+                form.name,
+
+              email:
+                form.email,
+
+              phone:
+                form.phone,
+
+              role:
+                form.role,
+
+              status:
+                form.status,
+
+              ...studentData,
 
               newPassword:
                 form.password ||
                 undefined,
             }
           : {
-              name: form.name,
-              email: form.email,
-              phone: form.phone,
-              role: form.role,
-              status: form.status,
+              name:
+                form.name,
+
+              email:
+                form.email,
+
+              phone:
+                form.phone,
+
+              role:
+                form.role,
+
+              status:
+                form.status,
+
+              ...studentData,
+
               password:
                 form.password,
             };
 
       const response =
-        await fetch(endpoint, {
-          method,
-          credentials:
-            "include",
+        await fetch(
+          endpoint,
+          {
+            method,
 
-          headers: {
-            "Content-Type":
-              "application/json",
+            credentials:
+              "include",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body:
+              JSON.stringify(
+                body,
+              ),
           },
-
-          body:
-            JSON.stringify(body),
-        });
+        );
 
       const data =
         await response.json();
 
-      if (!response.ok) {
+      if (
+        !response.ok
+      ) {
         throw new Error(
           data.error ||
             "Unable to save account.",
         );
       }
 
-      setModalOpen(false);
+      setModalOpen(
+        false,
+      );
 
       setSuccess(
         data.message ||
@@ -441,9 +654,12 @@ export default function AccountDirectory({
       );
 
       await loadAccounts();
-    } catch (saveError) {
+    } catch (
+      saveError
+    ) {
       setError(
-        saveError instanceof Error
+        saveError instanceof
+          Error
           ? saveError.message
           : "Unable to save account.",
       );
@@ -464,7 +680,8 @@ export default function AccountDirectory({
         await fetch(
           `/api/admin/users/${account.id}`,
           {
-            method: "PATCH",
+            method:
+              "PATCH",
 
             credentials:
               "include",
@@ -474,17 +691,20 @@ export default function AccountDirectory({
                 "application/json",
             },
 
-            body: JSON.stringify({
-              status:
-                nextStatus,
-            }),
+            body:
+              JSON.stringify({
+                status:
+                  nextStatus,
+              }),
           },
         );
 
       const data =
         await response.json();
 
-      if (!response.ok) {
+      if (
+        !response.ok
+      ) {
         throw new Error(
           data.error ||
             "Unable to update account.",
@@ -497,9 +717,12 @@ export default function AccountDirectory({
       );
 
       await loadAccounts();
-    } catch (statusError) {
+    } catch (
+      statusError
+    ) {
       setError(
-        statusError instanceof Error
+        statusError instanceof
+          Error
           ? statusError.message
           : "Unable to update account.",
       );
@@ -517,27 +740,40 @@ export default function AccountDirectory({
     {
       value: "all",
       label: "All",
-      count: counts.total,
+      count:
+        counts.total,
     },
     {
-      value: "student",
-      label: "Students",
-      count: counts.students,
+      value:
+        "student",
+      label:
+        "Students",
+      count:
+        counts.students,
     },
     {
-      value: "faculty",
-      label: "Faculty",
-      count: counts.faculty,
+      value:
+        "faculty",
+      label:
+        "Faculty",
+      count:
+        counts.faculty,
     },
     {
-      value: "client",
-      label: "Clients",
-      count: counts.clients,
+      value:
+        "client",
+      label:
+        "Clients",
+      count:
+        counts.clients,
     },
     {
-      value: "admin",
-      label: "Admins",
-      count: counts.admins,
+      value:
+        "admin",
+      label:
+        "Admins",
+      count:
+        counts.admins,
     },
   ];
 
@@ -561,7 +797,9 @@ export default function AccountDirectory({
 
           <button
             type="button"
-            onClick={openCreate}
+            onClick={
+              openCreate
+            }
             className="inline-flex min-h-10 w-fit items-center justify-center gap-2 rounded-lg bg-[#8f0024] px-4 text-[11px] font-black text-white shadow-sm transition hover:bg-[#71001c]"
           >
             <Plus className="h-4 w-4" />
@@ -572,34 +810,47 @@ export default function AccountDirectory({
         <section className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             label="Total Accounts"
-            value={summary.total}
+            value={
+              summary.total
+            }
             icon={Users}
           />
 
           <StatCard
             label="Active"
-            value={summary.active}
-            icon={UserCheck}
+            value={
+              summary.active
+            }
+            icon={
+              UserCheck
+            }
           />
 
           <StatCard
             label="Pending"
-            value={summary.pending}
-            icon={RefreshCw}
+            value={
+              summary.pending
+            }
+            icon={
+              RefreshCw
+            }
           />
 
           <StatCard
             label="Blocked"
-            value={summary.blocked}
+            value={
+              summary.blocked
+            }
             icon={Ban}
           />
         </section>
 
-        {error && !modalOpen && (
-          <div className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-xs font-semibold text-red-700">
-            {error}
-          </div>
-        )}
+        {error &&
+          !modalOpen && (
+            <div className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-xs font-semibold text-red-700">
+              {error}
+            </div>
+          )}
 
         {success && (
           <div className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-700">
@@ -614,13 +865,18 @@ export default function AccountDirectory({
                 {roleTabs.map(
                   (tab) => (
                     <button
-                      key={tab.value}
+                      key={
+                        tab.value
+                      }
                       type="button"
                       onClick={() => {
                         setRole(
                           tab.value,
                         );
-                        setPage(1);
+
+                        setPage(
+                          1,
+                        );
                       }}
                       className={[
                         "rounded-t-lg border-b-2 px-4 py-3 text-[11px] font-black transition",
@@ -629,10 +885,18 @@ export default function AccountDirectory({
                         tab.value
                           ? "border-[#8f0024] text-[#8f0024]"
                           : "border-transparent text-slate-500 hover:text-slate-800",
-                      ].join(" ")}
+                      ].join(
+                        " ",
+                      )}
                     >
-                      {tab.label} (
-                      {tab.count})
+                      {
+                        tab.label
+                      }{" "}
+                      (
+                      {
+                        tab.count
+                      }
+                      )
                     </button>
                   ),
                 )}
@@ -645,13 +909,21 @@ export default function AccountDirectory({
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
               <input
-                value={searchInput}
-                onChange={(event) =>
+                value={
+                  searchInput
+                }
+                onChange={(
+                  event,
+                ) =>
                   setSearchInput(
-                    event.target.value,
+                    event
+                      .target
+                      .value,
                   )
                 }
-                onKeyDown={(event) => {
+                onKeyDown={(
+                  event,
+                ) => {
                   if (
                     event.key ===
                     "Enter"
@@ -659,7 +931,10 @@ export default function AccountDirectory({
                     setSearch(
                       searchInput,
                     );
-                    setPage(1);
+
+                    setPage(
+                      1,
+                    );
                   }
                 }}
                 placeholder="Search by name, email or phone..."
@@ -668,16 +943,23 @@ export default function AccountDirectory({
             </div>
 
             <select
-              value={status}
-              onChange={(event) => {
+              value={
+                status
+              }
+              onChange={(
+                event,
+              ) => {
                 setStatus(
-                  event.target
+                  event
+                    .target
                     .value as
                     | UserStatus
                     | "all",
                 );
 
-                setPage(1);
+                setPage(
+                  1,
+                );
               }}
               className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold outline-none"
             >
@@ -704,6 +986,7 @@ export default function AccountDirectory({
                 setSearch(
                   searchInput,
                 );
+
                 setPage(1);
               }}
               className="h-10 rounded-lg bg-[#8f0024] px-5 text-xs font-black text-white"
@@ -757,7 +1040,9 @@ export default function AccountDirectory({
                 {loading ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={
+                        6
+                      }
                       className="py-16 text-center"
                     >
                       <Loader2 className="mx-auto h-6 w-6 animate-spin text-[#8f0024]" />
@@ -771,7 +1056,9 @@ export default function AccountDirectory({
                   0 ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={
+                        6
+                      }
                       className="py-16 text-center text-xs font-semibold text-slate-400"
                     >
                       No accounts found.
@@ -779,16 +1066,23 @@ export default function AccountDirectory({
                   </tr>
                 ) : (
                   accounts.map(
-                    (account) => (
+                    (
+                      account,
+                    ) => (
                       <tr
-                        key={account.id}
+                        key={
+                          account.id
+                        }
                         className="border-b border-slate-100 transition hover:bg-[#fffafb]"
                       >
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-3">
                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fff1f4] text-xs font-black text-[#8f0024]">
                               {account.name
-                                .slice(0, 2)
+                                .slice(
+                                  0,
+                                  2,
+                                )
                                 .toUpperCase()}
                             </div>
 
@@ -817,7 +1111,9 @@ export default function AccountDirectory({
                         </td>
 
                         <td className="px-4 py-4 text-[11px] font-semibold text-slate-600">
-                          {account.phone}
+                          {
+                            account.phone
+                          }
                         </td>
 
                         <td className="px-4 py-4">
@@ -834,7 +1130,9 @@ export default function AccountDirectory({
                               account.status,
                             )}`}
                           >
-                            {account.status}
+                            {
+                              account.status
+                            }
                           </span>
                         </td>
 
@@ -932,13 +1230,19 @@ export default function AccountDirectory({
             <div className="flex gap-2">
               <button
                 type="button"
-                disabled={page <= 1}
+                disabled={
+                  page <= 1
+                }
                 onClick={() =>
-                  setPage((value) =>
-                    Math.max(
-                      1,
-                      value - 1,
-                    ),
+                  setPage(
+                    (
+                      value,
+                    ) =>
+                      Math.max(
+                        1,
+                        value -
+                          1,
+                      ),
                   )
                 }
                 className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 text-slate-500 disabled:opacity-40"
@@ -949,14 +1253,19 @@ export default function AccountDirectory({
               <button
                 type="button"
                 disabled={
-                  page >= totalPages
+                  page >=
+                  totalPages
                 }
                 onClick={() =>
-                  setPage((value) =>
-                    Math.min(
-                      totalPages,
-                      value + 1,
-                    ),
+                  setPage(
+                    (
+                      value,
+                    ) =>
+                      Math.min(
+                        totalPages,
+                        value +
+                          1,
+                      ),
                   )
                 }
                 className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 text-slate-500 disabled:opacity-40"
@@ -974,7 +1283,9 @@ export default function AccountDirectory({
             type="button"
             aria-label="Close modal"
             onClick={() =>
-              setModalOpen(false)
+              setModalOpen(
+                false,
+              )
             }
             className="absolute inset-0"
           />
@@ -998,7 +1309,9 @@ export default function AccountDirectory({
               <button
                 type="button"
                 onClick={() =>
-                  setModalOpen(false)
+                  setModalOpen(
+                    false,
+                  )
                 }
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500"
               >
@@ -1009,12 +1322,19 @@ export default function AccountDirectory({
             <div className="space-y-4 p-6">
               <FormField
                 label="Full Name"
-                value={form.name}
-                onChange={(value) =>
+                value={
+                  form.name
+                }
+                onChange={(
+                  value,
+                ) =>
                   setForm(
-                    (current) => ({
+                    (
+                      current,
+                    ) => ({
                       ...current,
-                      name: value,
+                      name:
+                        value,
                     }),
                   )
                 }
@@ -1023,12 +1343,19 @@ export default function AccountDirectory({
 
               <FormField
                 label="Email Address"
-                value={form.email}
-                onChange={(value) =>
+                value={
+                  form.email
+                }
+                onChange={(
+                  value,
+                ) =>
                   setForm(
-                    (current) => ({
+                    (
+                      current,
+                    ) => ({
                       ...current,
-                      email: value,
+                      email:
+                        value,
                     }),
                   )
                 }
@@ -1038,16 +1365,24 @@ export default function AccountDirectory({
 
               <FormField
                 label="Phone Number"
-                value={form.phone}
-                onChange={(value) =>
+                value={
+                  form.phone
+                }
+                onChange={(
+                  value,
+                ) =>
                   setForm(
-                    (current) => ({
+                    (
+                      current,
+                    ) => ({
                       ...current,
-                      phone: value,
+                      phone:
+                        value,
                     }),
                   )
                 }
                 placeholder="Enter phone number"
+                type="tel"
               />
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -1057,18 +1392,25 @@ export default function AccountDirectory({
                   </label>
 
                   <select
-                    value={form.role}
+                    value={
+                      form.role
+                    }
                     disabled={
                       editingAccount
                         ?.isCurrentAdmin
                     }
-                    onChange={(event) =>
+                    onChange={(
+                      event,
+                    ) =>
                       setForm(
-                        (current) => ({
+                        (
+                          current,
+                        ) => ({
                           ...current,
 
                           role:
-                            event.target
+                            event
+                              .target
                               .value as UserRole,
                         }),
                       )
@@ -1099,18 +1441,25 @@ export default function AccountDirectory({
                   </label>
 
                   <select
-                    value={form.status}
+                    value={
+                      form.status
+                    }
                     disabled={
                       editingAccount
                         ?.isCurrentAdmin
                     }
-                    onChange={(event) =>
+                    onChange={(
+                      event,
+                    ) =>
                       setForm(
-                        (current) => ({
+                        (
+                          current,
+                        ) => ({
                           ...current,
 
                           status:
-                            event.target
+                            event
+                              .target
                               .value as UserStatus,
                         }),
                       )
@@ -1132,6 +1481,246 @@ export default function AccountDirectory({
                 </div>
               </div>
 
+              {form.role ===
+                "student" && (
+                <div className="space-y-4 rounded-xl border border-[#8f0024]/10 bg-[#fffafb] p-4">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-wider text-[#8f0024]">
+                      Student Information
+                    </p>
+
+                    <p className="mt-1 text-[9px] text-slate-400">
+                      Academic level and program information.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black text-slate-700">
+                      Student Level
+                    </label>
+
+                    <select
+                      value={
+                        form.studentLevel
+                      }
+                      onChange={(
+                        event,
+                      ) => {
+                        const studentLevel =
+                          event
+                            .target
+                            .value as StudentLevel;
+
+                        setForm(
+                          (
+                            current,
+                          ) => ({
+                            ...current,
+                            studentLevel,
+                            currentClass:
+                              "",
+
+                            degreeName:
+                              studentLevel ===
+                              "college"
+                                ? current.degreeName
+                                : "",
+
+                            parentPhone:
+                              studentLevel ===
+                              "college"
+                                ? ""
+                                : current.parentPhone,
+                          }),
+                        );
+                      }}
+                      className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none"
+                    >
+                      <option value="foundation">
+                        Foundation Programs (8th–10th)
+                      </option>
+
+                      <option value="advanced">
+                        Advanced Programs (11th–12th)
+                      </option>
+
+                      <option value="college">
+                        College Programs
+                      </option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black text-slate-700">
+                      {form.studentLevel ===
+                      "college"
+                        ? "Current College Year"
+                        : "Current Standard"}
+                    </label>
+
+                    <select
+                      value={
+                        form.currentClass
+                      }
+                      onChange={(
+                        event,
+                      ) =>
+                        setForm(
+                          (
+                            current,
+                          ) => ({
+                            ...current,
+
+                            currentClass:
+                              event
+                                .target
+                                .value,
+                          }),
+                        )
+                      }
+                      className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none"
+                    >
+                      <option value="">
+                        Select{" "}
+                        {form.studentLevel ===
+                        "college"
+                          ? "year"
+                          : "standard"}
+                      </option>
+
+                      {(form.studentLevel ===
+                      "foundation"
+                        ? FOUNDATION_CLASSES
+                        : form.studentLevel ===
+                            "advanced"
+                          ? ADVANCED_CLASSES
+                          : COLLEGE_YEARS
+                      ).map(
+                        (
+                          item,
+                        ) => (
+                          <option
+                            key={
+                              item
+                            }
+                            value={
+                              item
+                            }
+                          >
+                            {
+                              item
+                            }
+                          </option>
+                        ),
+                      )}
+                    </select>
+                  </div>
+
+                  {form.studentLevel ===
+                    "college" && (
+                    <FormField
+                      label="Degree / Course Name"
+                      value={
+                        form.degreeName
+                      }
+                      onChange={(
+                        value,
+                      ) =>
+                        setForm(
+                          (
+                            current,
+                          ) => ({
+                            ...current,
+                            degreeName:
+                              value,
+                          }),
+                        )
+                      }
+                      placeholder="Example: BSc IT"
+                    />
+                  )}
+
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black text-slate-700">
+                      Program
+                    </label>
+
+                    <select
+                      value={
+                        form.program
+                      }
+                      onChange={(
+                        event,
+                      ) =>
+                        setForm(
+                          (
+                            current,
+                          ) => ({
+                            ...current,
+
+                            program:
+                              event
+                                .target
+                                .value as
+                                | StudentProgram
+                                | "",
+                          }),
+                        )
+                      }
+                      className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none"
+                    >
+                      <option value="">
+                        Select program
+                      </option>
+
+                      {STUDENT_PROGRAMS.map(
+                        (
+                          program,
+                        ) => (
+                          <option
+                            key={
+                              program
+                            }
+                            value={
+                              program
+                            }
+                          >
+                            {
+                              program
+                            }
+                          </option>
+                        ),
+                      )}
+                    </select>
+                  </div>
+
+                  {form.studentLevel !==
+                    "college" && (
+                    <FormField
+                      label="Parent Phone Number"
+                      value={
+                        form.parentPhone
+                      }
+                      onChange={(
+                        value,
+                      ) =>
+                        setForm(
+                          (
+                            current,
+                          ) => ({
+                            ...current,
+                            parentPhone:
+                              value,
+                          }),
+                        )
+                      }
+                      placeholder="Enter parent contact number"
+                      type="tel"
+                    />
+                  )}
+                </div>
+              )}
+
               <div>
                 <label className="mb-2 block text-[11px] font-black text-slate-700">
                   {editingAccount
@@ -1141,14 +1730,21 @@ export default function AccountDirectory({
 
                 <input
                   type="password"
-                  value={form.password}
-                  onChange={(event) =>
+                  value={
+                    form.password
+                  }
+                  onChange={(
+                    event,
+                  ) =>
                     setForm(
-                      (current) => ({
+                      (
+                        current,
+                      ) => ({
                         ...current,
 
                         password:
-                          event.target
+                          event
+                            .target
                             .value,
                       }),
                     )
@@ -1163,8 +1759,7 @@ export default function AccountDirectory({
 
                 {editingAccount && (
                   <p className="mt-2 text-[9px] leading-4 text-slate-400">
-                    Existing passwords are never displayed.
-                    Entering a new password here replaces the old password securely.
+                    Existing passwords are never displayed. Entering a new password here replaces the old password securely.
                   </p>
                 )}
               </div>
@@ -1179,7 +1774,9 @@ export default function AccountDirectory({
                 <button
                   type="button"
                   onClick={() =>
-                    setModalOpen(false)
+                    setModalOpen(
+                      false,
+                    )
                   }
                   className="h-10 rounded-lg border border-slate-200 px-5 text-xs font-black text-slate-600"
                 >
@@ -1188,8 +1785,12 @@ export default function AccountDirectory({
 
                 <button
                   type="button"
-                  disabled={saving}
-                  onClick={saveAccount}
+                  disabled={
+                    saving
+                  }
+                  onClick={
+                    saveAccount
+                  }
                   className="inline-flex h-10 items-center gap-2 rounded-lg bg-[#8f0024] px-5 text-xs font-black text-white disabled:opacity-50"
                 >
                   {saving && (
@@ -1248,9 +1849,11 @@ function FormField({
 }: {
   label: string;
   value: string;
+
   onChange: (
     value: string,
   ) => void;
+
   placeholder: string;
   type?: string;
 }) {
@@ -1263,15 +1866,18 @@ function FormField({
       <input
         type={type}
         value={value}
-        onChange={(event) =>
+        onChange={(
+          event,
+        ) =>
           onChange(
             event.target.value,
           )
         }
-        placeholder={placeholder}
+        placeholder={
+          placeholder
+        }
         className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs outline-none transition focus:border-[#8f0024]/40 focus:ring-4 focus:ring-[#8f0024]/5"
       />
     </div>
   );
 }
-

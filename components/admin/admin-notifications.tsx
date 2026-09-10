@@ -265,11 +265,16 @@ export default function AdminNotifications() {
         const data =
           await response.json();
 
-        if (response.ok) {
-          setAccounts(
-            data.users || [],
-          );
-        }
+if (response.ok) {
+  setAccounts(
+    (data.users || []).filter(
+      (account: Account) =>
+        account.role === "student" ||
+        account.role === "faculty" ||
+        account.role === "admin",
+    ),
+  );
+}
       } catch {
         // Individual audience is optional.
       }
@@ -870,24 +875,20 @@ export default function AdminNotifications() {
                       }),
                     )
                   }
-                  options={[
-                    [
-                      "student",
-                      "Students",
-                    ],
-                    [
-                      "faculty",
-                      "Faculty",
-                    ],
-                    [
-                      "client",
-                      "Clients",
-                    ],
-                    [
-                      "admin",
-                      "Admins",
-                    ],
-                  ]}
+options={[
+  [
+    "student",
+    "Students",
+  ],
+  [
+    "faculty",
+    "Faculty",
+  ],
+  [
+    "admin",
+    "Admins",
+  ],
+]}
                 />
               )}
 

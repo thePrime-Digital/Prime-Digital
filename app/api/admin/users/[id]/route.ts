@@ -40,14 +40,20 @@ import {
   requireAdminApi,
 } from "@/lib/auth/api-authorization";
 
-import type {
-  UserDocument,
-  UserRole,
-  UserStatus,
+import {
+  ADVANCED_CLASSES,
+  COLLEGE_YEARS,
+  FOUNDATION_CLASSES,
+  isStudentLevel,
+  isStudentProgram,
+  type UserDocument,
+  type UserRole,
+  type UserStatus,
 } from "@/types/user";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const dynamic =
+  "force-dynamic";
 
 type RouteContext = {
   params: Promise<{
@@ -62,7 +68,63 @@ type UpdateAccountBody = {
   role?: unknown;
   status?: unknown;
   newPassword?: unknown;
+
+  studentLevel?: unknown;
+  currentClass?: unknown;
+  degreeName?: unknown;
+  program?: unknown;
+  parentPhone?: unknown;
 };
+
+type StudentUnset = {
+  studentLevel?: "";
+  currentClass?: "";
+  degreeName?: "";
+  program?: "";
+  parentPhone?: "";
+};
+
+function normaliseText(
+  value: unknown,
+): string {
+  return typeof value === "string"
+    ? value.trim()
+    : "";
+}
+
+function isValidStudentClass(
+  studentLevel: string,
+  currentClass: string,
+): boolean {
+  if (
+    studentLevel ===
+    "foundation"
+  ) {
+    return (
+      FOUNDATION_CLASSES as readonly string[]
+    ).includes(currentClass);
+  }
+
+  if (
+    studentLevel ===
+    "advanced"
+  ) {
+    return (
+      ADVANCED_CLASSES as readonly string[]
+    ).includes(currentClass);
+  }
+
+  if (
+    studentLevel ===
+    "college"
+  ) {
+    return (
+      COLLEGE_YEARS as readonly string[]
+    ).includes(currentClass);
+  }
+
+  return false;
+}
 
 export async function GET(
   _request: Request,
@@ -79,7 +141,9 @@ export async function GET(
     await context.params;
 
   const user =
-    await findAdminUserById(id);
+    await findAdminUserById(
+      id,
+    );
 
   if (!user) {
     return NextResponse.json(
@@ -95,10 +159,11 @@ export async function GET(
 
   return NextResponse.json(
     {
-      user: adminSafeUser(
-        user,
-        authorization.user._id.toHexString(),
-      ),
+      user:
+        adminSafeUser(
+          user,
+          authorization.user._id.toHexString(),
+        ),
     },
     {
       headers: {
@@ -123,7 +188,9 @@ export async function PATCH(
   const { id } =
     await context.params;
 
-  if (!ObjectId.isValid(id)) {
+  if (
+    !ObjectId.isValid(id)
+  ) {
     return NextResponse.json(
       {
         error:
@@ -135,11 +202,13 @@ export async function PATCH(
     );
   }
 
-  let body: UpdateAccountBody;
+  let body:
+    UpdateAccountBody;
 
   try {
     body =
-      (await request.json()) as UpdateAccountBody;
+      (await request.json()) as
+        UpdateAccountBody;
   } catch {
     return NextResponse.json(
       {
@@ -158,7 +227,8 @@ export async function PATCH(
 
     const targetUser =
       await collection.findOne({
-        _id: new ObjectId(id),
+        _id:
+          new ObjectId(id),
       });
 
     if (!targetUser) {
@@ -180,7 +250,11 @@ export async function PATCH(
       actorId === id;
 
     const update:
-      Partial<UserDocument> = {};
+      Partial<UserDocument> =
+      {};
+
+    const unset:
+      StudentUnset = {};
 
     const auditChanges: {
       field: string;
@@ -188,11 +262,18 @@ export async function PATCH(
       to?: unknown;
     }[] = [];
 
-        if (body.name !== undefined) {
+    if (
+      body.name !==
+      undefined
+    ) {
       const name =
-        normaliseName(body.name);
+        normaliseName(
+          body.name,
+        );
 
-      if (!isValidName(name)) {
+      if (
+        !isValidName(name)
+      ) {
         return NextResponse.json(
           {
             error:
@@ -204,22 +285,34 @@ export async function PATCH(
         );
       }
 
-      if (name !== targetUser.name) {
-        update.name = name;
+      if (
+        name !==
+        targetUser.name
+      ) {
+        update.name =
+          name;
 
         auditChanges.push({
           field: "name",
-          from: targetUser.name,
+          from:
+            targetUser.name,
           to: name,
         });
       }
     }
 
-    if (body.email !== undefined) {
+    if (
+      body.email !==
+      undefined
+    ) {
       const email =
-        normaliseEmail(body.email);
+        normaliseEmail(
+          body.email,
+        );
 
-      if (!isValidEmail(email)) {
+      if (
+        !isValidEmail(email)
+      ) {
         return NextResponse.json(
           {
             error:
@@ -231,14 +324,21 @@ export async function PATCH(
         );
       }
 
-      if (email !== targetUser.email) {
+      if (
+        email !==
+        targetUser.email
+      ) {
         const duplicate =
-          await collection.findOne({
-            email,
-            _id: {
-              $ne: targetUser._id,
+          await collection.findOne(
+            {
+              email,
+
+              _id: {
+                $ne:
+                  targetUser._id,
+              },
             },
-          });
+          );
 
         if (duplicate) {
           return NextResponse.json(
@@ -252,21 +352,30 @@ export async function PATCH(
           );
         }
 
-        update.email = email;
+        update.email =
+          email;
 
         auditChanges.push({
           field: "email",
-          from: targetUser.email,
+          from:
+            targetUser.email,
           to: email,
         });
       }
     }
 
-    if (body.phone !== undefined) {
+    if (
+      body.phone !==
+      undefined
+    ) {
       const phone =
-        normalisePhone(body.phone);
+        normalisePhone(
+          body.phone,
+        );
 
-      if (!isValidPhone(phone)) {
+      if (
+        !isValidPhone(phone)
+      ) {
         return NextResponse.json(
           {
             error:
@@ -278,26 +387,39 @@ export async function PATCH(
         );
       }
 
-      if (phone !== targetUser.phone) {
-        update.phone = phone;
+      if (
+        phone !==
+        targetUser.phone
+      ) {
+        update.phone =
+          phone;
 
         auditChanges.push({
           field: "phone",
-          from: targetUser.phone,
+          from:
+            targetUser.phone,
           to: phone,
         });
       }
     }
 
-    if (body.role !== undefined) {
+    if (
+      body.role !==
+      undefined
+    ) {
       const role =
-        typeof body.role === "string"
+        typeof body.role ===
+        "string"
           ? body.role
               .trim()
               .toLowerCase()
           : "";
 
-      if (!isAllowedAdminRole(role)) {
+      if (
+        !isAllowedAdminRole(
+          role,
+        )
+      ) {
         return NextResponse.json(
           {
             error:
@@ -325,14 +447,18 @@ export async function PATCH(
       }
 
       if (
-        targetUser.role === "admin" &&
+        targetUser.role ===
+          "admin" &&
         role !== "admin" &&
-        targetUser.status === "active"
+        targetUser.status ===
+          "active"
       ) {
         const activeAdmins =
           await countActiveAdmins();
 
-        if (activeAdmins <= 1) {
+        if (
+          activeAdmins <= 1
+        ) {
           return NextResponse.json(
             {
               error:
@@ -345,21 +471,29 @@ export async function PATCH(
         }
       }
 
-      if (role !== targetUser.role) {
+      if (
+        role !==
+        targetUser.role
+      ) {
         update.role =
           role as UserRole;
 
         auditChanges.push({
           field: "role",
-          from: targetUser.role,
+          from:
+            targetUser.role,
           to: role,
         });
       }
     }
 
-    if (body.status !== undefined) {
+    if (
+      body.status !==
+      undefined
+    ) {
       const status =
-        typeof body.status === "string"
+        typeof body.status ===
+        "string"
           ? body.status
               .trim()
               .toLowerCase()
@@ -397,14 +531,18 @@ export async function PATCH(
       }
 
       if (
-        targetUser.role === "admin" &&
-        targetUser.status === "active" &&
+        targetUser.role ===
+          "admin" &&
+        targetUser.status ===
+          "active" &&
         status !== "active"
       ) {
         const activeAdmins =
           await countActiveAdmins();
 
-        if (activeAdmins <= 1) {
+        if (
+          activeAdmins <= 1
+        ) {
           return NextResponse.json(
             {
               error:
@@ -417,16 +555,313 @@ export async function PATCH(
         }
       }
 
-      if (status !== targetUser.status) {
+      if (
+        status !==
+        targetUser.status
+      ) {
         update.status =
           status as UserStatus;
 
         auditChanges.push({
           field: "status",
-          from: targetUser.status,
+          from:
+            targetUser.status,
           to: status,
         });
       }
+    }
+
+    const nextRole =
+      update.role ??
+      targetUser.role;
+
+    const hasStudentProfileInput =
+      body.studentLevel !==
+        undefined ||
+      body.currentClass !==
+        undefined ||
+      body.degreeName !==
+        undefined ||
+      body.program !==
+        undefined ||
+      body.parentPhone !==
+        undefined;
+
+    const shouldValidateStudent =
+      nextRole ===
+        "student" &&
+      (
+        hasStudentProfileInput ||
+        targetUser.role !==
+          "student"
+      );
+
+    if (
+      shouldValidateStudent
+    ) {
+      const studentLevel =
+        body.studentLevel !==
+        undefined
+          ? normaliseText(
+              body.studentLevel,
+            ).toLowerCase()
+          : targetUser.studentLevel ??
+            "";
+
+      const currentClass =
+        body.currentClass !==
+        undefined
+          ? normaliseText(
+              body.currentClass,
+            )
+          : targetUser.currentClass ??
+            "";
+
+      const degreeName =
+        body.degreeName !==
+        undefined
+          ? normaliseText(
+              body.degreeName,
+            )
+          : targetUser.degreeName ??
+            "";
+
+      const program =
+        body.program !==
+        undefined
+          ? normaliseText(
+              body.program,
+            )
+          : targetUser.program ??
+            "";
+
+      const parentPhone =
+        body.parentPhone !==
+        undefined
+          ? normalisePhone(
+              body.parentPhone,
+            )
+          : targetUser.parentPhone ??
+            "";
+
+      if (
+        !isStudentLevel(
+          studentLevel,
+        )
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Please select a valid student level.",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+
+      if (
+        !isValidStudentClass(
+          studentLevel,
+          currentClass,
+        )
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Please select a valid standard or college year.",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+
+      if (
+        !isStudentProgram(
+          program,
+        )
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Please select a valid program.",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+
+      if (
+        studentLevel ===
+          "college" &&
+        !degreeName
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Please enter the student's degree or course name.",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+
+      if (
+        studentLevel !==
+          "college" &&
+        !isValidPhone(
+          parentPhone,
+        )
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Please enter a valid parent phone number.",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+
+      if (
+        studentLevel !==
+        targetUser.studentLevel
+      ) {
+        update.studentLevel =
+          studentLevel;
+
+        auditChanges.push({
+          field:
+            "studentLevel",
+          from:
+            targetUser.studentLevel,
+          to:
+            studentLevel,
+        });
+      }
+
+      if (
+        currentClass !==
+        targetUser.currentClass
+      ) {
+        update.currentClass =
+          currentClass;
+
+        auditChanges.push({
+          field:
+            "currentClass",
+          from:
+            targetUser.currentClass,
+          to:
+            currentClass,
+        });
+      }
+
+      if (
+        program !==
+        targetUser.program
+      ) {
+        update.program =
+          program;
+
+        auditChanges.push({
+          field:
+            "program",
+          from:
+            targetUser.program,
+          to:
+            program,
+        });
+      }
+
+      if (
+        studentLevel ===
+        "college"
+      ) {
+        if (
+          degreeName !==
+          targetUser.degreeName
+        ) {
+          update.degreeName =
+            degreeName;
+
+          auditChanges.push({
+            field:
+              "degreeName",
+            from:
+              targetUser.degreeName,
+            to:
+              degreeName,
+          });
+        }
+
+        if (
+          targetUser.parentPhone !==
+            undefined
+        ) {
+          unset.parentPhone =
+            "";
+        }
+      } else {
+        if (
+          parentPhone !==
+          targetUser.parentPhone
+        ) {
+          update.parentPhone =
+            parentPhone;
+
+          auditChanges.push({
+            field:
+              "parentPhone",
+            from:
+              targetUser.parentPhone,
+            to:
+              parentPhone,
+          });
+        }
+
+        if (
+          targetUser.degreeName !==
+            undefined
+        ) {
+          unset.degreeName =
+            "";
+        }
+      }
+    }
+
+    if (
+      nextRole !==
+        "student" &&
+      (
+        targetUser.role ===
+          "student" ||
+        targetUser.studentLevel !==
+          undefined ||
+        targetUser.currentClass !==
+          undefined ||
+        targetUser.degreeName !==
+          undefined ||
+        targetUser.program !==
+          undefined ||
+        targetUser.parentPhone !==
+          undefined
+      )
+    ) {
+      unset.studentLevel =
+        "";
+      unset.currentClass =
+        "";
+      unset.degreeName =
+        "";
+      unset.program =
+        "";
+      unset.parentPhone =
+        "";
     }
 
     if (
@@ -445,7 +880,9 @@ export async function PATCH(
             newPassword,
           );
 
-        if (passwordError) {
+        if (
+          passwordError
+        ) {
           return NextResponse.json(
             {
               error:
@@ -463,42 +900,70 @@ export async function PATCH(
           );
 
         auditChanges.push({
-          field: "password",
-          to: "reset",
+          field:
+            "password",
+          to:
+            "reset",
         });
       }
     }
 
     if (
-      Object.keys(update).length ===
-      0
+      Object.keys(
+        update,
+      ).length === 0 &&
+      Object.keys(
+        unset,
+      ).length === 0
     ) {
-      return NextResponse.json({
-        message:
-          "No changes were required.",
+      return NextResponse.json(
+        {
+          message:
+            "No changes were required.",
 
-        user: adminSafeUser(
-          targetUser,
-          actorId,
-        ),
-      });
+          user:
+            adminSafeUser(
+              targetUser,
+              actorId,
+            ),
+        },
+      );
     }
 
     update.updatedAt =
       new Date();
 
-    await collection.updateOne(
-      {
-        _id: targetUser._id,
-      },
-      {
-        $set: update,
-      },
-    );
+    if (
+      Object.keys(
+        unset,
+      ).length > 0
+    ) {
+      await collection.updateOne(
+        {
+          _id:
+            targetUser._id,
+        },
+        {
+          $set: update,
+          $unset: unset,
+        },
+      );
+    } else {
+      await collection.updateOne(
+        {
+          _id:
+            targetUser._id,
+        },
+        {
+          $set: update,
+        },
+      );
+    }
 
     const updatedUser =
       await collection.findOne({
-        _id: targetUser._id,
+        _id:
+          targetUser._id,
       });
 
     if (!updatedUser) {
@@ -513,34 +978,39 @@ export async function PATCH(
       );
     }
 
-    await createAdminAuditLog({
-      actorId,
-
-      actorEmail:
-        authorization.user.email,
-
-      action:
-        "ACCOUNT_UPDATED",
-
-      targetUserId:
-        updatedUser._id.toHexString(),
-
-      targetEmail:
-        updatedUser.email,
-
-      changes:
-        auditChanges,
-    });
-
-    return NextResponse.json({
-      message:
-        "Account updated successfully.",
-
-      user: adminSafeUser(
-        updatedUser,
+    await createAdminAuditLog(
+      {
         actorId,
-      ),
-    });
+
+        actorEmail:
+          authorization.user.email,
+
+        action:
+          "ACCOUNT_UPDATED",
+
+        targetUserId:
+          updatedUser._id.toHexString(),
+
+        targetEmail:
+          updatedUser.email,
+
+        changes:
+          auditChanges,
+      },
+    );
+
+    return NextResponse.json(
+      {
+        message:
+          "Account updated successfully.",
+
+        user:
+          adminSafeUser(
+            updatedUser,
+            actorId,
+          ),
+      },
+    );
   } catch (error) {
     console.error(
       "Admin account PATCH error:",
@@ -558,5 +1028,3 @@ export async function PATCH(
     );
   }
 }
-
-

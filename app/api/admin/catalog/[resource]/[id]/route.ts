@@ -583,3 +583,233 @@ if ("error" in clean) {
     );
   }
 }
+export async function DELETE(
+  _request: Request,
+  context: RouteContext,
+): Promise<NextResponse> {
+  const authorization =
+    await requireAdminApi();
+
+  if (
+    "response" in
+    authorization
+  ) {
+    return authorization.response;
+  }
+
+  const {
+    resource,
+    id,
+  } = await context.params;
+
+  /*
+   * Permanent deletion is intentionally
+   * available only for Programs.
+   * Classes keep their existing workflow.
+   */
+  if (
+    resource !==
+    "programs"
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          "Delete is not available for this resource.",
+      },
+      {
+        status: 405,
+      },
+    );
+  }
+
+  if (
+    !ObjectId.isValid(id)
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          "Invalid program ID.",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const config =
+    getCatalogConfig(
+      "programs",
+    );
+
+  if (!config) {
+    return NextResponse.json(
+      {
+        error:
+          "Programs configuration was not found.",
+      },
+      {
+        status: 404,
+      },
+    );
+  }
+
+  try {
+    const database =
+      await getDatabase();
+
+    const programsCollection =
+      database.collection<Document>(
+        config.collection,
+      );
+
+    const objectId =
+      new ObjectId(id);
+
+    const existing =
+      await programsCollection.findOne({
+        _id:
+          objectId,
+      });
+
+    if (!existing) {
+      return NextResponse.json(
+        {
+          error:
+            "Program not found.",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
+
+    const programTitle =
+      typeof existing.title ===
+      "string"
+        ? existing.title.trim()
+        : "";
+
+    /*
+     * Protect programs that are already
+     * being used by Classes.
+     */
+    if (programTitle) {
+      const classesConfig =
+        getCatalogConfig(
+          "classes",
+        );
+
+      if (
+        classesConfig
+      ) {
+        const escapedTitle =
+          programTitle.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&",
+          );
+
+        const linkedClass =
+          await database
+            .collection<Document>(
+              classesConfig.collection,
+            )
+            .findOne({
+              program: {
+                $regex:
+                  `^${escapedTitle}$`,
+                $options:
+                  "i",
+              },
+            });
+
+        if (linkedClass) {
+          return NextResponse.json(
+            {
+              error:
+                `This program is already being used by a class. Archive "${programTitle}" instead of deleting it.`,
+            },
+            {
+              status: 409,
+            },
+          );
+        }
+      }
+    }
+
+    const result =
+      await programsCollection.deleteOne({
+        _id:
+          objectId,
+      });
+
+    if (
+      result.deletedCount !==
+      1
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Program could not be deleted.",
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+
+    await createAdminAuditLog({
+      actorId:
+        authorization.user._id.toHexString(),
+
+      actorEmail:
+        authorization.user.email,
+
+      action:
+        "PROGRAM_DELETED",
+
+      targetUserId:
+        id,
+
+      changes: [
+        {
+          field:
+            "title",
+
+          from:
+            programTitle,
+        },
+
+        {
+          field:
+            "status",
+
+          from:
+            typeof existing.status ===
+            "string"
+              ? existing.status
+              : config.defaultStatus,
+        },
+      ],
+    });
+
+    return NextResponse.json({
+      message:
+        "Program deleted successfully.",
+    });
+  } catch (error) {
+    console.error(
+      "Admin catalog program DELETE error:",
+      error,
+    );
+
+    return NextResponse.json(
+      {
+        error:
+          "Unable to delete program.",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+}

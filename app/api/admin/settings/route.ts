@@ -14,8 +14,11 @@ import {
   getDatabase,
 } from "@/lib/mongodb";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const runtime =
+  "nodejs";
+
+export const dynamic =
+  "force-dynamic";
 
 const DEFAULT_SETTINGS = {
   schoolName:
@@ -35,12 +38,6 @@ const DEFAULT_SETTINGS = {
 
   facultySignupOpen:
     true,
-
-  clientSignupOpen:
-    true,
-
-  announcement:
-    "",
 };
 
 type SettingsBody = {
@@ -50,8 +47,6 @@ type SettingsBody = {
   timezone?: unknown;
   admissionsOpen?: unknown;
   facultySignupOpen?: unknown;
-  clientSignupOpen?: unknown;
-  announcement?: unknown;
 };
 
 export async function GET():
@@ -59,7 +54,10 @@ export async function GET():
   const authorization =
     await requireAdminApi();
 
-  if ("response" in authorization) {
+  if (
+    "response" in
+    authorization
+  ) {
     return authorization.response;
   }
 
@@ -82,8 +80,22 @@ export async function GET():
         settings: {
           ...DEFAULT_SETTINGS,
           ...(settings || {}),
-          _id: undefined,
-          key: undefined,
+
+          _id:
+            undefined,
+
+          key:
+            undefined,
+
+          /*
+           * Old PTS fields are deliberately
+           * not exposed to the PDS UI.
+           */
+          clientSignupOpen:
+            undefined,
+
+          announcement:
+            undefined,
         },
       },
       {
@@ -117,7 +129,10 @@ export async function PATCH(
   const authorization =
     await requireAdminApi();
 
-  if ("response" in authorization) {
+  if (
+    "response" in
+    authorization
+  ) {
     return authorization.response;
   }
 
@@ -126,7 +141,8 @@ export async function PATCH(
 
   try {
     body =
-      (await request.json()) as SettingsBody;
+      (await request.json()) as
+        SettingsBody;
   } catch {
     return NextResponse.json(
       {
@@ -148,7 +164,9 @@ export async function PATCH(
   const supportEmail =
     typeof body.supportEmail ===
     "string"
-      ? body.supportEmail.trim()
+      ? body.supportEmail
+          .trim()
+          .toLowerCase()
       : "";
 
   const supportPhone =
@@ -163,15 +181,11 @@ export async function PATCH(
       ? body.timezone.trim()
       : "Asia/Kolkata";
 
-  const announcement =
-    typeof body.announcement ===
-    "string"
-      ? body.announcement.trim()
-      : "";
-
   if (
-    schoolName.length < 2 ||
-    schoolName.length > 100
+    schoolName.length <
+      2 ||
+    schoolName.length >
+      100
   ) {
     return NextResponse.json(
       {
@@ -201,14 +215,22 @@ export async function PATCH(
     );
   }
 
+  const validTimezones = [
+    "Asia/Kolkata",
+    "Europe/London",
+    "America/New_York",
+    "Asia/Dubai",
+  ];
+
   if (
-    announcement.length >
-    500
+    !validTimezones.includes(
+      timezone,
+    )
   ) {
     return NextResponse.json(
       {
         error:
-          "Announcement cannot exceed 500 characters.",
+          "Please select a valid timezone.",
       },
       {
         status: 400,
@@ -229,12 +251,6 @@ export async function PATCH(
     facultySignupOpen:
       body.facultySignupOpen ===
       true,
-
-    clientSignupOpen:
-      body.clientSignupOpen ===
-      true,
-
-    announcement,
 
     updatedAt:
       new Date(),
@@ -262,8 +278,17 @@ export async function PATCH(
         {
           $set: {
             ...settings,
+
             key:
               "main",
+          },
+
+          $unset: {
+            clientSignupOpen:
+              "",
+
+            announcement:
+              "",
           },
 
           $setOnInsert: {
@@ -291,6 +316,7 @@ export async function PATCH(
         {
           field:
             "settings",
+
           to:
             "updated",
         },

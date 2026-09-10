@@ -441,20 +441,19 @@ export async function POST(
         new Date(),
     };
 
+if (
+  audienceType ===
+  "role"
+) {
   if (
-    audienceType ===
-    "role"
+    ![
+      "student",
+      "faculty",
+      "admin",
+    ].includes(
+      audienceRole,
+    )
   ) {
-    if (
-      ![
-        "student",
-        "faculty",
-        "client",
-        "admin",
-      ].includes(
-        audienceRole,
-      )
-    ) {
       return NextResponse.json(
         {
           error:
@@ -512,7 +511,25 @@ export async function POST(
         },
       );
     }
-
+if (
+  ![
+    "student",
+    "faculty",
+    "admin",
+  ].includes(
+    targetUser.role,
+  )
+) {
+  return NextResponse.json(
+    {
+      error:
+        "This account cannot receive Prime Digital School notifications.",
+    },
+    {
+      status: 400,
+    },
+  );
+}
     notification.audienceUserId =
       targetUser._id;
 

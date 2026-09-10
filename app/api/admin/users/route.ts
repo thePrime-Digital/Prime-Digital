@@ -41,10 +41,15 @@ import {
   requireAdminApi,
 } from "@/lib/auth/api-authorization";
 
-import type {
-  UserDocument,
-  UserRole,
-  UserStatus,
+import {
+  ADVANCED_CLASSES,
+  COLLEGE_YEARS,
+  FOUNDATION_CLASSES,
+  isStudentLevel,
+  isStudentProgram,
+  type UserDocument,
+  type UserRole,
+  type UserStatus,
 } from "@/types/user";
 
 export const runtime = "nodejs";
@@ -57,7 +62,46 @@ type CreateAccountBody = {
   password?: unknown;
   role?: unknown;
   status?: unknown;
+
+  studentLevel?: unknown;
+  currentClass?: unknown;
+  degreeName?: unknown;
+  program?: unknown;
+  parentPhone?: unknown;
 };
+
+function normaliseText(
+  value: unknown,
+): string {
+  return typeof value === "string"
+    ? value.trim()
+    : "";
+}
+
+function isValidStudentClass(
+  studentLevel: string,
+  currentClass: string,
+): boolean {
+  if (studentLevel === "foundation") {
+    return (
+      FOUNDATION_CLASSES as readonly string[]
+    ).includes(currentClass);
+  }
+
+  if (studentLevel === "advanced") {
+    return (
+      ADVANCED_CLASSES as readonly string[]
+    ).includes(currentClass);
+  }
+
+  if (studentLevel === "college") {
+    return (
+      COLLEGE_YEARS as readonly string[]
+    ).includes(currentClass);
+  }
+
+  return false;
+}
 
 export async function GET(
   request: Request,
@@ -70,7 +114,8 @@ export async function GET(
   }
 
   try {
-    const url = new URL(request.url);
+    const url =
+      new URL(request.url);
 
     const role =
       url.searchParams.get("role");
@@ -85,32 +130,43 @@ export async function GET(
 
     const requestedPage =
       Number(
-        url.searchParams.get("page") || "1",
+        url.searchParams.get("page") ||
+          "1",
       );
 
     const requestedLimit =
       Number(
-        url.searchParams.get("limit") || "25",
+        url.searchParams.get("limit") ||
+          "25",
       );
 
     const page =
-      Number.isFinite(requestedPage) &&
+      Number.isFinite(
+        requestedPage,
+      ) &&
       requestedPage > 0
-        ? Math.floor(requestedPage)
+        ? Math.floor(
+            requestedPage,
+          )
         : 1;
 
     const limit =
-      Number.isFinite(requestedLimit)
+      Number.isFinite(
+        requestedLimit,
+      )
         ? Math.min(
             Math.max(
-              Math.floor(requestedLimit),
+              Math.floor(
+                requestedLimit,
+              ),
               1,
             ),
             100,
           )
         : 25;
 
-    const filter: Filter<UserDocument> = {};
+    const filter:
+      Filter<UserDocument> = {};
 
     if (
       role &&
@@ -123,11 +179,13 @@ export async function GET(
       status &&
       isAllowedUserStatus(status)
     ) {
-      filter.status = status;
+      filter.status =
+        status;
     }
 
     if (search) {
-      const escaped = escapeRegex(search);
+      const escaped =
+        escapeRegex(search);
 
       filter.$or = [
         {
@@ -151,13 +209,15 @@ export async function GET(
       ];
     }
 
-    const summaryFilter: Filter<UserDocument> = {};
+    const summaryFilter:
+      Filter<UserDocument> = {};
 
     if (
       role &&
       isAllowedAdminRole(role)
     ) {
-      summaryFilter.role = role;
+      summaryFilter.role =
+        role;
     }
 
     const collection =
@@ -181,12 +241,15 @@ export async function GET(
           createdAt: -1,
         })
         .skip(
-          (page - 1) * limit,
+          (page - 1) *
+            limit,
         )
         .limit(limit)
         .toArray(),
 
-      collection.countDocuments(filter),
+      collection.countDocuments(
+        filter,
+      ),
 
       collection.countDocuments(),
 
@@ -250,27 +313,33 @@ export async function GET(
 
     return NextResponse.json(
       {
-        users: users.map((user) =>
-          adminSafeUser(
-            user,
-            currentAdminId,
-          ),
+        users: users.map(
+          (user) =>
+            adminSafeUser(
+              user,
+              currentAdminId,
+            ),
         ),
 
         pagination: {
           page,
           limit,
-          total: filteredTotal,
-          totalPages: Math.max(
-            1,
-            Math.ceil(
-              filteredTotal / limit,
+          total:
+            filteredTotal,
+
+          totalPages:
+            Math.max(
+              1,
+              Math.ceil(
+                filteredTotal /
+                  limit,
+              ),
             ),
-          ),
         },
 
         counts: {
-          total: totalAccounts,
+          total:
+            totalAccounts,
           students,
           faculty,
           clients,
@@ -281,10 +350,14 @@ export async function GET(
         },
 
         summary: {
-          total: summaryTotal,
-          active: summaryActive,
-          pending: summaryPending,
-          blocked: summaryBlocked,
+          total:
+            summaryTotal,
+          active:
+            summaryActive,
+          pending:
+            summaryPending,
+          blocked:
+            summaryBlocked,
         },
       },
       {
@@ -322,15 +395,18 @@ export async function POST(
     return authorization.response;
   }
 
-  let body: CreateAccountBody;
+  let body:
+    CreateAccountBody;
 
   try {
     body =
-      (await request.json()) as CreateAccountBody;
+      (await request.json()) as
+        CreateAccountBody;
   } catch {
     return NextResponse.json(
       {
-        error: "Invalid request body.",
+        error:
+          "Invalid request body.",
       },
       {
         status: 400,
@@ -339,32 +415,66 @@ export async function POST(
   }
 
   const name =
-    normaliseName(body.name);
+    normaliseName(
+      body.name,
+    );
 
   const email =
-    normaliseEmail(body.email);
+    normaliseEmail(
+      body.email,
+    );
 
   const phone =
-    normalisePhone(body.phone);
+    normalisePhone(
+      body.phone,
+    );
 
   const password =
-    typeof body.password === "string"
+    typeof body.password ===
+    "string"
       ? body.password
       : "";
 
   const roleValue =
-    typeof body.role === "string"
+    typeof body.role ===
+    "string"
       ? body.role
           .trim()
           .toLowerCase()
       : "";
 
   const statusValue =
-    typeof body.status === "string"
+    typeof body.status ===
+    "string"
       ? body.status
           .trim()
           .toLowerCase()
       : "";
+
+  const studentLevel =
+    normaliseText(
+      body.studentLevel,
+    ).toLowerCase();
+
+  const currentClass =
+    normaliseText(
+      body.currentClass,
+    );
+
+  const degreeName =
+    normaliseText(
+      body.degreeName,
+    );
+
+  const program =
+    normaliseText(
+      body.program,
+    );
+
+  const parentPhone =
+    normalisePhone(
+      body.parentPhone,
+    );
 
   if (!isValidName(name)) {
     return NextResponse.json(
@@ -403,7 +513,9 @@ export async function POST(
   }
 
   if (
-    !isAllowedAdminRole(roleValue)
+    !isAllowedAdminRole(
+      roleValue,
+    )
   ) {
     return NextResponse.json(
       {
@@ -416,6 +528,94 @@ export async function POST(
     );
   }
 
+  if (
+    roleValue ===
+    "student"
+  ) {
+    if (
+      !isStudentLevel(
+        studentLevel,
+      )
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Please select a valid student level.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (
+      !isValidStudentClass(
+        studentLevel,
+        currentClass,
+      )
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Please select a valid standard or college year.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (
+      !isStudentProgram(
+        program,
+      )
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Please select a valid program.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (
+      studentLevel ===
+        "college" &&
+      !degreeName
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Please enter the student's degree or course name.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (
+      studentLevel !==
+        "college" &&
+      !isValidPhone(
+        parentPhone,
+      )
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Please enter a valid parent phone number.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+  }
+
   const passwordError =
     getPasswordValidationError(
       password,
@@ -424,7 +624,8 @@ export async function POST(
   if (passwordError) {
     return NextResponse.json(
       {
-        error: passwordError,
+        error:
+          passwordError,
       },
       {
         status: 400,
@@ -432,7 +633,8 @@ export async function POST(
     );
   }
 
-  let status: UserStatus;
+  let status:
+    UserStatus;
 
   if (
     statusValue &&
@@ -440,17 +642,21 @@ export async function POST(
       statusValue,
     )
   ) {
-    status = statusValue;
+    status =
+      statusValue;
   } else {
     status =
-      roleValue === "faculty"
+      roleValue ===
+      "faculty"
         ? "pending"
         : "active";
   }
 
   try {
     const existingUser =
-      await findUserByEmail(email);
+      await findUserByEmail(
+        email,
+      );
 
     if (existingUser) {
       return NextResponse.json(
@@ -465,61 +671,96 @@ export async function POST(
     }
 
     const passwordHash =
-      await hashPassword(password);
+      await hashPassword(
+        password,
+      );
 
-    const now = new Date();
+    const now =
+      new Date();
 
-    const userData: UserDocument = {
+    const userData:
+      UserDocument = {
       name,
       email,
       phone,
       passwordHash,
-      role: roleValue as UserRole,
+      role:
+        roleValue as UserRole,
       status,
+
+      ...(roleValue ===
+        "student" &&
+      isStudentLevel(
+        studentLevel,
+      ) &&
+      isStudentProgram(
+        program,
+      )
+        ? {
+            studentLevel,
+            currentClass,
+            program,
+
+            ...(studentLevel ===
+            "college"
+              ? {
+                  degreeName,
+                }
+              : {
+                  parentPhone,
+                }),
+          }
+        : {}),
+
       createdAt: now,
       updatedAt: now,
     };
 
     const created =
-      await createUser(userData);
+      await createUser(
+        userData,
+      );
 
-    await createAdminAuditLog({
-      actorId:
-        authorization.user._id.toHexString(),
+    await createAdminAuditLog(
+      {
+        actorId:
+          authorization.user._id.toHexString(),
 
-      actorEmail:
-        authorization.user.email,
+        actorEmail:
+          authorization.user.email,
 
-      action:
-        "ACCOUNT_CREATED",
+        action:
+          "ACCOUNT_CREATED",
 
-      targetUserId:
-        created._id.toHexString(),
+        targetUserId:
+          created._id.toHexString(),
 
-      targetEmail:
-        created.email,
+        targetEmail:
+          created.email,
 
-      changes: [
-        {
-          field: "role",
-          to: created.role,
-        },
-        {
-          field: "status",
-          to: created.status,
-        },
-      ],
-    });
+        changes: [
+          {
+            field: "role",
+            to: created.role,
+          },
+          {
+            field: "status",
+            to: created.status,
+          },
+        ],
+      },
+    );
 
     return NextResponse.json(
       {
         message:
           "Account created successfully.",
 
-        user: adminSafeUser(
-          created,
-          authorization.user._id.toHexString(),
-        ),
+        user:
+          adminSafeUser(
+            created,
+            authorization.user._id.toHexString(),
+          ),
       },
       {
         status: 201,
@@ -542,5 +783,3 @@ export async function POST(
     );
   }
 }
-
-

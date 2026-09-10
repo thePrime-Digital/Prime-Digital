@@ -46,6 +46,9 @@ export async function GET():
     const database =
       await getDatabase();
 
+    /*
+     * Faculty's assigned classes
+     */
     const classes =
       await database
         .collection(
@@ -77,6 +80,9 @@ export async function GET():
       });
     }
 
+    /*
+     * Enrolled students
+     */
     const enrollments =
       await database
         .collection(
@@ -140,11 +146,15 @@ export async function GET():
             .toArray()
         : [];
 
+    /*
+     * Class names
+     */
     const classMap =
       new Map(
         classes.map(
           (item) => [
             item._id.toHexString(),
+
             String(
               item.name ||
                 "Class",
@@ -153,6 +163,9 @@ export async function GET():
         ),
       );
 
+    /*
+     * Student -> classes
+     */
     const studentClasses =
       new Map<
         string,
@@ -213,6 +226,9 @@ export async function GET():
       );
     }
 
+    /*
+     * Attendance
+     */
     const attendanceRecords =
       await database
         .collection(
@@ -255,7 +271,8 @@ export async function GET():
           present: 0,
         };
 
-      current.total += 1;
+      current.total +=
+        1;
 
       if (
         record.status ===
@@ -273,6 +290,58 @@ export async function GET():
       );
     }
 
+    /*
+     * Load assignments so we know
+     * the maximum score for each one.
+     */
+    const assignments =
+      await database
+        .collection(
+          "assignments",
+        )
+        .find({
+          ...getClassReferenceFilter(
+            classIds,
+          ),
+        })
+        .toArray();
+
+    const assignmentScoreMap =
+      new Map<
+        string,
+        number
+      >();
+
+    for (
+      const assignment
+      of assignments
+    ) {
+      const assignmentId =
+        objectIdString(
+          assignment._id,
+        );
+
+      if (!assignmentId) {
+        continue;
+      }
+
+      const maxScore =
+        typeof assignment.maxScore ===
+          "number" &&
+        assignment.maxScore >
+          0
+          ? assignment.maxScore
+          : 100;
+
+      assignmentScoreMap.set(
+        assignmentId,
+        maxScore,
+      );
+    }
+
+    /*
+     * Graded submissions
+     */
     const submissions =
       await database
         .collection(
@@ -290,6 +359,10 @@ export async function GET():
         })
         .toArray();
 
+    /*
+     * Store percentages rather
+     * than raw grades.
+     */
     const gradeMap =
       new Map<
         string,
@@ -305,13 +378,39 @@ export async function GET():
           submission.studentId,
         );
 
+      const assignmentId =
+        objectIdString(
+          submission.assignmentId,
+        );
+
       if (
         !studentId ||
+        !assignmentId ||
         typeof submission.grade !==
-        "number"
+          "number"
       ) {
         continue;
       }
+
+      const maxScore =
+        assignmentScoreMap.get(
+          assignmentId,
+        );
+
+      if (
+        !maxScore ||
+        maxScore <=
+          0
+      ) {
+        continue;
+      }
+
+      const percentage =
+        (
+          submission.grade /
+          maxScore
+        ) *
+        100;
 
       const values =
         gradeMap.get(
@@ -319,7 +418,7 @@ export async function GET():
         ) || [];
 
       values.push(
-        submission.grade,
+        percentage,
       );
 
       gradeMap.set(
@@ -328,6 +427,9 @@ export async function GET():
       );
     }
 
+    /*
+     * Response
+     */
     return NextResponse.json(
       {
         classes:

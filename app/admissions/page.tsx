@@ -1,14 +1,14 @@
 ﻿"use client";
 
 import {
-  ArrowRight,
-  Code,
+  useState,
+  type FormEvent,
+} from "react";
+
+import {
   FileText,
   CheckCircle2,
-  Calendar,
   Award,
-  HelpCircle,
-  MapPin,
   Phone,
   Mail,
   Star,
@@ -22,6 +22,70 @@ import {
 } from "lucide-react";
 
 export default function AdmissionsPage() {
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [successReference, setSuccessReference] = useState("");
+
+  async function handleAdmissionSubmit(
+    event: FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault();
+
+    if (submitting) {
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setSubmitting(true);
+    setFormError("");
+    setSuccessReference("");
+
+    try {
+      const response = await fetch("/api/admissions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentName: formData.get("studentName"),
+          parentName: formData.get("parentName"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          grade: formData.get("grade"),
+          program: formData.get("program"),
+          currentSchool: formData.get("currentSchool"),
+          message: formData.get("message"),
+          consent: formData.get("consent") === "on",
+        }),
+      });
+
+      const data = (await response.json().catch(() => null)) as
+        | {
+            error?: string;
+            message?: string;
+            reference?: string;
+          }
+        | null;
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Unable to submit application.");
+      }
+
+      setSuccessReference(data?.reference || "");
+      form.reset();
+    } catch (error) {
+      setFormError(
+        error instanceof Error
+          ? error.message
+          : "Unable to submit application.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <div className="min-h-screen font-sans bg-[#F3F3F3] text-[#1A1C1C] overflow-x-hidden pt-14">
       {/* Hero */}
@@ -40,9 +104,12 @@ export default function AdmissionsPage() {
               educational experience.
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-2">
-              <button className="bg-[#5C021A] text-white px-8 py-4 rounded-lg text-base font-medium hover:bg-[#7B1C2E] transition-colors">
+              <a
+                href="#application-form"
+                className="bg-[#5C021A] text-white px-8 py-4 rounded-lg text-base font-medium hover:bg-[#7B1C2E] transition-colors"
+              >
                 Start Application
-              </button>
+              </a>
               <button className="border border-[#5C021A] text-[#5C021A] bg-transparent px-8 py-4 rounded-lg text-base font-medium hover:bg-[#5C021A]/5 transition-colors">
                 Download Prospectus
               </button>
@@ -512,20 +579,28 @@ export default function AdmissionsPage() {
       </section>
 
       {/* Application Form & Help */}
-      <section className="bg-white py-16 md:py-20 px-6 md:px-12 flex justify-center">
+      <section
+        id="application-form"
+        className="scroll-mt-28 bg-white py-16 md:py-20 px-6 md:px-12 flex justify-center"
+      >
         <div className="w-full max-w-[1280px] flex flex-col lg:flex-row gap-10 md:gap-12">
           <div className="w-full lg:w-[65%] flex flex-col gap-6 md:gap-8">
             <h2 className="text-2xl md:text-[32px] font-bold text-[#1A1C1C] leading-[40px] tracking-[-0.32px]">
               Ready to Apply?
             </h2>
-            <form className="flex flex-col gap-6">
+            <form
+              onSubmit={handleAdmissionSubmit}
+              className="flex flex-col gap-6"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold text-[#1A1C1C] tracking-[0.7px]">
                     Student Name
                   </label>
                   <input
+                    name="studentName"
                     type="text"
+                    required
                     placeholder="Full name as per records"
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A]"
                   />
@@ -535,6 +610,7 @@ export default function AdmissionsPage() {
                     Parent/Guardian Name
                   </label>
                   <input
+                    name="parentName"
                     type="text"
                     placeholder="Full name"
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A]"
@@ -547,7 +623,9 @@ export default function AdmissionsPage() {
                     Email Address
                   </label>
                   <input
+                    name="email"
                     type="email"
+                    required
                     placeholder="example@email.com"
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A]"
                   />
@@ -557,8 +635,10 @@ export default function AdmissionsPage() {
                     Phone Number
                   </label>
                   <input
+                    name="phone"
                     type="tel"
-                    placeholder="+1 (555) 000-0000"
+                    required
+                    placeholder="+91 98765 43210"
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A]"
                   />
                 </div>
@@ -569,19 +649,20 @@ export default function AdmissionsPage() {
                     Grade Seeking Admission
                   </label>
                   <select
+                    name="grade"
+                    required
                     defaultValue=""
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white text-[#1A1C1C] focus:outline-none focus:border-[#5C021A] appearance-none"
                   >
                     <option value="" disabled>
-                      Select Grade
+                      Select Class / Level
                     </option>
-                    <option>Grade 6</option>
-                    <option>Grade 7</option>
-                    <option>Grade 8</option>
-                    <option>Grade 9</option>
-                    <option>Grade 10</option>
-                    <option>Grade 11</option>
-                    <option>Grade 12</option>
+                    <option>8th Standard</option>
+                    <option>9th Standard</option>
+                    <option>10th Standard</option>
+                    <option>11th Standard</option>
+                    <option>12th Standard</option>
+                    <option>Degree / Undergraduate</option>
                   </select>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -589,26 +670,84 @@ export default function AdmissionsPage() {
                     Current School
                   </label>
                   <input
+                    name="currentSchool"
                     type="text"
-                    placeholder="Name of previous school"
+                    placeholder="Current school / college"
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A]"
                   />
                 </div>
               </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-[#1A1C1C] tracking-[0.7px]">
+                  Program
+                </label>
+                <select
+                  name="program"
+                  required
+                  defaultValue=""
+                  className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white text-[#1A1C1C] focus:outline-none focus:border-[#5C021A]"
+                >
+                  <option value="" disabled>
+                    Select Program
+                  </option>
+                  <option>Technology &amp; Coding</option>
+                  <option>AI, Robotics &amp; Future Tech</option>
+                  <option>Business &amp; Digital Marketing</option>
+                  <option>Design &amp; Creative Arts</option>
+                  <option>Entrepreneurship &amp; Innovation</option>
+                  <option>Cybersecurity &amp; Digital Safety</option>
+                </select>
+              </div>
+
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-[#1A1C1C] tracking-[0.7px]">
                   Additional Message
                 </label>
                 <textarea
+                  name="message"
                   placeholder="Any specific queries or requirements..."
                   className="h-[122px] p-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A] resize-none"
                 ></textarea>
               </div>
+              <label className="flex items-start gap-3 rounded-lg bg-[#F8F4F5] p-4">
+                <input
+                  name="consent"
+                  type="checkbox"
+                  required
+                  className="mt-1 h-4 w-4 accent-[#5C021A]"
+                />
+                <span className="text-xs leading-5 text-[#5F5E5E]">
+                  I confirm that the information provided is accurate and consent
+                  to Prime Digital School using these details for the admission
+                  process.
+                </span>
+              </label>
+
+              {formError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                  {formError}
+                </div>
+              )}
+
+              {successReference && (
+                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+                  <p className="font-bold text-emerald-800">
+                    Application submitted successfully.
+                  </p>
+                  <p className="mt-2 text-sm text-emerald-700">
+                    Application Reference:{" "}
+                    <span className="font-black">{successReference}</span>
+                  </p>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="bg-[#5C021A] text-white py-4 rounded-lg text-base font-normal hover:bg-[#7B1C2E] transition-colors w-full mt-2"
+                disabled={submitting}
+                className="bg-[#5C021A] text-white py-4 rounded-lg text-base font-normal hover:bg-[#7B1C2E] transition-colors w-full mt-2 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Submit Application
+                {submitting ? "Submitting Application..." : "Submit Application"}
               </button>
             </form>
           </div>
@@ -803,9 +942,12 @@ export default function AdmissionsPage() {
               innovation, leadership, and digital mastery.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mt-4 w-full">
-              <button className="bg-white text-[#5C021A] px-8 md:px-10 py-4 rounded-lg text-sm md:text-base font-bold hover:bg-gray-100 transition-colors">
+              <a
+                href="#application-form"
+                className="bg-white text-[#5C021A] px-8 md:px-10 py-4 rounded-lg text-sm md:text-base font-bold hover:bg-gray-100 transition-colors"
+              >
                 Start Application
-              </button>
+              </a>
               <button className="bg-white/10 border border-white/30 text-white px-8 md:px-10 py-4 rounded-lg text-sm md:text-base font-bold hover:bg-white/20 transition-colors">
                 Contact Admissions
               </button>

@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+app/api/admin/fees/route.ts.backup-20260909-170829
+app/fees/\[id]/receipt/page.tsx.backup-20260909-171927
+app/fees/\[id]/receipt/page.tsx.backup-20260909-173133
+app/programs/page.tsx.backup-20260909-154149
+app/services/page.tsx.brand-backup
+components/dashboard/dashboard-navigation.ts.backup-20260909-165052
+components/fees/fee-receipt.tsx.backup-20260909-171927
+components/fees/fee-receipt.tsx.backup-20260909-173133
+components/fees/fees-dashboard.tsx.backup-20260909-170829
+lib/program-data.ts.backup-20260909-154149
+lib/data/fees.ts.backup-20260909-171927
+types/user.ts.backup-20260909-170457
+types/user.ts.backup-20260909-170829
