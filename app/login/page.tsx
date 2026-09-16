@@ -7,7 +7,6 @@ import { useContactAuth } from "self-iam";
 import { SelfIAMProvider } from "../providers";
 
 const CAMPUS_IMAGE = "/login/campus-building.png";
-const NORMAL_SHIELD = "/login/normal-shield.png";
 const SPINNING_3D_LOGO = "/login/logo-3d-transparent.png";
 const LOGIN_HERO_IMAGE = "/login/login-hero.jpeg";
 
@@ -97,33 +96,14 @@ function LoginForm() {
       {/* Login card */}
       <section className="relative z-30 ml-auto flex min-h-[calc(100vh-118px)] w-full items-center justify-center px-5 py-6 sm:px-8 lg:w-[42%] lg:justify-center lg:px-8 xl:px-12">
         <div className="w-full max-w-[455px] rounded-[2rem] border border-white/80 bg-white/[0.98] p-7 shadow-[0_30px_90px_rgba(20,0,7,0.42)] backdrop-blur-2xl sm:p-8">
-          {/* Top */}
-          <div className="mb-7 flex items-start justify-between">
-            <div className="relative h-14 w-14">
-              <Image
-                src={NORMAL_SHIELD}
-                alt="Prime Digital School"
-                fill
-                priority
-                sizes="56px"
-                className="object-contain"
-              />
-            </div>
 
-            <select
-              defaultValue="English"
-              className="h-10 rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-700 outline-none transition focus:border-[#9b0023] focus:ring-4 focus:ring-[#9b0023]/10"
-            >
-              <option>English</option>
-              <option>Hindi</option>
-            </select>
-          </div>
 
           {/* Heading */}
-          <div className="mb-7 text-center">
-            <h1 className="font-serif text-4xl font-bold tracking-tight text-slate-950">
+          <div className="mb-6 text-center">
+            <h1 className="font-serif text-4xl font-bold tracking-tight text-slate-950 sm:text-[42px]">
               Welcome Back!
             </h1>
+
             <p className="mt-2 text-sm font-semibold text-[#9b0023]">
               Continue your learning journey
             </p>
@@ -241,7 +221,6 @@ function LoginForm() {
             <div className="h-px flex-1 bg-slate-200" />
             <div className="h-px flex-1 bg-slate-200" />
           </div>
-
 
           <p className="mt-5 text-center text-sm font-semibold text-slate-600">
             Don&apos;t have an account?{" "}

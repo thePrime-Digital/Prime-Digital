@@ -313,12 +313,8 @@ export default function ContactPage() {
                     </p>
 
                     <div className="mt-2 grid grid-cols-[1fr_auto] gap-x-8 gap-y-1 text-sm text-[#667085]">
-                      <span>Mon - Fri</span>
-                      <span>09:00 AM - 06:00 PM</span>
-                      <span>Saturday</span>
-                      <span>10:00 AM - 02:00 PM</span>
-                      <span>Sunday</span>
-                      <span className="font-bold text-[#8f0024]">Closed</span>
+                      <span>Mon - Sun</span>
+                      <span>08:00 AM - 10:00 PM</span>
                     </div>
                   </div>
                 </div>

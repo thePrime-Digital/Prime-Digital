@@ -99,28 +99,6 @@ export default function ProgramsPage() {
               className="w-full pl-14 pr-6 py-[18px] bg-white border border-[#DCC0C1] rounded-full shadow-[0px_1px_2px_rgba(0,0,0,0.05)] text-[16px] leading-[19px] placeholder-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#5C021A]/20 focus:border-[#5C021A]"
             />
           </div>
-
-          {/* Filter Pills */}
-          <div className="flex flex-wrap justify-center gap-3 pt-[33.1px] w-full max-w-[1120px]">
-            <button className="px-6 py-2 bg-[#5C021A] text-white rounded-full text-[14px] leading-[17px] font-medium tracking-[0.14px]">
-              All Programs
-            </button>
-            {[
-              "Web Dev",
-              "UI/UX Design",
-              "Data Science",
-              "AI/ML",
-              "Marketing",
-              "Cybersecurity",
-            ].map((pill) => (
-              <button
-                key={pill}
-                className="px-6 py-2 bg-white text-[#5C021A] border border-[#5C021A] rounded-full text-[14px] leading-[17px] font-medium tracking-[0.14px] hover:bg-[#5C021A]/5 transition-colors"
-              >
-                {pill}
-              </button>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -154,66 +132,7 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="bg-[#FCF9F8] py-20 px-6 md:px-20">
-        <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-16">
-          <div className="text-center max-w-2xl">
-            <h2 className="text-[32px] md:text-[40px] font-semibold text-[#1A1A1A] leading-tight mb-4">
-              How It Works
-            </h2>
-            <p className="text-lg text-[#5D5F5F]">
-              Your journey from curiosity to career-ready in four simple steps
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
-            {[
-              {
-                step: "01",
-                icon: Search,
-                title: "Choose Your Path",
-                desc: "Browse our programs and find the one that matches your passion and goals.",
-              },
-              {
-                step: "02",
-                icon: Laptop,
-                title: "Learn by Doing",
-                desc: "Engage with hands-on projects, live sessions, and real-world case studies.",
-              },
-              {
-                step: "03",
-                icon: Target,
-                title: "Build Your Portfolio",
-                desc: "Apply your skills to capstone projects that showcase your expertise.",
-              },
-              {
-                step: "04",
-                icon: Award,
-                title: "Get Certified & Placed",
-                desc: "Earn industry-recognized certificates and launch your dream career.",
-              },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="relative bg-white border border-[#DCC0C1] rounded-xl p-8 hover:shadow-lg transition-all duration-300 group"
-              >
-                <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-[#5C021A] text-white flex items-center justify-center text-sm font-bold">
-                  {item.step}
-                </div>
-                <div className="w-12 h-12 bg-[#5C021A]/10 rounded-lg flex items-center justify-center text-[#5C021A] mb-6 group-hover:bg-[#5C021A] group-hover:text-white transition-colors">
-                  <item.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-[#5D5F5F] leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
       {/* All Programs */}
       <section className="bg-[#FCF9F8] py-16 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto">
@@ -649,6 +568,67 @@ export default function ProgramsPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="bg-[#FCF9F8] py-20 px-6 md:px-20">
+        <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-16">
+          <div className="text-center max-w-2xl">
+            <h2 className="text-[32px] md:text-[40px] font-semibold text-[#1A1A1A] leading-tight mb-4">
+              How It Works
+            </h2>
+            <p className="text-lg text-[#5D5F5F]">
+              Your journey from curiosity to career-ready in four simple steps
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
+            {[
+              {
+                step: "01",
+                icon: Search,
+                title: "Choose Your Path",
+                desc: "Browse our programs and find the one that matches your passion and goals.",
+              },
+              {
+                step: "02",
+                icon: Laptop,
+                title: "Learn by Doing",
+                desc: "Engage with hands-on projects, live sessions, and real-world case studies.",
+              },
+              {
+                step: "03",
+                icon: Target,
+                title: "Build Your Portfolio",
+                desc: "Apply your skills to capstone projects that showcase your expertise.",
+              },
+              {
+                step: "04",
+                icon: Award,
+                title: "Get Certified & Placed",
+                desc: "Earn industry-recognized certificates and launch your dream career.",
+              },
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="relative bg-white border border-[#DCC0C1] rounded-xl p-8 hover:shadow-lg transition-all duration-300 group"
+              >
+                <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-[#5C021A] text-white flex items-center justify-center text-sm font-bold">
+                  {item.step}
+                </div>
+                <div className="w-12 h-12 bg-[#5C021A]/10 rounded-lg flex items-center justify-center text-[#5C021A] mb-6 group-hover:bg-[#5C021A] group-hover:text-white transition-colors">
+                  <item.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-[#5D5F5F] leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

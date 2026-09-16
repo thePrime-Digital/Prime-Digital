@@ -1,19 +1,23 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 :root {
   color-scheme: light only;
   forced-color-adjust: none;
   -ms-high-contrast-adjust: none;
+
   --primary: #7a0019;
   --primary-dark: #5a0012;
   --primary-light: #a11233;
   --gold: #d8b04c;
+
   --white: #ffffff;
   --off-white: #f8f8f8;
+
   --gray-100: #f3f4f6;
   --gray-200: #e5e7eb;
   --gray-500: #6b7280;
   --gray-900: #111827;
+
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.12);
@@ -29,14 +33,19 @@ html {
 
 body {
   margin: 0;
+
   background: #ffffff;
   color: var(--gray-900);
+
   forced-color-adjust: none;
   -ms-high-contrast-adjust: none;
-  font-family: var(--font-inter), Inter, Arial, sans-serif;
-}
 
- 
+  font-family:
+    var(--font-inter),
+    Inter,
+    Arial,
+    sans-serif;
+}
 
 button {
   cursor: pointer;
@@ -52,77 +61,109 @@ button {
   display: none;
 }
 
-/* Programs */
+/* ======================================
+   Programs
+====================================== */
 
 .pds-programs-section {
   width: min(1320px, calc(100% - 96px));
-  margin: 28px auto 0;
-  margin-top: 80px;
+  margin: 80px auto 0;
 }
 
 .pds-section-heading {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+
   gap: 24px;
+
   margin-bottom: 16px;
 }
 
 .pds-section-heading h2 {
   margin: 0;
-  font-family: var(--font-playfair), Georgia, serif;
+
+  font-family:
+    var(--font-playfair),
+    Georgia,
+    serif;
+
   font-size: 30px;
   line-height: 1;
+
   color: #111111;
 }
 
 .pds-section-heading span {
+  display: block;
+
   width: 58px;
   height: 3px;
-  display: block;
+
   margin-top: 8px;
+
   border-radius: 999px;
+
   background: var(--primary);
 }
 
 .pds-section-heading a {
   display: inline-flex;
   align-items: center;
+
   gap: 8px;
+
   color: var(--primary);
+
   font-size: 14px;
   font-weight: 900;
+
   text-decoration: none;
 }
 
 .pds-program-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+
+  grid-template-columns:
+    repeat(5, 1fr);
+
   gap: 14px;
 }
 
 .pds-program-card {
   min-height: 250px;
+
   padding: 26px 18px 22px;
+
   border: 1px solid var(--gray-200);
   border-radius: 14px;
+
   background: #ffffff;
+
   text-align: center;
+
   box-shadow: var(--shadow-sm);
-  transition: 0.3s ease;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .pds-program-card:hover {
   transform: translateY(-8px);
+
   box-shadow: var(--shadow-lg);
 }
 
 .pds-program-icon {
-  width: 58px;
-  height: 58px;
-  margin: 0 auto;
   display: grid;
   place-items: center;
+
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto;
+
   color: var(--primary);
 }
 
@@ -133,179 +174,618 @@ button {
 .pds-program-card h3 {
   max-width: 150px;
   min-height: 44px;
+
   margin: 14px auto 10px;
+
   font-size: 15px;
   line-height: 1.24;
+
   color: #171717;
 }
 
 .pds-program-card p {
   max-width: 178px;
   min-height: 64px;
+
   margin: 0 auto;
+
   font-size: 13px;
   line-height: 1.55;
+
   color: #3f3f46;
 }
 
 .pds-card-arrow {
-  width: 42px;
-  height: 42px;
-  margin: 18px auto 0;
   display: inline-grid;
   place-items: center;
+
+  width: 42px;
+  height: 42px;
+
+  margin: 18px auto 0;
+
   border: 1px solid var(--gray-200);
   border-radius: 50%;
+
   background: #ffffff;
   color: var(--primary);
+
   text-decoration: none;
-  transition: 0.3s ease;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
 .pds-card-arrow:hover {
   background: var(--primary);
   color: #ffffff;
+
+  transform: translateY(-2px);
 }
 
-/* Feature Cards */
+/* ======================================
+   Feature Cards
+====================================== */
 
 .pds-feature-grid {
   width: min(1320px, calc(100% - 96px));
+
   margin: 20px auto 0;
+
   display: grid;
-  grid-template-columns:  0.82fr 1.18fr;
+
+  grid-template-columns:
+    0.82fr 1.18fr;
+
   gap: 20px;
+
   align-items: stretch;
 }
 
-.pds-promo-card,
-.pds-excellence-card {
-  min-height: 290px;
-  border-radius: 18px;
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light));
-  color: #ffffff;
-  box-shadow: var(--shadow-md);
-}
+/* ======================================
+   Promo Card
+====================================== */
 
 .pds-promo-card {
-  min-height: 360px;
-  display: grid;
-  grid-template-columns: 0.95fr 1.1fr;
-  align-items: stretch;
-  border-radius: 24px;
   position: relative;
+
+  min-height: 360px;
+
+  display: grid;
+
+  grid-template-columns:
+    0.95fr 1.1fr;
+
+  align-items: stretch;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary-dark),
+      var(--primary),
+      var(--primary-light)
+    );
+
+  color: #ffffff;
+
+  box-shadow: var(--shadow-md);
 }
 
 .pds-promo-card::after {
   content: "";
+
   position: absolute;
+
   top: 0;
   right: 0;
+
   width: 210px;
   height: 90px;
+
   z-index: 3;
+
   pointer-events: none;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1.5px, transparent 1.5px);
+
+  background-image:
+    radial-gradient(
+      rgba(255, 255, 255, 0.22) 1.5px,
+      transparent 1.5px
+    );
+
   background-size: 13px 13px;
+
   opacity: 0.45;
 }
 
 .pds-promo-content {
+  position: relative;
+
+  z-index: 2;
+
   padding: 54px 44px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
-  z-index: 2;
 }
 
-.pds-promo-content h2,
-.pds-excellence-card h2 {
+.pds-promo-content h2 {
   margin: 0;
+
   font-size: 34px;
   line-height: 1.08;
   font-weight: 900;
+
   letter-spacing: -0.5px;
 }
 
-.pds-promo-content p,
-.pds-excellence-card p {
+.pds-promo-content p {
   max-width: 420px;
+
   margin: 22px 0 0;
+
   font-size: 16px;
   line-height: 1.6;
+
   color: rgba(255, 255, 255, 0.88);
 }
 
 .pds-promo-content a {
   width: fit-content;
   min-height: 54px;
+
   margin-top: 30px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   gap: 10px;
+
   padding: 0 26px;
+
   border-radius: 999px;
+
   background: #ffffff;
   color: var(--primary);
+
   font-size: 15px;
   font-weight: 900;
+
   text-decoration: none;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+
+  box-shadow:
+    0 10px 24px
+    rgba(0, 0, 0, 0.12);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.pds-promo-content a:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 30px
+    rgba(0, 0, 0, 0.18);
 }
 
 .pds-promo-image {
   position: relative;
+
+  z-index: 2;
+
   height: 100%;
   min-height: 360px;
+
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
+
   overflow: hidden;
-  z-index: 2;
 }
 
 .pds-promo-image img {
+  display: block;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
   object-position: center center;
-  display: block;
 }
 
+/* ======================================
+   Excellence Card
+====================================== */
+
 .pds-excellence-card {
-  padding: 38px;
+  position: relative;
+
+  min-height: 540px;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  padding: 48px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #650018 0%,
+      #80001f 48%,
+      #a51137 100%
+    );
+
+  box-shadow:
+    0 28px 70px
+    rgba(105, 0, 25, 0.2);
+
+  isolation: isolate;
+}
+
+.pds-excellence-content {
+  position: relative;
+
+  z-index: 5;
+
+  width: 100%;
+  min-height: 440px;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
+
+  text-align: left;
+}
+
+.pds-excellence-grid-pattern {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  opacity: 0.045;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.7) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.7) 1px,
+      transparent 1px
+    );
+
+  background-size: 42px 42px;
+}
+
+.pds-excellence-glow {
+  position: absolute;
+
+  border-radius: 999px;
+
+  filter: blur(100px);
+
+  pointer-events: none;
+}
+
+.pds-excellence-glow-one {
+  width: 320px;
+  height: 320px;
+
+  right: -100px;
+  top: -100px;
+
   background:
-    radial-gradient(circle at 70% 15%, rgba(216, 176, 76, 0.2), transparent 26%),
-    linear-gradient(135deg, var(--primary-dark), var(--primary));
+    rgba(
+      255,
+      104,
+      143,
+      0.22
+    );
+}
+
+.pds-excellence-glow-two {
+  width: 280px;
+  height: 280px;
+
+  left: -90px;
+  bottom: -120px;
+
+  background:
+    rgba(
+      232,
+      191,
+      57,
+      0.14
+    );
+}
+
+.pds-excellence-badge {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 26px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  border-radius: 999px;
+
+  padding:
+    10px
+    17px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  backdrop-filter:
+    blur(12px);
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.82
+    );
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+}
+
+.pds-excellence-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #e7bd37;
+
+  box-shadow:
+    0 0 14px
+    rgba(
+      231,
+      189,
+      55,
+      0.65
+    );
 }
 
 .pds-award-icon {
-  width: 88px;
-  height: 72px;
-  margin-bottom: 14px;
-  display: grid;
-  place-items: center;
-  color: var(--gold);
-  font-size: 62px;
-  line-height: 1;
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 22px;
+
+  border:
+    1px solid
+    rgba(
+      232,
+      191,
+      57,
+      0.3
+    );
+
+  border-radius: 18px;
+
+  background:
+    rgba(
+      232,
+      191,
+      57,
+      0.1
+    );
+
+  color: #e8bf39;
+
+  font-size: 31px;
+
+  box-shadow:
+    0 14px 35px
+    rgba(
+      232,
+      191,
+      57,
+      0.12
+    );
 }
 
-/* Why + Testimonial */
+.pds-excellence-eyebrow {
+  margin:
+    0
+    0
+    12px;
+
+  color: #e8bf39;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.2em;
+
+  text-transform: uppercase;
+}
+
+.pds-excellence-card h2 {
+  max-width: 520px;
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      34px,
+      3.2vw,
+      48px
+    );
+
+  font-weight: 800;
+  line-height: 1.05;
+
+  letter-spacing: -1.8px;
+}
+
+.pds-excellence-card h2 span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+}
+
+.pds-excellence-description {
+  max-width: 520px;
+
+  margin-top: 22px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.67
+    );
+
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.pds-excellence-features {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin-top: 34px;
+}
+
+.pds-excellence-features > div {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  border-radius: 15px;
+
+  padding: 16px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
+
+  backdrop-filter:
+    blur(10px);
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.pds-excellence-features > div:hover {
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+}
+
+.pds-excellence-features span {
+  color: #e8bf39;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 0.14em;
+}
+
+.pds-excellence-features p {
+  margin:
+    8px
+    0
+    0;
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  line-height: 1.45;
+}
+
+/* ======================================
+   Why + Testimonial
+====================================== */
 
 .pds-why-testimonial {
   width: min(1320px, calc(100% - 96px));
+
   margin: 20px auto 0;
+
   display: grid;
-  grid-template-columns: 1.05fr 0.62fr ;
+
+  grid-template-columns:
+    1.05fr 0.62fr;
+
   gap: 20px;
+
   align-items: stretch;
 }
 
@@ -313,11 +793,18 @@ button {
 .pds-testimonial-card,
 .pds-campus-card {
   min-height: 170px;
-  border-radius: 18px;
-  border: 1px solid var(--gray-200);
-  background: #ffffff;
-  box-shadow: var(--shadow-sm);
+
   overflow: hidden;
+
+  border:
+    1px solid
+    var(--gray-200);
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: var(--shadow-sm);
 }
 
 .pds-why-card {
@@ -326,20 +813,29 @@ button {
 
 .pds-small-label {
   color: var(--primary);
+
   font-size: 14px;
   font-weight: 900;
 }
 
 .pds-why-card h2 {
   margin: 4px 0 18px;
-  font-family: var(--font-playfair), Georgia, serif;
+
+  font-family:
+    var(--font-playfair),
+    Georgia,
+    serif;
+
   font-size: 30px;
   line-height: 1;
 }
 
 .pds-why-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+
+  grid-template-columns:
+    repeat(5, 1fr);
+
   gap: 12px;
 }
 
@@ -347,16 +843,22 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 9px;
+
   text-align: center;
+
   color: #18181b;
+
   font-size: 12px;
   font-weight: 800;
+
   line-height: 1.25;
 }
 
 .pds-why-item svg {
   color: var(--primary);
+
   stroke-width: 1.8;
 }
 
@@ -370,74 +872,204 @@ button {
 
 .pds-testimonial-card {
   display: grid;
-  grid-template-columns: 70px 1fr 148px;
+
+  grid-template-columns:
+    70px 1fr 148px;
+
   align-items: center;
+
   gap: 8px;
+
   padding: 24px;
 }
 
 .pds-quote {
   color: var(--primary);
-  font-family: Georgia, serif;
+
+  font-family:
+    Georgia,
+    serif;
+
   font-size: 76px;
   line-height: 0.5;
 }
 
 .pds-testimonial-card p {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.55;
+
   color: #27272a;
+
+  font-size: 14px;
+
+  line-height: 1.55;
 }
 
 .pds-student-review {
   display: flex;
   align-items: center;
+
   gap: 12px;
 }
 
 .pds-avatar {
   width: 64px;
   height: 64px;
+
   display: grid;
   place-items: center;
+
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--primary-light)
+    );
+
   color: #ffffff;
+
   font-size: 26px;
   font-weight: 900;
 }
 
 .pds-student-review strong {
   display: block;
+
   font-size: 14px;
 }
 
 .pds-student-review span {
   display: block;
+
   margin-top: 3px;
-  font-size: 12px;
+
   color: #52525b;
+
+  font-size: 12px;
 }
 
 .pds-student-review small {
   display: block;
+
   margin-top: 5px;
+
   color: var(--primary);
+
   letter-spacing: 1px;
 }
 
-/* Tablet */
+/* ======================================
+   Testimonials Scroll
+====================================== */
+
+.pds-testimonials-scroll {
+  width: 100%;
+
+  overflow: hidden;
+
+  padding: 48px 0;
+
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      #fff 8%,
+      #fff 92%,
+      transparent 100%
+    );
+
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      #fff 8%,
+      #fff 92%,
+      transparent 100%
+    );
+}
+
+.pds-testimonials-track {
+  display: flex;
+
+  gap: 20px;
+
+  width: max-content;
+
+  animation:
+    pds-scroll
+    60s
+    linear
+    infinite;
+}
+
+.pds-testimonials-track:hover {
+  animation-play-state: paused;
+}
+
+.pds-review-card {
+  width: 360px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding: 24px;
+
+  border:
+    1px solid
+    var(--gray-200);
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.pds-review-card p {
+  margin: 0;
+
+  color: #27272a;
+
+  font-size: 14px;
+
+  line-height: 1.55;
+}
+
+@keyframes pds-scroll {
+  0% {
+    transform:
+      translateX(0);
+  }
+
+  100% {
+    transform:
+      translateX(-50%);
+  }
+}
+
+/* ======================================
+   Tablet
+====================================== */
 
 @media (max-width: 1180px) {
   .pds-programs-section,
   .pds-feature-grid,
   .pds-why-testimonial {
-    width: min(100% - 48px, 1320px);
+    width:
+      min(
+        calc(100% - 48px),
+        1320px
+      );
   }
 
   .pds-program-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(2, 1fr);
   }
 
   .pds-feature-grid,
@@ -447,11 +1079,15 @@ button {
 
   .pds-promo-card {
     grid-template-columns: 1fr;
+
     min-height: auto;
   }
 
   .pds-promo-content {
-    padding: 34px 30px 24px;
+    padding:
+      34px
+      30px
+      24px;
   }
 
   .pds-promo-image {
@@ -459,7 +1095,8 @@ button {
   }
 
   .pds-why-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns:
+      repeat(5, 1fr);
   }
 
   .pds-campus-card {
@@ -467,7 +1104,9 @@ button {
   }
 
   .pds-testimonial-card {
-    grid-template-columns: 70px 1fr;
+    grid-template-columns:
+      70px
+      1fr;
   }
 
   .pds-student-review {
@@ -475,14 +1114,34 @@ button {
   }
 }
 
-/* Mobile */
+/* ======================================
+   Mobile
+====================================== */
+
+@media (max-width: 768px) {
+  .pds-excellence-card {
+    min-height: auto;
+  }
+
+  .pds-excellence-content {
+    min-height: auto;
+  }
+
+  .pds-excellence-features {
+    grid-template-columns: 1fr;
+  }
+}
 
 @media (max-width: 720px) {
   .pds-programs-section,
   .pds-feature-grid,
   .pds-why-testimonial,
   .pds-footer {
-    width: min(100% - 28px, 1320px);
+    width:
+      min(
+        calc(100% - 28px),
+        1320px
+      );
   }
 
   .pds-section-heading {
@@ -504,15 +1163,20 @@ button {
 
   .pds-promo-card {
     grid-template-columns: 1fr;
+
     border-radius: 22px;
   }
 
   .pds-promo-content {
-    padding: 28px 24px 20px;
+    padding:
+      28px
+      24px
+      20px;
   }
 
   .pds-promo-content h2 {
     font-size: 28px;
+
     line-height: 1.12;
   }
 
@@ -522,7 +1186,11 @@ button {
 
   .pds-promo-content a {
     min-height: 50px;
-    padding: 0 22px;
+
+    padding:
+      0
+      22px;
+
     font-size: 14px;
   }
 
@@ -531,19 +1199,44 @@ button {
   }
 
   .pds-excellence-card {
-    padding: 32px 24px;
+    padding:
+      32px
+      24px;
+  }
+
+  .pds-excellence-badge {
+    margin-bottom: 22px;
+  }
+
+  .pds-excellence-card h2 {
+    font-size: 34px;
+
+    letter-spacing: -1.2px;
+  }
+
+  .pds-excellence-description {
+    font-size: 13px;
+
+    line-height: 1.75;
+  }
+
+  .pds-excellence-features {
+    margin-top: 28px;
   }
 
   .pds-why-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(2, 1fr);
   }
 
   .pds-why-item:last-child {
-    grid-column: 1 / -1;
+    grid-column:
+      1 / -1;
   }
 
   .pds-testimonial-card {
     grid-template-columns: 1fr;
+
     text-align: left;
   }
 
@@ -552,17 +1245,23 @@ button {
   }
 
   .pds-footer {
-    padding: 30px 22px 0;
+    padding:
+      30px
+      22px
+      0;
+
     border-radius: 22px;
   }
 
   .pds-footer-grid {
     grid-template-columns: 1fr;
+
     gap: 30px;
   }
 
   .pds-footer-logo-card {
     width: 100%;
+
     min-height: 190px;
   }
 
@@ -580,80 +1279,36 @@ button {
 
   .pds-footer-bottom {
     margin-top: 30px;
-    padding: 20px 0;
+
+    padding:
+      20px
+      0;
+
     flex-direction: column;
     align-items: flex-start;
+
     gap: 14px;
   }
 
   .pds-footer-bottom p {
     white-space: normal;
+
     font-size: 13.5px;
   }
 
   .pds-footer-legal {
     flex-wrap: wrap;
+
     gap: 16px;
   }
 
   .pds-footer-legal a {
     font-size: 13.5px;
   }
-}
 
-/* ─── Testimonials scroll ─── */
-
-.pds-testimonials-scroll {
-  width: 100%;
-  overflow: hidden;
-  padding: 48px 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #fff 8%, #fff 92%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, #fff 8%, #fff 92%, transparent 100%);
-}
-
-.pds-testimonials-track {
-  display: flex;
-  gap: 20px;
-  width: max-content;
-  animation: pds-scroll 60s linear infinite;
-}
-
-.pds-testimonials-track:hover {
-  animation-play-state: paused;
-}
-
-.pds-review-card {
-  width: 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 24px;
-  flex-shrink: 0;
-  border-radius: 18px;
-  border: 1px solid var(--gray-200);
-  background: #ffffff;
-  box-shadow: var(--shadow-sm);
-}
-
-.pds-review-card p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.55;
-  color: #27272a;
-}
-
-@keyframes pds-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@media (max-width: 720px) {
   .pds-review-card {
     width: 280px;
+
     padding: 18px;
   }
 }
