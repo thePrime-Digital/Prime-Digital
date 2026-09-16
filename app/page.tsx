@@ -269,16 +269,75 @@ export default function Home() {
       </section>
 
       <section className="pds-feature-grid">
+        {/* ====================================== */}
+        {/* Excellence Card */}
+        {/* ====================================== */}
         <article className="pds-excellence-card">
-          <div className="pds-award-icon">★</div>
+          <div className="pds-excellence-glow pds-excellence-glow-one" />
+          <div className="pds-excellence-glow pds-excellence-glow-two" />
 
-          <h2>Excellence in Education</h2>
+          <div className="pds-excellence-grid-pattern" />
 
-          <p>
-            Empowering students with skills, knowledge, and confidence to
-            succeed in a global world.
-          </p>
+          <div className="pds-excellence-content">
+            <div className="pds-excellence-badge">
+              <span className="pds-excellence-dot" />
+              Prime Digital School
+            </div>
+
+            <div className="pds-award-icon">★</div>
+
+            <p className="pds-excellence-eyebrow">
+              Built for ambitious learners
+            </p>
+
+            <h2>
+              Excellence in Education.
+              <br />
+              <span>Built for the Future.</span>
+            </h2>
+
+            <p className="pds-excellence-description">
+              Empowering students with practical skills, expert guidance, and
+              the confidence to succeed in a digital-first world.
+            </p>
+
+            <div className="pds-excellence-features">
+              <div>
+                <span>01</span>
+
+                <p>
+                  Future-Ready
+                  <br />
+                  Skills
+                </p>
+              </div>
+
+              <div>
+                <span>02</span>
+
+                <p>
+                  Expert
+                  <br />
+                  Mentorship
+                </p>
+              </div>
+
+              <div>
+                <span>03</span>
+
+                <p>
+                  Practical
+                  <br />
+                  Learning
+                </p>
+              </div>
+            </div>
+          </div>
         </article>
+
+        {/* ====================================== */}
+        {/* Digital Future Promo */}
+        {/* ====================================== */}
         <article className="pds-promo-card">
           <div className="pds-promo-content">
             <h2>
@@ -293,7 +352,8 @@ export default function Home() {
             </p>
 
             <Link href="/programs">
-              Discover More <ArrowRight size={16} />
+              Discover More
+              <ArrowRight size={16} />
             </Link>
           </div>
 
@@ -307,7 +367,7 @@ export default function Home() {
           </div>
         </article>
       </section>
-
+      
       <section className="pds-why-testimonial">
         <div className="pds-why-card">
           <div className="pds-small-label">Why Choose</div>
@@ -377,17 +437,17 @@ export default function Home() {
             {/* ====================================== */}
             {/* Prime Digital Agency — LIGHT */}
             {/* ====================================== */}
-            <div className="relative flex flex-col justify-center overflow-hidden border-b border-slate-200 bg-gradient-to-br from-cyan-50 via-white to-sky-50 px-8 py-12 md:border-b-0 md:border-r md:px-16">
-              <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-cyan-200/55 blur-[100px]" />
+            <div className="relative flex flex-col justify-center overflow-hidden border-b border-slate-200 bg-gradient-to-br from-[#F2F8FF] via-white to-[#EAF5FF] px-8 py-12 md:border-b-0 md:border-r md:px-16">
+              <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[#A8D1F7]/55 blur-[100px]" />
 
-              <div className="pointer-events-none absolute -bottom-28 -right-20 h-72 w-72 rounded-full bg-blue-100/70 blur-[110px]" />
+              <div className="pointer-events-none absolute -bottom-28 -right-20 h-72 w-72 rounded-full bg-[#DDEEFF]/70 blur-[110px]" />
 
               <div className="relative z-10">
-                <div className="mb-6 inline-flex h-10 items-center rounded-full border border-cyan-200 bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-cyan-700">
+                <div className="mb-6 inline-flex h-10 items-center rounded-full border border-[#A8D1F7] bg-white/80 px-5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-[#034FC0]">
                   Prime Digital Agency
                 </div>
 
-                <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-slate-950 md:text-5xl">
+                <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-[#060C1F] md:text-5xl">
                   The Platform
                   <br />
                   Solutions
@@ -400,10 +460,10 @@ export default function Home() {
 
                 <Link
                   href="https://services.primedigitalschool.com/"
-                  className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-8 text-sm font-black text-white shadow-[0_18px_40px_rgba(6,182,212,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(6,182,212,0.32)]"
+                  className="mt-9 inline-flex h-14 items-center justify-center gap-9 rounded-xl bg-gradient-to-r from-[#034FC0] to-[#034FC0] px-8 text-sm font-black text-white shadow-[0_18px_40px_rgba(4,99,236,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(4,99,236,0.32)]"
                 >
                   Enter Portal
-                  <span className="text-2xl leading-none">→</span>
+                  <span className="text-2xl leading-none">{"\u2192"}</span>
                 </Link>
               </div>
             </div>
