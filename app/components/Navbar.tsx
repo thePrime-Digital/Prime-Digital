@@ -21,14 +21,18 @@ const navItems = [
     label: "Programs",
     href: "/programs",
   },
-  {
-    label: "Admissions",
-    href: "/admissions",
-  },
-  {
-    label: "Careers",
-    href: "/careers",
-  },
+{
+  label: "Admissions",
+  href: "/admissions",
+},
+{
+  label: "Student Stories",
+  href: "/student-stories",
+},
+{
+  label: "Careers",
+  href: "/careers",
+},
   {
     label: "Support",
     href: "/support",

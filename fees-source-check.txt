@@ -2420,7 +2420,7 @@ export default function AdmissionsPage() {
                     name="phone"
                     type="tel"
                     required
-                    placeholder="+91 98765 43210"
+                    placeholder="+91 8693093542"
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A]"
                   />
                 </div>

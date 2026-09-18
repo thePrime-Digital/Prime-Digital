@@ -284,8 +284,6 @@ export default function Home() {
               Prime Digital School
             </div>
 
-            <div className="pds-award-icon">★</div>
-
             <p className="pds-excellence-eyebrow">
               Built for ambitious learners
             </p>
@@ -430,6 +428,15 @@ export default function Home() {
           ))}
         </div>
       </section>
+            <div className="flex justify-center bg-white px-6 pb-10 pt-4">
+        <Link
+          href="/student-stories"
+          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#8f0024]/20 bg-white px-7 text-sm font-black text-[#8f0024] shadow-[0_10px_30px_rgba(105,0,25,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#8f0024] hover:bg-[#fff4f7]"
+        >
+          View All Student Stories
+          <ArrowRight size={16} />
+        </Link>
+      </div>
       {/* ALL DIGITAL ↔ PRIME DIGITAL SCHOOL */}
       <section className="bg-white px-6 py-16 md:px-12 md:py-20">
         <div className="mx-auto max-w-[1232px] overflow-hidden rounded-[34px] border border-slate-200 bg-white shadow-[0_30px_85px_rgba(15,23,42,0.12)]">
@@ -564,7 +571,7 @@ export default function Home() {
                   <div className="flex items-center gap-4">
                     <Phone className="w-5 h-5 text-[#755B00] shrink-0" />
                     <span className="text-base text-white leading-[24px]">
-                      +91 98765 43210
+                      +91 8693093542
                     </span>
                   </div>
                   <div className="flex items-center gap-4">

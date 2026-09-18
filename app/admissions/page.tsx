@@ -1,9 +1,6 @@
 ﻿"use client";
 
-import {
-  useState,
-  type FormEvent,
-} from "react";
+import { useState, type FormEvent } from "react";
 
 import {
   FileText,
@@ -26,9 +23,7 @@ export default function AdmissionsPage() {
   const [formError, setFormError] = useState("");
   const [successReference, setSuccessReference] = useState("");
 
-  async function handleAdmissionSubmit(
-    event: FormEvent<HTMLFormElement>,
-  ) {
+  async function handleAdmissionSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (submitting) {
@@ -61,13 +56,11 @@ export default function AdmissionsPage() {
         }),
       });
 
-      const data = (await response.json().catch(() => null)) as
-        | {
-            error?: string;
-            message?: string;
-            reference?: string;
-          }
-        | null;
+      const data = (await response.json().catch(() => null)) as {
+        error?: string;
+        message?: string;
+        reference?: string;
+      } | null;
 
       if (!response.ok) {
         throw new Error(data?.error || "Unable to submit application.");
@@ -110,9 +103,13 @@ export default function AdmissionsPage() {
               >
                 Start Application
               </a>
-              <button className="border border-[#5C021A] text-[#5C021A] bg-transparent px-8 py-4 rounded-lg text-base font-medium hover:bg-[#5C021A]/5 transition-colors">
+              <a
+                href="/downloads/prime-digital-school-prospectus.pdf"
+                download
+                className="border border-[#5C021A] text-[#5C021A] bg-transparent px-8 py-4 rounded-lg text-base font-medium hover:bg-[#5C021A]/5 transition-colors"
+              >
                 Download Prospectus
-              </button>
+              </a>
             </div>
           </div>
           <div className="w-full lg:flex-1 relative min-h-[350px] md:min-h-[508px] flex justify-center lg:justify-end">
@@ -638,7 +635,7 @@ export default function AdmissionsPage() {
                     name="phone"
                     type="tel"
                     required
-                    placeholder="+91 98765 43210"
+                    placeholder="+91 8693093542"
                     className="h-[49px] px-4 rounded-lg border border-[#897172] bg-white focus:outline-none focus:border-[#5C021A]"
                   />
                 </div>
@@ -718,9 +715,9 @@ export default function AdmissionsPage() {
                   className="mt-1 h-4 w-4 accent-[#5C021A]"
                 />
                 <span className="text-xs leading-5 text-[#5F5E5E]">
-                  I confirm that the information provided is accurate and consent
-                  to Prime Digital School using these details for the admission
-                  process.
+                  I confirm that the information provided is accurate and
+                  consent to Prime Digital School using these details for the
+                  admission process.
                 </span>
               </label>
 
@@ -747,7 +744,9 @@ export default function AdmissionsPage() {
                 disabled={submitting}
                 className="bg-[#5C021A] text-white py-4 rounded-lg text-base font-normal hover:bg-[#7B1C2E] transition-colors w-full mt-2 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {submitting ? "Submitting Application..." : "Submit Application"}
+                {submitting
+                  ? "Submitting Application..."
+                  : "Submit Application"}
               </button>
             </form>
           </div>

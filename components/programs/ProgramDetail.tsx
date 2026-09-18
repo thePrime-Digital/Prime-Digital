@@ -128,11 +128,12 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
               </Link>
 
               <a
-                href="#curriculum"
+                href="/downloads/prime-digital-school-brochure.pdf"
+                download
                 className="inline-flex h-13 items-center justify-center gap-3 rounded-xl border border-[#c993a1] bg-white px-7 text-sm font-black text-[#9f1735] transition hover:-translate-y-1 hover:bg-[#fff1f4]"
               >
                 <Download className="h-4 w-4" />
-                View Curriculum
+                Download Brochure
               </a>
             </div>
           </div>
