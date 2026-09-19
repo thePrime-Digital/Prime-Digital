@@ -1317,7 +1317,7 @@ export default function SchoolChatbot() {
 
         {!open && (
           <a
-            href="https://wa.me/918850447887?text=Hi%20Prime%20Digital%20School%2C%20I%20would%20like%20to%20know%20more%20about%20admissions."
+            href="https://wa.me/8693093542?text=Hi%20Prime%20Digital%20School%2C%20I%20would%20like%20to%20know%20more%20about%20admissions."
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat with Prime Digital School on WhatsApp"
