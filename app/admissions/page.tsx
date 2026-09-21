@@ -281,9 +281,6 @@ export default function AdmissionsPage() {
               <h3 className="text-base font-normal text-[#1A1C1C] leading-[24px] font-serif">
                 Foundation
               </h3>
-              <p className="text-sm text-[#5F5E5E] leading-[20px] mb-4">
-                Grades 1 to 5
-              </p>
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-3xl md:text-[36px] font-bold text-[#5C021A] leading-[40px]">
                   TBD
@@ -324,9 +321,7 @@ export default function AdmissionsPage() {
               <h3 className="text-base font-normal text-[#1A1C1C] leading-[24px] font-serif">
                 Intermediate
               </h3>
-              <p className="text-sm text-[#5F5E5E] leading-[20px] mb-4">
-                Grades 6 to 10
-              </p>
+
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-3xl md:text-[36px] font-bold text-[#5C021A] leading-[40px]">
                   TBD
@@ -370,9 +365,7 @@ export default function AdmissionsPage() {
               <h3 className="text-base font-normal text-[#1A1C1C] leading-[24px] font-serif">
                 Advanced
               </h3>
-              <p className="text-sm text-[#5F5E5E] leading-[20px] mb-4">
-                Grades 11 & 12
-              </p>
+
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-3xl md:text-[36px] font-bold text-[#5C021A] leading-[40px]">
                   TBD

@@ -1,9 +1,15 @@
 ﻿import dns from "node:dns";
 import { Db, MongoClient } from "mongodb";
-dns.setServers([
-  "8.8.8.8",
-  "1.1.1.1",
-]);
+
+// Use custom DNS only during local development.
+// Allow Vercel production to use its own DNS configuration.
+
+if (process.env.NODE_ENV === "development") {
+  dns.setServers([
+    "8.8.8.8",
+    "1.1.1.1",
+  ]);
+}
 
 
 const DEFAULT_DATABASE_NAME = "prime-digital-school";
