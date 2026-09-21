@@ -4,24 +4,17 @@ import Link from "next/link";
 import CareerApplicationForm from "@/components/careers/career-application-form";
 import CareerApplyButton from "@/components/careers/career-apply-button";
 
-import {
-  getPublishedCareerJobs,
-} from "@/lib/careers/public-careers";
+import { getPublishedCareerJobs } from "@/lib/careers/public-careers";
 
-export const dynamic =
-  "force-dynamic";
+export const dynamic = "force-dynamic";
 
-const HERO_IMAGE =
-  "/careers/hero-team.jpg";
+const HERO_IMAGE = "/careers/hero-team.jpg";
 
-const CULTURE_1 =
-  "/careers/culture-1.jpg";
+const CULTURE_1 = "/careers/culture-1.jpg";
 
-const CULTURE_2 =
-  "/careers/culture-2.jpg";
+const CULTURE_2 = "/careers/culture-2.jpg";
 
-const CULTURE_3 =
-  "/careers/culture-3.jpg";
+const CULTURE_3 = "/careers/culture-3.jpg";
 
 const whyWork = [
   {
@@ -57,13 +50,7 @@ const benefits = [
   "Meaningful education impact",
 ];
 
-const process = [
-  "Apply",
-  "Screening",
-  "Interview",
-  "Demo / Task",
-  "Offer",
-];
+const process = ["Apply", "Screening", "Interview", "Demo / Task", "Offer"];
 
 const testimonials = [
   {
@@ -86,32 +73,22 @@ const testimonials = [
   },
 ];
 
-function formatCareerDeadline(
-  value: string | null,
-): string {
+function formatCareerDeadline(value: string | null): string {
   if (!value) {
     return "Open until filled";
   }
 
-  const date =
-    new Date(value);
+  const date = new Date(value);
 
-  if (
-    Number.isNaN(
-      date.getTime(),
-    )
-  ) {
+  if (Number.isNaN(date.getTime())) {
     return "Open until filled";
   }
 
-  return date.toLocaleDateString(
-    "en-IN",
-    {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    },
-  );
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function BriefcaseBusinessIcon() {
@@ -122,11 +99,18 @@ function BriefcaseBusinessIcon() {
   );
 }
 
-
-
 export default async function CareersPage() {
-  const positions =
-    await getPublishedCareerJobs();
+  let positions: Awaited<ReturnType<typeof getPublishedCareerJobs>> = [];
+
+  let jobsUnavailable = false;
+
+  try {
+    positions = await getPublishedCareerJobs();
+  } catch (error) {
+    jobsUnavailable = true;
+
+    console.error("[CAREERS_PAGE] Unable to load published vacancies:", error);
+  }
 
   return (
     <main className="min-h-screen bg-[#f7f3f4] pt-[135px] text-[#101828]">
@@ -139,9 +123,7 @@ export default async function CareersPage() {
 
           <h1 className="mx-auto max-w-3xl text-4xl font-black leading-tight tracking-tight text-[#101828] sm:text-5xl lg:text-6xl">
             Build the Future of Education{" "}
-            <span className="text-[#8f0024]">
-              With Us
-            </span>
+            <span className="text-[#8f0024]">With Us</span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#667085] sm:text-base">
@@ -195,36 +177,24 @@ export default async function CareersPage() {
           </div>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {whyWork.map(
-              (
-                item,
-              ) => (
-                <div
-                  key={
-                    item.title
-                  }
-                  className="group rounded-xl border border-[#eadada] bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_45px_rgba(143,0,36,0.12)]"
-                >
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#fff1f4] text-xl font-black text-[#8f0024] transition-all duration-300 group-hover:bg-[#8f0024] group-hover:text-white">
-                    {
-                      item.icon
-                    }
-                  </div>
-
-                  <h3 className="mt-4 text-base font-black text-[#101828]">
-                    {
-                      item.title
-                    }
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-6 text-[#667085]">
-                    {
-                      item.desc
-                    }
-                  </p>
+            {whyWork.map((item) => (
+              <div
+                key={item.title}
+                className="group rounded-xl border border-[#eadada] bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_45px_rgba(143,0,36,0.12)]"
+              >
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#fff1f4] text-xl font-black text-[#8f0024] transition-all duration-300 group-hover:bg-[#8f0024] group-hover:text-white">
+                  {item.icon}
                 </div>
-              ),
-            )}
+
+                <h3 className="mt-4 text-base font-black text-[#101828]">
+                  {item.title}
+                </h3>
+
+                <p className="mt-2 text-sm leading-6 text-[#667085]">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -243,28 +213,17 @@ export default async function CareersPage() {
           </div>
 
           <div className="mt-9 grid gap-4 sm:grid-cols-2">
-            {benefits.map(
-              (
-                benefit,
-              ) => (
-                <div
-                  key={
-                    benefit
-                  }
-                  className="flex items-start gap-3"
-                >
-                  <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#8f0024] text-[10px] font-black text-white">
-                    ✓
-                  </span>
+            {benefits.map((benefit) => (
+              <div key={benefit} className="flex items-start gap-3">
+                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#8f0024] text-[10px] font-black text-white">
+                  ✓
+                </span>
 
-                  <p className="text-sm font-semibold leading-6 text-[#475467]">
-                    {
-                      benefit
-                    }
-                  </p>
-                </div>
-              ),
-            )}
+                <p className="text-sm font-semibold leading-6 text-[#475467]">
+                  {benefit}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -285,8 +244,20 @@ export default async function CareersPage() {
             </h2>
           </div>
 
-          {positions.length ===
-          0 ? (
+          {jobsUnavailable ? (
+            <div className="mt-10 rounded-2xl border border-[#eadada] bg-[#fffafb] px-6 py-14 text-center">
+              <BriefcaseBusinessIcon />
+
+              <h3 className="mt-4 text-lg font-black text-[#101828]">
+                Open positions temporarily unavailable
+              </h3>
+
+              <p className="mx-auto mt-2 max-w-lg text-sm leading-7 text-[#667085]">
+                We are temporarily unable to load our current career
+                opportunities. Please try again shortly.
+              </p>
+            </div>
+          ) : positions.length === 0 ? (
             <div className="mt-10 rounded-2xl border border-[#eadada] bg-[#fffafb] px-6 py-14 text-center">
               <BriefcaseBusinessIcon />
 
@@ -301,113 +272,82 @@ export default async function CareersPage() {
             </div>
           ) : (
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {positions.map(
-                (
-                  job,
-                ) => (
-                  <article
-                    key={
-                      job.id
-                    }
-                    className="relative flex flex-col rounded-xl border border-[#eadada] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_45px_rgba(143,0,36,0.12)]"
-                  >
-                    {job.featured && (
-                      <div className="absolute right-4 top-4 rounded-full bg-[#8f0024] px-3 py-1 text-[9px] font-black uppercase tracking-wider text-white">
-                        Featured
-                      </div>
+              {positions.map((job) => (
+                <article
+                  key={job.id}
+                  className="relative flex flex-col rounded-xl border border-[#eadada] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_45px_rgba(143,0,36,0.12)]"
+                >
+                  {job.featured && (
+                    <div className="absolute right-4 top-4 rounded-full bg-[#8f0024] px-3 py-1 text-[9px] font-black uppercase tracking-wider text-white">
+                      Featured
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap items-center gap-2 pr-20">
+                    <span className="rounded-full bg-[#fff1f4] px-3 py-1 text-xs font-black text-[#8f0024]">
+                      {job.employmentType}
+                    </span>
+
+                    {job.workMode && (
+                      <span className="rounded-full bg-[#f7f3f4] px-3 py-1 text-[10px] font-bold text-[#667085]">
+                        {job.workMode}
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="mt-5 text-[10px] font-black uppercase tracking-[0.14em] text-[#8f0024]">
+                    {job.department}
+                  </p>
+
+                  <h3 className="mt-2 text-xl font-black text-[#101828]">
+                    {job.title}
+                  </h3>
+
+                  <p className="mt-2 text-xs font-bold text-[#667085]">
+                    📍 {job.location}
+                  </p>
+
+                  <p className="mt-4 line-clamp-3 text-sm leading-7 text-[#667085]">
+                    {job.description}
+                  </p>
+
+                  <div className="mt-5 space-y-2 border-t border-[#f0e6e7] pt-4 text-xs text-[#667085]">
+                    {job.experience && (
+                      <p>
+                        <span className="font-black text-[#101828]">
+                          Experience:
+                        </span>{" "}
+                        {job.experience}
+                      </p>
                     )}
 
-                    <div className="flex flex-wrap items-center gap-2 pr-20">
-                      <span className="rounded-full bg-[#fff1f4] px-3 py-1 text-xs font-black text-[#8f0024]">
-                        {
-                          job.employmentType
-                        }
-                      </span>
-
-                      {job.workMode && (
-                        <span className="rounded-full bg-[#f7f3f4] px-3 py-1 text-[10px] font-bold text-[#667085]">
-                          {
-                            job.workMode
-                          }
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="mt-5 text-[10px] font-black uppercase tracking-[0.14em] text-[#8f0024]">
-                      {
-                        job.department
-                      }
+                    <p>
+                      <span className="font-black text-[#101828]">
+                        Vacancies:
+                      </span>{" "}
+                      {job.vacancies}
                     </p>
 
-                    <h3 className="mt-2 text-xl font-black text-[#101828]">
-                      {
-                        job.title
-                      }
-                    </h3>
-
-                    <p className="mt-2 text-xs font-bold text-[#667085]">
-                      📍{" "}
-                      {
-                        job.location
-                      }
-                    </p>
-
-                    <p className="mt-4 line-clamp-3 text-sm leading-7 text-[#667085]">
-                      {
-                        job.description
-                      }
-                    </p>
-
-                    <div className="mt-5 space-y-2 border-t border-[#f0e6e7] pt-4 text-xs text-[#667085]">
-                      {job.experience && (
-                        <p>
-                          <span className="font-black text-[#101828]">
-                            Experience:
-                          </span>{" "}
-                          {
-                            job.experience
-                          }
-                        </p>
-                      )}
-
+                    {job.salary && (
                       <p>
                         <span className="font-black text-[#101828]">
-                          Vacancies:
+                          Compensation:
                         </span>{" "}
-                        {
-                          job.vacancies
-                        }
+                        {job.salary}
                       </p>
+                    )}
 
-                      {job.salary && (
-                        <p>
-                          <span className="font-black text-[#101828]">
-                            Compensation:
-                          </span>{" "}
-                          {
-                            job.salary
-                          }
-                        </p>
-                      )}
+                    <p>
+                      <span className="font-black text-[#101828]">
+                        Deadline:
+                      </span>{" "}
+                      {formatCareerDeadline(job.deadline)}
+                    </p>
+                  </div>
 
-                      <p>
-                        <span className="font-black text-[#101828]">
-                          Deadline:
-                        </span>{" "}
-                        {formatCareerDeadline(
-                          job.deadline,
-                        )}
-                      </p>
-                    </div>
-
-                    <CareerApplyButton
-                      jobId={
-                        job.id
-                      }
-                    />
-                  </article>
-                ),
-              )}
+                  <CareerApplyButton jobId={job.id} />
+                </article>
+              ))}
             </div>
           )}
         </div>
@@ -428,30 +368,17 @@ export default async function CareersPage() {
             <div className="absolute left-0 right-0 top-6 hidden h-[2px] bg-[#eadada] md:block" />
 
             <div className="relative grid gap-6 md:grid-cols-5">
-              {process.map(
-                (
-                  step,
-                  index,
-                ) => (
-                  <div
-                    key={
-                      step
-                    }
-                    className="flex flex-col items-center"
-                  >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#8f0024] text-sm font-black text-white shadow-[0_12px_24px_rgba(143,0,36,0.22)]">
-                      {index +
-                        1}
-                    </div>
-
-                    <p className="mt-3 text-sm font-black text-[#101828]">
-                      {
-                        step
-                      }
-                    </p>
+              {process.map((step, index) => (
+                <div key={step} className="flex flex-col items-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#8f0024] text-sm font-black text-white shadow-[0_12px_24px_rgba(143,0,36,0.22)]">
+                    {index + 1}
                   </div>
-                ),
-              )}
+
+                  <p className="mt-3 text-sm font-black text-[#101828]">
+                    {step}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -474,9 +401,7 @@ export default async function CareersPage() {
             <div className="grid gap-4">
               <div className="relative h-[180px] overflow-hidden rounded-2xl shadow-sm">
                 <Image
-                  src={
-                    CULTURE_1
-                  }
+                  src={CULTURE_1}
                   alt="Prime Digital School team discussion"
                   fill
                   sizes="(min-width: 1024px) 25vw, 50vw"
@@ -486,9 +411,7 @@ export default async function CareersPage() {
 
               <div className="relative h-[180px] overflow-hidden rounded-2xl shadow-sm">
                 <Image
-                  src={
-                    CULTURE_2
-                  }
+                  src={CULTURE_2}
                   alt="Prime Digital School classroom collaboration"
                   fill
                   sizes="(min-width: 1024px) 25vw, 50vw"
@@ -499,9 +422,7 @@ export default async function CareersPage() {
 
             <div className="relative col-span-2 h-[210px] overflow-hidden rounded-2xl shadow-sm">
               <Image
-                src={
-                  CULTURE_3
-                }
+                src={CULTURE_3}
                 alt="Prime Digital School presentation"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
@@ -540,11 +461,7 @@ export default async function CareersPage() {
       </section>
 
       {/* APPLICATION FORM */}
-      <CareerApplicationForm
-        jobs={
-          positions
-        }
-      />
+      <CareerApplicationForm jobs={positions} />
 
       {/* TESTIMONIALS */}
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
@@ -560,48 +477,30 @@ export default async function CareersPage() {
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {testimonials.map(
-              (
-                item,
-              ) => (
-                <div
-                  key={
-                    item.name
-                  }
-                  className="rounded-xl border border-[#eadada] bg-[#fffafb] p-6 shadow-sm"
-                >
-                  <p className="text-sm leading-7 text-[#667085]">
-                    “
-                    {
-                      item.quote
-                    }
-                    ”
-                  </p>
+            {testimonials.map((item) => (
+              <div
+                key={item.name}
+                className="rounded-xl border border-[#eadada] bg-[#fffafb] p-6 shadow-sm"
+              >
+                <p className="text-sm leading-7 text-[#667085]">
+                  “{item.quote}”
+                </p>
 
-                  <div className="mt-6 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8f0024] text-sm font-black text-white">
-                      {item.name.charAt(
-                        0,
-                      )}
-                    </div>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8f0024] text-sm font-black text-white">
+                    {item.name.charAt(0)}
+                  </div>
 
-                    <div>
-                      <p className="text-sm font-black text-[#101828]">
-                        {
-                          item.name
-                        }
-                      </p>
+                  <div>
+                    <p className="text-sm font-black text-[#101828]">
+                      {item.name}
+                    </p>
 
-                      <p className="text-xs text-[#667085]">
-                        {
-                          item.role
-                        }
-                      </p>
-                    </div>
+                    <p className="text-xs text-[#667085]">{item.role}</p>
                   </div>
                 </div>
-              ),
-            )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -640,9 +539,7 @@ export default async function CareersPage() {
       <footer className="bg-[#181818] px-5 py-8 text-white sm:px-8 lg:px-10">
         <div className="mx-auto flex max-w-[1220px] flex-col justify-between gap-5 sm:flex-row sm:items-center">
           <div>
-            <h3 className="text-sm font-black">
-              Prime Digital School
-            </h3>
+            <h3 className="text-sm font-black">Prime Digital School</h3>
 
             <p className="mt-2 text-xs text-white/55">
               A future-ready digital school for modern education.
@@ -650,21 +547,13 @@ export default async function CareersPage() {
           </div>
 
           <div className="flex flex-wrap gap-5 text-xs text-white/60">
-            <Link href="/privacy-policy">
-              Privacy Policy
-            </Link>
+            <Link href="/privacy-policy">Privacy Policy</Link>
 
-            <Link href="/terms">
-              Terms of Service
-            </Link>
+            <Link href="/terms">Terms of Service</Link>
 
-            <Link href="/support">
-              Support Hub
-            </Link>
+            <Link href="/support">Support Hub</Link>
 
-            <Link href="/contact">
-              Contact
-            </Link>
+            <Link href="/contact">Contact</Link>
           </div>
         </div>
       </footer>

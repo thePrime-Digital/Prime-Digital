@@ -1,11 +1,6 @@
 ﻿"use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type FormEvent,
-} from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import {
   ArrowRight,
@@ -18,10 +13,7 @@ import {
   X,
 } from "lucide-react";
 
-import {
-  usePathname,
-  useRouter,
-} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 type MessageRole = "user" | "bot";
 
@@ -62,422 +54,367 @@ const excludedRoutes = [
 const quickQuestions = [
   {
     label: "Admissions",
-    message:
-      "I want admission. Can you guide me?",
+    message: "I want admission. Can you guide me?",
   },
   {
     label: "Programs",
-    message:
-      "What programs do you offer?",
+    message: "What programs do you offer?",
   },
   {
     label: "Fees",
-    message:
-      "What are the fees?",
+    message: "What are the fees?",
   },
   {
     label: "Eligibility",
-    message:
-      "What is the eligibility for admission?",
+    message: "What is the eligibility for admission?",
   },
   {
     label: "Brochure",
-    message:
-      "Can I download the brochure?",
+    message: "Can I download the brochure?",
   },
   {
     label: "Prospectus",
-    message:
-      "Can I download the prospectus?",
+    message: "Can I download the prospectus?",
   },
   {
     label: "Contact",
-    message:
-      "How can I contact Prime Digital School?",
+    message: "How can I contact Prime Digital School?",
   },
   {
     label: "Apply Now",
-    message:
-      "How do I apply for admission?",
+    message: "How do I apply for admission?",
   },
 ];
 
-const welcomeMessage: ChatMessage = {
-  id: "welcome",
-  role: "bot",
-  text:
-    "Hi 👋 I'm the Prime Digital School Assistant. Ask me anything about admissions, programs, eligibility, fees, applications, downloads or the school.",
-};
+const welcomeLines = [
+  "Hi 👋 I'm the Prime Digital School Assistant.",
+  "Ask me about admissions, programs and eligibility.",
+  "I can also help with fees, applications and downloads.",
+];
+
+const WHATSAPP_URL =
+  "https://wa.me/918693093542?text=" +
+  encodeURIComponent(
+    "Hi Prime Digital School, I would like to know more about admissions.",
+  );
 
 function createId() {
-  return `${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2, 8)}`;
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 export default function SchoolChatbot() {
-  const pathname =
-    usePathname();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const router =
-    useRouter();
+  const [open, setOpen] = useState(false);
 
-  const [
-    open,
-    setOpen,
-  ] = useState(false);
+  const [input, setInput] = useState("");
 
-  const [
-    input,
-    setInput,
-  ] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [
-    loading,
-    setLoading,
-  ] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  const [
-    messages,
-    setMessages,
-  ] = useState<ChatMessage[]>([
-    welcomeMessage,
-  ]);
+  const [welcomeStep, setWelcomeStep] = useState(0);
 
-  const messagesEndRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const [sessionReady, setSessionReady] = useState(false);
 
-  const initializedRef =
-    useRef(false);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const hidden =
-    excludedRoutes.some(
-      (route) =>
-        pathname === route ||
-        pathname.startsWith(
-          `${route}/`,
-        ),
-    );
+  const hasConversation = messages.some((message) => message.role === "user");
+
+  const hidden = excludedRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
+
+  const isWelcomeTyping =
+    open &&
+    sessionReady &&
+    !hidden &&
+    !hasConversation &&
+    welcomeStep < welcomeLines.length;
 
   /*
-   * Restore conversation
-   * during browser session.
+   * Restore conversation from sessionStorage.
+   * Remove the old single-paragraph welcome message.
    */
+
   useEffect(() => {
-    if (
-      initializedRef.current
-    ) {
-      return;
-    }
-
-    initializedRef.current =
-      true;
-
     try {
-      const saved =
-        sessionStorage.getItem(
-          "pds-chatbot-messages",
-        );
+      const saved = sessionStorage.getItem("pds-chatbot-messages");
 
-      if (!saved) {
-        return;
-      }
+      if (saved) {
+        const parsed: unknown = JSON.parse(saved);
 
-      const parsed =
-        JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          const restored = parsed.filter((item): item is ChatMessage => {
+            if (!item || typeof item !== "object") {
+              return false;
+            }
 
-      if (
-        Array.isArray(parsed) &&
-        parsed.length > 0
-      ) {
-        setMessages(parsed);
+            const message = item as Partial<ChatMessage>;
+
+            return (
+              typeof message.id === "string" &&
+              typeof message.text === "string" &&
+              (message.role === "bot" || message.role === "user") &&
+              message.id !== "welcome"
+            );
+          });
+
+          setMessages(restored);
+
+          const completedWelcomeLines = welcomeLines.filter((_, index) =>
+            restored.some(
+              (message) => message.id === `welcome-line-${index + 1}`,
+            ),
+          ).length;
+
+          setWelcomeStep(completedWelcomeLines);
+        }
       }
     } catch {
-      // Ignore invalid stored data.
+      // Ignore invalid saved conversations.
     }
+
+    setSessionReady(true);
   }, []);
 
   /*
-   * Save conversation while
-   * navigating public pages.
+   * Save conversation while navigating public pages.
    */
+
   useEffect(() => {
-    if (
-      !initializedRef.current
-    ) {
+    if (!sessionReady) {
       return;
     }
 
     try {
-      sessionStorage.setItem(
-        "pds-chatbot-messages",
-        JSON.stringify(messages),
-      );
+      if (messages.length > 0) {
+        sessionStorage.setItem(
+          "pds-chatbot-messages",
+          JSON.stringify(messages),
+        );
+      } else {
+        sessionStorage.removeItem("pds-chatbot-messages");
+      }
     } catch {
       // Ignore storage errors.
     }
-  }, [messages]);
+  }, [messages, sessionReady]);
+
+  /*
+   * WELCOME ANIMATION
+   *
+   * 0–3 seconds: typing
+   * 3 seconds: first message
+   *
+   * 3–6 seconds: typing
+   * 6 seconds: second message
+   *
+   * 6–9 seconds: typing
+   * 9 seconds: third message
+   */
+
+  useEffect(() => {
+    if (!isWelcomeTyping) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      const line = welcomeLines[welcomeStep];
+
+      setMessages((current) => [
+        ...current,
+        {
+          id: `welcome-line-${welcomeStep + 1}`,
+          role: "bot",
+          text: line,
+        },
+      ]);
+
+      setWelcomeStep((current) => current + 1);
+    }, 3000);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [isWelcomeTyping, welcomeStep]);
 
   /*
    * Scroll to latest message.
    */
+
   useEffect(() => {
     if (!open) {
       return;
     }
 
-    messagesEndRef.current?.scrollIntoView(
-      {
-        behavior: "smooth",
-        block: "end",
-      },
-    );
-  }, [
-    messages,
-    loading,
-    open,
-  ]);
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages, loading, open]);
 
   /*
    * Escape closes chatbot.
    */
+
   useEffect(() => {
-    function handleEscape(
-      event: KeyboardEvent,
-    ) {
-      if (
-        event.key === "Escape"
-      ) {
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
         setOpen(false);
       }
     }
 
-    window.addEventListener(
-      "keydown",
-      handleEscape,
-    );
+    window.addEventListener("keydown", handleEscape);
 
     return () => {
-      window.removeEventListener(
-        "keydown",
-        handleEscape,
-      );
+      window.removeEventListener("keydown", handleEscape);
     };
   }, []);
 
-  if (hidden) {
-    return null;
-  }
+  async function sendMessage(text: string) {
+    const cleanText = text.trim();
 
-  async function sendMessage(
-    text: string,
-  ) {
-    const cleanText =
-      text.trim();
-
-    if (
-      !cleanText ||
-      loading
-    ) {
+    if (!cleanText || loading) {
       return;
     }
 
-    const userMessage: ChatMessage =
-      {
-        id: createId(),
-        role: "user",
-        text: cleanText,
-      };
+    const userMessage: ChatMessage = {
+      id: createId(),
+      role: "user",
+      text: cleanText,
+    };
 
-    const conversation = [
-      ...messages,
-      userMessage,
-    ];
+    const conversation = [...messages, userMessage];
 
-    setMessages(
-      conversation,
-    );
+    setMessages(conversation);
 
     setInput("");
     setLoading(true);
 
     try {
-      const apiMessages =
-        conversation
-          .filter(
-            (message) =>
-              message.id !==
-              "welcome",
-          )
-          .slice(-14)
-          .map((message) => ({
-            role:
-              message.role ===
-              "user"
-                ? "user"
-                : "assistant",
+      const apiMessages = conversation
+        .filter(
+          (message) =>
+            message.id !== "welcome" && !message.id.startsWith("welcome-line-"),
+        )
+        .slice(-14)
+        .map((message) => ({
+          role: message.role === "user" ? "user" : "assistant",
 
-            content:
-              message.text,
-          }));
+          content: message.text,
+        }));
 
-      const response =
-        await fetch(
-          "/api/chatbot",
-          {
-            method: "POST",
+      const response = await fetch("/api/chatbot", {
+        method: "POST",
 
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-            body: JSON.stringify({
-              messages:
-                apiMessages,
-            }),
-          },
-        );
+        body: JSON.stringify({
+          messages: apiMessages,
+        }),
+      });
 
-      const data =
-        (await response.json()) as {
-          reply?: string;
-          actions?: ChatAction[];
-          error?: string;
-        };
+      const data = (await response.json()) as {
+        reply?: string;
+        actions?: ChatAction[];
+        error?: string;
+      };
 
       if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Unable to contact assistant.",
-        );
+        throw new Error(data.error || "Unable to contact assistant.");
       }
 
-      const botMessage: ChatMessage =
+      const botMessage: ChatMessage = {
+        id: createId(),
+
+        role: "bot",
+
+        text: data.reply || "I couldn't generate a response.",
+
+        actions: Array.isArray(data.actions) ? data.actions : [],
+      };
+
+      setMessages((current) => [...current, botMessage]);
+    } catch (error) {
+      setMessages((current) => [
+        ...current,
         {
           id: createId(),
+
           role: "bot",
 
           text:
-            data.reply ||
-            "I couldn't generate a response.",
-
-          actions:
-            Array.isArray(
-              data.actions,
-            )
-              ? data.actions
-              : [],
-        };
-
-      setMessages(
-        (current) => [
-          ...current,
-          botMessage,
-        ],
-      );
-    } catch (error) {
-      setMessages(
-        (current) => [
-          ...current,
-
-          {
-            id: createId(),
-
-            role: "bot",
-
-            text:
-              error instanceof
-              Error
-                ? error.message
-                : "I'm temporarily unable to respond. Please try again.",
-          },
-        ],
-      );
+            error instanceof Error
+              ? error.message
+              : "I'm temporarily unable to respond. Please try again.",
+        },
+      ]);
     } finally {
       setLoading(false);
     }
   }
 
-  function handleSubmit(
-    event: FormEvent<HTMLFormElement>,
-  ) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    void sendMessage(
-      input,
-    );
+    void sendMessage(input);
   }
 
-  function handleAction(
-    action: ChatAction,
-  ) {
-    if (
-      action.type ===
-      "navigate"
-    ) {
-      router.push(
-        action.value,
-      );
-
+  function handleAction(action: ChatAction) {
+    if (action.type === "navigate") {
+      router.push(action.value);
       return;
     }
 
-    const link =
-      document.createElement(
-        "a",
-      );
+    const link = document.createElement("a");
 
-    link.href =
-      action.value;
+    link.href = action.value;
 
-    if (action.filename) {
-      link.download =
-        action.filename;
-    } else {
-      link.download = "";
-    }
+    link.download = action.filename || "";
 
-    document.body.appendChild(
-      link,
-    );
+    document.body.appendChild(link);
 
     link.click();
 
     link.remove();
   }
 
+  /*
+   * Restart the full welcome animation
+   * when New Conversation is clicked.
+   */
+
   function resetChat() {
-    setMessages([
-      welcomeMessage,
-    ]);
+    setMessages([]);
+
+    setWelcomeStep(0);
 
     setInput("");
 
     try {
-      sessionStorage.removeItem(
-        "pds-chatbot-messages",
-      );
+      sessionStorage.removeItem("pds-chatbot-messages");
     } catch {
       // Ignore storage errors.
     }
   }
 
+  if (hidden) {
+    return null;
+  }
+
   return (
     <>
-      {/* =====================================
-          OUTSIDE CLICK AREA
-      ====================================== */}
+      {/* OUTSIDE CLICK AREA */}
 
       {open && (
         <button
           type="button"
           aria-label="Close chatbot"
-          onClick={() =>
-            setOpen(false)
-          }
+          onClick={() => setOpen(false)}
           className="
             fixed
             inset-0
@@ -488,615 +425,103 @@ export default function SchoolChatbot() {
         />
       )}
 
-      {/* =====================================
-          CHAT WINDOW
-      ====================================== */}
+      {/* CHAT WINDOW */}
 
-<section
-  aria-label="Prime Digital School Assistant"
-  aria-hidden={!open}
-  className={`
-    fixed
-    bottom-[175px]
-    right-5
-    z-[1500]
+      <section
+        aria-label="Prime Digital School Assistant"
+        aria-hidden={!open}
+        className={`
+          fixed
+          bottom-[175px]
+          right-5
+          z-[1500]
 
-    flex
-    h-[560px]
-    max-h-[calc(100vh-200px)]
-    w-[380px]
-    max-w-[calc(100vw-24px)]
-    flex-col
+          flex
+          h-[560px]
+          max-h-[calc(100vh-200px)]
+          w-[380px]
+          max-w-[calc(100vw-24px)]
+          flex-col
 
-    origin-bottom-right
-    transform-gpu
-    overflow-hidden
+          origin-bottom-right
+          transform-gpu
+          overflow-hidden
 
-    rounded-[24px]
+          rounded-[24px]
 
-    border
-    border-[#8f0024]/15
+          border
+          border-[#8f0024]/15
 
-    bg-white
+          bg-white
 
-    shadow-[0_24px_70px_rgba(60,0,18,0.22)]
+          shadow-[0_24px_70px_rgba(60,0,18,0.22)]
 
-    transition-all
-    duration-300
-    ease-out
+          transition-all
+          duration-300
+          ease-out
 
-    max-[640px]:bottom-[150px]
-    max-[640px]:right-3
-    max-[640px]:h-[calc(100vh-175px)]
-    max-[640px]:max-h-none
-    max-[640px]:w-[calc(100vw-24px)]
+          max-[640px]:bottom-[150px]
+          max-[640px]:right-3
+          max-[640px]:h-[calc(100vh-175px)]
+          max-[640px]:max-h-none
+          max-[640px]:w-[calc(100vw-24px)]
 
-    ${
-      open
-        ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
-        : "pointer-events-none translate-y-5 scale-[0.88] opacity-0"
-    }
-  `}
->
-          {/* =============================
-              HEADER
-          ============================== */}
+          ${
+            open
+              ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+              : "pointer-events-none translate-y-5 scale-[0.88] opacity-0"
+          }
+        `}
+      >
+        {/* HEADER */}
+
+        <div
+          className="
+            relative
+            overflow-hidden
+
+            bg-gradient-to-br
+            from-[#550011]
+            via-[#73001c]
+            to-[#92002a]
+
+            px-4
+            py-4
+
+            text-white
+          "
+        >
+          <div
+            className="
+              absolute
+              -right-10
+              -top-10
+              h-32
+              w-32
+              rounded-full
+              bg-white/10
+              blur-2xl
+            "
+          />
 
           <div
             className="
               relative
-              overflow-hidden
-
-              bg-gradient-to-br
-              from-[#550011]
-              via-[#73001c]
-              to-[#92002a]
-
-              px-4
-              py-4
-
-              text-white
-            "
-          >
-            <div
-              className="
-                absolute
-                -right-10
-                -top-10
-                h-32
-                w-32
-                rounded-full
-                bg-white/10
-                blur-2xl
-              "
-            />
-
-            <div
-              className="
-                relative
-                flex
-                items-start
-                justify-between
-                gap-4
-              "
-            >
-              <div
-                className="
-                  flex
-                  min-w-0
-                  items-center
-                  gap-3
-                "
-              >
-                <div
-                  className="
-                    flex
-                    h-10
-                    w-10
-                    shrink-0
-                    items-center
-                    justify-center
-
-                    rounded-xl
-
-                    border
-                    border-white/20
-
-                    bg-white/10
-
-                    backdrop-blur
-                  "
-                >
-                  <GraduationCap
-                    className="
-                      h-5
-                      w-5
-                    "
-                  />
-                </div>
-
-                <div className="min-w-0">
-                  <div
-                    className="
-                      flex
-                      items-center
-                      gap-2
-                    "
-                  >
-                    <h2
-                      className="
-                        truncate
-                        text-[15px]
-                        font-black
-                      "
-                    >
-                      Prime Digital School
-                    </h2>
-
-                    <Sparkles
-                      className="
-                        h-3.5
-                        w-3.5
-                        shrink-0
-                        text-[#e8c466]
-                      "
-                    />
-                  </div>
-
-                  <p
-                    className="
-                      mt-0.5
-                      truncate
-                      text-[10px]
-                      font-semibold
-                      text-white/70
-                    "
-                  >
-                    AI Admissions & Program Assistant
-                  </p>
-
-                  <div
-                    className="
-                      mt-1
-                      flex
-                      items-center
-                      gap-1.5
-                    "
-                  >
-                    <span
-                      className="
-                        h-2
-                        w-2
-                        rounded-full
-                        bg-emerald-400
-                      "
-                    />
-
-                    <span
-                      className="
-                        text-[8px]
-                        font-bold
-                        uppercase
-                        tracking-[0.12em]
-                        text-white/65
-                      "
-                    >
-                      Online
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                aria-label="Close chat"
-                onClick={() =>
-                  setOpen(false)
-                }
-                className="
-                  flex
-                  h-8
-                  w-8
-                  shrink-0
-                  items-center
-                  justify-center
-
-                  rounded-lg
-
-                  border
-                  border-white/15
-
-                  bg-white/10
-
-                  transition
-
-                  hover:bg-white/20
-                "
-              >
-                <X
-                  className="
-                    h-4
-                    w-4
-                  "
-                />
-              </button>
-            </div>
-          </div>
-
-          {/* =============================
-              MESSAGES
-          ============================== */}
-
-          <div
-            className="
-              flex-1
-              overflow-y-auto
-              bg-[#fffafb]
-              px-4
-              py-4
-            "
-          >
-            <div className="space-y-4">
-              {messages.map(
-                (message) => (
-                  <div
-                    key={
-                      message.id
-                    }
-                    className={
-                      message.role ===
-                      "user"
-                        ? "flex justify-end"
-                        : "flex justify-start"
-                    }
-                  >
-                    <div className="max-w-[90%]">
-                      <div
-                        className={
-                          message.role ===
-                          "user"
-                            ? `
-                              rounded-[18px_18px_5px_18px]
-                              bg-[#7a0019]
-                              px-4
-                              py-3
-                              text-[13px]
-                              leading-[1.6]
-                              text-white
-                              shadow-sm
-                            `
-                            : `
-                              rounded-[18px_18px_18px_5px]
-                              border
-                              border-[#eed9df]
-                              bg-white
-                              px-4
-                              py-3
-                              text-[13px]
-                              leading-[1.6]
-                              text-[#302c2e]
-                              shadow-sm
-                            `
-                        }
-                      >
-                        {
-                          message.text
-                        }
-                      </div>
-
-                      {/* ACTION BUTTONS */}
-
-                      {message.role ===
-                        "bot" &&
-                        message.actions &&
-                        message.actions
-                          .length >
-                          0 && (
-                          <div
-                            className="
-                              mt-2.5
-                              flex
-                              flex-wrap
-                              gap-2
-                            "
-                          >
-                            {message.actions.map(
-                              (
-                                action,
-                                index,
-                              ) => (
-                                <button
-                                  key={`${message.id}-${index}`}
-                                  type="button"
-                                  onClick={() =>
-                                    handleAction(
-                                      action,
-                                    )
-                                  }
-                                  className="
-                                    inline-flex
-                                    items-center
-                                    gap-1.5
-
-                                    rounded-full
-
-                                    border
-                                    border-[#8f0024]/20
-
-                                    bg-white
-
-                                    px-3.5
-                                    py-2
-
-                                    text-[10.5px]
-                                    font-black
-                                    text-[#7a0019]
-
-                                    shadow-sm
-
-                                    transition
-
-                                    hover:-translate-y-0.5
-                                    hover:border-[#8f0024]/50
-                                    hover:bg-[#fff1f4]
-                                  "
-                                >
-                                  {action.type ===
-                                  "download" ? (
-                                    <Download
-                                      className="
-                                        h-3.5
-                                        w-3.5
-                                      "
-                                    />
-                                  ) : (
-                                    <ArrowRight
-                                      className="
-                                        h-3.5
-                                        w-3.5
-                                      "
-                                    />
-                                  )}
-
-                                  {
-                                    action.label
-                                  }
-                                </button>
-                              ),
-                            )}
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                ),
-              )}
-
-              {/* THINKING */}
-
-              {loading && (
-                <div className="flex justify-start">
-                  <div
-                    className="
-                      inline-flex
-                      items-center
-                      gap-2
-
-                      rounded-[18px_18px_18px_5px]
-
-                      border
-                      border-[#eed9df]
-
-                      bg-white
-
-                      px-4
-                      py-3
-
-                      text-[12px]
-                      font-semibold
-                      text-[#6b5b61]
-
-                      shadow-sm
-                    "
-                  >
-                    <Loader2
-                      className="
-                        h-4
-                        w-4
-                        animate-spin
-                        text-[#8f0024]
-                      "
-                    />
-
-                    Thinking...
-                  </div>
-                </div>
-              )}
-
-              <div
-                ref={
-                  messagesEndRef
-                }
-              />
-            </div>
-
-            {/* =============================
-                QUICK QUESTIONS
-            ============================== */}
-
-            <div
-              className="
-                mt-5
-                border-t
-                border-[#ead8dd]/70
-                pt-4
-              "
-            >
-              <p
-                className="
-                  mb-2.5
-                  text-[9px]
-                  font-black
-                  uppercase
-                  tracking-[0.18em]
-                  text-[#8f0024]/60
-                "
-              >
-                Quick Questions
-              </p>
-
-              <div
-                className="
-                  flex
-                  flex-wrap
-                  gap-2
-                "
-              >
-                {quickQuestions.map(
-                  (item) => (
-                    <button
-                      key={
-                        item.label
-                      }
-                      type="button"
-                      disabled={
-                        loading
-                      }
-                      onClick={() =>
-                        void sendMessage(
-                          item.message,
-                        )
-                      }
-                      className="
-                        rounded-full
-
-                        border
-                        border-[#8f0024]/15
-
-                        bg-white
-
-                        px-3
-                        py-1.5
-
-                        text-[10px]
-                        font-bold
-                        text-[#7a0019]
-
-                        transition
-
-                        hover:border-[#8f0024]
-                        hover:bg-[#fff1f4]
-
-                        disabled:cursor-not-allowed
-                        disabled:opacity-50
-                      "
-                    >
-                      {
-                        item.label
-                      }
-                    </button>
-                  ),
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* =============================
-              INPUT AREA
-          ============================== */}
-
-          <form
-            onSubmit={
-              handleSubmit
-            }
-            className="
-              border-t
-              border-[#ead8dd]
-              bg-white
-              p-3
+              flex
+              items-start
+              justify-between
+              gap-4
             "
           >
             <div
               className="
                 flex
-                items-end
-                gap-2
-
-                rounded-[17px]
-
-                border
-                border-[#dbc5cb]
-
-                bg-[#fffafb]
-
-                p-2
-
-                transition
-
-                focus-within:border-[#8f0024]
-                focus-within:ring-4
-                focus-within:ring-[#8f0024]/5
+                min-w-0
+                items-center
+                gap-3
               "
             >
-              <textarea
-                value={
-                  input
-                }
-                disabled={
-                  loading
-                }
-                onChange={(
-                  event,
-                ) =>
-                  setInput(
-                    event.target
-                      .value,
-                  )
-                }
-                onKeyDown={(
-                  event,
-                ) => {
-                  if (
-                    event.key ===
-                      "Enter" &&
-                    !event.shiftKey
-                  ) {
-                    event.preventDefault();
-
-                    event.currentTarget.form?.requestSubmit();
-                  }
-                }}
-                rows={1}
-                placeholder="Ask me anything about Prime Digital School..."
-                className="
-                  max-h-24
-                  min-h-[40px]
-                  flex-1
-                  resize-none
-
-                  bg-transparent
-
-                  px-2
-                  py-2.5
-
-                  text-[12.5px]
-                  leading-5
-                  text-[#272327]
-
-                  outline-none
-
-                  placeholder:text-slate-400
-
-                  disabled:opacity-60
-                "
-              />
-
-              <button
-                type="submit"
-                disabled={
-                  loading ||
-                  !input.trim()
-                }
-                aria-label="Send message"
+              <div
                 className="
                   flex
                   h-10
@@ -1105,99 +530,512 @@ export default function SchoolChatbot() {
                   items-center
                   justify-center
 
-                  rounded-[13px]
+                  rounded-xl
 
-                  bg-[#7a0019]
+                  border
+                  border-white/20
 
-                  text-white
+                  bg-white/10
 
-                  shadow-[0_8px_20px_rgba(122,0,25,0.22)]
-
-                  transition
-
-                  hover:bg-[#590012]
-
-                  disabled:cursor-not-allowed
-                  disabled:opacity-50
+                  backdrop-blur
                 "
               >
-                {loading ? (
+                <GraduationCap className="h-5 w-5" />
+              </div>
+
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <h2
+                    className="
+                      truncate
+                      text-[15px]
+                      font-black
+                    "
+                  >
+                    Prime Digital School
+                  </h2>
+
+                  <Sparkles
+                    className="
+                      h-3.5
+                      w-3.5
+                      shrink-0
+                      text-[#e8c466]
+                    "
+                  />
+                </div>
+
+                <p
+                  className="
+                    mt-0.5
+                    truncate
+                    text-[10px]
+                    font-semibold
+                    text-white/70
+                  "
+                >
+                  AI Admissions & Program Assistant
+                </p>
+
+                <div className="mt-1 flex items-center gap-1.5">
+                  <span
+                    className="
+                      h-2
+                      w-2
+                      rounded-full
+                      bg-emerald-400
+                    "
+                  />
+
+                  <span
+                    className="
+                      text-[8px]
+                      font-bold
+                      uppercase
+                      tracking-[0.12em]
+                      text-white/65
+                    "
+                  >
+                    Online
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              aria-label="Close chat"
+              onClick={() => setOpen(false)}
+              className="
+                flex
+                h-8
+                w-8
+                shrink-0
+                items-center
+                justify-center
+
+                rounded-lg
+
+                border
+                border-white/15
+
+                bg-white/10
+
+                transition
+
+                hover:bg-white/20
+              "
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* MESSAGES */}
+
+        <div
+          className="
+            flex-1
+            overflow-y-auto
+            bg-[#fffafb]
+            px-4
+            py-4
+          "
+        >
+          <div className="space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={
+                  message.role === "user"
+                    ? "flex justify-end"
+                    : "flex justify-start"
+                }
+              >
+                <div className="max-w-[90%]">
+                  <div
+                    className={
+                      message.role === "user"
+                        ? `
+                          rounded-[18px_18px_5px_18px]
+                          bg-[#7a0019]
+                          px-4
+                          py-3
+                          text-[13px]
+                          leading-[1.6]
+                          text-white
+                          shadow-sm
+                        `
+                        : `
+                          rounded-[18px_18px_18px_5px]
+                          border
+                          border-[#eed9df]
+                          bg-white
+                          px-4
+                          py-3
+                          text-[13px]
+                          leading-[1.6]
+                          text-[#302c2e]
+                          shadow-sm
+                        `
+                    }
+                  >
+                    {message.text}
+                  </div>
+
+                  {/* ACTION BUTTONS */}
+
+                  {message.role === "bot" &&
+                    message.actions &&
+                    message.actions.length > 0 && (
+                      <div className="mt-2.5 flex flex-wrap gap-2">
+                        {message.actions.map((action, index) => (
+                          <button
+                            key={`${message.id}-${index}`}
+                            type="button"
+                            onClick={() => handleAction(action)}
+                            className="
+                                inline-flex
+                                items-center
+                                gap-1.5
+
+                                rounded-full
+
+                                border
+                                border-[#8f0024]/20
+
+                                bg-white
+
+                                px-3.5
+                                py-2
+
+                                text-[10.5px]
+                                font-black
+                                text-[#7a0019]
+
+                                shadow-sm
+
+                                transition
+
+                                hover:-translate-y-0.5
+                                hover:border-[#8f0024]/50
+                                hover:bg-[#fff1f4]
+                              "
+                          >
+                            {action.type === "download" ? (
+                              <Download className="h-3.5 w-3.5" />
+                            ) : (
+                              <ArrowRight className="h-3.5 w-3.5" />
+                            )}
+
+                            {action.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                </div>
+              </div>
+            ))}
+
+            {/* WELCOME TYPING ANIMATION */}
+
+            {isWelcomeTyping && (
+              <div className="flex justify-start">
+                <div
+                  role="status"
+                  aria-label="Assistant is typing"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-1.5
+
+                    rounded-[18px_18px_18px_5px]
+
+                    border
+                    border-[#eed9df]
+
+                    bg-white
+
+                    px-4
+                    py-4
+
+                    shadow-sm
+                  "
+                >
+                  <span
+                    className="
+                      h-2
+                      w-2
+                      animate-bounce
+                      rounded-full
+                      bg-[#8f0024]
+                    "
+                  />
+
+                  <span
+                    className="
+                      h-2
+                      w-2
+                      animate-bounce
+                      rounded-full
+                      bg-[#8f0024]
+                    "
+                    style={{
+                      animationDelay: "150ms",
+                    }}
+                  />
+
+                  <span
+                    className="
+                      h-2
+                      w-2
+                      animate-bounce
+                      rounded-full
+                      bg-[#8f0024]
+                    "
+                    style={{
+                      animationDelay: "300ms",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* AI THINKING */}
+
+            {loading && (
+              <div className="flex justify-start">
+                <div
+                  className="
+                    inline-flex
+                    items-center
+                    gap-2
+
+                    rounded-[18px_18px_18px_5px]
+
+                    border
+                    border-[#eed9df]
+
+                    bg-white
+
+                    px-4
+                    py-3
+
+                    text-[12px]
+                    font-semibold
+                    text-[#6b5b61]
+
+                    shadow-sm
+                  "
+                >
                   <Loader2
                     className="
                       h-4
                       w-4
                       animate-spin
+                      text-[#8f0024]
                     "
                   />
-                ) : (
-                  <Send
-                    className="
-                      h-4
-                      w-4
-                    "
-                  />
-                )}
-              </button>
-            </div>
+                  Thinking...
+                </div>
+              </div>
+            )}
 
-            <div
-              className="
-                mt-2
-                flex
-                items-center
-                justify-between
-                gap-3
-                px-1
-              "
-            >
-              <p
-                className="
-                  truncate
-                  text-[8.5px]
-                  text-slate-400
-                "
-              >
-                AI-powered Prime Digital School Assistant
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* QUICK QUESTIONS */}
+
+          {(welcomeStep >= welcomeLines.length || hasConversation) && (
+            <div className="mt-5 border-t border-[#ead8dd]/70 pt-4">
+              <p className="mb-2.5 text-[9px] font-black uppercase tracking-[0.18em] text-[#8f0024]/60">
+                Quick Questions
               </p>
 
-              <button
-                type="button"
-                disabled={
-                  loading
-                }
-                onClick={
-                  resetChat
-                }
-                className="
-                  inline-flex
-                  shrink-0
-                  items-center
-                  gap-1
-
-                  text-[8.5px]
-                  font-bold
-                  text-[#8f0024]
-
-                  hover:underline
-
-                  disabled:opacity-50
-                "
-              >
-                <RotateCcw
-                  className="
-                    h-3
-                    w-3
-                  "
-                />
-
-                New conversation
-              </button>
+              <div className="flex flex-wrap gap-2">
+                {quickQuestions.map((item) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    disabled={loading}
+                    onClick={() => void sendMessage(item.message)}
+                    className="
+            rounded-full
+            border
+            border-[#8f0024]/15
+            bg-white
+            px-3
+            py-1.5
+            text-[10px]
+            font-bold
+            text-[#7a0019]
+            transition
+            hover:border-[#8f0024]
+            hover:bg-[#fff1f4]
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+          "
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </form>
-        </section>
-      {/* =====================================
-          FLOATING ACTION BUTTONS
-      ====================================== */}
+          )}
+        </div>
+
+        {/* INPUT AREA */}
+
+        <form
+          onSubmit={handleSubmit}
+          className="
+            border-t
+            border-[#ead8dd]
+            bg-white
+            p-3
+          "
+        >
+          <div
+            className="
+              flex
+              items-end
+              gap-2
+
+              rounded-[17px]
+
+              border
+              border-[#dbc5cb]
+
+              bg-[#fffafb]
+
+              p-2
+
+              transition
+
+              focus-within:border-[#8f0024]
+              focus-within:ring-4
+              focus-within:ring-[#8f0024]/5
+            "
+          >
+            <textarea
+              value={input}
+              disabled={loading}
+              onChange={(event) => setInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+
+                  event.currentTarget.form?.requestSubmit();
+                }
+              }}
+              rows={1}
+              placeholder="Ask me anything about Prime Digital School..."
+              className="
+                max-h-24
+                min-h-[40px]
+                flex-1
+                resize-none
+
+                bg-transparent
+
+                px-2
+                py-2.5
+
+                text-[12.5px]
+                leading-5
+                text-[#272327]
+
+                outline-none
+
+                placeholder:text-slate-400
+
+                disabled:opacity-60
+              "
+            />
+
+            <button
+              type="submit"
+              disabled={loading || !input.trim()}
+              aria-label="Send message"
+              className="
+                flex
+                h-10
+                w-10
+                shrink-0
+                items-center
+                justify-center
+
+                rounded-[13px]
+
+                bg-[#7a0019]
+
+                text-white
+
+                shadow-[0_8px_20px_rgba(122,0,25,0.22)]
+
+                transition
+
+                hover:bg-[#590012]
+
+                disabled:cursor-not-allowed
+                disabled:opacity-50
+              "
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
+            </button>
+          </div>
+
+          <div
+            className="
+              mt-2
+              flex
+              items-center
+              justify-between
+              gap-3
+              px-1
+            "
+          >
+            <p
+              className="
+                truncate
+                text-[8.5px]
+                text-slate-400
+              "
+            >
+              AI-powered Prime Digital School Assistant
+            </p>
+
+            <button
+              type="button"
+              disabled={loading}
+              onClick={resetChat}
+              className="
+                inline-flex
+                shrink-0
+                items-center
+                gap-1
+
+                text-[8.5px]
+                font-bold
+                text-[#8f0024]
+
+                hover:underline
+
+                disabled:opacity-50
+              "
+            >
+              <RotateCcw className="h-3 w-3" />
+              New conversation
+            </button>
+          </div>
+        </form>
+      </section>
+
+      {/* FLOATING ACTION BUTTONS */}
 
       <div
         className="
@@ -1215,21 +1053,12 @@ export default function SchoolChatbot() {
           max-[640px]:right-4
         "
       >
-        {/* =============================
-            CHATBOT ROBOT BUTTON
-        ============================== */}
+        {/* CHATBOT ROBOT BUTTON */}
 
         <button
           type="button"
-          onClick={() =>
-            setOpen(
-              (current) =>
-                !current,
-            )
-          }
-          aria-expanded={
-            open
-          }
+          onClick={() => setOpen((current) => !current)}
+          aria-expanded={open}
           aria-label={
             open
               ? "Close Prime Digital School chat"
@@ -1240,8 +1069,8 @@ export default function SchoolChatbot() {
             relative
 
             flex
-            h-[76px]
-            w-[76px]
+            h-[68px]
+            w-[68px]
             items-center
             justify-center
 
@@ -1262,8 +1091,8 @@ export default function SchoolChatbot() {
             hover:-translate-y-1
             hover:scale-105
 
-            max-[640px]:h-[66px]
-            max-[640px]:w-[66px]
+            max-[640px]:h-[60px]
+            max-[640px]:w-[60px]
           "
         >
           <img
@@ -1273,8 +1102,8 @@ export default function SchoolChatbot() {
               relative
               z-10
 
-              h-[64px]
-              w-[64px]
+              h-[58px]
+              w-[58px]
 
               object-contain
 
@@ -1283,41 +1112,19 @@ export default function SchoolChatbot() {
 
               group-hover:scale-105
 
-              max-[640px]:h-[56px]
-              max-[640px]:w-[56px]
+              max-[640px]:h-[50px]
+              max-[640px]:w-[50px]
             "
           />
 
-          {!open && (
-            <span
-              className="
-                absolute
-                right-[2px]
-                top-[2px]
-                z-20
 
-                h-[13px]
-                w-[13px]
-
-                rounded-full
-
-                border-2
-                border-white
-
-                bg-emerald-500
-              "
-            />
-          )}
         </button>
 
-        {/* =============================
-            WHATSAPP
-            Hidden while chatbot is open
-        ============================== */}
+        {/* WHATSAPP — HIDDEN WHILE CHATBOT IS OPEN */}
 
         {!open && (
           <a
-            href="https://wa.me/8693093542?text=Hi%20Prime%20Digital%20School%2C%20I%20would%20like%20to%20know%20more%20about%20admissions."
+            href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat with Prime Digital School on WhatsApp"
