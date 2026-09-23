@@ -11,7 +11,7 @@ Sector 17, Vashi
 Navi Mumbai, Maharashtra, India
 
 CONTACT
-Phone: +91 88504 47887
+Phone: +91 8693093542
 Email: team@primedigital.school
 
 OFFICE HOURS
