@@ -8,7 +8,7 @@ const contactCards = [
   {
     icon: "☎",
     title: "Call Us",
-    value: "+91 88504 47887",
+    value: "+91 8693093542",
   },
   {
     icon: "✉",
@@ -23,7 +23,7 @@ const contactCards = [
   {
     icon: "◉",
     title: "WhatsApp",
-    value: "+91 88504 47887",
+    value: "+91 8693093542",
   },
 ];
 

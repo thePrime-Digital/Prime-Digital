@@ -419,7 +419,7 @@ export default function CareerApplicationForm({
             </p>
 
             <p>
-              ☎ +91 88504 47887
+              ☎ +91 8693093542
             </p>
           </div>
         </div>
