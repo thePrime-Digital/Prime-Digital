@@ -39,7 +39,6 @@ export type Program = {
 };
 
 export const programs: Program[] = [
-
   // =========================================================
   // 1. AI & MACHINE LEARNING
   // Existing route kept so nothing breaks.
@@ -184,7 +183,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 2. FULL-STACK WEB DEVELOPMENT
   // =========================================================
@@ -223,13 +221,11 @@ export const programs: Program[] = [
       },
       {
         title: "React",
-        description:
-          "Build reusable component-based frontend applications.",
+        description: "Build reusable component-based frontend applications.",
       },
       {
         title: "Backend Development",
-        description:
-          "Create server-side logic and REST APIs with Node.js.",
+        description: "Create server-side logic and REST APIs with Node.js.",
       },
       {
         title: "Databases",
@@ -329,7 +325,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 3. DATA SCIENCE
   // =========================================================
@@ -378,13 +373,11 @@ export const programs: Program[] = [
       },
       {
         title: "Machine Learning",
-        description:
-          "Build introductory predictive and classification models.",
+        description: "Build introductory predictive and classification models.",
       },
       {
         title: "Data Projects",
-        description:
-          "Create portfolio projects using real-world datasets.",
+        description: "Create portfolio projects using real-world datasets.",
       },
     ],
 
@@ -472,7 +465,6 @@ export const programs: Program[] = [
       },
     ],
   },
-
 
   // =========================================================
   // 4. CYBERSECURITY
@@ -609,8 +601,7 @@ export const programs: Program[] = [
       },
       {
         title: "Network Defense Lab",
-        description:
-          "Design and demonstrate a secure network configuration.",
+        description: "Design and demonstrate a secure network configuration.",
         image: "/programs/cyber-defense/network-security.png",
       },
       {
@@ -621,7 +612,6 @@ export const programs: Program[] = [
       },
     ],
   },
-
 
   // =========================================================
   // 5. UI/UX DESIGN
@@ -666,18 +656,15 @@ export const programs: Program[] = [
       },
       {
         title: "UI Design",
-        description:
-          "Use typography, color, spacing, grids, and components.",
+        description: "Use typography, color, spacing, grids, and components.",
       },
       {
         title: "Prototyping",
-        description:
-          "Create interactive prototypes and realistic user flows.",
+        description: "Create interactive prototypes and realistic user flows.",
       },
       {
         title: "Usability Testing",
-        description:
-          "Test designs with users and improve based on feedback.",
+        description: "Test designs with users and improve based on feedback.",
       },
     ],
 
@@ -771,7 +758,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 6. DATA ANALYTICS - NEW
   // =========================================================
@@ -810,8 +796,7 @@ export const programs: Program[] = [
       },
       {
         title: "Data Cleaning",
-        description:
-          "Prepare data for accurate and reliable analysis.",
+        description: "Prepare data for accurate and reliable analysis.",
       },
       {
         title: "Dashboards",
@@ -912,7 +897,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 7. ENTREPRENEURSHIP
   // =========================================================
@@ -946,13 +930,11 @@ export const programs: Program[] = [
       },
       {
         title: "Idea Validation",
-        description:
-          "Identify real problems and validate business ideas.",
+        description: "Identify real problems and validate business ideas.",
       },
       {
         title: "Business Planning",
-        description:
-          "Create a practical business model and launch plan.",
+        description: "Create a practical business model and launch plan.",
       },
       {
         title: "Marketing",
@@ -966,8 +948,7 @@ export const programs: Program[] = [
       },
       {
         title: "Pitching",
-        description:
-          "Communicate business ideas clearly and persuasively.",
+        description: "Communicate business ideas clearly and persuasively.",
       },
     ],
 
@@ -1060,7 +1041,6 @@ export const programs: Program[] = [
       },
     ],
   },
-
 
   // =========================================================
   // 8. DIGITAL MARKETING - NEW
@@ -1201,7 +1181,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 9. GRAPHIC DESIGN & MOTION GRAPHICS - NEW
   // =========================================================
@@ -1245,13 +1224,11 @@ export const programs: Program[] = [
       },
       {
         title: "Branding",
-        description:
-          "Create visual identities, logos, and brand assets.",
+        description: "Create visual identities, logos, and brand assets.",
       },
       {
         title: "Motion Graphics",
-        description:
-          "Animate text, graphics, shapes, and visual compositions.",
+        description: "Animate text, graphics, shapes, and visual compositions.",
       },
       {
         title: "Portfolio",
@@ -1338,11 +1315,11 @@ export const programs: Program[] = [
         title: "Motion Graphics Campaign",
         description:
           "Create animated graphics and promotional content for a digital campaign.",
-        image: "/programs/graphic-design-motion-graphics/motion-graphics-project.png",
+        image:
+          "/programs/graphic-design-motion-graphics/motion-graphics-project.png",
       },
     ],
   },
-
 
   // =========================================================
   // 10. SOFTWARE TESTING - NEW
@@ -1397,8 +1374,7 @@ export const programs: Program[] = [
       },
       {
         title: "Automation Basics",
-        description:
-          "Learn how repetitive software tests can be automated.",
+        description: "Learn how repetitive software tests can be automated.",
       },
     ],
 
@@ -1483,7 +1459,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 11. PYTHON PROGRAMMING - KEEP
   // =========================================================
@@ -1517,28 +1492,23 @@ export const programs: Program[] = [
       },
       {
         title: "Logic",
-        description:
-          "Use conditions, loops, and problem-solving techniques.",
+        description: "Use conditions, loops, and problem-solving techniques.",
       },
       {
         title: "Functions",
-        description:
-          "Write organized and reusable Python code.",
+        description: "Write organized and reusable Python code.",
       },
       {
         title: "Data Structures",
-        description:
-          "Work with lists, dictionaries, tuples, and sets.",
+        description: "Work with lists, dictionaries, tuples, and sets.",
       },
       {
         title: "Automation",
-        description:
-          "Use Python to automate repetitive tasks.",
+        description: "Use Python to automate repetitive tasks.",
       },
       {
         title: "Games & Projects",
-        description:
-          "Build interactive Python projects and games.",
+        description: "Build interactive Python projects and games.",
       },
     ],
 
@@ -1625,7 +1595,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 12. MOBILE APP DEVELOPMENT - KEEP
   // =========================================================
@@ -1659,13 +1628,11 @@ export const programs: Program[] = [
       },
       {
         title: "App Logic",
-        description:
-          "Build interactive behavior and application workflows.",
+        description: "Build interactive behavior and application workflows.",
       },
       {
         title: "State Management",
-        description:
-          "Manage changing data across application screens.",
+        description: "Manage changing data across application screens.",
       },
       {
         title: "APIs",
@@ -1674,13 +1641,11 @@ export const programs: Program[] = [
       },
       {
         title: "Storage",
-        description:
-          "Save and manage application data.",
+        description: "Save and manage application data.",
       },
       {
         title: "Deployment",
-        description:
-          "Prepare applications for testing and release.",
+        description: "Prepare applications for testing and release.",
       },
     ],
 
@@ -1767,7 +1732,6 @@ export const programs: Program[] = [
     ],
   },
 
-
   // =========================================================
   // 13. DIGITAL CONTENT CREATION - KEEP
   // =========================================================
@@ -1788,7 +1752,11 @@ export const programs: Program[] = [
 
     stats: [
       { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
-      { title: "Projects", value: "10+ Creative", subtext: "Content portfolio" },
+      {
+        title: "Projects",
+        value: "10+ Creative",
+        subtext: "Content portfolio",
+      },
       { title: "Skills", value: "Creative", subtext: "Video + Social" },
       { title: "Learning", value: "Hands-on", subtext: "Create and publish" },
     ],
@@ -1796,13 +1764,11 @@ export const programs: Program[] = [
     learning: [
       {
         title: "Content Strategy",
-        description:
-          "Plan useful and engaging content for specific audiences.",
+        description: "Plan useful and engaging content for specific audiences.",
       },
       {
         title: "Video Production",
-        description:
-          "Learn framing, lighting, audio, and shooting techniques.",
+        description: "Learn framing, lighting, audio, and shooting techniques.",
       },
       {
         title: "Video Editing",
@@ -1816,8 +1782,7 @@ export const programs: Program[] = [
       },
       {
         title: "Social Media",
-        description:
-          "Adapt content for modern digital platforms.",
+        description: "Adapt content for modern digital platforms.",
       },
       {
         title: "Growth",
@@ -1910,6 +1875,183 @@ export const programs: Program[] = [
         description:
           "Create a coordinated social content campaign with graphics, video, and messaging.",
         image: "/programs/digital-content/social-media.png",
+      },
+    ],
+  },
+
+  // =========================================================
+  // 14. AWS & DEVOPS
+  // =========================================================
+  {
+    slug: "aws-devops",
+    title: "AWS &",
+    highlight: "DevOps",
+
+    description:
+      "Learn cloud computing and modern DevOps practices through AWS services, Linux, Git, Docker, CI/CD pipelines, infrastructure, deployment, monitoring, and practical cloud projects.",
+
+    image: "/programs/aws-devops/hero.png",
+
+    age: "Ages 14–17",
+    duration: "12 Weeks",
+    level: "Intermediate Level",
+
+    stats: [
+      {
+        title: "Duration",
+        value: "12 Weeks",
+        subtext: "5–6 hrs weekly",
+      },
+      {
+        title: "Projects",
+        value: "5 Practical",
+        subtext: "Cloud portfolio",
+      },
+      {
+        title: "Platform",
+        value: "AWS",
+        subtext: "Cloud infrastructure",
+      },
+      {
+        title: "Learning",
+        value: "Hands-on",
+        subtext: "Deploy + automate",
+      },
+    ],
+
+    learning: [
+      {
+        title: "Cloud Computing",
+        description:
+          "Understand cloud infrastructure, deployment models, regions, availability zones, and scalable systems.",
+      },
+      {
+        title: "AWS Fundamentals",
+        description:
+          "Learn essential AWS services including EC2, S3, IAM, networking, and cloud storage.",
+      },
+      {
+        title: "Linux & Git",
+        description:
+          "Work with Linux commands, servers, Git repositories, branches, and collaborative development workflows.",
+      },
+      {
+        title: "Docker",
+        description:
+          "Learn containers, Docker images, Dockerfiles, and how applications are packaged for deployment.",
+      },
+      {
+        title: "CI/CD",
+        description:
+          "Build automated workflows for testing, building, and deploying software.",
+      },
+      {
+        title: "Monitoring & DevOps",
+        description:
+          "Understand application monitoring, logs, infrastructure management, automation, and reliable deployment practices.",
+      },
+    ],
+
+    journey: [
+      {
+        title: "Cloud Basics",
+        time: "Week 1–2",
+      },
+      {
+        title: "AWS",
+        time: "Week 3–4",
+      },
+      {
+        title: "Linux & Git",
+        time: "Week 5–6",
+      },
+      {
+        title: "Docker",
+        time: "Week 7–8",
+      },
+      {
+        title: "CI/CD",
+        time: "Week 9–10",
+      },
+      {
+        title: "Cloud Project",
+        time: "Week 11–12",
+      },
+    ],
+
+    curriculum: [
+      {
+        title: "Cloud & AWS Foundations",
+        lessons: "6 Lessons • 10 Hours",
+        items: [
+          "Introduction to Cloud Computing",
+          "AWS Global Infrastructure",
+          "AWS Management Console",
+          "EC2 Virtual Servers",
+          "S3 Cloud Storage",
+          "IAM & Cloud Security Basics",
+        ],
+      },
+      {
+        title: "Linux & Version Control",
+        lessons: "6 Lessons • 10 Hours",
+        items: [
+          "Linux Fundamentals",
+          "Command Line Basics",
+          "Files and Permissions",
+          "Git Fundamentals",
+          "GitHub Repositories",
+          "Branching and Collaboration",
+        ],
+      },
+      {
+        title: "Docker & Containers",
+        lessons: "5 Lessons • 10 Hours",
+        items: [
+          "Introduction to Containers",
+          "Docker Fundamentals",
+          "Docker Images",
+          "Dockerfiles",
+          "Containerize an Application",
+        ],
+      },
+      {
+        title: "CI/CD & Deployment",
+        lessons: "6 Lessons • 12 Hours",
+        items: [
+          "What is CI/CD?",
+          "Build Pipelines",
+          "Automated Testing",
+          "Automated Deployment",
+          "Environment Configuration",
+          "Deploy an Application to AWS",
+        ],
+      },
+      {
+        title: "DevOps Capstone",
+        lessons: "5 Lessons • 12 Hours",
+        items: [
+          "Plan Cloud Architecture",
+          "Containerize the Application",
+          "Create a CI/CD Pipeline",
+          "Deploy to AWS",
+          "Monitor and Present the Project",
+        ],
+      },
+    ],
+
+    projects: [
+      {
+        title: "AWS Cloud Deployment",
+        description:
+          "Deploy a web application to AWS using cloud infrastructure, storage, security, and deployment best practices.",
+        image: "/programs/aws-devops/aws-cloud-deployment.png",
+      },
+      {
+        title: "Docker CI/CD Pipeline",
+        description:
+          "Containerize an application and create an automated workflow that builds, tests, and deploys new versions.",
+        image: "/programs/aws-devops/docker-cicd-pipeline.png",
       },
     ],
   },

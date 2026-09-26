@@ -132,7 +132,6 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-
       {/* All Programs */}
       <section className="bg-[#FCF9F8] py-16 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto">
@@ -207,7 +206,6 @@ export default function ProgramsPage() {
           </div>
         </div>
       </section>
-
 
       {/* Learning Paths */}
       <section className="bg-[#F6F3F2] py-16 px-6 md:px-20">
@@ -776,7 +774,13 @@ const programs = [
     tags: ["12 Weeks", "Intermediate"],
     desc: "Build complete modern web applications using frontend, backend, APIs, databases, and deployment tools.",
   },
-
+  {
+    slug: "aws-devops",
+    title: "AWS & DevOps",
+    image: "/pds-assets/program-web-dev.jpg",
+    tags: ["12 Weeks", "Intermediate"],
+    desc: "Learn cloud computing, AWS services, Linux, Git, Docker, CI/CD, infrastructure, monitoring, and modern DevOps deployment workflows.",
+  },
   {
     slug: "data-science-analytics-junior",
     title: "Data Science",
