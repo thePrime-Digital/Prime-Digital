@@ -281,6 +281,11 @@ export default function AdmissionsPage() {
               <h3 className="text-base font-normal text-[#1A1C1C] leading-[24px] font-serif">
                 Foundation
               </h3>
+
+              <p className="mt-1 mb-3 text-sm font-medium text-[#5F5E5E]">
+                6th to 12th Grade
+              </p>
+
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-3xl md:text-[36px] font-bold text-[#5C021A] leading-[40px]">
                   TBD

@@ -106,6 +106,8 @@ export default function SchoolChatbot() {
   const pathname = usePathname();
   const router = useRouter();
 
+  const [mounted, setMounted] = useState(false);
+
   const [open, setOpen] = useState(false);
 
   const [input, setInput] = useState("");
@@ -134,10 +136,16 @@ export default function SchoolChatbot() {
     welcomeStep < welcomeLines.length;
 
   /*
+   * Wait until the browser has mounted.
+   */
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  /*
    * Restore conversation from sessionStorage.
    * Remove the old single-paragraph welcome message.
    */
-
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem("pds-chatbot-messages");
@@ -402,7 +410,7 @@ export default function SchoolChatbot() {
     }
   }
 
-  if (hidden) {
+  if (!mounted || hidden) {
     return null;
   }
 
@@ -1116,8 +1124,6 @@ export default function SchoolChatbot() {
               max-[640px]:w-[50px]
             "
           />
-
-
         </button>
 
         {/* WHATSAPP — HIDDEN WHILE CHATBOT IS OPEN */}
