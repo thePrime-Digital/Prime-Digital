@@ -40,9 +40,7 @@ function value(
   key: string,
 ): string {
   const raw =
-    formData.get(
-      key,
-    );
+    formData.get(key);
 
   return typeof raw ===
     "string"
@@ -76,10 +74,7 @@ function createReference(
   const datePart =
     date
       .toISOString()
-      .slice(
-        0,
-        10,
-      )
+      .slice(0, 10)
       .replace(
         /-/g,
         "",
@@ -91,10 +86,7 @@ function createReference(
         /-/g,
         "",
       )
-      .slice(
-        0,
-        6,
-      )
+      .slice(0, 6)
       .toUpperCase();
 
   return `PDS-CAREER-${datePart}-${token}`;
@@ -103,8 +95,7 @@ function createReference(
 export async function POST(
   request: Request,
 ): Promise<NextResponse> {
-  let formData:
-    FormData;
+  let formData: FormData;
 
   try {
     formData =
@@ -147,6 +138,15 @@ export async function POST(
       formData,
       "jobId",
     );
+
+  const customPosition =
+    value(
+      formData,
+      "customPosition",
+    );
+
+  const isCustomApplication =
+    jobId === "other";
 
   const fullName =
     value(
@@ -202,7 +202,33 @@ export async function POST(
       "consent",
     );
 
-  if (
+  /*
+   * Position validation.
+   *
+   * Published vacancy:
+   * jobId must be a Mongo ObjectId.
+   *
+   * General / custom application:
+   * jobId is "other" and customPosition is required.
+   */
+  if (isCustomApplication) {
+    if (
+      customPosition.length <
+        2 ||
+      customPosition.length >
+        120
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Please enter a valid position.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+  } else if (
     !ObjectId.isValid(
       jobId,
     )
@@ -286,6 +312,51 @@ export async function POST(
   }
 
   if (
+    experience.length >
+    250
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          "Experience information is too long.",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  if (
+    linkedin.length >
+    500
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          "LinkedIn URL is too long.",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  if (
+    portfolio.length >
+    500
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          "Portfolio URL is too long.",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  if (
     coverLetter.length >
     5000
   ) {
@@ -322,8 +393,7 @@ export async function POST(
 
   if (
     !(cvValue instanceof File) ||
-    cvValue.size ===
-      0
+    cvValue.size === 0
   ) {
     return NextResponse.json(
       {
@@ -388,67 +458,108 @@ export async function POST(
         "career_applications",
       );
 
-    const objectId =
-      new ObjectId(
-        jobId,
-      );
+    let objectId:
+      ObjectId | null =
+      null;
 
-    const job =
-      await jobs.findOne({
-        _id:
-          objectId,
+    let job:
+      Document | null =
+      null;
 
-        status:
-          "published",
-      });
+    /*
+     * Published job application.
+     */
+    if (!isCustomApplication) {
+      objectId =
+        new ObjectId(
+          jobId,
+        );
 
-    if (!job) {
-      return NextResponse.json(
-        {
-          error:
-            "This career opportunity is no longer accepting applications.",
-        },
-        {
-          status: 404,
-        },
-      );
+      job =
+        await jobs.findOne({
+          _id:
+            objectId,
+
+          status:
+            "published",
+        });
+
+      if (!job) {
+        return NextResponse.json(
+          {
+            error:
+              "This career opportunity is no longer accepting applications.",
+          },
+          {
+            status: 404,
+          },
+        );
+      }
+
+      if (
+        job.deadline instanceof
+          Date &&
+        job.deadline.getTime() <
+          Date.now()
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "The application deadline for this position has passed.",
+          },
+          {
+            status: 409,
+          },
+        );
+      }
     }
 
-    if (
-      job.deadline instanceof
-        Date &&
-      job.deadline.getTime() <
-        Date.now()
-    ) {
-      return NextResponse.json(
-        {
-          error:
-            "The application deadline for this position has passed.",
-        },
-        {
-          status: 409,
-        },
-      );
-    }
+    /*
+     * Prevent duplicate applications.
+     */
+    if (isCustomApplication) {
+      const existing =
+        await applications.findOne({
+          email,
 
-    const existing =
-      await applications.findOne({
-        jobId:
-          objectId,
+          applicationType:
+            "general",
 
-        email,
-      });
+          customPositionNormalized:
+            customPosition.toLowerCase(),
+        });
 
-    if (existing) {
-      return NextResponse.json(
-        {
-          error:
-            "An application for this position has already been submitted using this email address.",
-        },
-        {
-          status: 409,
-        },
-      );
+      if (existing) {
+        return NextResponse.json(
+          {
+            error:
+              "An application for this position has already been submitted using this email address.",
+          },
+          {
+            status: 409,
+          },
+        );
+      }
+    } else {
+      const existing =
+        await applications.findOne({
+          jobId:
+            objectId,
+
+          email,
+        });
+
+      if (existing) {
+        return NextResponse.json(
+          {
+            error:
+              "An application for this position has already been submitted using this email address.",
+          },
+          {
+            status: 409,
+          },
+        );
+      }
     }
 
     const now =
@@ -464,9 +575,18 @@ export async function POST(
         cvValue.name,
       );
 
+    /*
+     * Keep general applications in their
+     * own Vercel Blob folder.
+     */
+    const blobFolder =
+      isCustomApplication
+        ? "general"
+        : jobId;
+
     const blob =
       await put(
-        `career-applications/${jobId}/${reference}-${cleanedFileName}`,
+        `career-applications/${blobFolder}/${reference}-${cleanedFileName}`,
         cvValue,
         {
           access:
@@ -477,24 +597,53 @@ export async function POST(
         },
       );
 
+    const jobTitle =
+      isCustomApplication
+        ? customPosition
+        : String(
+            job?.title ||
+              "Career Opportunity",
+          );
+
+    const department =
+      isCustomApplication
+        ? "General Application"
+        : String(
+            job?.department ||
+              "",
+          );
+
     const result =
       await applications.insertOne({
         reference,
 
+        /*
+         * Published vacancies keep their
+         * Mongo job reference.
+         *
+         * General applications use null.
+         */
         jobId:
           objectId,
 
-        jobTitle:
-          String(
-            job.title ||
-              "Career Opportunity",
-          ),
+        jobTitle,
 
-        department:
-          String(
-            job.department ||
-              "",
-          ),
+        department,
+
+        applicationType:
+          isCustomApplication
+            ? "general"
+            : "published-job",
+
+        customPosition:
+          isCustomApplication
+            ? customPosition
+            : "",
+
+        customPositionNormalized:
+          isCustomApplication
+            ? customPosition.toLowerCase()
+            : "",
 
         fullName,
         email,
@@ -559,11 +708,7 @@ export async function POST(
         applicationId:
           result.insertedId.toHexString(),
 
-        jobTitle:
-          String(
-            job.title ||
-              "",
-          ),
+        jobTitle,
       },
       {
         status: 201,

@@ -61,9 +61,9 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <div className="relative h-[115px] w-[115px] shrink-0 overflow-hidden rounded-[18px] border border-white/20 shadow-[0_18px_38px_rgba(0,0,0,0.25)]">
               <Image
-                src="/pds-assets/founder.jpeg"
-                alt="Ravi Rana,
-       Founder of Prime Digital School"
+                src="/pds-assets/founder-temperory.jpeg"
+                alt="Adv Reena Kumari,
+                Founder of Prime Digital School"
                 fill
                 sizes="115px"
                 className="object-cover object-top"
@@ -76,7 +76,7 @@ export default function Footer() {
               </p>
 
               <h3 className="mt-2 text-[24px] font-black leading-none text-white">
-                Ravi Rana
+                Adv Reena Kumari
               </h3>
 
               <p className="mt-2 text-[11px] font-black uppercase tracking-[0.2em] text-[#f0d58a]">
