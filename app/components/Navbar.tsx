@@ -18,14 +18,6 @@ const navItems = [
     href: "/programs",
   },
 {
-  label: "Admissions",
-  href: "/admissions",
-},
-{
-  label: "Student Stories",
-  href: "/student-stories",
-},
-{
   label: "Careers",
   href: "/careers",
 },
@@ -33,10 +25,7 @@ const navItems = [
     label: "Support",
     href: "/support",
   },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
+
     {
     label: "About Us",
     href: "/about",

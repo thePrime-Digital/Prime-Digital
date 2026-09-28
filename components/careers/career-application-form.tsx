@@ -21,8 +21,7 @@ type CareerJobOption = {
 };
 
 type CareerApplicationFormProps = {
-  jobs:
-    CareerJobOption[];
+  jobs: CareerJobOption[];
 };
 
 type ApplicationResult = {
@@ -31,135 +30,76 @@ type ApplicationResult = {
 };
 
 const EMPTY_FORM = {
-  jobId:
-    "",
-
-  fullName:
-    "",
-
-  email:
-    "",
-
-  phone:
-    "",
-
-  city:
-    "",
-
-  experience:
-    "",
-
-  linkedin:
-    "",
-
-  portfolio:
-    "",
-
-  coverLetter:
-    "",
-
-  consent:
-    false,
+  jobId: "",
+  customPosition: "",
+  fullName: "",
+  email: "",
+  phone: "",
+  city: "",
+  experience: "",
+  linkedin: "",
+  portfolio: "",
+  coverLetter: "",
+  consent: false,
 };
 
 export default function CareerApplicationForm({
   jobs,
 }: CareerApplicationFormProps) {
-  const [
-    form,
-    setForm,
-  ] =
-    useState(
-      EMPTY_FORM,
-    );
+  const [form, setForm] = useState(EMPTY_FORM);
 
-  const [
-    cv,
-    setCv,
-  ] =
-    useState<
-      File | null
-    >(null);
+  const [cv, setCv] = useState<File | null>(null);
 
-  const [
-    submitting,
-    setSubmitting,
-  ] =
-    useState(
-      false,
-    );
+  const [submitting, setSubmitting] = useState(false);
 
-  const [
-    error,
-    setError,
-  ] =
-    useState("");
+  const [error, setError] = useState("");
 
-  const [
-    result,
-    setResult,
-  ] =
-    useState<
-      ApplicationResult | null
-    >(null);
+  const [result, setResult] =
+    useState<ApplicationResult | null>(null);
 
-  const selectedJob =
-    useMemo(
-      () =>
-        jobs.find(
-          (
-            job,
-          ) =>
-            job.id ===
-            form.jobId,
-        ) ||
-        null,
-      [
-        jobs,
-        form.jobId,
-      ],
-    );
+  const selectedJob = useMemo(
+    () =>
+      jobs.find(
+        (job) => job.id === form.jobId,
+      ) || null,
+    [jobs, form.jobId],
+  );
+
+  const isCustomPosition =
+    form.jobId === "other";
+
+  const applyingTitle =
+    selectedJob?.title ||
+    (isCustomPosition
+      ? form.customPosition.trim()
+      : "");
 
   useEffect(() => {
-    function handleSelected(
-      event: Event,
-    ) {
+    function handleSelected(event: Event) {
       const customEvent =
         event as CustomEvent<{
           jobId?: string;
         }>;
 
       const jobId =
-        customEvent.detail
-          ?.jobId;
+        customEvent.detail?.jobId;
 
       if (
         !jobId ||
         !jobs.some(
-          (
-            job,
-          ) =>
-            job.id ===
-            jobId,
+          (job) => job.id === jobId,
         )
       ) {
         return;
       }
 
-      setForm(
-        (
-          current,
-        ) => ({
-          ...current,
+      setForm((current) => ({
+        ...current,
+        jobId,
+        customPosition: "",
+      }));
 
-          jobId,
-        }),
-      );
-
-      setResult(
-        null,
-      );
-
+      setResult(null);
       setError("");
     }
 
@@ -174,34 +114,43 @@ export default function CareerApplicationForm({
         handleSelected,
       );
     };
-  }, [
-    jobs,
-  ]);
+  }, [jobs]);
 
   function reset() {
-    setForm(
-      EMPTY_FORM,
-    );
-
-    setCv(
-      null,
-    );
-
+    setForm(EMPTY_FORM);
+    setCv(null);
     setError("");
-
-    setResult(
-      null,
-    );
+    setResult(null);
   }
 
   async function submitApplication() {
     setError("");
 
-    if (
-      !form.jobId
-    ) {
+    if (!form.jobId) {
       setError(
         "Please select the position you are applying for.",
+      );
+
+      return;
+    }
+
+    if (
+      form.jobId === "other" &&
+      !form.customPosition.trim()
+    ) {
+      setError(
+        "Please enter the position you are applying for.",
+      );
+
+      return;
+    }
+
+    if (
+      form.jobId === "other" &&
+      form.customPosition.trim().length < 2
+    ) {
+      setError(
+        "Please enter a valid position.",
       );
 
       return;
@@ -228,9 +177,7 @@ export default function CareerApplicationForm({
       return;
     }
 
-    if (
-      !form.consent
-    ) {
+    if (!form.consent) {
       setError(
         "Please confirm the application consent.",
       );
@@ -238,17 +185,19 @@ export default function CareerApplicationForm({
       return;
     }
 
-    setSubmitting(
-      true,
-    );
+    setSubmitting(true);
 
     try {
-      const data =
-        new FormData();
+      const data = new FormData();
 
       data.append(
         "jobId",
         form.jobId,
+      );
+
+      data.append(
+        "customPosition",
+        form.customPosition.trim(),
       );
 
       data.append(
@@ -293,9 +242,7 @@ export default function CareerApplicationForm({
 
       data.append(
         "consent",
-        String(
-          form.consent,
-        ),
+        String(form.consent),
       );
 
       /*
@@ -315,23 +262,16 @@ export default function CareerApplicationForm({
         await fetch(
           "/api/careers/applications",
           {
-            method:
-              "POST",
-
-            body:
-              data,
-
-            cache:
-              "no-store",
+            method: "POST",
+            body: data,
+            cache: "no-store",
           },
         );
 
       const payload =
         await response.json();
 
-      if (
-        !response.ok
-      ) {
+      if (!response.ok) {
         throw new Error(
           payload.error ||
             "Unable to submit application.",
@@ -339,36 +279,27 @@ export default function CareerApplicationForm({
       }
 
       setResult({
-        reference:
-          String(
-            payload.reference ||
-              "",
-          ),
+        reference: String(
+          payload.reference || "",
+        ),
 
-        jobTitle:
-          String(
-            payload.jobTitle ||
-              selectedJob?.title ||
-              "",
-          ),
+        jobTitle: String(
+          payload.jobTitle ||
+            selectedJob?.title ||
+            form.customPosition ||
+            "",
+        ),
       });
 
-      setCv(
-        null,
-      );
-    } catch (
-      submitError
-    ) {
+      setCv(null);
+    } catch (submitError) {
       setError(
-        submitError instanceof
-          Error
+        submitError instanceof Error
           ? submitError.message
           : "Unable to submit application.",
       );
     } finally {
-      setSubmitting(
-        false,
-      );
+      setSubmitting(false);
     }
   }
 
@@ -378,6 +309,11 @@ export default function CareerApplicationForm({
       className="scroll-mt-28 px-5 py-16 sm:px-8 lg:px-10"
     >
       <div className="mx-auto grid max-w-[1220px] overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.10)] lg:grid-cols-[0.8fr_1.2fr]">
+
+        {/* ================================================= */}
+        {/* LEFT SIDE */}
+        {/* ================================================= */}
+
         <div className="bg-[#8f0024] p-8 text-white sm:p-10">
           <p className="text-xs font-black uppercase tracking-[0.18em] text-white/70">
             Apply Today
@@ -388,24 +324,33 @@ export default function CareerApplicationForm({
           </h2>
 
           <p className="mt-4 text-sm leading-7 text-white/80">
-            Submit your application and our recruitment team will review your profile.
+            Submit your application and our recruitment team
+            will review your profile.
           </p>
 
-          {selectedJob && (
+          {/* SELECTED / CUSTOM POSITION */}
+
+          {applyingTitle && (
             <div className="mt-8 rounded-2xl border border-white/15 bg-white/10 p-5">
               <p className="text-[9px] font-black uppercase tracking-[0.16em] text-white/60">
                 Applying For
               </p>
 
               <p className="mt-2 text-lg font-black">
-                {selectedJob.title}
+                {applyingTitle}
               </p>
 
-              <p className="mt-2 text-xs text-white/70">
-                {selectedJob.department}
-                {" • "}
-                {selectedJob.location}
-              </p>
+              {selectedJob ? (
+                <p className="mt-2 text-xs text-white/70">
+                  {selectedJob.department}
+                  {" • "}
+                  {selectedJob.location}
+                </p>
+              ) : (
+                <p className="mt-2 text-xs text-white/70">
+                  General Application
+                </p>
+              )}
             </div>
           )}
 
@@ -423,6 +368,10 @@ export default function CareerApplicationForm({
             </p>
           </div>
         </div>
+
+        {/* ================================================= */}
+        {/* SUCCESS */}
+        {/* ================================================= */}
 
         {result ? (
           <div className="flex items-center justify-center p-8 sm:p-10">
@@ -458,14 +407,13 @@ export default function CareerApplicationForm({
               </div>
 
               <p className="mt-4 text-xs leading-6 text-[#667085]">
-                Keep this reference for future communication regarding your application.
+                Keep this reference for future communication
+                regarding your application.
               </p>
 
               <button
                 type="button"
-                onClick={
-                  reset
-                }
+                onClick={reset}
                 className="mt-6 rounded-lg border border-[#8f0024]/20 px-5 py-3 text-xs font-black text-[#8f0024]"
               >
                 Submit Another Application
@@ -473,73 +421,107 @@ export default function CareerApplicationForm({
             </div>
           </div>
         ) : (
+          /* ================================================= */
+          /* APPLICATION FORM */
+          /* ================================================= */
+
           <div className="grid gap-4 p-8 sm:p-10">
+
+            {/* POSITION */}
+
             <div>
               <label className="mb-2 block text-[10px] font-black text-[#475467]">
                 Position *
               </label>
 
               <select
-                value={
-                  form.jobId
-                }
-                onChange={(
-                  event,
-                ) =>
-                  setForm(
-                    (
-                      current,
-                    ) => ({
-                      ...current,
+                value={form.jobId}
+                onChange={(event) => {
+                  const value =
+                    event.target.value;
 
-                      jobId:
-                        event.target
-                          .value,
-                    }),
-                  )
-                }
+                  setForm((current) => ({
+                    ...current,
+
+                    jobId: value,
+
+                    customPosition:
+                      value === "other"
+                        ? current.customPosition
+                        : "",
+                  }));
+
+                  setError("");
+                }}
                 className="h-12 w-full rounded-lg border border-[#d8c4c6] bg-white px-4 text-sm outline-none focus:border-[#8f0024]"
               >
                 <option value="">
                   Select Position
                 </option>
 
-                {jobs.map(
-                  (
-                    job,
-                  ) => (
-                    <option
-                      key={
-                        job.id
-                      }
-                      value={
-                        job.id
-                      }
-                    >
-                      {job.title}
-                    </option>
-                  ),
-                )}
+                {jobs.map((job) => (
+                  <option
+                    key={job.id}
+                    value={job.id}
+                  >
+                    {job.title}
+                  </option>
+                ))}
+
+                <option value="other">
+                  Other / Position not listed
+                </option>
               </select>
+
+              {/* CUSTOM POSITION */}
+
+              {form.jobId ===
+                "other" && (
+                <div className="mt-3">
+                  <input
+                    type="text"
+                    maxLength={120}
+                    value={
+                      form.customPosition
+                    }
+                    onChange={(
+                      event,
+                    ) =>
+                      setForm(
+                        (current) => ({
+                          ...current,
+
+                          customPosition:
+                            event.target
+                              .value,
+                        }),
+                      )
+                    }
+                    placeholder="Enter position e.g. Data Analyst, UI/UX Designer"
+                    className="h-12 w-full rounded-lg border border-[#d8c4c6] bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
+                  />
+
+                  <p className="mt-2 text-[10px] text-[#667085]">
+                    Can&apos;t find your role?
+                    Enter the position you&apos;d
+                    like to apply for.
+                  </p>
+                </div>
+              )}
             </div>
+
+            {/* NAME / EMAIL */}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <input
-                value={
-                  form.fullName
-                }
-                onChange={(
-                  event,
-                ) =>
+                value={form.fullName}
+                onChange={(event) =>
                   setForm(
-                    (
-                      current,
-                    ) => ({
+                    (current) => ({
                       ...current,
 
                       fullName:
-                        event.target
-                          .value,
+                        event.target.value,
                     }),
                   )
                 }
@@ -549,21 +531,14 @@ export default function CareerApplicationForm({
 
               <input
                 type="email"
-                value={
-                  form.email
-                }
-                onChange={(
-                  event,
-                ) =>
+                value={form.email}
+                onChange={(event) =>
                   setForm(
-                    (
-                      current,
-                    ) => ({
+                    (current) => ({
                       ...current,
 
                       email:
-                        event.target
-                          .value,
+                        event.target.value,
                     }),
                   )
                 }
@@ -572,24 +547,19 @@ export default function CareerApplicationForm({
               />
             </div>
 
+            {/* PHONE / CITY */}
+
             <div className="grid gap-4 sm:grid-cols-2">
               <input
                 type="tel"
-                value={
-                  form.phone
-                }
-                onChange={(
-                  event,
-                ) =>
+                value={form.phone}
+                onChange={(event) =>
                   setForm(
-                    (
-                      current,
-                    ) => ({
+                    (current) => ({
                       ...current,
 
                       phone:
-                        event.target
-                          .value,
+                        event.target.value,
                     }),
                   )
                 }
@@ -598,21 +568,14 @@ export default function CareerApplicationForm({
               />
 
               <input
-                value={
-                  form.city
-                }
-                onChange={(
-                  event,
-                ) =>
+                value={form.city}
+                onChange={(event) =>
                   setForm(
-                    (
-                      current,
-                    ) => ({
+                    (current) => ({
                       ...current,
 
                       city:
-                        event.target
-                          .value,
+                        event.target.value,
                     }),
                   )
                 }
@@ -621,22 +584,17 @@ export default function CareerApplicationForm({
               />
             </div>
 
+            {/* EXPERIENCE */}
+
             <input
-              value={
-                form.experience
-              }
-              onChange={(
-                event,
-              ) =>
+              value={form.experience}
+              onChange={(event) =>
                 setForm(
-                  (
-                    current,
-                  ) => ({
+                  (current) => ({
                     ...current,
 
                     experience:
-                      event.target
-                        .value,
+                      event.target.value,
                   }),
                 )
               }
@@ -644,24 +602,19 @@ export default function CareerApplicationForm({
               className="h-12 rounded-lg border border-[#d8c4c6] px-4 text-sm outline-none focus:border-[#8f0024]"
             />
 
+            {/* LINKS */}
+
             <div className="grid gap-4 sm:grid-cols-2">
               <input
                 type="url"
-                value={
-                  form.linkedin
-                }
-                onChange={(
-                  event,
-                ) =>
+                value={form.linkedin}
+                onChange={(event) =>
                   setForm(
-                    (
-                      current,
-                    ) => ({
+                    (current) => ({
                       ...current,
 
                       linkedin:
-                        event.target
-                          .value,
+                        event.target.value,
                     }),
                   )
                 }
@@ -671,21 +624,14 @@ export default function CareerApplicationForm({
 
               <input
                 type="url"
-                value={
-                  form.portfolio
-                }
-                onChange={(
-                  event,
-                ) =>
+                value={form.portfolio}
+                onChange={(event) =>
                   setForm(
-                    (
-                      current,
-                    ) => ({
+                    (current) => ({
                       ...current,
 
                       portfolio:
-                        event.target
-                          .value,
+                        event.target.value,
                     }),
                   )
                 }
@@ -694,29 +640,26 @@ export default function CareerApplicationForm({
               />
             </div>
 
+            {/* COVER LETTER */}
+
             <textarea
               rows={5}
-              value={
-                form.coverLetter
-              }
-              onChange={(
-                event,
-              ) =>
+              value={form.coverLetter}
+              onChange={(event) =>
                 setForm(
-                  (
-                    current,
-                  ) => ({
+                  (current) => ({
                     ...current,
 
                     coverLetter:
-                      event.target
-                        .value,
+                      event.target.value,
                   }),
                 )
               }
               placeholder="Tell us why you would like to join Prime Digital School..."
               className="resize-y rounded-lg border border-[#d8c4c6] p-4 text-sm leading-7 outline-none focus:border-[#8f0024]"
             />
+
+            {/* CV */}
 
             <div>
               <p className="mb-2 text-[10px] font-black text-[#475467]">
@@ -748,9 +691,7 @@ export default function CareerApplicationForm({
                   type="file"
                   accept=".pdf,.doc,.docx"
                   className="hidden"
-                  onChange={(
-                    event,
-                  ) => {
+                  onChange={(event) => {
                     const file =
                       event.target
                         .files?.[0] ||
@@ -773,29 +714,22 @@ export default function CareerApplicationForm({
                       return;
                     }
 
-                    setCv(
-                      file,
-                    );
-
+                    setCv(file);
                     setError("");
                   }}
                 />
               </label>
             </div>
 
+            {/* CONSENT */}
+
             <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-[#fffafb] p-4">
               <input
                 type="checkbox"
-                checked={
-                  form.consent
-                }
-                onChange={(
-                  event,
-                ) =>
+                checked={form.consent}
+                onChange={(event) =>
                   setForm(
-                    (
-                      current,
-                    ) => ({
+                    (current) => ({
                       ...current,
 
                       consent:
@@ -808,9 +742,16 @@ export default function CareerApplicationForm({
               />
 
               <span className="text-[10px] leading-5 text-[#667085]">
-                I confirm that the information provided is accurate and consent to Prime Digital School processing my application for recruitment purposes.
+                I confirm that the
+                information provided is
+                accurate and consent to Prime
+                Digital School processing my
+                application for recruitment
+                purposes.
               </span>
             </label>
+
+            {/* ERROR */}
 
             {error && (
               <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-semibold text-red-700">
@@ -818,13 +759,11 @@ export default function CareerApplicationForm({
               </div>
             )}
 
+            {/* SUBMIT */}
+
             <button
               type="button"
-              disabled={
-                submitting ||
-                jobs.length ===
-                  0
-              }
+              disabled={submitting}
               onClick={() =>
                 void submitApplication()
               }

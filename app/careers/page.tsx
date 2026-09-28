@@ -1,5 +1,9 @@
 ﻿import Image from "next/image";
 import Link from "next/link";
+import {
+  ArrowRight,
+  Star,
+} from "lucide-react";
 
 import CareerApplicationForm from "@/components/careers/career-application-form";
 import CareerApplyButton from "@/components/careers/career-apply-button";
@@ -70,6 +74,39 @@ const testimonials = [
       "Every day feels like building the future of education with real ownership.",
     name: "Growth Team",
     role: "Operations",
+  },
+];
+
+const studentSuccessStories = [
+  {
+    id: 1,
+    name: "Aditya Verma",
+    image: "/students/aditya-verma.webp",
+    category: "Placement",
+    achievement: "Technology • Career Preparation",
+    review:
+      "Practical projects and mentor guidance helped me strengthen my skills and become more confident about professional opportunities.",
+    rating: 4.8,
+  },
+  {
+    id: 2,
+    name: "Akshay Patil",
+    image: "/students/akshay-patil.webp",
+    category: "Internship",
+    achievement: "Portfolio • Internship Preparation",
+    review:
+      "The learning experience helped me build confidence, improve my portfolio, and prepare for internship opportunities.",
+    rating: 4.9,
+  },
+  {
+    id: 3,
+    name: "Ananya Joshi",
+    image: "/students/ananya-joshi.webp",
+    category: "Projects",
+    achievement: "Hands-on Learning • Projects",
+    review:
+      "Hands-on learning made complex concepts easier to understand and gave me practical experience beyond theory.",
+    rating: 4.7,
   },
 ];
 
@@ -196,6 +233,137 @@ export default async function CareersPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+            {/* ===================================================== */}
+      {/* STUDENT SUCCESS STORIES */}
+      {/* ===================================================== */}
+
+      <section className="bg-[#fbf8f6] px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-[1220px]">
+
+          {/* HEADER */}
+
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-[680px]">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#8f0024]">
+                Student Success Stories
+              </p>
+
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-[#101828] sm:text-4xl">
+                See the impact your work can help create.
+              </h2>
+
+              <p className="mt-4 text-sm leading-7 text-[#667085] sm:text-base">
+                From practical projects to career preparation, our learners
+                build confidence and real-world digital skills through hands-on
+                experiences.
+              </p>
+            </div>
+
+            <Link
+              href="/student-stories"
+              className="group inline-flex w-fit items-center gap-2 text-sm font-black text-[#8f0024] transition hover:text-[#70001c]"
+            >
+              View More Stories
+
+              <ArrowRight
+                size={16}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </Link>
+          </div>
+
+          {/* STORY CARDS */}
+
+          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {studentSuccessStories.map((story) => (
+              <article
+                key={story.id}
+                className="group flex h-full flex-col rounded-[22px] border border-[#eadfe1] bg-white p-6 shadow-[0_12px_35px_rgba(69,18,31,0.06)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#8f0024]/20 hover:shadow-[0_20px_45px_rgba(69,18,31,0.10)]"
+              >
+                {/* PROFILE */}
+
+                <div className="flex items-start gap-4">
+                  <div className="relative h-[60px] w-[60px] shrink-0 overflow-hidden rounded-full bg-[#8f0024] shadow-[0_8px_20px_rgba(143,0,36,0.16)]">
+                    <Image
+                      src={story.image}
+                      alt={story.name}
+                      fill
+                      sizes="60px"
+                      className="object-cover object-[center_30%]"
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-base font-black text-[#172033]">
+                      {story.name}
+                    </h3>
+
+                    {/* RATING */}
+
+                    <div className="mt-1.5 flex items-center gap-1">
+                      {Array.from({ length: 5 }).map((_, index) => {
+                        const filled =
+                          index < Math.round(story.rating);
+
+                        return (
+                          <Star
+                            key={index}
+                            size={14}
+                            className={
+                              filled
+                                ? "fill-[#f7b500] text-[#f7b500]"
+                                : "fill-transparent text-[#d7d7d7]"
+                            }
+                          />
+                        );
+                      })}
+
+                      <span className="ml-1 text-[11px] font-bold text-slate-500">
+                        {story.rating.toFixed(1)}
+                      </span>
+                    </div>
+
+                    {/* CATEGORY */}
+
+                    <span className="mt-2 inline-flex rounded-full bg-[#fff1f4] px-3 py-1 text-[10px] font-black text-[#8f0024]">
+                      {story.category}
+                    </span>
+                  </div>
+                </div>
+
+                {/* REVIEW */}
+
+                <p className="mt-5 flex-1 text-sm leading-7 text-[#667085]">
+                  “{story.review}”
+                </p>
+
+                {/* ACHIEVEMENT */}
+
+                <div className="mt-5 border-t border-[#f0e6e7] pt-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[#8f0024]">
+                    Achievement
+                  </p>
+
+                  <p className="mt-1 text-xs font-semibold text-[#475467]">
+                    {story.achievement}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* DISCLAIMER */}
+
+          <p className="mx-auto mt-6 max-w-[760px] text-center text-[10px] leading-5 text-[#98A2B3]">
+            Illustrative student-experience stories and demo ratings are shown
+            for website preview purposes. Confirm student feedback, outcomes,
+            and publication permission before presenting them as verified
+            testimonials.
+          </p>
+
         </div>
       </section>
 

@@ -3,13 +3,13 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+
 import {
   Search,
   Star,
   Code,
   Laptop,
   Smartphone,
-  Gamepad2,
   BrainCircuit,
   Database,
   Network,
@@ -42,12 +42,264 @@ import {
   BarChart3,
 } from "lucide-react";
 
+type GradeKey = "6-7" | "8-9" | "10";
+
+type ProgramView = "normal" | GradeKey;
+
+type GradeCourse = {
+  slug: string;
+  title: string;
+  image: string;
+  duration: string;
+  level: string;
+  desc: string;
+};
+
+type GradePathway = {
+  badge: string;
+  title: string;
+  stage: string;
+  description: string;
+  href: string;
+  courses: GradeCourse[];
+};
+
+const gradePathways: Record<GradeKey, GradePathway> = {
+  "6-7": {
+    badge: "Grades 6-7",
+    title: "Digital Explorer Pathway",
+    stage: "Explore & Create",
+    description:
+      "Fun, visual and project-based technology learning designed to build confidence, curiosity and strong digital foundations.",
+    href: "/programs/digital-explorer",
+
+    courses: [
+      {
+        slug: "digital-foundations",
+        title: "Digital Foundations & Smart Computing",
+        image: "/programs/grades-6-7/digital-foundations-smart-computing.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Build confidence with computers, cloud tools, internet safety, productivity apps and responsible digital habits.",
+      },
+      {
+        slug: "creative-coding-scratch",
+        title: "Creative Coding with Scratch",
+        image: "/programs/grades-6-7/creative-coding-with-scratch.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Learn coding logic through animations, interactive stories, events, loops and visual programming projects.",
+      },
+      {
+        slug: "young-game-creators",
+        title: "Young Game Creators",
+        image: "/programs/grades-6-7/young-game-creators.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Design playable games while learning movement, scoring, challenges, logic and creative problem-solving.",
+      },
+      {
+        slug: "junior-robotics-electronics",
+        title: "Junior Robotics & Electronics",
+        image: "/programs/grades-6-7/junior-robotics-electronics.png",
+        duration: "10 Weeks",
+        level: "Beginner",
+        desc: "Explore circuits, sensors, motors, automation and beginner robotics through guided hands-on activities.",
+      },
+      {
+        slug: "digital-design-creativity",
+        title: "Digital Design & Creativity",
+        image: "/programs/grades-6-7/digital-design-creativity.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Create posters, presentations, visual stories and simple interfaces using age-appropriate design tools.",
+      },
+      {
+        slug: "ai-young-learners",
+        title: "AI for Young Learners",
+        image: "/programs/grades-6-7/ai-for-young-learners.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Understand what AI is, how it is used, responsible prompting and creative ways to use AI for learning.",
+      },
+    ],
+  },
+
+  "8-9": {
+    badge: "Grades 8-9",
+    title: "Tech Builder Pathway",
+    stage: "Build & Apply",
+    description:
+      "Students move from exploring technology to building practical solutions with coding, AI, data, design and smart systems.",
+    href: "/programs/tech-builder",
+
+    courses: [
+      {
+        slug: "python-foundations",
+        title: "Python Programming Foundations",
+        image: "/programs/grades-8-9/python-programming-foundations.png",
+        duration: "10 Weeks",
+        level: "Beginner",
+        desc: "Learn Python syntax, variables, conditions, loops, functions and problem-solving through practical projects.",
+      },
+      {
+        slug: "web-development-foundations",
+        title: "Web Development Fundamentals",
+        image: "/programs/grades-8-9/web-development-fundamentals.png",
+        duration: "10 Weeks",
+        level: "Beginner",
+        desc: "Build responsive websites using HTML, CSS and beginner JavaScript while learning how the web works.",
+      },
+      {
+        slug: "ai-prompt-engineering-students",
+        title: "AI & Prompt Engineering",
+        image: "/programs/grades-8-9/ai-prompt-engineering.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Explore generative AI, effective prompting, responsible AI use and practical AI-assisted student workflows.",
+      },
+      {
+        slug: "robotics-iot-foundations",
+        title: "Robotics & IoT Foundations",
+        image: "/programs/grades-8-9/robotics-iot-foundations.png",
+        duration: "10 Weeks",
+        level: "Beginner",
+        desc: "Explore sensors, automation, smart devices, IoT concepts and the logic behind connected systems.",
+      },
+      {
+        slug: "cybersecurity-digital-safety",
+        title: "Cybersecurity & Digital Safety",
+        image: "/programs/grades-8-9/cybersecurity-digital-safety.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Learn cyber hygiene, passwords, phishing, privacy, network safety and introductory defensive security.",
+      },
+      {
+        slug: "data-skills-spreadsheets",
+        title: "Data Skills & Spreadsheets",
+        image: "/programs/grades-8-9/data-skills-spreadsheets.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Use spreadsheets, formulas, charts and structured data to discover patterns and communicate useful insights.",
+      },
+      {
+        slug: "ui-ux-product-design-foundations",
+        title: "UI/UX & Product Design",
+        image: "/programs/grades-8-9/ui-ux-product-design.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Learn user flows, wireframes, interface design, basic Figma and the foundations of digital product thinking.",
+      },
+      {
+        slug: "app-building-foundations",
+        title: "App Building Fundamentals",
+        image: "/programs/grades-8-9/app-building-fundamentals.png",
+        duration: "10 Weeks",
+        level: "Beginner",
+        desc: "Understand screens, navigation, app logic, forms and simple no-code or low-code application building.",
+      },
+    ],
+  },
+
+  "10": {
+    badge: "Grade 10",
+    title: "Future Tech & Portfolio Pathway",
+    stage: "Advance & Showcase",
+    description:
+      "A deeper project-based pathway that develops technical depth, stronger problem-solving and a portfolio students can showcase.",
+    href: "/programs/future-tech-portfolio",
+
+    courses: [
+      {
+        slug: "python-development-automation",
+        title: "Python Development & Automation",
+        image: "/programs/grades-10/python-development-automation.png",
+        duration: "10 Weeks",
+        level: "Intermediate",
+        desc: "Strengthen Python through functions, files, automation workflows, APIs concepts and structured projects.",
+      },
+      {
+        slug: "front-end-web-development",
+        title: "Front-End Web Development",
+        image: "/programs/grades-10/front-end-web-development.png",
+        duration: "10 Weeks",
+        level: "Intermediate",
+        desc: "Create polished responsive websites using HTML, CSS, JavaScript and modern front-end development practices.",
+      },
+      {
+        slug: "applied-ai-generative-ai",
+        title: "Applied AI & Generative AI",
+        image: "/programs/grades-10/applied-ai-generative-ai.png",
+        duration: "10 Weeks",
+        level: "Intermediate",
+        desc: "Use generative AI responsibly, design effective workflows and build practical AI-assisted projects.",
+      },
+      {
+        slug: "robotics-iot-projects",
+        title: "Robotics & IoT Projects",
+        image: "/programs/grades-10/robotics-iot-projects.png",
+        duration: "10 Weeks",
+        level: "Intermediate",
+        desc: "Build smart-system concepts using sensors, automation, connected devices and project-based engineering.",
+      },
+      {
+        slug: "cybersecurity-foundations-grade-10",
+        title: "Cybersecurity Foundations",
+        image: "/programs/grades-10/cybersecurity-foundations.png",
+        duration: "10 Weeks",
+        level: "Intermediate",
+        desc: "Understand networks, threats, authentication, system protection and responsible defensive cybersecurity concepts.",
+      },
+      {
+        slug: "data-analytics-foundations",
+        title: "Data Analytics Foundations",
+        image: "/programs/grades-10/data-analytics-foundations.png",
+        duration: "10 Weeks",
+        level: "Intermediate",
+        desc: "Analyze data with spreadsheets, charts and introductory analytics methods while building dashboard-style projects.",
+      },
+      {
+        slug: "digital-product-ui-ux",
+        title: "Digital Product & UI/UX Design",
+        image: "/programs/grades-10/digital-product-ui-ux-design.png",
+        duration: "10 Weeks",
+        level: "Intermediate",
+        desc: "Research users, create wireframes, design interfaces and build presentable digital product prototypes.",
+      },
+      {
+        slug: "tech-entrepreneurship-grade-10",
+        title: "Tech Entrepreneurship",
+        image: "/programs/grades-10/tech-entrepreneurship.png",
+        duration: "8 Weeks",
+        level: "Beginner",
+        desc: "Learn idea validation, simple business models, digital products, pitching and technology-based entrepreneurship.",
+      },
+      {
+        slug: "capstone-portfolio-development",
+        title: "Capstone & Portfolio Development",
+        image: "/programs/grades-10/capstone-portfolio-development.png",
+        duration: "8 Weeks",
+        level: "Project Based",
+        desc: "Combine technical skills into a final project, document the work and build a student technology portfolio.",
+      },
+    ],
+  },
+};
+
 export default function ProgramsPage() {
+  const [activeView, setActiveView] =
+    React.useState<ProgramView>("normal");
+
+  const activePathway =
+    activeView === "normal" ? null : gradePathways[activeView];
+
   return (
     <div className="min-h-screen font-sans bg-white text-[#1C1B1B] overflow-x-hidden">
-      {/* Hero Section */}
+      {/* ===================================================== */}
+      {/* HERO */}
+      {/* ===================================================== */}
+
       <section className="relative w-full min-h-[520px] flex flex-col items-center justify-center pt-[79px] pb-[80px] px-6 md:px-20 overflow-hidden">
-        {/* Background with subtle image overlay */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/pds-assets/hero-students.png"
@@ -57,10 +309,10 @@ export default function ProgramsPage() {
             className="object-cover opacity-8"
             priority
           />
+
           <div className="absolute inset-0 bg-gradient-to-b from-[#FCF9F8] via-[#FCF9F8]/95 to-[#F6F3F2]" />
         </div>
 
-        {/* Grid Pattern */}
         <div
           className="absolute inset-0 z-0 opacity-[0.04]"
           style={{
@@ -71,18 +323,17 @@ export default function ProgramsPage() {
         />
 
         <div className="relative z-10 max-w-[800px] w-full mx-auto flex flex-col items-center gap-[15px]">
-          {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-[#5C021A]/10 text-[#5C021A] text-sm font-semibold px-5 py-2 rounded-full">
             <Sparkles className="w-4 h-4" />
             <span>Discover Your Path to Success</span>
           </div>
 
-          {/* Heading */}
           <div className="text-center w-full flex flex-col items-center gap-3">
             <h1 className="text-4xl md:text-5xl lg:text-[52px] font-bold text-[#1A1A1A] leading-[1.1] tracking-tight max-w-[724px]">
               Explore Industry-Aligned{" "}
               <span className="text-[#5C021A]">Programs</span>
             </h1>
+
             <p className="text-lg md:text-[18px] text-[#5D5F5F] leading-[1.7] max-w-[640px]">
               Master the skills of tomorrow, today. From AI to UI/UX Design, get
               hands-on experience and build a portfolio that stands out in the
@@ -90,9 +341,9 @@ export default function ProgramsPage() {
             </p>
           </div>
 
-          {/* Search Bar */}
           <div className="relative w-full max-w-[576px] mt-4">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#5C021A]" />
+
             <input
               type="text"
               placeholder="Search for programs (e.g., Python, UI Design...)"
@@ -102,112 +353,574 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Stats Bar */}
+      {/* ===================================================== */}
+      {/* STATS */}
+      {/* ===================================================== */}
+
       <section className="bg-[#7B1C2E] py-12 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="flex flex-col items-center">
             <h3 className="text-4xl md:text-[48px] font-bold text-white tracking-tight leading-tight">
               10k+
             </h3>
-            <p className="text-[#FF8A96] text-base mt-1">Active Students</p>
+
+            <p className="text-[#FF8A96] text-base mt-1">
+              Active Students
+            </p>
           </div>
+
           <div className="flex flex-col items-center">
             <h3 className="text-4xl md:text-[48px] font-bold text-white tracking-tight leading-tight">
               95%
             </h3>
-            <p className="text-[#FF8A96] text-base mt-1">Placement Rate</p>
+
+            <p className="text-[#FF8A96] text-base mt-1">
+              Placement Rate
+            </p>
           </div>
+
           <div className="flex flex-col items-center">
             <h3 className="text-4xl md:text-[48px] font-bold text-white tracking-tight leading-tight">
               50+
             </h3>
-            <p className="text-[#FF8A96] text-base mt-1">Expert Instructors</p>
+
+            <p className="text-[#FF8A96] text-base mt-1">
+              Expert Instructors
+            </p>
           </div>
+
           <div className="flex flex-col items-center">
             <h3 className="text-4xl md:text-[48px] font-bold text-white tracking-tight leading-tight">
               120+
             </h3>
-            <p className="text-[#FF8A96] text-base mt-1">Global Partners</p>
+
+            <p className="text-[#FF8A96] text-base mt-1">
+              Global Partners
+            </p>
           </div>
         </div>
       </section>
 
-      {/* All Programs */}
-      <section className="bg-[#FCF9F8] py-16 px-6 md:px-20">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="mb-10">
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#5C021A]">
-              Explore Our Courses
-            </p>
+      {/* ===================================================== */}
+      {/* PROGRAM SELECTOR */}
+      {/* ===================================================== */}
 
-            <h2 className="mt-2 text-[32px] md:text-[40px] font-semibold text-[#1A1A1A] leading-tight">
-              All Programs
+      <section className="relative overflow-hidden bg-white px-6 py-20 md:px-20">
+        <div className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-[#5C021A]/5 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-[#FF8A96]/10 blur-[100px]" />
+
+        <div className="relative mx-auto max-w-[1200px]">
+          <div className="mx-auto mb-10 flex max-w-[820px] flex-col items-center text-center">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#5C021A]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#5C021A]">
+              <GraduationCap className="h-4 w-4" />
+              Choose Your Learning Path
+            </div>
+
+            <h2 className="text-[32px] font-semibold leading-tight text-[#1A1A1A] md:text-[42px]">
+              Explore Programs for{" "}
+              <span className="text-[#5C021A]">
+                Every Stage
+              </span>
             </h2>
 
-            <p className="mt-3 max-w-[700px] text-base text-[#5D5F5F] leading-relaxed">
-              Explore our complete collection of technology, design, data,
-              cybersecurity, business, marketing, creative, and software
-              development programs.
+            <p className="mt-4 max-w-[720px] text-base leading-7 text-[#5D5F5F] md:text-lg">
+              Browse our regular industry-aligned programs or choose a
+              grade-specific pathway designed for students in GradesGrades 6-10.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {programs.map((prog) => (
-              <div
-                key={prog.slug}
-                className="bg-white border border-[#DCC0C1] rounded-xl overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="relative h-48 overflow-hidden bg-gray-100">
-                  <Image
-                    src={prog.image}
-                    alt={prog.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+          {/* Selector Buttons */}
 
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm font-bold text-[#1C1B1B]">
-                      4.9
+          <div className="mx-auto mb-10 grid w-full max-w-[960px] grid-cols-1 gap-2 rounded-2xl border border-[#E6D3D8] bg-[#FFF9FA] p-2 sm:grid-cols-2 lg:grid-cols-4">
+            {(
+              [
+                ["normal", "Advance Programs"],
+                ["6-7", "Grades 6-7"],
+                ["8-9", "Grades 8-9"],
+                ["10", "Grade 10"],
+              ] as const
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setActiveView(key)}
+                className={`rounded-xl px-5 py-3 text-sm font-bold transition-all ${
+                  activeView === key
+                    ? "bg-[#5C021A] text-white shadow-md"
+                    : "bg-transparent text-[#5C021A] hover:bg-white"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* ================================================= */}
+          {/* NORMAL PROGRAMS */}
+          {/* ================================================= */}
+
+          {activeView === "normal" ? (
+            <>
+              <div className="mb-10 rounded-[24px] border border-[#E4D2D7] bg-gradient-to-r from-[#FFF7F8] to-white p-6 md:p-8">
+                <div className="max-w-[760px]">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="rounded-full bg-[#5C021A]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#5C021A]">
+                      All Learners
+                    </span>
+
+                    <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#A14A5D]">
+                      Industry-Aligned Programs
                     </span>
                   </div>
-                </div>
 
-                <div className="p-6 flex flex-col gap-4">
-                  <div className="flex flex-wrap gap-2 text-[#5C021A] text-xs font-semibold">
-                    {prog.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="bg-[#5C021A]/5 px-3 py-1 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <h3 className="text-2xl font-semibold text-[#1C1B1B]">
-                    {prog.title}
+                  <h3 className="mt-3 text-2xl font-bold text-[#1C1B1B] md:text-3xl">
+                    Advance Programs
                   </h3>
 
-                  <p className="text-[#5D5F5F] text-base leading-relaxed line-clamp-2 h-12">
-                    {prog.desc}
+                  <p className="mt-3 max-w-[720px] text-sm leading-6 text-[#5D5F5F] md:text-base">
+                    Explore our complete collection of technology, design,
+                    data, cybersecurity, business, marketing, creative and
+                    software development programs.
                   </p>
-
-                  <Link
-                    href={`/programs/${prog.slug}`}
-                    className="flex h-12 w-full items-center justify-center rounded-lg border border-[#9f1735] text-sm font-bold text-[#9f1735] transition hover:bg-[#9f1735] hover:text-white"
-                  >
-                    View Program
-                  </Link>
                 </div>
               </div>
-            ))}
+
+              <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+                {programs.map((prog) => (
+                  <article
+                    key={prog.slug}
+                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#DCC0C1] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <div className="relative h-48 overflow-hidden bg-gray-100">
+                      <Image
+                        src={prog.image}
+                        alt={prog.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+
+                      <div className="absolute right-4 top-4 flex items-center gap-1 rounded-lg bg-white/90 px-3 py-1.5 backdrop-blur-sm">
+                        <Star className="h-3.5 w-3.5 fill-yellow-500 text-yellow-500" />
+
+                        <span className="text-sm font-bold text-[#1C1B1B]">
+                          4.9
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col p-6">
+                      <div className="mb-4 flex flex-wrap gap-2">
+                        {prog.tags.map((tag: string) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-[#5C021A]/5 px-3 py-1 text-xs font-semibold text-[#5C021A]"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h4 className="text-2xl font-semibold text-[#1C1B1B]">
+                        {prog.title}
+                      </h4>
+
+                      <p className="mt-3 line-clamp-2 text-base leading-relaxed text-[#5D5F5F]">
+                        {prog.desc}
+                      </p>
+
+                      <div className="mt-auto pt-6">
+                        <Link
+                          href={`/programs/${prog.slug}`}
+                          className="flex h-12 w-full items-center justify-center rounded-lg border border-[#9f1735] text-sm font-bold text-[#9f1735] transition hover:bg-[#9f1735] hover:text-white"
+                        >
+                          View Program
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </>
+          ) : (
+            activePathway && (
+              <>
+                {/* ============================================= */}
+                {/* GRADE PATHWAY HEADER */}
+                {/* ============================================= */}
+
+                <div className="mb-10 rounded-[24px] border border-[#E4D2D7] bg-gradient-to-r from-[#FFF7F8] to-white p-6 md:p-8">
+                  <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="max-w-[760px]">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="rounded-full bg-[#5C021A]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#5C021A]">
+                          {activePathway.badge}
+                        </span>
+
+                        <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#A14A5D]">
+                          {activePathway.stage}
+                        </span>
+                      </div>
+
+                      <h3 className="mt-3 text-2xl font-bold text-[#1C1B1B] md:text-3xl">
+                        {activePathway.title}
+                      </h3>
+
+                      <p className="mt-3 max-w-[720px] text-sm leading-6 text-[#5D5F5F] md:text-base">
+                        {activePathway.description}
+                      </p>
+                    </div>
+
+                    <Link
+                      href={activePathway.href}
+                      className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#5C021A] px-6 text-sm font-bold text-white transition hover:bg-[#7B1C2E]"
+                    >
+                      Explore Full Pathway
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* ============================================= */}
+                {/* COURSE OPTIONS */}
+                {/* ============================================= */}
+
+                <div className="mb-7 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#5C021A]">
+                      Course Options
+                    </p>
+
+                    <h3 className="mt-1 text-2xl font-semibold text-[#1C1B1B]">
+                      {activePathway.badge} Courses
+                    </h3>
+                  </div>
+
+                  <span className="hidden text-sm font-semibold text-[#7A686D] sm:block">
+                    {activePathway.courses.length} options
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+                  {activePathway.courses.map((course) => (
+                    <article
+                      key={course.slug}
+                      className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#DCC0C1] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      <div className="relative h-48 overflow-hidden bg-gray-100">
+                        <Image
+                          src={course.image}
+                          alt={course.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+
+                        <div className="absolute right-4 top-4 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-bold text-[#5C021A] backdrop-blur-sm">
+                          {activePathway.badge}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-1 flex-col p-6">
+                        <div className="mb-4 flex flex-wrap gap-2">
+                          <span className="rounded-full bg-[#5C021A]/5 px-3 py-1 text-xs font-semibold text-[#5C021A]">
+                            {course.duration}
+                          </span>
+
+                          <span className="rounded-full bg-[#5C021A]/5 px-3 py-1 text-xs font-semibold text-[#5C021A]">
+                            {course.level}
+                          </span>
+                        </div>
+
+                        <h4 className="text-xl font-semibold leading-snug text-[#1C1B1B]">
+                          {course.title}
+                        </h4>
+
+                        <p className="mt-3 text-sm leading-6 text-[#5D5F5F]">
+                          {course.desc}
+                        </p>
+
+                        <div className="mt-auto pt-6">
+                          <Link
+                            href={`${activePathway.href}?course=${course.slug}`}
+                            className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-[#9f1735] text-sm font-bold text-[#9f1735] transition hover:bg-[#9f1735] hover:text-white"
+                          >
+                            View in Pathway
+                            <ChevronRight className="h-4 w-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+
+                <div className="mt-10 flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-[#5C021A] md:text-sm">
+                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
+                    Explore
+                  </span>
+
+                  <ChevronRight className="h-4 w-4 opacity-50" />
+
+                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
+                    Build
+                  </span>
+
+                  <ChevronRight className="h-4 w-4 opacity-50" />
+
+                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
+                    Advance
+                  </span>
+
+                  <ChevronRight className="h-4 w-4 opacity-50" />
+
+                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
+                    Showcase
+                  </span>
+                </div>
+              </>
+            )
+          )}
+        </div>
+      </section>
+
+      {/* ===================================================== */}
+      {/* ADMISSIONS HUB */}
+      {/* ===================================================== */}
+
+      <section className="bg-white px-6 pb-20 pt-6 md:px-20">
+        <div className="mx-auto max-w-[1200px]">
+          <div className="overflow-hidden rounded-[28px] border border-[#7a0019]/15 bg-gradient-to-br from-[#fff7f8] via-white to-[#fffaf5] shadow-[0_22px_60px_rgba(90,0,18,0.08)]">
+
+            {/* ================================================= */}
+            {/* HEADER */}
+            {/* ================================================= */}
+
+            <div className="flex flex-col gap-6 border-b border-[#7a0019]/10 px-6 py-7 md:px-9 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-center gap-4">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#7a0019]/10 text-[#7a0019]">
+                  <GraduationCap size={30} />
+                </div>
+
+                <div>
+                  <p className="m-0 text-[10px] font-black uppercase tracking-[0.16em] text-[#a77c20]">
+                    Join Prime Digital School
+                  </p>
+
+                  <h2 className="mt-1 text-[30px] font-bold leading-tight text-[#1C1B1B] md:text-[36px]">
+                    Admissions
+                  </h2>
+
+                  <p className="mt-2 max-w-[620px] text-sm leading-6 text-[#5D5F5F]">
+                    Your future starts here. Explore the admission requirements,
+                    important dates, fees, and application process.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-black text-white">
+                  <CheckCircle2 size={16} />
+                  ADMISSIONS OPEN
+                </span>
+
+                <div className="border-l border-[#7a0019]/15 pl-4">
+                  <p className="m-0 text-[9px] font-bold uppercase tracking-[0.1em] text-[#7A686D]">
+                    Academic Session
+                  </p>
+
+                  <p className="mt-1 text-sm font-black text-[#7a0019]">
+                    2026Ã¢â‚¬â€œ27
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* ================================================= */}
+            {/* ADMISSION INFORMATION CARDS */}
+            {/* ================================================= */}
+
+            <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+
+              {/* PROCESS */}
+
+              <div className="border-b border-[#7a0019]/10 p-6 md:border-r xl:border-b-0">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a0019]/10 text-[#7a0019]">
+                  <CheckCircle2 size={20} />
+                </div>
+
+                <h3 className="text-sm font-black text-[#1C1B1B]">
+                  Admission Process
+                </h3>
+
+                <div className="mt-4 space-y-3">
+                  {[
+                    "Explore Program",
+                    "Check Eligibility",
+                    "Submit Application",
+                    "Review & Confirmation",
+                  ].map((step, index) => (
+                    <div
+                      key={step}
+                      className="flex items-start gap-2 text-xs leading-5 text-[#5D5F5F]"
+                    >
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#7a0019] text-[9px] font-black text-white">
+                        {index + 1}
+                      </span>
+
+                      <span>{step}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ELIGIBILITY */}
+
+              <div className="border-b border-[#7a0019]/10 p-6 lg:border-r xl:border-b-0">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a0019]/10 text-[#7a0019]">
+                  <Users size={20} />
+                </div>
+
+                <h3 className="text-sm font-black text-[#1C1B1B]">
+                  Eligibility
+                </h3>
+
+                <p className="mt-4 text-xs leading-5 text-[#5D5F5F]">
+                  Students from 6th to 12th standard can apply depending on the
+                  selected program and learning pathway.
+                </p>
+              </div>
+
+              {/* FEES */}
+
+              <div className="border-b border-[#7a0019]/10 p-6 md:border-r lg:border-r-0 xl:border-b-0 xl:border-r">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a0019]/10 text-[#7a0019]">
+                  <CreditCard size={20} />
+                </div>
+
+                <h3 className="text-sm font-black text-[#1C1B1B]">
+                  Fees
+                </h3>
+
+                <p className="mt-4 text-xs leading-5 text-[#5D5F5F]">
+                  Fees vary depending on the selected program, duration, and
+                  learning level.
+                </p>
+
+                <p className="mt-2 text-[11px] font-bold text-[#7a0019]">
+                  Flexible payment options available.
+                </p>
+              </div>
+
+              {/* DOCUMENTS */}
+
+              <div className="border-b border-[#7a0019]/10 p-6 lg:border-r xl:border-b-0">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a0019]/10 text-[#7a0019]">
+                  <BookOpen size={20} />
+                </div>
+
+                <h3 className="text-sm font-black text-[#1C1B1B]">
+                  Required Documents
+                </h3>
+
+                <ul className="mt-4 space-y-2 text-xs leading-5 text-[#5D5F5F]">
+                  <li>Ã¢â‚¬Â¢ Academic Records</li>
+                  <li>Ã¢â‚¬Â¢ Student ID / Aadhaar</li>
+                  <li>Ã¢â‚¬Â¢ Passport-size Photo</li>
+                  <li>Ã¢â‚¬Â¢ Address Proof</li>
+                </ul>
+              </div>
+
+              {/* IMPORTANT DATES */}
+
+              <div className="border-b border-[#7a0019]/10 p-6 md:border-r xl:border-b-0">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a0019]/10 text-[#7a0019]">
+                  <Clock size={20} />
+                </div>
+
+                <h3 className="text-sm font-black text-[#1C1B1B]">
+                  Important Dates
+                </h3>
+
+                <div className="mt-4 space-y-3 text-xs leading-5 text-[#5D5F5F]">
+                  <div>
+                    <span className="font-bold text-[#1C1B1B]">
+                      Applications:
+                    </span>
+                    <br />
+                    Currently Open
+                  </div>
+
+                  <div>
+                    <span className="font-bold text-[#1C1B1B]">
+                      Session:
+                    </span>
+                    <br />
+                    2026Ã¢â‚¬â€œ27
+                  </div>
+                </div>
+              </div>
+
+              {/* SCHOLARSHIPS */}
+
+              <div className="p-6">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a0019]/10 text-[#7a0019]">
+                  <Award size={20} />
+                </div>
+
+                <h3 className="text-sm font-black text-[#1C1B1B]">
+                  Scholarships
+                </h3>
+
+                <p className="mt-4 text-xs leading-5 text-[#5D5F5F]">
+                  Merit-based and need-based scholarship opportunities may be
+                  available for eligible students.
+                </p>
+              </div>
+            </div>
+
+            {/* ================================================= */}
+            {/* CTA AREA */}
+            {/* ================================================= */}
+
+            <div className="flex flex-col items-center justify-between gap-4 border-t border-[#7a0019]/10 bg-white/70 px-6 py-6 md:flex-row md:px-9">
+              <div>
+                <p className="m-0 text-sm font-black text-[#1C1B1B]">
+                  Ready to take the next step?
+                </p>
+
+                <p className="mt-1 text-xs text-[#6B7280]">
+                  Download the prospectus or begin your application today.
+                </p>
+              </div>
+
+              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+
+                <a
+                  href="/downloads/prime-digital-school-prospectus.pdf"
+                  download
+                  className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-xl bg-[#7a0019] px-6 text-sm font-black text-white shadow-[0_10px_24px_rgba(122,0,25,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#5a0012]"
+                >
+                  Download Prospectus
+                </a>
+
+                <Link
+                  href="/admissions#application-form"
+                  className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-xl border border-[#7a0019]/30 bg-white px-7 text-sm font-black text-[#7a0019] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fff3f6]"
+                >
+                  Apply Now
+                  <ChevronRight size={16} />
+                </Link>
+
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Learning Paths */}
+      {/* ===================================================== */}
+      {/* LEARNING PATHS */}
+      {/* ===================================================== */}
+
       <section className="bg-[#F6F3F2] py-16 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto">
           <h2 className="text-[32px] font-semibold text-[#1C1B1B] text-center mb-16">
@@ -215,87 +928,122 @@ export default function ProgramsPage() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-            {/* Tech Column */}
+            {/* Software */}
+
             <div className="flex flex-col items-center relative">
               <div className="w-full max-w-[340px] bg-[#5C021A] rounded-xl py-4 px-6 flex justify-center items-center gap-2 mb-12 shadow-md">
                 <Code className="text-white w-5 h-5" />
+
                 <span className="text-white text-base font-medium">
                   Software Engineering
                 </span>
               </div>
+
               <div className="flex flex-col gap-12 relative w-[200px]">
-                <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0"></div>
+                <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0" />
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">HTML & CSS</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    HTML & CSS
+                  </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">
                     JavaScript Base
                   </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">
                     React & Next.js
                   </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">Backend APIs</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    Backend APIs
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Design Column */}
+            {/* Design */}
+
             <div className="flex flex-col items-center relative">
               <div className="w-full max-w-[340px] bg-[#5C021A] rounded-xl py-4 px-6 flex justify-center items-center gap-2 mb-12 shadow-md">
                 <PenTool className="text-white w-5 h-5" />
+
                 <span className="text-white text-base font-medium">
                   Product Design
                 </span>
               </div>
+
               <div className="flex flex-col gap-12 relative w-[200px]">
-                <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0"></div>
+                <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0" />
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">
                     UI Fundamentals
                   </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">UX Research</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    UX Research
+                  </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">Wireframing</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    Wireframing
+                  </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">Prototyping</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    Prototyping
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Entrepreneur Column */}
+            {/* Entrepreneurship */}
+
             <div className="flex flex-col items-center relative">
               <div className="w-full max-w-[340px] bg-[#5C021A] rounded-xl py-4 px-6 flex justify-center items-center gap-2 mb-12 shadow-md">
                 <Lightbulb className="text-white w-5 h-5" />
+
                 <span className="text-white text-base font-medium">
                   Tech Entrepreneurship
                 </span>
               </div>
+
               <div className="flex flex-col gap-12 relative w-[200px]">
-                <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0"></div>
+                <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0" />
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">
                     Ideation Phase
                   </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
                   <span className="font-bold text-[#1C1B1B]">
                     Market Analysis
                   </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">MVP Building</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    MVP Building
+                  </span>
                 </div>
+
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">Pitching</span>
+                  <span className="font-bold text-[#1C1B1B]">
+                    Pitching
+                  </span>
                 </div>
               </div>
             </div>
@@ -303,7 +1051,10 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Categories */}
+      {/* ===================================================== */}
+      {/* CATEGORIES */}
+      {/* ===================================================== */}
+
       <section className="bg-[#FCF9F8] py-16 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto">
           <h2 className="text-[32px] font-semibold text-[#1C1B1B] mb-12">
@@ -311,86 +1062,130 @@ export default function ProgramsPage() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Coding */}
+
             <div className="bg-white border border-[#DCC0C1] rounded-xl p-8 flex flex-col gap-4 hover:shadow-md transition-shadow">
               <Code className="text-[#5C021A] w-8 h-8" />
+
               <h4 className="text-lg font-medium text-[#1C1B1B] mt-2">
                 Coding
               </h4>
+
               <ul className="flex flex-col gap-2">
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Python Basics
+                  <ChevronRight className="w-3 h-3" />
+                  Python Basics
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Web Development
+                  <ChevronRight className="w-3 h-3" />
+                  Web Development
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Mobile Apps
+                  <ChevronRight className="w-3 h-3" />
+                  Mobile Apps
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Game Design
+                  <ChevronRight className="w-3 h-3" />
+                  Game Design
                 </li>
               </ul>
             </div>
+
+            {/* AI */}
 
             <div className="bg-white border border-[#DCC0C1] rounded-xl p-8 flex flex-col gap-4 hover:shadow-md transition-shadow">
               <Database className="text-[#5C021A] w-8 h-8" />
+
               <h4 className="text-lg font-medium text-[#1C1B1B] mt-2">
                 AI & Data
               </h4>
+
               <ul className="flex flex-col gap-2">
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Machine Learning
+                  <ChevronRight className="w-3 h-3" />
+                  Machine Learning
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Data Science
+                  <ChevronRight className="w-3 h-3" />
+                  Data Science
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Neural Networks
+                  <ChevronRight className="w-3 h-3" />
+                  Neural Networks
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Prompt Engineering
+                  <ChevronRight className="w-3 h-3" />
+                  Prompt Engineering
                 </li>
               </ul>
             </div>
+
+            {/* Marketing */}
 
             <div className="bg-white border border-[#DCC0C1] rounded-xl p-8 flex flex-col gap-4 hover:shadow-md transition-shadow">
               <Megaphone className="text-[#5C021A] w-8 h-8" />
+
               <h4 className="text-lg font-medium text-[#1C1B1B] mt-2">
                 Marketing
               </h4>
+
               <ul className="flex flex-col gap-2">
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Social Media
+                  <ChevronRight className="w-3 h-3" />
+                  Social Media
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> SEO Basics
+                  <ChevronRight className="w-3 h-3" />
+                  SEO Basics
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Ad Campaigns
+                  <ChevronRight className="w-3 h-3" />
+                  Ad Campaigns
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Copywriting
+                  <ChevronRight className="w-3 h-3" />
+                  Copywriting
                 </li>
               </ul>
             </div>
 
+            {/* Design */}
+
             <div className="bg-white border border-[#DCC0C1] rounded-xl p-8 flex flex-col gap-4 hover:shadow-md transition-shadow">
               <Palette className="text-[#5C021A] w-8 h-8" />
+
               <h4 className="text-lg font-medium text-[#1C1B1B] mt-2">
                 Design
               </h4>
+
               <ul className="flex flex-col gap-2">
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Graphic Design
+                  <ChevronRight className="w-3 h-3" />
+                  Graphic Design
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> 3D Modeling
+                  <ChevronRight className="w-3 h-3" />
+                  3D Modeling
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> UI/UX Design
+                  <ChevronRight className="w-3 h-3" />
+                  UI/UX Design
                 </li>
+
                 <li className="text-sm text-[#5D5F5F] hover:text-[#5C021A] cursor-pointer flex items-center gap-2">
-                  <ChevronRight className="w-3 h-3" /> Motion Graphics
+                  <ChevronRight className="w-3 h-3" />
+                  Motion Graphics
                 </li>
               </ul>
             </div>
@@ -398,13 +1193,17 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Projects Showcase */}
+      {/* ===================================================== */}
+      {/* PROJECT SHOWCASE */}
+      {/* ===================================================== */}
+
       <section className="bg-[#F6F3F2] py-16 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto">
           <div className="flex flex-col items-center mb-12">
             <h2 className="text-[32px] font-semibold text-[#1C1B1B] text-center">
               Projects Showcase
             </h2>
+
             <p className="text-base text-[#5D5F5F] text-center max-w-2xl mt-2">
               Get inspired by real-world applications and projects built by our
               community.
@@ -414,20 +1213,24 @@ export default function ProgramsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-[#F0EDED] border border-[#DCC0C1] rounded-xl p-8 hover:-translate-y-1 transition-transform">
               <Smartphone className="text-[#5C021A] w-6 h-6 mb-4" />
+
               <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                 Smart Home Hub
               </h4>
+
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
-                Control lights and temperature via a mobile app built with React
-                Native.
+                Control lights and temperature via a mobile app built with
+                React Native.
               </p>
             </div>
 
             <div className="bg-[#F0EDED] border border-[#DCC0C1] rounded-xl p-8 hover:-translate-y-1 transition-transform">
               <Network className="text-[#5C021A] w-6 h-6 mb-4" />
+
               <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                 Community Website
               </h4>
+
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
                 Develop a localized marketplace platform using HTML/CSS and
                 JavaScript.
@@ -436,19 +1239,24 @@ export default function ProgramsPage() {
 
             <div className="bg-[#F0EDED] border border-[#DCC0C1] rounded-xl p-8 hover:-translate-y-1 transition-transform">
               <MessageSquare className="text-[#5C021A] w-6 h-6 mb-4" />
+
               <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                 AI Chatbot
               </h4>
+
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
-                Train a custom AI model to handle school administrative queries.
+                Train a custom AI model to handle school administrative
+                queries.
               </p>
             </div>
 
             <div className="bg-[#F0EDED] border border-[#DCC0C1] rounded-xl p-8 hover:-translate-y-1 transition-transform">
               <Box className="text-[#5C021A] w-6 h-6 mb-4" />
+
               <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                 NFT Marketplace
               </h4>
+
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
                 Create a simple platform for trading digital student artwork
                 safely.
@@ -457,19 +1265,24 @@ export default function ProgramsPage() {
 
             <div className="bg-[#F0EDED] border border-[#DCC0C1] rounded-xl p-8 hover:-translate-y-1 transition-transform">
               <Shield className="text-[#5C021A] w-6 h-6 mb-4" />
+
               <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                 Vulnerability Scanner
               </h4>
+
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
-                Build a tool to identify basic security risks in local networks.
+                Build a tool to identify basic security risks in local
+                networks.
               </p>
             </div>
 
             <div className="bg-[#F0EDED] border border-[#DCC0C1] rounded-xl p-8 hover:-translate-y-1 transition-transform">
               <BarChart3 className="text-[#5C021A] w-6 h-6 mb-4" />
+
               <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                 Stock Market Sim
               </h4>
+
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
                 Design a dashboard to visualize financial trends and portfolio
                 growth.
@@ -479,44 +1292,56 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Certification */}
+      {/* ===================================================== */}
+      {/* CERTIFICATION */}
+      {/* ===================================================== */}
+
       <section className="bg-[#FCF9F8] py-16 px-6 md:px-20 overflow-hidden">
         <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row items-center gap-16">
           <div className="w-full lg:w-1/2 flex flex-col gap-8">
             <h2 className="text-[32px] md:text-[40px] font-semibold text-[#1C1B1B] leading-tight">
               Get Certified for Your Skills
             </h2>
+
             <div className="flex flex-col gap-6">
               <div className="flex gap-4">
                 <CheckCircle2 className="text-[#5C021A] w-6 h-6 shrink-0 mt-1" />
+
                 <div>
                   <h4 className="text-lg font-bold text-[#1C1B1B] mb-1">
                     Industry-Recognized
                   </h4>
+
                   <p className="text-base text-[#5D5F5F] leading-[1.5]">
                     Our certificates are recognized by top tech companies
                     globally, adding immediate value to your resume.
                   </p>
                 </div>
               </div>
+
               <div className="flex gap-4">
                 <CheckCircle2 className="text-[#5C021A] w-6 h-6 shrink-0 mt-1" />
+
                 <div>
                   <h4 className="text-lg font-bold text-[#1C1B1B] mb-1">
                     Portfolio Verified
                   </h4>
+
                   <p className="text-base text-[#5D5F5F] leading-[1.5]">
                     Every certification mandates a completed capstone project,
                     proving you have practical experience.
                   </p>
                 </div>
               </div>
+
               <div className="flex gap-4">
                 <CheckCircle2 className="text-[#5C021A] w-6 h-6 shrink-0 mt-1" />
+
                 <div>
                   <h4 className="text-lg font-bold text-[#1C1B1B] mb-1">
                     Blockchain Secured
                   </h4>
+
                   <p className="text-base text-[#5D5F5F] leading-[1.5]">
                     Instantly verify your credentials online with our secure
                     digital credentialing network.
@@ -527,40 +1352,54 @@ export default function ProgramsPage() {
           </div>
 
           <div className="w-full lg:w-1/2 relative flex justify-center py-10">
-            <div className="absolute inset-0 bg-[#5C021A]/5 rounded-xl -rotate-2 transform scale-95"></div>
+            <div className="absolute inset-0 bg-[#5C021A]/5 rounded-xl -rotate-2 transform scale-95" />
+
             <div className="bg-white border border-[#DCC0C1] rounded-xl p-10 w-full max-w-[500px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] rotate-2 relative z-10">
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-xl font-bold text-[#5C021A]">
                   Prime Digital School
                 </h2>
-                <span className="text-sm text-[#5D5F5F]">ID: PDS-2026-X98</span>
+
+                <span className="text-sm text-[#5D5F5F]">
+                  ID: PDS-2026-X98
+                </span>
               </div>
+
               <div className="text-center mb-6">
                 <h3 className="text-2xl text-[#1C1B1B] mb-2">
                   Certificate of Completion
                 </h3>
+
                 <p className="text-base text-[#5D5F5F] italic mb-4">
                   This acknowledges that
                 </p>
+
                 <div className="border-b border-[#5C021A]/20 pb-2 mb-6">
                   <span className="text-3xl text-[#1C1B1B] font-serif">
                     Ankit Mali
                   </span>
                 </div>
+
                 <p className="text-base text-[#1C1B1B] mb-2">
                   has successfully completed the
                 </p>
+
                 <p className="text-base font-bold text-[#1C1B1B]">
                   AI & Machine Learning Explorer Program
                 </p>
               </div>
+
               <div className="border-t border-[#5C021A]/10 pt-6 flex justify-between items-end">
                 <div>
                   <p className="text-sm font-bold text-[#1C1B1B] mb-1">
                     June 26, 2026
                   </p>
-                  <p className="text-sm text-[#5D5F5F]">Date of Issue</p>
+
+                  <p className="text-sm text-[#5D5F5F]">
+                    Date of Issue
+                  </p>
                 </div>
+
                 <div className="opacity-30">
                   <AwardIcon className="w-12 h-12 text-[#5C021A]" />
                 </div>
@@ -570,13 +1409,17 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* ===================================================== */}
+      {/* HOW IT WORKS */}
+      {/* ===================================================== */}
+
       <section className="bg-[#FCF9F8] py-20 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-16">
           <div className="text-center max-w-2xl">
             <h2 className="text-[32px] md:text-[40px] font-semibold text-[#1A1A1A] leading-tight mb-4">
               How It Works
             </h2>
+
             <p className="text-lg text-[#5D5F5F]">
               Your journey from curiosity to career-ready in four simple steps
             </p>
@@ -616,12 +1459,15 @@ export default function ProgramsPage() {
                 <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-[#5C021A] text-white flex items-center justify-center text-sm font-bold">
                   {item.step}
                 </div>
+
                 <div className="w-12 h-12 bg-[#5C021A]/10 rounded-lg flex items-center justify-center text-[#5C021A] mb-6 group-hover:bg-[#5C021A] group-hover:text-white transition-colors">
                   <item.icon className="w-6 h-6" />
                 </div>
+
                 <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">
                   {item.title}
                 </h3>
+
                 <p className="text-sm text-[#5D5F5F] leading-relaxed">
                   {item.desc}
                 </p>
@@ -631,7 +1477,10 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Where skills take you */}
+      {/* ===================================================== */}
+      {/* WHERE SKILLS TAKE YOU */}
+      {/* ===================================================== */}
+
       <section className="bg-[#F6F3F2] py-16 px-6 md:px-20">
         <div className="max-w-[1200px] mx-auto">
           <h2 className="text-[32px] font-semibold text-[#1C1B1B] text-center mb-12">
@@ -643,17 +1492,21 @@ export default function ProgramsPage() {
               <div className="w-14 h-14 bg-[#5C021A]/10 rounded-lg flex items-center justify-center shrink-0">
                 <Briefcase className="w-6 h-6 text-[#5C021A]" />
               </div>
+
               <div>
                 <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                   Tech Startups & Agencies
                 </h4>
+
                 <div className="flex gap-2">
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     Frontend
                   </span>
+
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     UI/UX
                   </span>
+
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     Agile
                   </span>
@@ -665,17 +1518,21 @@ export default function ProgramsPage() {
               <div className="w-14 h-14 bg-[#5C021A]/10 rounded-lg flex items-center justify-center shrink-0">
                 <LineChart className="w-6 h-6 text-[#5C021A]" />
               </div>
+
               <div>
                 <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                   Finance & Analytics
                 </h4>
+
                 <div className="flex gap-2">
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     Python
                   </span>
+
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     Data Viz
                   </span>
+
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     SQL
                   </span>
@@ -687,14 +1544,17 @@ export default function ProgramsPage() {
               <div className="w-14 h-14 bg-[#5C021A]/10 rounded-lg flex items-center justify-center shrink-0">
                 <MonitorPlay className="w-6 h-6 text-[#5C021A]" />
               </div>
+
               <div>
                 <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                   Media & Entertainment
                 </h4>
+
                 <div className="flex gap-2">
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     Animation
                   </span>
+
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     3D Mod
                   </span>
@@ -706,17 +1566,21 @@ export default function ProgramsPage() {
               <div className="w-14 h-14 bg-[#5C021A]/10 rounded-lg flex items-center justify-center shrink-0">
                 <Shield className="w-6 h-6 text-[#5C021A]" />
               </div>
+
               <div>
                 <h4 className="text-base font-bold text-[#1C1B1B] mb-2">
                   Corporate IT & Security
                 </h4>
+
                 <div className="flex gap-2">
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     Networks
                   </span>
+
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     PenTest
                   </span>
+
                   <span className="px-2 py-1 bg-[#5C021A]/5 rounded text-xs text-[#5C021A]">
                     Compliance
                   </span>
@@ -727,12 +1591,16 @@ export default function ProgramsPage() {
         </div>
       </section>
 
+      {/* ===================================================== */}
       {/* FAQ */}
+      {/* ===================================================== */}
+
       <section className="bg-[#FCF9F8] py-16 px-6 md:px-20">
         <div className="max-w-[800px] mx-auto flex flex-col items-center">
           <h2 className="text-[32px] font-semibold text-[#1C1B1B] text-center mb-12">
             Frequently Asked Questions
           </h2>
+
           <div className="w-full flex flex-col gap-4">
             {faqs.map((faq, i) => (
               <div
@@ -743,6 +1611,7 @@ export default function ProgramsPage() {
                   <span className="text-base font-bold text-[#1C1B1B]">
                     {faq}
                   </span>
+
                   <div className="w-3.5 h-3.5 rounded-full bg-[#5C021A] flex items-center justify-center shrink-0">
                     <ChevronDown className="w-2 h-2 text-white" />
                   </div>
@@ -756,7 +1625,9 @@ export default function ProgramsPage() {
   );
 }
 
-// Data
+/* ========================================================= */
+/* NORMAL PROGRAM DATA */
+/* ========================================================= */
 
 const programs = [
   {
@@ -766,7 +1637,6 @@ const programs = [
     tags: ["12 Weeks", "Intermediate"],
     desc: "Learn artificial intelligence, machine learning, computer vision, intelligent systems, and practical AI applications.",
   },
-
   {
     slug: "web-development-pro",
     title: "Full-Stack Web Development",
@@ -777,7 +1647,7 @@ const programs = [
   {
     slug: "aws-devops",
     title: "AWS & DevOps",
-    image: "/pds-assets/program-web-dev.jpg",
+    image: "/programs/aws-devops/hero.png",
     tags: ["12 Weeks", "Intermediate"],
     desc: "Learn cloud computing, AWS services, Linux, Git, Docker, CI/CD, infrastructure, monitoring, and modern DevOps deployment workflows.",
   },
@@ -788,7 +1658,6 @@ const programs = [
     tags: ["12 Weeks", "Intermediate"],
     desc: "Explore data science with Python, statistics, visualization, machine learning, and real-world datasets.",
   },
-
   {
     slug: "cyber-defense-junior",
     title: "Cybersecurity",
@@ -796,7 +1665,6 @@ const programs = [
     tags: ["12 Weeks", "Beginner"],
     desc: "Learn cyber safety, networks, threats, security tools, incident response, and ethical security practices.",
   },
-
   {
     slug: "ux-ui-design-mastery",
     title: "UI/UX Design",
@@ -804,7 +1672,6 @@ const programs = [
     tags: ["12 Weeks", "All Levels"],
     desc: "Design intuitive digital experiences using research, wireframing, prototyping, usability testing, and Figma.",
   },
-
   {
     slug: "data-analytics",
     title: "Data Analytics",
@@ -812,7 +1679,6 @@ const programs = [
     tags: ["10 Weeks", "Beginner"],
     desc: "Turn raw data into useful insights using spreadsheets, SQL, dashboards, visualization, and business analytics.",
   },
-
   {
     slug: "teen-entrepreneurship",
     title: "Entrepreneurship",
@@ -820,7 +1686,6 @@ const programs = [
     tags: ["12 Weeks", "Beginner"],
     desc: "Learn idea validation, business planning, branding, finance, leadership, product development, and pitching.",
   },
-
   {
     slug: "digital-marketing",
     title: "Digital Marketing",
@@ -828,7 +1693,6 @@ const programs = [
     tags: ["10 Weeks", "Beginner"],
     desc: "Learn social media marketing, SEO, content strategy, paid campaigns, analytics, branding, and audience growth.",
   },
-
   {
     slug: "graphic-design-motion-graphics",
     title: "Graphic Design & Motion Graphics",
@@ -836,7 +1700,6 @@ const programs = [
     tags: ["12 Weeks", "All Levels"],
     desc: "Create visual identities, graphics, digital artwork, animated content, and professional motion-design projects.",
   },
-
   {
     slug: "software-testing",
     title: "Software Testing",
@@ -844,7 +1707,6 @@ const programs = [
     tags: ["10 Weeks", "Beginner"],
     desc: "Learn manual testing, test cases, bug reporting, API testing, quality assurance, and test automation fundamentals.",
   },
-
   {
     slug: "python-programming-explorer",
     title: "Python Programming Explorer",
@@ -852,7 +1714,6 @@ const programs = [
     tags: ["10 Weeks", "Beginner"],
     desc: "Learn Python programming through coding challenges, automation, games, problem solving, and practical projects.",
   },
-
   {
     slug: "mobile-app-development",
     title: "Mobile App Development",
@@ -860,7 +1721,6 @@ const programs = [
     tags: ["12 Weeks", "Intermediate"],
     desc: "Design and build modern mobile applications with interactive interfaces, APIs, state management, and deployment.",
   },
-
   {
     slug: "digital-content-creation",
     title: "Digital Content Creation",
@@ -869,6 +1729,11 @@ const programs = [
     desc: "Create videos, graphics, social content, digital stories, and a professional creative portfolio.",
   },
 ];
+
+/* ========================================================= */
+/* FAQ DATA */
+/* ========================================================= */
+
 const faqs = [
   "Do I need prior coding experience to join?",
   "What hardware or software requirements are there?",
@@ -877,7 +1742,9 @@ const faqs = [
   "Are there any scholarship opportunities available?",
 ];
 
-// Custom SVG icons
+/* ========================================================= */
+/* CUSTOM ICONS */
+/* ========================================================= */
 
 function AwardIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
