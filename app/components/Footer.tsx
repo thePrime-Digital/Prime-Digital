@@ -75,7 +75,7 @@ export default function Footer() {
                 Meet Our Founder
               </p>
 
-              <h3 className="mt-2 text-[24px] font-black leading-none text-white">
+              <h3 className="mt-2 text-[22px] font-black leading-none text-white">
                 Adv. Reena Kumari
               </h3>
 
