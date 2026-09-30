@@ -233,6 +233,31 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* ===================================================== */}
+      {/* RECOGNITION STRIP */}
+      {/* ===================================================== */}
+
+      <section className="bg-white px-6 py-8 md:px-10 md:py-10">
+        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-center gap-x-10 gap-y-5 border-y border-slate-200 py-6 md:justify-between">
+          <span className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">
+            Recognized By
+          </span>
+
+          <span className="text-[17px] font-black text-[#3f3f46] md:text-[20px]">
+            ISO 9001:2015
+          </span>
+
+          <span className="text-[17px] font-black text-[#3f3f46] md:text-[20px]">
+            MSME Certified
+          </span>
+
+          <span className="text-[17px] font-black text-[#3f3f46] md:text-[20px]">
+            Digital India
+          </span>
+        </div>
+      </section>
+
       {/* ===================================================== */}
       {/* COMPACT ADMISSIONS STATUS */}
       {/* ===================================================== */}
@@ -240,7 +265,6 @@ export default function Home() {
       <section className="mx-auto mt-8 w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)]">
         <div className="relative overflow-hidden rounded-[22px] border border-[#7a0019]/10 bg-[#fff8f9] px-6 py-6 shadow-[0_12px_35px_rgba(90,0,18,0.07)] md:px-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-
             {/* LEFT SIDE */}
 
             <div className="flex items-start gap-5">
@@ -432,7 +456,7 @@ export default function Home() {
           </div>
         </article>
       </section>
-      
+
       <section className="pds-why-testimonial">
         <div className="pds-why-card">
           <div className="pds-small-label">Why Choose</div>
@@ -495,7 +519,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-            <div className="flex justify-center bg-white px-6 pb-10 pt-4">
+      <div className="flex justify-center bg-white px-6 pb-10 pt-4">
         <Link
           href="/student-stories"
           className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#8f0024]/20 bg-white px-7 text-sm font-black text-[#8f0024] shadow-[0_10px_30px_rgba(105,0,25,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#8f0024] hover:bg-[#fff4f7]"
