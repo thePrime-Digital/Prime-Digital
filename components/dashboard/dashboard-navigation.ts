@@ -145,6 +145,11 @@ export const facultyNavigation: DashboardNavigationItem[] = [
     icon: Video,
   },
   {
+    label: "eBooks",
+    href: "/faculty/ebooks",
+    icon: BookOpen,
+  },
+  {
     label: "Live Classes",
     href: "/faculty/live-classes",
     icon: MonitorPlay,
@@ -201,6 +206,11 @@ export const adminNavigation: DashboardNavigationItem[] = [
     label: "Programs",
     href: "/admin/programs",
     icon: BookOpen,
+  },
+  {
+    label: "eBooks",
+    href: "/admin/ebooks",
+    icon: LibraryBig,
   },
   {
     label: "Classes",

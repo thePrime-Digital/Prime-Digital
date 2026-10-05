@@ -48,6 +48,8 @@ export type StudentLevel =
 ========================================= */
 
 export const FOUNDATION_CLASSES = [
+  "6th Standard",
+  "7th Standard",
   "8th Standard",
   "9th Standard",
   "10th Standard",
@@ -70,12 +72,53 @@ export const COLLEGE_YEARS = [
 ========================================= */
 
 export const STUDENT_PROGRAMS = [
+  /* =======================================
+     GRADES 6–7
+  ======================================= */
+
+  "Digital Foundations & Smart Computing",
+  "Creative Coding with Scratch",
+  "Young Game Creators",
+  "Junior Robotics & Electronics",
+  "Digital Design & Creativity",
+  "AI for Young Learners",
+
+  /* =======================================
+     GRADES 8–9
+  ======================================= */
+
+  "Python Programming Foundations",
+  "Web Development Fundamentals",
+  "AI & Prompt Engineering",
+  "Robotics & IoT Foundations",
+  "Cybersecurity & Digital Safety",
+  "Data Skills & Spreadsheets",
+  "UI/UX & Product Design",
+  "App Building Fundamentals",
+
+  /* =======================================
+     GRADE 10
+  ======================================= */
+
+  "Python Development & Automation",
+  "Front-End Web Development",
+  "Applied AI & Generative AI",
+  "Robotics & IoT Projects",
+  "Cybersecurity Foundations",
+  "Data Analytics Foundations",
+  "Digital Product & UI/UX Design",
+  "Tech Entrepreneurship",
+  "Capstone & Portfolio Development",
+
+  /* =======================================
+     ADVANCED / COLLEGE PROGRAMS
+  ======================================= */
+
   "Technology & Coding",
   "AI, Robotics & Future Tech",
   "Business & Digital Marketing",
   "Design & Creative Arts",
   "Entrepreneurship & Innovation",
-  "Cybersecurity & Digital Safety",
 ] as const;
 
 export type StudentProgram =
