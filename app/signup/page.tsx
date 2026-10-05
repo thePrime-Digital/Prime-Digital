@@ -33,12 +33,91 @@ const studentLevelOptions: {
 ];
 
 const classOptions: Record<StudentLevel, string[]> = {
-  foundation: ["8th Standard", "9th Standard", "10th Standard"],
+  foundation: [
+    "6th Standard",
+    "7th Standard",
+    "8th Standard",
+    "9th Standard",
+    "10th Standard",
+  ],
 
   advanced: ["11th Standard", "12th Standard"],
 
   college: ["1st Year", "2nd Year", "3rd Year", "4th Year"],
 };
+
+const foundationProgramOptions: Record<string, string[]> = {
+  "6th Standard": [
+    "Digital Foundations & Smart Computing",
+    "Creative Coding with Scratch",
+    "Young Game Creators",
+    "Junior Robotics & Electronics",
+    "Digital Design & Creativity",
+    "AI for Young Learners",
+  ],
+
+  "7th Standard": [
+    "Digital Foundations & Smart Computing",
+    "Creative Coding with Scratch",
+    "Young Game Creators",
+    "Junior Robotics & Electronics",
+    "Digital Design & Creativity",
+    "AI for Young Learners",
+  ],
+
+  "8th Standard": [
+    "Python Programming Foundations",
+    "Web Development Fundamentals",
+    "AI & Prompt Engineering",
+    "Robotics & IoT Foundations",
+    "Cybersecurity & Digital Safety",
+    "Data Skills & Spreadsheets",
+    "UI/UX & Product Design",
+    "App Building Fundamentals",
+  ],
+
+  "9th Standard": [
+    "Python Programming Foundations",
+    "Web Development Fundamentals",
+    "AI & Prompt Engineering",
+    "Robotics & IoT Foundations",
+    "Cybersecurity & Digital Safety",
+    "Data Skills & Spreadsheets",
+    "UI/UX & Product Design",
+    "App Building Fundamentals",
+  ],
+
+  "10th Standard": [
+    "Python Development & Automation",
+    "Front-End Web Development",
+    "Applied AI & Generative AI",
+    "Robotics & IoT Projects",
+    "Cybersecurity Foundations",
+    "Data Analytics Foundations",
+    "Digital Product & UI/UX Design",
+    "Tech Entrepreneurship",
+    "Capstone & Portfolio Development",
+  ],
+};
+
+const advancedProgramOptions = [
+  "Technology & Coding",
+  "AI, Robotics & Future Tech",
+  "Business & Digital Marketing",
+  "Design & Creative Arts",
+  "Entrepreneurship & Innovation",
+];
+
+function getProgramOptions(
+  studentLevel: StudentLevel,
+  currentClass: string,
+): string[] {
+  if (studentLevel === "foundation") {
+    return foundationProgramOptions[currentClass] ?? [];
+  }
+
+  return advancedProgramOptions;
+}
 
 const roles: {
   id: SignupRole;
@@ -69,6 +148,8 @@ function SignupForm() {
   const [studentLevel, setStudentLevel] = useState<StudentLevel>("foundation");
 
   const [currentClass, setCurrentClass] = useState("");
+
+  const programOptions = getProgramOptions(studentLevel, currentClass);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -595,26 +676,25 @@ function SignupForm() {
                         </label>
 
                         <select
+                          key={`${studentLevel}-${currentClass}`}
                           name="program"
                           defaultValue=""
                           required
                           className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-[#8f0024] focus:ring-4 focus:ring-[#8f0024]/10"
                         >
                           <option value="" disabled>
-                            Select a program
+                            {currentClass
+                              ? "Select a program"
+                              : studentLevel === "college"
+                                ? "Select a program"
+                                : "Select your standard first"}
                           </option>
 
-                          <option>Technology & Coding</option>
-
-                          <option>AI, Robotics & Future Tech</option>
-
-                          <option>Business & Digital Marketing</option>
-
-                          <option>Design & Creative Arts</option>
-
-                          <option>Entrepreneurship & Innovation</option>
-
-                          <option>Cybersecurity & Digital Safety</option>
+                          {programOptions.map((programName) => (
+                            <option key={programName} value={programName}>
+                              {programName}
+                            </option>
+                          ))}
                         </select>
                       </div>
 
@@ -683,8 +763,6 @@ function SignupForm() {
                       </div>
                     </div>
                   )}
-
-
 
                   {/* TERMS */}
                   <label className="flex cursor-pointer items-start gap-3 text-xs font-semibold leading-5 text-slate-600">
