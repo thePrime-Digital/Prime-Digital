@@ -26,6 +26,7 @@ import {
   UserCheck,
   Users,
   UsersRound,
+  Video,
   Wrench,
 } from "lucide-react";
 
@@ -64,6 +65,11 @@ export const studentNavigation: DashboardNavigationItem[] = [
     label: "Learning Content",
     href: "/dashboard/learning-content",
     icon: LibraryBig,
+  },
+  {
+    label: "Recorded Lectures",
+    href: "/dashboard/recorded-lectures",
+    icon: Video,
   },
   {
     label: "Live Classes",
@@ -132,6 +138,11 @@ export const facultyNavigation: DashboardNavigationItem[] = [
     label: "Course Content",
     href: "/faculty/content",
     icon: LibraryBig,
+  },
+  {
+    label: "Recorded Lectures",
+    href: "/faculty/recorded-lectures",
+    icon: Video,
   },
   {
     label: "Live Classes",

@@ -1,4 +1,4 @@
-﻿import {
+import {
   ObjectId,
   type Document,
 } from "mongodb";
@@ -47,6 +47,27 @@ type UpdateContentBody = {
   id?: unknown;
   action?: unknown;
 };
+
+function isGoogleDriveUrl(
+  value: string,
+): boolean {
+  try {
+    const url =
+      new URL(value);
+
+    return (
+      url.protocol === "https:" &&
+      (
+        url.hostname ===
+          "drive.google.com" ||
+        url.hostname ===
+          "docs.google.com"
+      )
+    );
+  } catch {
+    return false;
+  }
+}
 
 function contentClassValues(
   ids: ObjectId[],
@@ -366,6 +387,21 @@ export async function POST(
       {
         error:
           "Invalid content type.",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  if (
+    type === "video" &&
+    !isGoogleDriveUrl(url)
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          "Recorded lectures must use a valid Google Drive link.",
       },
       {
         status: 400,

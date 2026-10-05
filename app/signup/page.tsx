@@ -20,7 +20,7 @@ const studentLevelOptions: {
 }[] = [
   {
     value: "foundation",
-    label: "Foundation Programs (8th–10th Standard)",
+    label: "Foundation Programs (6th–10th Standard)",
   },
   {
     value: "advanced",
