@@ -73,14 +73,14 @@ export const programs: Program[] = [
 
     image: "/pds-assets/program-ai-robotics.jpg",
 
-    age: "Ages 12–17",
+    age: "Ages 12â€“17",
 
     duration: "12 Weeks",
 
     level: "Intermediate Level",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Projects", value: "5 Major", subtext: "AI portfolio" },
 
@@ -134,15 +134,15 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "AI Foundations", time: "Week 1–2" },
+      { title: "AI Foundations", time: "Week 1â€“2" },
 
-      { title: "Python & Data", time: "Week 3–4" },
+      { title: "Python & Data", time: "Week 3â€“4" },
 
-      { title: "Machine Learning", time: "Week 5–7" },
+      { title: "Machine Learning", time: "Week 5â€“7" },
 
-      { title: "Applied AI", time: "Week 8–9" },
+      { title: "Applied AI", time: "Week 8â€“9" },
 
-      { title: "Major Project", time: "Week 10–11" },
+      { title: "Major Project", time: "Week 10â€“11" },
 
       { title: "Presentation", time: "Week 12" },
     ],
@@ -151,7 +151,7 @@ export const programs: Program[] = [
       {
         title: "Introduction to Artificial Intelligence",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "What is Artificial Intelligence?",
@@ -169,7 +169,7 @@ export const programs: Program[] = [
       {
         title: "Python for AI",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "Python Variables and Data Types",
@@ -189,7 +189,7 @@ export const programs: Program[] = [
       {
         title: "Machine Learning Fundamentals",
 
-        lessons: "6 Lessons • 14 Hours",
+        lessons: "6 Lessons â€¢ 14 Hours",
 
         items: [
           "How Machines Learn",
@@ -209,7 +209,7 @@ export const programs: Program[] = [
       {
         title: "Computer Vision & Intelligent Systems",
 
-        lessons: "5 Lessons • 12 Hours",
+        lessons: "5 Lessons â€¢ 12 Hours",
 
         items: [
           "Introduction to Computer Vision",
@@ -227,7 +227,7 @@ export const programs: Program[] = [
       {
         title: "AI Capstone Project",
 
-        lessons: "5 Lessons • 12 Hours",
+        lessons: "5 Lessons â€¢ 12 Hours",
 
         items: [
           "Choose an AI Problem",
@@ -282,14 +282,14 @@ export const programs: Program[] = [
 
     image: "/pds-assets/program-web-dev.jpg",
 
-    age: "Ages 12–17",
+    age: "Ages 12â€“17",
 
     duration: "12 Weeks",
 
     level: "Intermediate Level",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Projects", value: "5 Major", subtext: "Full-stack portfolio" },
 
@@ -341,15 +341,15 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Frontend Basics", time: "Week 1–2" },
+      { title: "Frontend Basics", time: "Week 1â€“2" },
 
-      { title: "JavaScript", time: "Week 3–4" },
+      { title: "JavaScript", time: "Week 3â€“4" },
 
-      { title: "React", time: "Week 5–6" },
+      { title: "React", time: "Week 5â€“6" },
 
-      { title: "Backend", time: "Week 7–8" },
+      { title: "Backend", time: "Week 7â€“8" },
 
-      { title: "Full Stack", time: "Week 9–11" },
+      { title: "Full Stack", time: "Week 9â€“11" },
 
       { title: "Deployment", time: "Week 12" },
     ],
@@ -358,7 +358,7 @@ export const programs: Program[] = [
       {
         title: "Web Development Foundations",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "How the Web Works",
@@ -376,7 +376,7 @@ export const programs: Program[] = [
       {
         title: "JavaScript Development",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "JavaScript Fundamentals",
@@ -396,7 +396,7 @@ export const programs: Program[] = [
       {
         title: "React Frontend",
 
-        lessons: "6 Lessons • 14 Hours",
+        lessons: "6 Lessons â€¢ 14 Hours",
 
         items: [
           "React Components",
@@ -416,7 +416,7 @@ export const programs: Program[] = [
       {
         title: "Backend & APIs",
 
-        lessons: "6 Lessons • 14 Hours",
+        lessons: "6 Lessons â€¢ 14 Hours",
 
         items: [
           "Node.js Fundamentals",
@@ -436,7 +436,7 @@ export const programs: Program[] = [
       {
         title: "Database & Deployment",
 
-        lessons: "5 Lessons • 12 Hours",
+        lessons: "5 Lessons â€¢ 12 Hours",
 
         items: [
           "MongoDB Fundamentals",
@@ -491,14 +491,14 @@ export const programs: Program[] = [
 
     image: "/programs/data-science/hero.png",
 
-    age: "Ages 13–17",
+    age: "Ages 13â€“17",
 
     duration: "12 Weeks",
 
     level: "Intermediate Level",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Projects", value: "5 Major", subtext: "Data portfolio" },
 
@@ -550,24 +550,24 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Data Basics", time: "Week 1–2" },
+      { title: "Data Basics", time: "Week 1â€“2" },
 
-      { title: "Python", time: "Week 3–4" },
+      { title: "Python", time: "Week 3â€“4" },
 
-      { title: "Analysis", time: "Week 5–6" },
+      { title: "Analysis", time: "Week 5â€“6" },
 
-      { title: "Visualization", time: "Week 7–8" },
+      { title: "Visualization", time: "Week 7â€“8" },
 
-      { title: "Machine Learning", time: "Week 9–10" },
+      { title: "Machine Learning", time: "Week 9â€“10" },
 
-      { title: "Capstone", time: "Week 11–12" },
+      { title: "Capstone", time: "Week 11â€“12" },
     ],
 
     curriculum: [
       {
         title: "Data Science Foundations",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "What is Data Science?",
@@ -585,7 +585,7 @@ export const programs: Program[] = [
       {
         title: "Python Data Analysis",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "Python for Data",
@@ -605,7 +605,7 @@ export const programs: Program[] = [
       {
         title: "Statistics & Visualization",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "Mean, Median and Mode",
@@ -625,7 +625,7 @@ export const programs: Program[] = [
       {
         title: "Machine Learning Introduction",
 
-        lessons: "5 Lessons • 12 Hours",
+        lessons: "5 Lessons â€¢ 12 Hours",
 
         items: [
           "Features and Targets",
@@ -643,7 +643,7 @@ export const programs: Program[] = [
       {
         title: "Data Science Capstone",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Choose a Dataset",
@@ -698,14 +698,14 @@ export const programs: Program[] = [
 
     image: "/programs/cyber-defense/hero.png",
 
-    age: "Ages 12–17",
+    age: "Ages 12â€“17",
 
     duration: "12 Weeks",
 
     level: "Beginner Friendly",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Labs", value: "Hands-on", subtext: "Security practice" },
 
@@ -759,24 +759,24 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Safety", time: "Week 1–2" },
+      { title: "Safety", time: "Week 1â€“2" },
 
-      { title: "Threats", time: "Week 3–4" },
+      { title: "Threats", time: "Week 3â€“4" },
 
-      { title: "Networks", time: "Week 5–6" },
+      { title: "Networks", time: "Week 5â€“6" },
 
-      { title: "Security Tools", time: "Week 7–8" },
+      { title: "Security Tools", time: "Week 7â€“8" },
 
-      { title: "Response", time: "Week 9–10" },
+      { title: "Response", time: "Week 9â€“10" },
 
-      { title: "Final Project", time: "Week 11–12" },
+      { title: "Final Project", time: "Week 11â€“12" },
     ],
 
     curriculum: [
       {
         title: "Cybersecurity Fundamentals",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "What is Cybersecurity?",
@@ -794,7 +794,7 @@ export const programs: Program[] = [
       {
         title: "Cyber Threats",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Malware",
@@ -812,7 +812,7 @@ export const programs: Program[] = [
       {
         title: "Networks & Defense",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "How Networks Work",
@@ -832,7 +832,7 @@ export const programs: Program[] = [
       {
         title: "Security Operations",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Monitoring",
@@ -850,7 +850,7 @@ export const programs: Program[] = [
       {
         title: "Cybersecurity Capstone",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Identify Risks",
@@ -913,14 +913,14 @@ export const programs: Program[] = [
 
     image: "/programs/ux-ui/hero.png",
 
-    age: "Ages 12–17",
+    age: "Ages 12â€“17",
 
     duration: "12 Weeks",
 
     level: "All Levels",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Projects", value: "5 Major", subtext: "Design portfolio" },
 
@@ -971,24 +971,24 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Foundation", time: "Week 1–2" },
+      { title: "Foundation", time: "Week 1â€“2" },
 
-      { title: "Research", time: "Week 3–4" },
+      { title: "Research", time: "Week 3â€“4" },
 
-      { title: "Wireframes", time: "Week 5–6" },
+      { title: "Wireframes", time: "Week 5â€“6" },
 
-      { title: "UI Design", time: "Week 7–8" },
+      { title: "UI Design", time: "Week 7â€“8" },
 
-      { title: "Prototype", time: "Week 9–10" },
+      { title: "Prototype", time: "Week 9â€“10" },
 
-      { title: "Portfolio", time: "Week 11–12" },
+      { title: "Portfolio", time: "Week 11â€“12" },
     ],
 
     curriculum: [
       {
         title: "UI/UX Foundations",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "UI vs UX",
@@ -1006,7 +1006,7 @@ export const programs: Program[] = [
       {
         title: "UX Research",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "User Interviews",
@@ -1024,7 +1024,7 @@ export const programs: Program[] = [
       {
         title: "Wireframes & Architecture",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Information Architecture",
@@ -1042,7 +1042,7 @@ export const programs: Program[] = [
       {
         title: "UI Design & Figma",
 
-        lessons: "6 Lessons • 14 Hours",
+        lessons: "6 Lessons â€¢ 14 Hours",
 
         items: [
           "Figma Fundamentals",
@@ -1062,7 +1062,7 @@ export const programs: Program[] = [
       {
         title: "Prototype & Test",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Interactive Prototypes",
@@ -1126,14 +1126,14 @@ export const programs: Program[] = [
 
     image: "/programs/data-analytics/hero.png",
 
-    age: "Ages 13–17",
+    age: "Ages 13â€“17",
 
     duration: "10 Weeks",
 
     level: "Beginner Friendly",
 
     stats: [
-      { title: "Duration", value: "10 Weeks", subtext: "4–5 hrs weekly" },
+      { title: "Duration", value: "10 Weeks", subtext: "4â€“5 hrs weekly" },
 
       { title: "Projects", value: "4 Major", subtext: "Analytics portfolio" },
 
@@ -1188,13 +1188,13 @@ export const programs: Program[] = [
     journey: [
       { title: "Data Basics", time: "Week 1" },
 
-      { title: "Spreadsheets", time: "Week 2–3" },
+      { title: "Spreadsheets", time: "Week 2â€“3" },
 
-      { title: "SQL", time: "Week 4–5" },
+      { title: "SQL", time: "Week 4â€“5" },
 
-      { title: "Visualization", time: "Week 6–7" },
+      { title: "Visualization", time: "Week 6â€“7" },
 
-      { title: "Business Analysis", time: "Week 8–9" },
+      { title: "Business Analysis", time: "Week 8â€“9" },
 
       { title: "Capstone", time: "Week 10" },
     ],
@@ -1203,7 +1203,7 @@ export const programs: Program[] = [
       {
         title: "Analytics Foundations",
 
-        lessons: "4 Lessons • 6 Hours",
+        lessons: "4 Lessons â€¢ 6 Hours",
 
         items: [
           "What is Data Analytics?",
@@ -1219,7 +1219,7 @@ export const programs: Program[] = [
       {
         title: "Spreadsheet Analysis",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Organizing Data",
@@ -1237,7 +1237,7 @@ export const programs: Program[] = [
       {
         title: "SQL for Analytics",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "SELECT Queries",
@@ -1257,7 +1257,7 @@ export const programs: Program[] = [
       {
         title: "Visualization & Dashboards",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Choosing Charts",
@@ -1275,7 +1275,7 @@ export const programs: Program[] = [
       {
         title: "Business Analytics Capstone",
 
-        lessons: "4 Lessons • 8 Hours",
+        lessons: "4 Lessons â€¢ 8 Hours",
 
         items: [
           "Define a Business Question",
@@ -1328,14 +1328,14 @@ export const programs: Program[] = [
 
     image: "/programs/entrepreneurship/hero.png",
 
-    age: "Ages 12–17",
+    age: "Ages 12â€“17",
 
     duration: "12 Weeks",
 
     level: "Beginner Friendly",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Projects", value: "8 Hands-on", subtext: "Business practice" },
 
@@ -1386,24 +1386,24 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Discover", time: "Week 1–2" },
+      { title: "Discover", time: "Week 1â€“2" },
 
-      { title: "Ideate", time: "Week 3–4" },
+      { title: "Ideate", time: "Week 3â€“4" },
 
-      { title: "Validate", time: "Week 5–6" },
+      { title: "Validate", time: "Week 5â€“6" },
 
-      { title: "Build", time: "Week 7–8" },
+      { title: "Build", time: "Week 7â€“8" },
 
-      { title: "Market", time: "Week 9–10" },
+      { title: "Market", time: "Week 9â€“10" },
 
-      { title: "Pitch", time: "Week 11–12" },
+      { title: "Pitch", time: "Week 11â€“12" },
     ],
 
     curriculum: [
       {
         title: "Entrepreneurship Foundations",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "What is Entrepreneurship?",
@@ -1421,7 +1421,7 @@ export const programs: Program[] = [
       {
         title: "Idea & Customer Validation",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Idea Generation",
@@ -1439,7 +1439,7 @@ export const programs: Program[] = [
       {
         title: "Business Planning",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Value Proposition",
@@ -1457,7 +1457,7 @@ export const programs: Program[] = [
       {
         title: "Marketing & Finance",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "Branding",
@@ -1477,7 +1477,7 @@ export const programs: Program[] = [
       {
         title: "Pitch & Launch",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Build an MVP",
@@ -1541,14 +1541,14 @@ export const programs: Program[] = [
 
     image: "/programs/digital-marketing/hero.png",
 
-    age: "Ages 13–17",
+    age: "Ages 13â€“17",
 
     duration: "10 Weeks",
 
     level: "Beginner Friendly",
 
     stats: [
-      { title: "Duration", value: "10 Weeks", subtext: "4–5 hrs weekly" },
+      { title: "Duration", value: "10 Weeks", subtext: "4â€“5 hrs weekly" },
 
       { title: "Projects", value: "5 Campaigns", subtext: "Portfolio work" },
 
@@ -1606,20 +1606,20 @@ export const programs: Program[] = [
 
       { title: "Audience", time: "Week 2" },
 
-      { title: "Content", time: "Week 3–4" },
+      { title: "Content", time: "Week 3â€“4" },
 
-      { title: "SEO & Social", time: "Week 5–6" },
+      { title: "SEO & Social", time: "Week 5â€“6" },
 
-      { title: "Campaigns", time: "Week 7–8" },
+      { title: "Campaigns", time: "Week 7â€“8" },
 
-      { title: "Analytics", time: "Week 9–10" },
+      { title: "Analytics", time: "Week 9â€“10" },
     ],
 
     curriculum: [
       {
         title: "Digital Marketing Foundations",
 
-        lessons: "4 Lessons • 6 Hours",
+        lessons: "4 Lessons â€¢ 6 Hours",
 
         items: [
           "What is Digital Marketing?",
@@ -1635,7 +1635,7 @@ export const programs: Program[] = [
       {
         title: "Social Media Marketing",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Platform Strategy",
@@ -1653,7 +1653,7 @@ export const programs: Program[] = [
       {
         title: "SEO & Content Marketing",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Search Intent",
@@ -1671,7 +1671,7 @@ export const programs: Program[] = [
       {
         title: "Paid Advertising",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Campaign Objectives",
@@ -1689,7 +1689,7 @@ export const programs: Program[] = [
       {
         title: "Marketing Analytics",
 
-        lessons: "4 Lessons • 8 Hours",
+        lessons: "4 Lessons â€¢ 8 Hours",
 
         items: [
           "Marketing KPIs",
@@ -1742,14 +1742,14 @@ export const programs: Program[] = [
 
     image: "/programs/graphic-design-motion-graphics/hero.png",
 
-    age: "Ages 12–17",
+    age: "Ages 12â€“17",
 
     duration: "12 Weeks",
 
     level: "All Levels",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Projects", value: "8 Creative", subtext: "Design portfolio" },
 
@@ -1801,24 +1801,24 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Foundations", time: "Week 1–2" },
+      { title: "Foundations", time: "Week 1â€“2" },
 
-      { title: "Visual Design", time: "Week 3–4" },
+      { title: "Visual Design", time: "Week 3â€“4" },
 
-      { title: "Branding", time: "Week 5–6" },
+      { title: "Branding", time: "Week 5â€“6" },
 
-      { title: "Motion Basics", time: "Week 7–8" },
+      { title: "Motion Basics", time: "Week 7â€“8" },
 
-      { title: "Animation", time: "Week 9–10" },
+      { title: "Animation", time: "Week 9â€“10" },
 
-      { title: "Portfolio", time: "Week 11–12" },
+      { title: "Portfolio", time: "Week 11â€“12" },
     ],
 
     curriculum: [
       {
         title: "Graphic Design Foundations",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "Visual Communication",
@@ -1836,7 +1836,7 @@ export const programs: Program[] = [
       {
         title: "Typography & Layout",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Typography Fundamentals",
@@ -1854,7 +1854,7 @@ export const programs: Program[] = [
       {
         title: "Brand Identity",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Brand Strategy",
@@ -1872,7 +1872,7 @@ export const programs: Program[] = [
       {
         title: "Motion Graphics",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "Animation Principles",
@@ -1892,7 +1892,7 @@ export const programs: Program[] = [
       {
         title: "Portfolio Project",
 
-        lessons: "4 Lessons • 8 Hours",
+        lessons: "4 Lessons â€¢ 8 Hours",
 
         items: [
           "Choose a Creative Brief",
@@ -1946,14 +1946,14 @@ export const programs: Program[] = [
 
     image: "/programs/software-testing/hero.png",
 
-    age: "Ages 13–17",
+    age: "Ages 13â€“17",
 
     duration: "10 Weeks",
 
     level: "Beginner Friendly",
 
     stats: [
-      { title: "Duration", value: "10 Weeks", subtext: "4–5 hrs weekly" },
+      { title: "Duration", value: "10 Weeks", subtext: "4â€“5 hrs weekly" },
 
       { title: "Projects", value: "4 Major", subtext: "QA portfolio" },
 
@@ -2008,13 +2008,13 @@ export const programs: Program[] = [
     journey: [
       { title: "QA Basics", time: "Week 1" },
 
-      { title: "Test Cases", time: "Week 2–3" },
+      { title: "Test Cases", time: "Week 2â€“3" },
 
       { title: "Bug Reports", time: "Week 4" },
 
-      { title: "Web Testing", time: "Week 5–6" },
+      { title: "Web Testing", time: "Week 5â€“6" },
 
-      { title: "API & Automation", time: "Week 7–9" },
+      { title: "API & Automation", time: "Week 7â€“9" },
 
       { title: "Capstone", time: "Week 10" },
     ],
@@ -2023,7 +2023,7 @@ export const programs: Program[] = [
       {
         title: "Software Testing Foundations",
 
-        lessons: "4 Lessons • 6 Hours",
+        lessons: "4 Lessons â€¢ 6 Hours",
 
         items: [
           "What is Software Testing?",
@@ -2039,7 +2039,7 @@ export const programs: Program[] = [
       {
         title: "Test Cases & Bug Reporting",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Test Scenarios",
@@ -2057,7 +2057,7 @@ export const programs: Program[] = [
       {
         title: "Web Application Testing",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Functional Testing",
@@ -2075,7 +2075,7 @@ export const programs: Program[] = [
       {
         title: "API Testing",
 
-        lessons: "4 Lessons • 8 Hours",
+        lessons: "4 Lessons â€¢ 8 Hours",
 
         items: [
           "What is an API?",
@@ -2091,7 +2091,7 @@ export const programs: Program[] = [
       {
         title: "Automation & QA Capstone",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Automation Concepts",
@@ -2146,14 +2146,14 @@ export const programs: Program[] = [
 
     image: "/programs/python-programming/hero.png",
 
-    age: "Ages 11–17",
+    age: "Ages 11â€“17",
 
     duration: "10 Weeks",
 
     level: "Beginner Friendly",
 
     stats: [
-      { title: "Duration", value: "10 Weeks", subtext: "4–5 hrs weekly" },
+      { title: "Duration", value: "10 Weeks", subtext: "4â€“5 hrs weekly" },
 
       { title: "Projects", value: "6 Practical", subtext: "Coding portfolio" },
 
@@ -2202,15 +2202,15 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Basics", time: "Week 1–2" },
+      { title: "Basics", time: "Week 1â€“2" },
 
       { title: "Logic", time: "Week 3" },
 
       { title: "Functions", time: "Week 4" },
 
-      { title: "Data", time: "Week 5–6" },
+      { title: "Data", time: "Week 5â€“6" },
 
-      { title: "Projects", time: "Week 7–9" },
+      { title: "Projects", time: "Week 7â€“9" },
 
       { title: "Capstone", time: "Week 10" },
     ],
@@ -2219,7 +2219,7 @@ export const programs: Program[] = [
       {
         title: "Python Foundations",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "Python Setup",
@@ -2237,7 +2237,7 @@ export const programs: Program[] = [
       {
         title: "Logic & Control Flow",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Conditions",
@@ -2255,7 +2255,7 @@ export const programs: Program[] = [
       {
         title: "Functions & Data Structures",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "Functions",
@@ -2275,7 +2275,7 @@ export const programs: Program[] = [
       {
         title: "Python Automation",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Working with Files",
@@ -2293,7 +2293,7 @@ export const programs: Program[] = [
       {
         title: "Python Game Project",
 
-        lessons: "4 Lessons • 8 Hours",
+        lessons: "4 Lessons â€¢ 8 Hours",
 
         items: [
           "Game Logic",
@@ -2346,14 +2346,14 @@ export const programs: Program[] = [
 
     image: "/programs/mobile-app-development/hero.png",
 
-    age: "Ages 13–17",
+    age: "Ages 13â€“17",
 
     duration: "12 Weeks",
 
     level: "Intermediate Level",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       { title: "Projects", value: "5 Apps", subtext: "Mobile portfolio" },
 
@@ -2403,15 +2403,15 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Foundations", time: "Week 1–2" },
+      { title: "Foundations", time: "Week 1â€“2" },
 
-      { title: "UI", time: "Week 3–4" },
+      { title: "UI", time: "Week 3â€“4" },
 
-      { title: "App Logic", time: "Week 5–6" },
+      { title: "App Logic", time: "Week 5â€“6" },
 
-      { title: "Data & APIs", time: "Week 7–8" },
+      { title: "Data & APIs", time: "Week 7â€“8" },
 
-      { title: "Projects", time: "Week 9–11" },
+      { title: "Projects", time: "Week 9â€“11" },
 
       { title: "Launch", time: "Week 12" },
     ],
@@ -2420,7 +2420,7 @@ export const programs: Program[] = [
       {
         title: "Mobile Development Foundations",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "Mobile Platforms",
@@ -2438,7 +2438,7 @@ export const programs: Program[] = [
       {
         title: "Mobile Interface Development",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Layouts",
@@ -2456,7 +2456,7 @@ export const programs: Program[] = [
       {
         title: "App Logic & State",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "User Interaction",
@@ -2474,7 +2474,7 @@ export const programs: Program[] = [
       {
         title: "APIs & Storage",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "API Fundamentals",
@@ -2492,7 +2492,7 @@ export const programs: Program[] = [
       {
         title: "Build & Launch",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Testing",
@@ -2547,14 +2547,14 @@ export const programs: Program[] = [
 
     image: "/programs/digital-content/hero.png",
 
-    age: "Ages 12–17",
+    age: "Ages 12â€“17",
 
     duration: "12 Weeks",
 
     level: "Beginner Friendly",
 
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
 
       {
         title: "Projects",
@@ -2611,24 +2611,24 @@ export const programs: Program[] = [
     ],
 
     journey: [
-      { title: "Plan", time: "Week 1–2" },
+      { title: "Plan", time: "Week 1â€“2" },
 
-      { title: "Shoot", time: "Week 3–4" },
+      { title: "Shoot", time: "Week 3â€“4" },
 
-      { title: "Edit", time: "Week 5–6" },
+      { title: "Edit", time: "Week 5â€“6" },
 
-      { title: "Design", time: "Week 7–8" },
+      { title: "Design", time: "Week 7â€“8" },
 
-      { title: "Publish", time: "Week 9–10" },
+      { title: "Publish", time: "Week 9â€“10" },
 
-      { title: "Grow", time: "Week 11–12" },
+      { title: "Grow", time: "Week 11â€“12" },
     ],
 
     curriculum: [
       {
         title: "Content Creation Foundations",
 
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
 
         items: [
           "Content Types",
@@ -2646,7 +2646,7 @@ export const programs: Program[] = [
       {
         title: "Video Production",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Framing",
@@ -2664,7 +2664,7 @@ export const programs: Program[] = [
       {
         title: "Video Editing",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Timeline Editing",
@@ -2682,7 +2682,7 @@ export const programs: Program[] = [
       {
         title: "Graphics & Social Media",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Thumbnails",
@@ -2700,7 +2700,7 @@ export const programs: Program[] = [
       {
         title: "Creator Portfolio",
 
-        lessons: "4 Lessons • 8 Hours",
+        lessons: "4 Lessons â€¢ 8 Hours",
 
         items: [
           "Build a Content Series",
@@ -2762,7 +2762,7 @@ export const programs: Program[] = [
 
     image: "/programs/aws-devops/hero.png",
 
-    age: "Ages 14–17",
+    age: "Ages 14â€“17",
 
     duration: "12 Weeks",
 
@@ -2774,7 +2774,7 @@ export const programs: Program[] = [
 
         value: "12 Weeks",
 
-        subtext: "5–6 hrs weekly",
+        subtext: "5â€“6 hrs weekly",
       },
 
       {
@@ -2850,37 +2850,37 @@ export const programs: Program[] = [
       {
         title: "Cloud Basics",
 
-        time: "Week 1–2",
+        time: "Week 1â€“2",
       },
 
       {
         title: "AWS",
 
-        time: "Week 3–4",
+        time: "Week 3â€“4",
       },
 
       {
         title: "Linux & Git",
 
-        time: "Week 5–6",
+        time: "Week 5â€“6",
       },
 
       {
         title: "Docker",
 
-        time: "Week 7–8",
+        time: "Week 7â€“8",
       },
 
       {
         title: "CI/CD",
 
-        time: "Week 9–10",
+        time: "Week 9â€“10",
       },
 
       {
         title: "Cloud Project",
 
-        time: "Week 11–12",
+        time: "Week 11â€“12",
       },
     ],
 
@@ -2888,7 +2888,7 @@ export const programs: Program[] = [
       {
         title: "Cloud & AWS Foundations",
 
-        lessons: "6 Lessons • 10 Hours",
+        lessons: "6 Lessons â€¢ 10 Hours",
 
         items: [
           "Introduction to Cloud Computing",
@@ -2908,7 +2908,7 @@ export const programs: Program[] = [
       {
         title: "Linux & Version Control",
 
-        lessons: "6 Lessons • 10 Hours",
+        lessons: "6 Lessons â€¢ 10 Hours",
 
         items: [
           "Linux Fundamentals",
@@ -2928,7 +2928,7 @@ export const programs: Program[] = [
       {
         title: "Docker & Containers",
 
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
 
         items: [
           "Introduction to Containers",
@@ -2946,7 +2946,7 @@ export const programs: Program[] = [
       {
         title: "CI/CD & Deployment",
 
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
 
         items: [
           "What is CI/CD?",
@@ -2966,7 +2966,7 @@ export const programs: Program[] = [
       {
         title: "DevOps Capstone",
 
-        lessons: "5 Lessons • 12 Hours",
+        lessons: "5 Lessons â€¢ 12 Hours",
 
         items: [
           "Plan Cloud Architecture",
@@ -3004,20 +3004,20 @@ export const programs: Program[] = [
   },
 
   // =========================================================
-  // 15. DIGITAL EXPLORER PROGRAM — GRADES 6–7
+  // 15. DIGITAL EXPLORER PROGRAM â€” GRADES 6â€“7
   // =========================================================
   {
     slug: "digital-explorer",
     title: "Digital Explorer",
     highlight: "Program",
     description:
-      "A creative, beginner-friendly technology program for Grades 6–7 that builds digital confidence through visual coding, games, robotics, design, AI awareness, and hands-on projects.",
+      "A creative, beginner-friendly technology program for Grades 6â€“7 that builds digital confidence through visual coding, games, robotics, design, AI awareness, and hands-on projects.",
     image: "/pds-assets/program-ai-robotics.jpg",
-    age: "Grades 6–7",
+    age: "Grades 6â€“7",
     duration: "12 Weeks",
     level: "Beginner Friendly",
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "3–4 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "3â€“4 hrs weekly" },
       {
         title: "Projects",
         value: "6 Hands-on",
@@ -3063,17 +3063,17 @@ export const programs: Program[] = [
       },
     ],
     journey: [
-      { title: "Digital Basics", time: "Week 1–2" },
-      { title: "Creative Coding", time: "Week 3–4" },
-      { title: "Game Creation", time: "Week 5–6" },
-      { title: "Junior Robotics", time: "Week 7–8" },
-      { title: "Design & AI", time: "Week 9–10" },
-      { title: "Final Showcase", time: "Week 11–12" },
+      { title: "Digital Basics", time: "Week 1â€“2" },
+      { title: "Creative Coding", time: "Week 3â€“4" },
+      { title: "Game Creation", time: "Week 5â€“6" },
+      { title: "Junior Robotics", time: "Week 7â€“8" },
+      { title: "Design & AI", time: "Week 9â€“10" },
+      { title: "Final Showcase", time: "Week 11â€“12" },
     ],
     curriculum: [
       {
         title: "Digital Foundations & Smart Computing",
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
         items: [
           "Computer & File Basics",
           "Internet and Cloud Tools",
@@ -3084,7 +3084,7 @@ export const programs: Program[] = [
       },
       {
         title: "Creative Coding with Scratch",
-        lessons: "6 Lessons • 10 Hours",
+        lessons: "6 Lessons â€¢ 10 Hours",
         items: [
           "Sequences and Events",
           "Loops",
@@ -3096,7 +3096,7 @@ export const programs: Program[] = [
       },
       {
         title: "Young Game Creators",
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
         items: [
           "Game Planning",
           "Movement and Controls",
@@ -3107,7 +3107,7 @@ export const programs: Program[] = [
       },
       {
         title: "Junior Robotics & Electronics",
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
         items: [
           "Simple Circuits",
           "Sensors",
@@ -3118,7 +3118,7 @@ export const programs: Program[] = [
       },
       {
         title: "Digital Design, AI & Final Showcase",
-        lessons: "6 Lessons • 10 Hours",
+        lessons: "6 Lessons â€¢ 10 Hours",
         items: [
           "Visual Design Basics",
           "Digital Storytelling",
@@ -3152,20 +3152,20 @@ export const programs: Program[] = [
   },
 
   // =========================================================
-  // 16. TECH BUILDER PROGRAM — GRADES 8–9
+  // 16. TECH BUILDER PROGRAM â€” GRADES 8â€“9
   // =========================================================
   {
     slug: "tech-builder",
     title: "Tech Builder",
     highlight: "Program",
     description:
-      "A practical technology program for Grades 8–9 that introduces Python, web development, AI, robotics, cybersecurity, data skills, UI/UX, and app-building through guided projects.",
+      "A practical technology program for Grades 8â€“9 that introduces Python, web development, AI, robotics, cybersecurity, data skills, UI/UX, and app-building through guided projects.",
     image: "/pds-assets/program-web-dev.jpg",
-    age: "Grades 8–9",
+    age: "Grades 8â€“9",
     duration: "12 Weeks",
     level: "Foundation to Intermediate",
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "4–5 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "4â€“5 hrs weekly" },
       {
         title: "Projects",
         value: "6 Practical",
@@ -3207,17 +3207,17 @@ export const programs: Program[] = [
       },
     ],
     journey: [
-      { title: "Python", time: "Week 1–2" },
-      { title: "Web Development", time: "Week 3–4" },
-      { title: "AI & Prompting", time: "Week 5–6" },
-      { title: "Robotics & IoT", time: "Week 7–8" },
-      { title: "Cyber & Data", time: "Week 9–10" },
-      { title: "Capstone", time: "Week 11–12" },
+      { title: "Python", time: "Week 1â€“2" },
+      { title: "Web Development", time: "Week 3â€“4" },
+      { title: "AI & Prompting", time: "Week 5â€“6" },
+      { title: "Robotics & IoT", time: "Week 7â€“8" },
+      { title: "Cyber & Data", time: "Week 9â€“10" },
+      { title: "Capstone", time: "Week 11â€“12" },
     ],
     curriculum: [
       {
         title: "Python Programming Foundations",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "Python Setup & Syntax",
           "Variables & Data Types",
@@ -3229,7 +3229,7 @@ export const programs: Program[] = [
       },
       {
         title: "Website Development Fundamentals",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "How Websites Work",
           "HTML Structure",
@@ -3241,7 +3241,7 @@ export const programs: Program[] = [
       },
       {
         title: "AI & Prompt Engineering for Students",
-        lessons: "5 Lessons • 8 Hours",
+        lessons: "5 Lessons â€¢ 8 Hours",
         items: [
           "How Generative AI Works",
           "Writing Better Prompts",
@@ -3252,7 +3252,7 @@ export const programs: Program[] = [
       },
       {
         title: "Robotics, IoT & Cybersecurity",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "Sensors & Automation",
           "IoT Concepts",
@@ -3264,7 +3264,7 @@ export const programs: Program[] = [
       },
       {
         title: "Data, UI/UX & App Building",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "Spreadsheet Data Skills",
           "Charts & Insights",
@@ -3298,7 +3298,7 @@ export const programs: Program[] = [
   },
 
   // =========================================================
-  // 17. FUTURE TECH & PORTFOLIO PROGRAM — GRADE 10
+  // 17. FUTURE TECH & PORTFOLIO PROGRAM â€” GRADE 10
   // =========================================================
   {
     slug: "future-tech-portfolio",
@@ -3311,7 +3311,7 @@ export const programs: Program[] = [
     duration: "12 Weeks",
     level: "Intermediate Level",
     stats: [
-      { title: "Duration", value: "12 Weeks", subtext: "5–6 hrs weekly" },
+      { title: "Duration", value: "12 Weeks", subtext: "5â€“6 hrs weekly" },
       { title: "Projects", value: "4 Major", subtext: "Portfolio-ready" },
       { title: "Focus", value: "Future Tech", subtext: "Applied skills" },
       { title: "Outcome", value: "Portfolio", subtext: "Showcase your work" },
@@ -3349,17 +3349,17 @@ export const programs: Program[] = [
       },
     ],
     journey: [
-      { title: "Python Development", time: "Week 1–2" },
-      { title: "Front-End Web", time: "Week 3–4" },
-      { title: "Applied AI", time: "Week 5–6" },
-      { title: "Cyber & Data", time: "Week 7–8" },
-      { title: "Product Building", time: "Week 9–10" },
-      { title: "Portfolio Showcase", time: "Week 11–12" },
+      { title: "Python Development", time: "Week 1â€“2" },
+      { title: "Front-End Web", time: "Week 3â€“4" },
+      { title: "Applied AI", time: "Week 5â€“6" },
+      { title: "Cyber & Data", time: "Week 7â€“8" },
+      { title: "Product Building", time: "Week 9â€“10" },
+      { title: "Portfolio Showcase", time: "Week 11â€“12" },
     ],
     curriculum: [
       {
         title: "Python Development & Automation",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "Structured Python Programs",
           "Functions & Modules",
@@ -3371,7 +3371,7 @@ export const programs: Program[] = [
       },
       {
         title: "Front-End Web Development",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "Semantic HTML",
           "Modern CSS",
@@ -3383,7 +3383,7 @@ export const programs: Program[] = [
       },
       {
         title: "Applied AI & Emerging Technology",
-        lessons: "5 Lessons • 10 Hours",
+        lessons: "5 Lessons â€¢ 10 Hours",
         items: [
           "Generative AI Workflows",
           "Advanced Prompting Basics",
@@ -3394,7 +3394,7 @@ export const programs: Program[] = [
       },
       {
         title: "Cybersecurity, Data & Smart Systems",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "Network & Security Basics",
           "Digital Threat Awareness",
@@ -3406,7 +3406,7 @@ export const programs: Program[] = [
       },
       {
         title: "Capstone, Portfolio & Pathway Exploration",
-        lessons: "6 Lessons • 12 Hours",
+        lessons: "6 Lessons â€¢ 12 Hours",
         items: [
           "Choose a Real-World Problem",
           "Plan the Solution",
@@ -3441,6 +3441,289 @@ export const programs: Program[] = [
         description:
           "Combine multiple technical skills into one final project, document the build, and present it as part of a student portfolio.",
         image: "/programs/mobile-app-development/learning-app.png",
+      },
+    ],
+  },
+
+  // =========================================================
+  // 18. CAREER TECH & SPECIALIZATION — GRADES 11–12
+  // =========================================================
+
+  {
+    slug: "career-tech-specialization",
+
+    title: "Career Tech &",
+
+    highlight: "Specialization",
+
+    description:
+      "An advanced Grades 11-12 pathway designed for students who want to specialize in technology, build industry-relevant projects, develop a strong portfolio, and prepare for college, internships, entrepreneurship and future careers.",
+
+    image: "/programs/aws-devops/hero.png",
+
+    age: "Grades 11-12",
+
+    duration: "16 Weeks",
+
+    level: "Intermediate to Advanced",
+
+    stats: [
+      {
+        title: "Duration",
+
+        value: "16 Weeks",
+
+        subtext: "5-7 hrs weekly",
+      },
+
+      {
+        title: "Projects",
+
+        value: "5 Major",
+
+        subtext: "Career portfolio",
+      },
+
+      {
+        title: "Focus",
+
+        value: "Specialization",
+
+        subtext: "Industry skills",
+      },
+
+      {
+        title: "Outcome",
+
+        value: "Portfolio",
+
+        subtext: "College + career ready",
+      },
+    ],
+
+    learning: [
+      {
+        title: "Advanced Programming",
+
+        description:
+          "Develop stronger programming skills using Python, data structures, algorithms and structured software development.",
+      },
+
+      {
+        title: "Full-Stack Development",
+
+        description:
+          "Build production-style applications with frontend, backend, APIs, databases and deployment.",
+      },
+
+      {
+        title: "Artificial Intelligence",
+
+        description:
+          "Explore machine learning, generative AI, data workflows and practical intelligent applications.",
+      },
+
+      {
+        title: "Cloud & DevOps",
+
+        description:
+          "Understand cloud infrastructure, AWS, Linux, Git, Docker and CI/CD workflows.",
+      },
+
+      {
+        title: "Data & Analytics",
+
+        description:
+          "Use SQL, spreadsheets, Power BI and analytical methods to solve real-world data problems.",
+      },
+
+      {
+        title: "Career Portfolio",
+
+        description:
+          "Build and present professional projects for college applications, internships and future opportunities.",
+      },
+    ],
+
+    journey: [
+      {
+        title: "Programming",
+
+        time: "Week 1-3",
+      },
+
+      {
+        title: "Web & Applications",
+
+        time: "Week 4-6",
+      },
+
+      {
+        title: "AI & Data",
+
+        time: "Week 7-9",
+      },
+
+      {
+        title: "Cloud & Security",
+
+        time: "Week 10-12",
+      },
+
+      {
+        title: "Specialization Project",
+
+        time: "Week 13-14",
+      },
+
+      {
+        title: "Portfolio & Showcase",
+
+        time: "Week 15-16",
+      },
+    ],
+
+    curriculum: [
+      {
+        title: "Advanced Python & Problem Solving",
+
+        lessons: "6 Lessons • 14 Hours",
+
+        items: [
+          "Object-Oriented Programming",
+
+          "Data Structures",
+
+          "Algorithms",
+
+          "File & API Workflows",
+
+          "Automation",
+
+          "Advanced Python Project",
+        ],
+      },
+
+      {
+        title: "Full-Stack Application Development",
+
+        lessons: "7 Lessons • 16 Hours",
+
+        items: [
+          "Modern JavaScript",
+
+          "React & Next.js",
+
+          "Backend APIs",
+
+          "Authentication",
+
+          "Databases",
+
+          "Application Security",
+
+          "Deployment",
+        ],
+      },
+
+      {
+        title: "AI, Machine Learning & Data",
+
+        lessons: "7 Lessons • 16 Hours",
+
+        items: [
+          "AI & Machine Learning",
+
+          "Preparing Data",
+
+          "Classification",
+
+          "Prediction",
+
+          "Generative AI",
+
+          "Data Visualization",
+
+          "Applied AI Project",
+        ],
+      },
+
+      {
+        title: "Cloud, DevOps & Cybersecurity",
+
+        lessons: "6 Lessons • 14 Hours",
+
+        items: [
+          "Cloud Computing",
+
+          "AWS Fundamentals",
+
+          "Linux & Git",
+
+          "Docker",
+
+          "CI/CD",
+
+          "Cloud Security",
+        ],
+      },
+
+      {
+        title: "Career Capstone & Portfolio",
+
+        lessons: "6 Lessons • 14 Hours",
+
+        items: [
+          "Choose a Career Track",
+
+          "Define a Real-World Problem",
+
+          "Build the Capstone",
+
+          "Test & Improve",
+
+          "Create Portfolio Documentation",
+
+          "Final Project Presentation",
+        ],
+      },
+    ],
+
+    projects: [
+      {
+        title: "Full-Stack Application",
+
+        description:
+          "Build and deploy a complete web application using modern frontend, backend and database technologies.",
+
+        image: "/pds-assets/program-web-dev.jpg",
+      },
+
+      {
+        title: "AI & Data Project",
+
+        description:
+          "Analyze real data and create an AI-assisted or machine-learning solution.",
+
+        image: "/pds-assets/program-ai-robotics.jpg",
+      },
+
+      {
+        title: "Cloud Deployment Project",
+
+        description:
+          "Deploy an application using cloud infrastructure, containers and automated workflows.",
+
+        image: "/programs/aws-devops/aws-cloud-deployment.png",
+      },
+
+      {
+        title: "Career Capstone",
+
+        description:
+          "Create a major specialization project and present it as part of a professional student portfolio.",
+
+        image: "/programs/data-analytics/analytics-dashboard.png",
       },
     ],
   },

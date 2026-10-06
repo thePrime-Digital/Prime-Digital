@@ -259,9 +259,71 @@ export default function Home() {
       </section>
 
       {/* ===================================================== */}
-      {/* COMPACT ADMISSIONS STATUS */}
+      {/* PRIME DIGITAL SCHOOL VIDEO */}
       {/* ===================================================== */}
 
+      <section className="bg-white px-6 pb-8 pt-2 md:px-10 md:pb-10">
+        <div className="mx-auto max-w-[1320px] overflow-hidden rounded-[26px] border border-[#7a0019]/10 bg-gradient-to-br from-[#fff7f8] via-white to-[#fffafb] shadow-[0_18px_50px_rgba(90,0,18,0.08)]">
+          <div className="grid items-center lg:grid-cols-[0.72fr_1.28fr]">
+            {/* LEFT SIDE */}
+            <div className="px-7 py-9 sm:px-10 lg:px-12 lg:py-12">
+              <div className="inline-flex items-center rounded-full bg-[#7a0019]/8 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-[#7a0019]">
+                Inside Prime Digital School
+              </div>
+
+              <h2 className="mt-5 text-[30px] font-black leading-[1.08] tracking-[-1px] text-[#111827] sm:text-[38px]">
+                See How We
+                <br />
+                <span className="text-[#8f0024]">Learn, Build & Grow</span>
+              </h2>
+
+              <p className="mt-5 max-w-[470px] text-[14px] leading-7 text-slate-600">
+                Discover how Prime Digital School combines practical learning,
+                technology, projects and future-ready skills to help students
+                build confidence for tomorrow.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {[
+                  "Hands-on Learning",
+                  "Grades 6–12",
+                  "Project Based",
+                  "Future Skills",
+                ].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-[#8f0024]/15 bg-[#fff1f4] px-4 py-2 text-[10px] font-black text-[#8f0024]"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT SIDE - VIDEO */}
+            <div className="p-4 sm:p-6 lg:p-7">
+              <div className="overflow-hidden rounded-[22px] bg-black shadow-[0_22px_55px_rgba(15,23,42,0.2)]">
+                <video
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="aspect-video w-full bg-black object-cover"
+                >
+                  <source
+                    src="/videos/prime-digital-school-intro.mp4"
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================== */}
+      {/* COMPACT ADMISSIONS STATUS */}
+      {/* ===================================================== */}
       <section className="mx-auto mt-8 w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)]">
         <div className="relative overflow-hidden rounded-[22px] border border-[#7a0019]/10 bg-[#fff8f9] px-6 py-6 shadow-[0_12px_35px_rgba(90,0,18,0.07)] md:px-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -546,14 +608,14 @@ export default function Home() {
                 </div>
 
                 <h2 className="max-w-[420px] text-4xl font-light leading-[1.12] tracking-[-1.5px] text-[#060C1F] md:text-5xl">
-                  The Platform
+                  The Digital
                   <br />
-                  Solutions
+                  Agency
                 </h2>
 
                 <p className="mt-7 max-w-[400px] text-sm leading-7 text-slate-500">
-                  Access our complete digital architecture built for websites,
-                  apps, dashboards, AI systems, and high-performance operations.
+                  Websites, apps, branding, marketing, AI systems, and digital
+                  solutions built to help modern businesses grow.
                 </p>
 
                 <Link
