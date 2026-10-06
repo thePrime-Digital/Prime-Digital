@@ -1312,3 +1312,53 @@ button {
     padding: 18px;
   }
 }
+
+
+/* =========================================================
+   PRIME DIGITAL SCHOOL - PREMIUM SCROLLBAR
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #8f0024 #fff7f8;
+}
+
+/* Chrome, Edge and Safari */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #fff7f8;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #b5123b 0%,
+    #8f0024 50%,
+    #650018 100%
+  );
+
+  border-radius: 999px;
+  border: 3px solid #fff7f8;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #cf204c 0%,
+    #a5002d 50%,
+    #75001c 100%
+  );
+}
+
+html::-webkit-scrollbar-thumb:active,
+body::-webkit-scrollbar-thumb:active {
+  background: #5c021a;
+}

@@ -42,9 +42,11 @@ import {
   BarChart3,
 } from "lucide-react";
 
-type GradeKey = "6-7" | "8-9" | "10";
+type GradeKey = "6-7" | "8-9" | "10" | "11-12";
 
-type ProgramView = "normal" | GradeKey;
+type ProgramTrack = "foundation" | "professional";
+
+type StandardKey = "6" | "7" | "8" | "9" | "10" | "11" | "12";
 
 type GradeCourse = {
   slug: string;
@@ -284,14 +286,165 @@ const gradePathways: Record<GradeKey, GradePathway> = {
       },
     ],
   },
+  "11-12": {
+    badge: "Grades 11-12",
+
+    title: "Career Tech & Specialization Pathway",
+
+    stage: "Specialize & Career Prepare",
+
+    description:
+      "An advanced pathway for Grades 11-12 focused on career-oriented technology skills, deeper specialization, industry tools, portfolio development and future-ready projects.",
+
+    href: "/programs/career-tech-specialization",
+
+    courses: [
+      {
+        slug: "advanced-python-dsa",
+
+        title: "Advanced Python & DSA",
+
+        image: "/programs/grades-11-12/advanced-python-dsa.png",
+
+        duration: "12 Weeks",
+
+        level: "Advanced",
+
+        desc: "Strengthen Python programming with object-oriented programming, data structures, algorithms, problem-solving and real-world coding projects.",
+      },
+
+      {
+        slug: "full-stack-development-students",
+
+        title: "Full-Stack Web Development",
+
+        image: "/programs/grades-11-12/full-stack-web-development.png",
+
+        duration: "14 Weeks",
+
+        level: "Intermediate",
+
+        desc: "Build complete web applications using React, Next.js, APIs, authentication, databases and modern deployment workflows.",
+      },
+
+      {
+        slug: "ai-machine-learning-students",
+
+        title: "AI & Machine Learning",
+
+        image: "/programs/grades-11-12/ai-machine-learning.png",
+
+        duration: "12 Weeks",
+
+        level: "Intermediate",
+
+        desc: "Learn Python-based AI, datasets, machine learning, prediction, classification, computer vision and practical AI application development.",
+      },
+
+      {
+        slug: "data-analytics-power-bi",
+
+        title: "Data Analytics & Power BI",
+
+        image: "/programs/grades-11-12/data-analytics-power-bi.png",
+
+        duration: "10 Weeks",
+
+        level: "Intermediate",
+
+        desc: "Analyze real datasets using Excel, SQL, Power BI, dashboards, KPIs and business intelligence techniques.",
+      },
+
+      {
+        slug: "cybersecurity-ethical-hacking",
+
+        title: "Cybersecurity & Ethical Hacking",
+
+        image: "/programs/grades-11-12/cybersecurity-ethical-hacking.png",
+
+        duration: "12 Weeks",
+
+        level: "Intermediate",
+
+        desc: "Learn networking, vulnerabilities, defensive security, ethical hacking concepts, threat analysis and practical cybersecurity labs.",
+      },
+
+      {
+        slug: "cloud-devops-foundations",
+
+        title: "Cloud Computing & DevOps",
+
+        image: "/programs/grades-11-12/cloud-computing-devops.png",
+
+        duration: "12 Weeks",
+
+        level: "Intermediate",
+
+        desc: "Learn AWS fundamentals, Linux, Git, Docker, CI/CD, cloud deployment and modern DevOps workflows.",
+      },
+
+      {
+        slug: "product-design-advanced",
+
+        title: "UI/UX & Digital Product Design",
+
+        image: "/programs/grades-11-12/ui-ux-digital-product-design.png",
+
+        duration: "10 Weeks",
+
+        level: "Intermediate",
+
+        desc: "Research users, create product flows, build high-fidelity interfaces, prototype in Figma and develop portfolio-ready product designs.",
+      },
+
+      {
+        slug: "startup-entrepreneurship",
+
+        title: "Startup & Tech Entrepreneurship",
+
+        image: "/programs/grades-11-12/startup-tech-entrepreneurship.png",
+
+        duration: "10 Weeks",
+
+        level: "Intermediate",
+
+        desc: "Validate ideas, research markets, build MVP concepts, understand startup finance, branding, customer acquisition and pitching.",
+      },
+
+      {
+        slug: "career-capstone-portfolio",
+
+        title: "Career Capstone & Portfolio",
+
+        image: "/programs/grades-11-12/career-capstone-portfolio.png",
+
+        duration: "8 Weeks",
+
+        level: "Project Based",
+
+        desc: "Build a major real-world project, prepare a professional portfolio, document technical work and present it for college, internships and future careers.",
+      },
+    ],
+  },
 };
 
 export default function ProgramsPage() {
-  const [activeView, setActiveView] =
-    React.useState<ProgramView>("normal");
+  const [activeTrack, setActiveTrack] = React.useState<ProgramTrack | null>(
+    null,
+  );
 
-  const activePathway =
-    activeView === "normal" ? null : gradePathways[activeView];
+  const [activeStandard, setActiveStandard] = React.useState<StandardKey>("6");
+
+  const activeGrade: GradeKey =
+    activeStandard === "6" || activeStandard === "7"
+      ? "6-7"
+      : activeStandard === "8" || activeStandard === "9"
+        ? "8-9"
+        : activeStandard === "10"
+          ? "10"
+          : "11-12";
+
+  const activePathway = gradePathways[activeGrade];
 
   return (
     <div className="min-h-screen font-sans bg-white text-[#1C1B1B] overflow-x-hidden">
@@ -364,9 +517,7 @@ export default function ProgramsPage() {
               10k+
             </h3>
 
-            <p className="text-[#FF8A96] text-base mt-1">
-              Active Students
-            </p>
+            <p className="text-[#FF8A96] text-base mt-1">Active Students</p>
           </div>
 
           <div className="flex flex-col items-center">
@@ -374,9 +525,7 @@ export default function ProgramsPage() {
               95%
             </h3>
 
-            <p className="text-[#FF8A96] text-base mt-1">
-              Placement Rate
-            </p>
+            <p className="text-[#FF8A96] text-base mt-1">Placement Rate</p>
           </div>
 
           <div className="flex flex-col items-center">
@@ -384,9 +533,7 @@ export default function ProgramsPage() {
               50+
             </h3>
 
-            <p className="text-[#FF8A96] text-base mt-1">
-              Expert Instructors
-            </p>
+            <p className="text-[#FF8A96] text-base mt-1">Expert Instructors</p>
           </div>
 
           <div className="flex flex-col items-center">
@@ -394,9 +541,7 @@ export default function ProgramsPage() {
               120+
             </h3>
 
-            <p className="text-[#FF8A96] text-base mt-1">
-              Global Partners
-            </p>
+            <p className="text-[#FF8A96] text-base mt-1">Global Partners</p>
           </div>
         </div>
       </section>
@@ -410,6 +555,10 @@ export default function ProgramsPage() {
         <div className="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-[#FF8A96]/10 blur-[100px]" />
 
         <div className="relative mx-auto max-w-[1200px]">
+          {/* ============================================= */}
+          {/* SECTION HEADING */}
+          {/* ============================================= */}
+
           <div className="mx-auto mb-10 flex max-w-[820px] flex-col items-center text-center">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#5C021A]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#5C021A]">
               <GraduationCap className="h-4 w-4" />
@@ -417,72 +566,356 @@ export default function ProgramsPage() {
             </div>
 
             <h2 className="text-[32px] font-semibold leading-tight text-[#1A1A1A] md:text-[42px]">
-              Explore Programs for{" "}
-              <span className="text-[#5C021A]">
-                Every Stage
-              </span>
+              Find the Right{" "}
+              <span className="text-[#5C021A]">Learning Path</span>
             </h2>
 
             <p className="mt-4 max-w-[720px] text-base leading-7 text-[#5D5F5F] md:text-lg">
-              Browse our regular industry-aligned programs or choose a
-              grade-specific pathway designed for students in GradesGrades 6-10.
+              Choose a grade-focused Foundation Batch for school students or
+              explore career-focused Professional Courses for advanced learning.
             </p>
           </div>
 
-          {/* Selector Buttons */}
+          {/* ============================================= */}
+          {/* MAIN TWO OPTIONS */}
+          {/* ============================================= */}
 
-          <div className="mx-auto mb-10 grid w-full max-w-[960px] grid-cols-1 gap-2 rounded-2xl border border-[#E6D3D8] bg-[#FFF9FA] p-2 sm:grid-cols-2 lg:grid-cols-4">
-            {(
-              [
-                ["normal", "Advance Programs"],
-                ["6-7", "Grades 6-7"],
-                ["8-9", "Grades 8-9"],
-                ["10", "Grade 10"],
-              ] as const
-            ).map(([key, label]) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setActiveView(key)}
-                className={`rounded-xl px-5 py-3 text-sm font-bold transition-all ${
-                  activeView === key
-                    ? "bg-[#5C021A] text-white shadow-md"
-                    : "bg-transparent text-[#5C021A] hover:bg-white"
+          <div className="mx-auto grid max-w-[960px] grid-cols-1 gap-5 md:grid-cols-2">
+            {/* FOUNDATION BATCH */}
+
+            <button
+              type="button"
+              onClick={() => setActiveTrack("foundation")}
+              className={`group relative overflow-hidden rounded-[24px] border p-6 text-left transition-all duration-300 md:p-8 ${
+                activeTrack === "foundation"
+                  ? "border-[#5C021A] bg-[#5C021A] text-white shadow-[0_18px_40px_rgba(92,2,26,0.18)]"
+                  : "border-[#E4D2D7] bg-[#FFF9FA] text-[#1C1B1B] hover:-translate-y-1 hover:border-[#5C021A]/40 hover:shadow-lg"
+              }`}
+            >
+              <div
+                className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
+                  activeTrack === "foundation"
+                    ? "bg-white/15 text-white"
+                    : "bg-[#5C021A]/10 text-[#5C021A]"
                 }`}
               >
-                {label}
-              </button>
-            ))}
+                <GraduationCap className="h-7 w-7" />
+              </div>
+
+              <p
+                className={`mt-6 text-[10px] font-black uppercase tracking-[0.16em] ${
+                  activeTrack === "foundation"
+                    ? "text-white/70"
+                    : "text-[#A14A5D]"
+                }`}
+              >
+                Grades 6-12
+              </p>
+
+              <h3 className="mt-1 text-2xl font-black">Foundation Batch</h3>
+
+              <p
+                className={`mt-3 text-sm leading-6 ${
+                  activeTrack === "foundation"
+                    ? "text-white/75"
+                    : "text-[#5D5F5F]"
+                }`}
+              >
+                Structured grade-wise technology learning designed for students
+                from Grades 6 to 12.
+              </p>
+
+              <div
+                className={`mt-6 inline-flex items-center gap-2 text-xs font-black ${
+                  activeTrack === "foundation" ? "text-white" : "text-[#5C021A]"
+                }`}
+              >
+                Select Foundation Batch
+                <ChevronRight className="h-4 w-4" />
+              </div>
+            </button>
+
+            {/* PROFESSIONAL COURSES */}
+
+            <button
+              type="button"
+              onClick={() => setActiveTrack("professional")}
+              className={`group relative overflow-hidden rounded-[24px] border p-6 text-left transition-all duration-300 md:p-8 ${
+                activeTrack === "professional"
+                  ? "border-[#5C021A] bg-[#5C021A] text-white shadow-[0_18px_40px_rgba(92,2,26,0.18)]"
+                  : "border-[#E4D2D7] bg-[#FFF9FA] text-[#1C1B1B] hover:-translate-y-1 hover:border-[#5C021A]/40 hover:shadow-lg"
+              }`}
+            >
+              <div
+                className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
+                  activeTrack === "professional"
+                    ? "bg-white/15 text-white"
+                    : "bg-[#5C021A]/10 text-[#5C021A]"
+                }`}
+              >
+                <Briefcase className="h-7 w-7" />
+              </div>
+
+              <p
+                className={`mt-6 text-[10px] font-black uppercase tracking-[0.16em] ${
+                  activeTrack === "professional"
+                    ? "text-white/70"
+                    : "text-[#A14A5D]"
+                }`}
+              >
+                Career & Industry Skills
+              </p>
+
+              <h3 className="mt-1 text-2xl font-black">Professional Courses</h3>
+
+              <p
+                className={`mt-3 text-sm leading-6 ${
+                  activeTrack === "professional"
+                    ? "text-white/75"
+                    : "text-[#5D5F5F]"
+                }`}
+              >
+                Advanced technology, design, business and digital programs built
+                for professional and career-focused learning.
+              </p>
+
+              <div
+                className={`mt-6 inline-flex items-center gap-2 text-xs font-black ${
+                  activeTrack === "professional"
+                    ? "text-white"
+                    : "text-[#5C021A]"
+                }`}
+              >
+                Explore Professional Courses
+                <ChevronRight className="h-4 w-4" />
+              </div>
+            </button>
           </div>
 
-          {/* ================================================= */}
-          {/* NORMAL PROGRAMS */}
-          {/* ================================================= */}
+          {/* ============================================= */}
+          {/* NO SELECTION YET */}
+          {/* ============================================= */}
 
-          {activeView === "normal" ? (
-            <>
+          {activeTrack === null && (
+            <div className="mx-auto mt-8 max-w-[960px] rounded-2xl border border-dashed border-[#DCC0C1] bg-[#FCF9F8] px-6 py-5 text-center">
+              <p className="text-sm font-semibold text-[#6B5A5E]">
+                Select Foundation Batch or Professional Courses above to view
+                available programs.
+              </p>
+            </div>
+          )}
+
+          {/* ============================================= */}
+          {/* FOUNDATION BATCH */}
+          {/* ============================================= */}
+
+          {activeTrack === "foundation" && (
+            <div className="mt-12">
+              {/* FOUNDATION HEADER */}
+
+              <div className="mb-8 rounded-[24px] border border-[#E4D2D7] bg-gradient-to-r from-[#FFF7F8] to-white p-6 md:p-8">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <span className="rounded-full bg-[#5C021A]/10 px-3 py-1.5 text-xs font-black uppercase tracking-[0.12em] text-[#5C021A]">
+                      Foundation Batch
+                    </span>
+
+                    <h3 className="mt-4 text-2xl font-black text-[#1C1B1B] md:text-3xl">
+                      Choose Your Grade
+                    </h3>
+
+                    <p className="mt-2 max-w-[680px] text-sm leading-6 text-[#5D5F5F] md:text-base">
+                      Every stage has a structured learning pathway with
+                      age-appropriate technology, projects and practical skills.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl bg-[#5C021A]/5 px-4 py-3 text-xs font-bold text-[#5C021A]">
+                    Grades 6-12
+                  </div>
+                </div>
+              </div>
+
+              {/* GRADE SELECTOR */}
+
+              <div className="mb-10 grid grid-cols-2 gap-2 rounded-2xl border border-[#E6D3D8] bg-[#FFF9FA] p-2 sm:grid-cols-4 lg:grid-cols-7">
+                {(
+                  [
+                    ["6", "Grade 6"],
+                    ["7", "Grade 7"],
+                    ["8", "Grade 8"],
+                    ["9", "Grade 9"],
+                    ["10", "Grade 10"],
+                    ["11", "Grade 11"],
+                    ["12", "Grade 12"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setActiveStandard(key)}
+                    className={`rounded-xl px-5 py-3.5 text-sm font-black transition-all ${
+                      activeStandard === key
+                        ? "bg-[#5C021A] text-white shadow-md"
+                        : "bg-transparent text-[#5C021A] hover:bg-white"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              {/* SELECTED GRADE PATHWAY */}
+
+              <div className="mb-10 rounded-[24px] border border-[#E4D2D7] bg-gradient-to-r from-[#FFF7F8] to-white p-6 md:p-8">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="max-w-[760px]">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="rounded-full bg-[#5C021A]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#5C021A]">
+                        {activePathway.badge}
+                      </span>
+
+                      <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#A14A5D]">
+                        {activePathway.stage}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-3 text-2xl font-bold text-[#1C1B1B] md:text-3xl">
+                      {activePathway.title}
+                    </h3>
+
+                    <p className="mt-3 max-w-[720px] text-sm leading-6 text-[#5D5F5F] md:text-base">
+                      {activePathway.description}
+                    </p>
+                  </div>
+
+                  <Link
+                    href={activePathway.href}
+                    className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#5C021A] px-6 text-sm font-bold text-white transition hover:bg-[#7B1C2E]"
+                  >
+                    Explore Full Pathway
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* FOUNDATION COURSE OPTIONS */}
+
+              <div className="mb-7 flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#5C021A]">
+                    Foundation Course Options
+                  </p>
+
+                  <h3 className="mt-1 text-2xl font-semibold text-[#1C1B1B]">
+                    Grade {activeStandard} Courses
+                  </h3>
+                </div>
+
+                <span className="hidden text-sm font-semibold text-[#7A686D] sm:block">
+                  {activePathway.courses.length} options
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+                {activePathway.courses.map((course) => (
+                  <article
+                    key={course.slug}
+                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#DCC0C1] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <div className="relative h-48 overflow-hidden bg-gray-100">
+                      <Image
+                        src={course.image}
+                        alt={course.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+
+                      <div className="absolute right-4 top-4 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-bold text-[#5C021A] backdrop-blur-sm">
+                        {activePathway.badge}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col p-6">
+                      <div className="mb-4 flex flex-wrap gap-2">
+                        <span className="rounded-full bg-[#5C021A]/5 px-3 py-1 text-xs font-semibold text-[#5C021A]">
+                          {course.duration}
+                        </span>
+
+                        <span className="rounded-full bg-[#5C021A]/5 px-3 py-1 text-xs font-semibold text-[#5C021A]">
+                          {course.level}
+                        </span>
+                      </div>
+
+                      <h4 className="text-xl font-semibold leading-snug text-[#1C1B1B]">
+                        {course.title}
+                      </h4>
+
+                      <p className="mt-3 text-sm leading-6 text-[#5D5F5F]">
+                        {course.desc}
+                      </p>
+
+                      <div className="mt-auto pt-6">
+                        <Link
+                          href={`${activePathway.href}?course=${course.slug}`}
+                          className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-[#9f1735] text-sm font-bold text-[#9f1735] transition hover:bg-[#9f1735] hover:text-white"
+                        >
+                          View Course
+                          <ChevronRight className="h-4 w-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ============================================= */}
+          {/* PROFESSIONAL COURSES */}
+          {/* ============================================= */}
+
+          {activeTrack === "professional" && (
+            <div className="mt-12">
               <div className="mb-10 rounded-[24px] border border-[#E4D2D7] bg-gradient-to-r from-[#FFF7F8] to-white p-6 md:p-8">
                 <div className="max-w-[760px]">
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="rounded-full bg-[#5C021A]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#5C021A]">
-                      All Learners
+                      Professional Courses
                     </span>
 
                     <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#A14A5D]">
-                      Industry-Aligned Programs
+                      Industry & Career Focused
                     </span>
                   </div>
 
                   <h3 className="mt-3 text-2xl font-bold text-[#1C1B1B] md:text-3xl">
-                    Advance Programs
+                    Build Professional Skills
                   </h3>
 
                   <p className="mt-3 max-w-[720px] text-sm leading-6 text-[#5D5F5F] md:text-base">
-                    Explore our complete collection of technology, design,
-                    data, cybersecurity, business, marketing, creative and
-                    software development programs.
+                    Explore advanced programs across artificial intelligence,
+                    software development, cloud, data, cybersecurity, design,
+                    marketing, entrepreneurship and other career-ready skills.
                   </p>
                 </div>
+              </div>
+
+              <div className="mb-7 flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#5C021A]">
+                    Professional Programs
+                  </p>
+
+                  <h3 className="mt-1 text-2xl font-semibold text-[#1C1B1B]">
+                    Explore Professional Courses
+                  </h3>
+                </div>
+
+                <span className="hidden text-sm font-semibold text-[#7A686D] sm:block">
+                  {programs.length} courses
+                </span>
               </div>
 
               <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
@@ -541,144 +974,7 @@ export default function ProgramsPage() {
                   </article>
                 ))}
               </div>
-            </>
-          ) : (
-            activePathway && (
-              <>
-                {/* ============================================= */}
-                {/* GRADE PATHWAY HEADER */}
-                {/* ============================================= */}
-
-                <div className="mb-10 rounded-[24px] border border-[#E4D2D7] bg-gradient-to-r from-[#FFF7F8] to-white p-6 md:p-8">
-                  <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                    <div className="max-w-[760px]">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="rounded-full bg-[#5C021A]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#5C021A]">
-                          {activePathway.badge}
-                        </span>
-
-                        <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#A14A5D]">
-                          {activePathway.stage}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-3 text-2xl font-bold text-[#1C1B1B] md:text-3xl">
-                        {activePathway.title}
-                      </h3>
-
-                      <p className="mt-3 max-w-[720px] text-sm leading-6 text-[#5D5F5F] md:text-base">
-                        {activePathway.description}
-                      </p>
-                    </div>
-
-                    <Link
-                      href={activePathway.href}
-                      className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#5C021A] px-6 text-sm font-bold text-white transition hover:bg-[#7B1C2E]"
-                    >
-                      Explore Full Pathway
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </div>
-
-                {/* ============================================= */}
-                {/* COURSE OPTIONS */}
-                {/* ============================================= */}
-
-                <div className="mb-7 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#5C021A]">
-                      Course Options
-                    </p>
-
-                    <h3 className="mt-1 text-2xl font-semibold text-[#1C1B1B]">
-                      {activePathway.badge} Courses
-                    </h3>
-                  </div>
-
-                  <span className="hidden text-sm font-semibold text-[#7A686D] sm:block">
-                    {activePathway.courses.length} options
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
-                  {activePathway.courses.map((course) => (
-                    <article
-                      key={course.slug}
-                      className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#DCC0C1] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                    >
-                      <div className="relative h-48 overflow-hidden bg-gray-100">
-                        <Image
-                          src={course.image}
-                          alt={course.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-
-                        <div className="absolute right-4 top-4 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-bold text-[#5C021A] backdrop-blur-sm">
-                          {activePathway.badge}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-1 flex-col p-6">
-                        <div className="mb-4 flex flex-wrap gap-2">
-                          <span className="rounded-full bg-[#5C021A]/5 px-3 py-1 text-xs font-semibold text-[#5C021A]">
-                            {course.duration}
-                          </span>
-
-                          <span className="rounded-full bg-[#5C021A]/5 px-3 py-1 text-xs font-semibold text-[#5C021A]">
-                            {course.level}
-                          </span>
-                        </div>
-
-                        <h4 className="text-xl font-semibold leading-snug text-[#1C1B1B]">
-                          {course.title}
-                        </h4>
-
-                        <p className="mt-3 text-sm leading-6 text-[#5D5F5F]">
-                          {course.desc}
-                        </p>
-
-                        <div className="mt-auto pt-6">
-                          <Link
-                            href={`${activePathway.href}?course=${course.slug}`}
-                            className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-[#9f1735] text-sm font-bold text-[#9f1735] transition hover:bg-[#9f1735] hover:text-white"
-                          >
-                            View in Pathway
-                            <ChevronRight className="h-4 w-4" />
-                          </Link>
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-
-                <div className="mt-10 flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-[#5C021A] md:text-sm">
-                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
-                    Explore
-                  </span>
-
-                  <ChevronRight className="h-4 w-4 opacity-50" />
-
-                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
-                    Build
-                  </span>
-
-                  <ChevronRight className="h-4 w-4 opacity-50" />
-
-                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
-                    Advance
-                  </span>
-
-                  <ChevronRight className="h-4 w-4 opacity-50" />
-
-                  <span className="rounded-full bg-[#5C021A]/5 px-4 py-2">
-                    Showcase
-                  </span>
-                </div>
-              </>
-            )
+            </div>
           )}
         </div>
       </section>
@@ -690,7 +986,6 @@ export default function ProgramsPage() {
       <section className="bg-white px-6 pb-20 pt-6 md:px-20">
         <div className="mx-auto max-w-[1200px]">
           <div className="overflow-hidden rounded-[28px] border border-[#7a0019]/15 bg-gradient-to-br from-[#fff7f8] via-white to-[#fffaf5] shadow-[0_22px_60px_rgba(90,0,18,0.08)]">
-
             {/* ================================================= */}
             {/* HEADER */}
             {/* ================================================= */}
@@ -729,7 +1024,7 @@ export default function ProgramsPage() {
                   </p>
 
                   <p className="mt-1 text-sm font-black text-[#7a0019]">
-                    2026Ã¢â‚¬â€œ27
+                    2026–27
                   </p>
                 </div>
               </div>
@@ -740,7 +1035,6 @@ export default function ProgramsPage() {
             {/* ================================================= */}
 
             <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-
               {/* PROCESS */}
 
               <div className="border-b border-[#7a0019]/10 p-6 md:border-r xl:border-b-0">
@@ -797,9 +1091,7 @@ export default function ProgramsPage() {
                   <CreditCard size={20} />
                 </div>
 
-                <h3 className="text-sm font-black text-[#1C1B1B]">
-                  Fees
-                </h3>
+                <h3 className="text-sm font-black text-[#1C1B1B]">Fees</h3>
 
                 <p className="mt-4 text-xs leading-5 text-[#5D5F5F]">
                   Fees vary depending on the selected program, duration, and
@@ -822,11 +1114,11 @@ export default function ProgramsPage() {
                   Required Documents
                 </h3>
 
-                <ul className="mt-4 space-y-2 text-xs leading-5 text-[#5D5F5F]">
-                  <li>Ã¢â‚¬Â¢ Academic Records</li>
-                  <li>Ã¢â‚¬Â¢ Student ID / Aadhaar</li>
-                  <li>Ã¢â‚¬Â¢ Passport-size Photo</li>
-                  <li>Ã¢â‚¬Â¢ Address Proof</li>
+                <ul className="mt-4 list-disc space-y-2 pl-4 text-xs leading-5 text-[#5D5F5F]">
+                  <li>Academic Records</li>
+                  <li>Student ID / Aadhaar</li>
+                  <li>Passport-size Photo</li>
+                  <li>Address Proof</li>
                 </ul>
               </div>
 
@@ -851,11 +1143,9 @@ export default function ProgramsPage() {
                   </div>
 
                   <div>
-                    <span className="font-bold text-[#1C1B1B]">
-                      Session:
-                    </span>
+                    <span className="font-bold text-[#1C1B1B]">Session:</span>
                     <br />
-                    2026Ã¢â‚¬â€œ27
+                    2026–27
                   </div>
                 </div>
               </div>
@@ -894,7 +1184,6 @@ export default function ProgramsPage() {
               </div>
 
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-
                 <a
                   href="/downloads/prime-digital-school-prospectus.pdf"
                   download
@@ -910,7 +1199,6 @@ export default function ProgramsPage() {
                   Apply Now
                   <ChevronRight size={16} />
                 </Link>
-
               </div>
             </div>
           </div>
@@ -943,9 +1231,7 @@ export default function ProgramsPage() {
                 <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#7B1C2E] to-transparent z-0" />
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">
-                    HTML & CSS
-                  </span>
+                  <span className="font-bold text-[#1C1B1B]">HTML & CSS</span>
                 </div>
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
@@ -961,9 +1247,7 @@ export default function ProgramsPage() {
                 </div>
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">
-                    Backend APIs
-                  </span>
+                  <span className="font-bold text-[#1C1B1B]">Backend APIs</span>
                 </div>
               </div>
             </div>
@@ -989,21 +1273,15 @@ export default function ProgramsPage() {
                 </div>
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">
-                    UX Research
-                  </span>
+                  <span className="font-bold text-[#1C1B1B]">UX Research</span>
                 </div>
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">
-                    Wireframing
-                  </span>
+                  <span className="font-bold text-[#1C1B1B]">Wireframing</span>
                 </div>
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">
-                    Prototyping
-                  </span>
+                  <span className="font-bold text-[#1C1B1B]">Prototyping</span>
                 </div>
               </div>
             </div>
@@ -1035,15 +1313,11 @@ export default function ProgramsPage() {
                 </div>
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">
-                    MVP Building
-                  </span>
+                  <span className="font-bold text-[#1C1B1B]">MVP Building</span>
                 </div>
 
                 <div className="bg-white border-2 border-[#5C021A] rounded-full py-3 px-6 shadow-sm z-10 text-center">
-                  <span className="font-bold text-[#1C1B1B]">
-                    Pitching
-                  </span>
+                  <span className="font-bold text-[#1C1B1B]">Pitching</span>
                 </div>
               </div>
             </div>
@@ -1219,8 +1493,8 @@ export default function ProgramsPage() {
               </h4>
 
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
-                Control lights and temperature via a mobile app built with
-                React Native.
+                Control lights and temperature via a mobile app built with React
+                Native.
               </p>
             </div>
 
@@ -1245,8 +1519,7 @@ export default function ProgramsPage() {
               </h4>
 
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
-                Train a custom AI model to handle school administrative
-                queries.
+                Train a custom AI model to handle school administrative queries.
               </p>
             </div>
 
@@ -1271,8 +1544,7 @@ export default function ProgramsPage() {
               </h4>
 
               <p className="text-sm text-[#5D5F5F] leading-[1.4]">
-                Build a tool to identify basic security risks in local
-                networks.
+                Build a tool to identify basic security risks in local networks.
               </p>
             </div>
 
@@ -1360,9 +1632,7 @@ export default function ProgramsPage() {
                   Prime Digital School
                 </h2>
 
-                <span className="text-sm text-[#5D5F5F]">
-                  ID: PDS-2026-X98
-                </span>
+                <span className="text-sm text-[#5D5F5F]">ID: PDS-2026-X98</span>
               </div>
 
               <div className="text-center mb-6">
@@ -1395,9 +1665,7 @@ export default function ProgramsPage() {
                     June 26, 2026
                   </p>
 
-                  <p className="text-sm text-[#5D5F5F]">
-                    Date of Issue
-                  </p>
+                  <p className="text-sm text-[#5D5F5F]">Date of Issue</p>
                 </div>
 
                 <div className="opacity-30">
