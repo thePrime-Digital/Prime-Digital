@@ -1,384 +1,600 @@
 ﻿"use client";
 
 import Image from "next/image";
-
 import Link from "next/link";
-
 import { useRouter } from "next/navigation";
-
 import { useState, type FormEvent } from "react";
 
 import { useContactAuth } from "self-iam";
 
 import { SelfIAMProvider } from "../providers";
 
-const CAMPUS_IMAGE = "/pds-assets/campus-building.jpg";
+const CAMPUS_IMAGE =
+  "/pds-assets/campus-building.jpg";
 
-type SignupRole = "student" | "faculty";
+type SignupRole =
+  | "student"
+  | "faculty";
 
-type StudentLevel = "foundation" | "advanced" | "college";
+type StudentLevel =
+  | "foundation"
+  | "Profession";
+
+/* =========================================
+   PROGRAM LEVELS
+========================================= */
 
 const studentLevelOptions: {
   value: StudentLevel;
-
   label: string;
 }[] = [
   {
     value: "foundation",
-
-    label: "Foundation Programs (6th–10th Standard)",
+    label:
+      "Foundation Programs (6th–12th Standard)",
   },
-
   {
-    value: "advanced",
-
-    label: "Advanced Programs (11th–12th Standard)",
-  },
-
-  {
-    value: "college",
-
-    label: "College Programs (Degree / Undergraduate)",
+    value: "Profession",
+    label:
+      "Professional Programs",
   },
 ];
 
-const classOptions: Record<StudentLevel, string[]> = {
-  foundation: [
-    "6th Standard",
+/* =========================================
+   FOUNDATION STANDARDS
+========================================= */
 
-    "7th Standard",
+const foundationClasses = [
+  "6th Standard",
+  "7th Standard",
+  "8th Standard",
+  "9th Standard",
+  "10th Standard",
+  "11th Standard",
+  "12th Standard",
+];
 
-    "8th Standard",
+/* =========================================
+   FOUNDATION PROGRAMS
+========================================= */
 
-    "9th Standard",
-
-    "10th Standard",
-  ],
-
-  advanced: ["11th Standard", "12th Standard"],
-
-  college: ["1st Year", "2nd Year", "3rd Year", "4th Year"],
-};
-
-const foundationProgramOptions: Record<string, string[]> = {
+const foundationProgramOptions:
+  Record<string, string[]> = {
   "6th Standard": [
     "Digital Foundations & Smart Computing",
-
     "Creative Coding with Scratch",
-
     "Young Game Creators",
-
     "Junior Robotics & Electronics",
-
     "Digital Design & Creativity",
-
     "AI for Young Learners",
   ],
 
   "7th Standard": [
     "Digital Foundations & Smart Computing",
-
     "Creative Coding with Scratch",
-
     "Young Game Creators",
-
     "Junior Robotics & Electronics",
-
     "Digital Design & Creativity",
-
     "AI for Young Learners",
   ],
 
   "8th Standard": [
     "Python Programming Foundations",
-
     "Web Development Fundamentals",
-
     "AI & Prompt Engineering",
-
     "Robotics & IoT Foundations",
-
     "Cybersecurity & Digital Safety",
-
     "Data Skills & Spreadsheets",
-
     "UI/UX & Product Design",
-
     "App Building Fundamentals",
   ],
 
   "9th Standard": [
     "Python Programming Foundations",
-
     "Web Development Fundamentals",
-
     "AI & Prompt Engineering",
-
     "Robotics & IoT Foundations",
-
     "Cybersecurity & Digital Safety",
-
     "Data Skills & Spreadsheets",
-
     "UI/UX & Product Design",
-
     "App Building Fundamentals",
   ],
 
   "10th Standard": [
     "Python Development & Automation",
-
     "Front-End Web Development",
-
     "Applied AI & Generative AI",
-
     "Robotics & IoT Projects",
-
     "Cybersecurity Foundations",
-
     "Data Analytics Foundations",
-
     "Digital Product & UI/UX Design",
-
     "Tech Entrepreneurship",
-
     "Capstone & Portfolio Development",
+  ],
+
+  "11th Standard": [
+    "Advanced Python & DSA",
+    "Full-Stack Web Development",
+    "AI & Machine Learning",
+    "Data Analytics & Power BI",
+    "Cybersecurity & Ethical Hacking",
+    "Cloud Computing & DevOps",
+    "UI/UX & Digital Product Design",
+    "Startup & Tech Entrepreneurship",
+    "Career Capstone & Portfolio",
+  ],
+
+  "12th Standard": [
+    "Advanced Python & DSA",
+    "Full-Stack Web Development",
+    "AI & Machine Learning",
+    "Data Analytics & Power BI",
+    "Cybersecurity & Ethical Hacking",
+    "Cloud Computing & DevOps",
+    "UI/UX & Digital Product Design",
+    "Startup & Tech Entrepreneurship",
+    "Career Capstone & Portfolio",
   ],
 };
 
-const advancedProgramOptions = [
+/* =========================================
+   PROFESSIONAL PROGRAMS
+========================================= */
+
+const professionalProgramOptions = [
   "Technology & Coding",
-
   "AI, Robotics & Future Tech",
-
   "Business & Digital Marketing",
-
   "Design & Creative Arts",
-
   "Entrepreneurship & Innovation",
 ];
 
+/* =========================================
+   PROGRAM OPTIONS HELPER
+========================================= */
+
 function getProgramOptions(
   studentLevel: StudentLevel,
-
   currentClass: string,
 ): string[] {
-  if (studentLevel === "foundation") {
-    return foundationProgramOptions[currentClass] ?? [];
+  if (
+    studentLevel ===
+    "foundation"
+  ) {
+    return (
+      foundationProgramOptions[
+        currentClass
+      ] ?? []
+    );
   }
 
-  return advancedProgramOptions;
+  return professionalProgramOptions;
 }
 
+/* =========================================
+   SIGNUP FORM
+========================================= */
+
 function SignupForm() {
-  const router = useRouter();
+  const router =
+    useRouter();
 
-  const auth = useContactAuth();
+  const auth =
+    useContactAuth();
 
-  const [role, setRole] = useState<SignupRole>("student");
+  const [
+    role,
+    setRole,
+  ] =
+    useState<SignupRole>(
+      "student",
+    );
 
-  const [studentLevel, setStudentLevel] = useState<StudentLevel>("foundation");
+  const [
+    studentLevel,
+    setStudentLevel,
+  ] =
+    useState<StudentLevel>(
+      "foundation",
+    );
 
-  const [currentClass, setCurrentClass] = useState("");
+  const [
+    currentClass,
+    setCurrentClass,
+  ] =
+    useState("");
 
-  const programOptions = getProgramOptions(studentLevel, currentClass);
+  const programOptions =
+    getProgramOptions(
+      studentLevel,
+      currentClass,
+    );
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [
+    showPassword,
+    setShowPassword,
+  ] =
+    useState(false);
 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] =
+    useState(false);
 
-  const [passwordValue, setPasswordValue] = useState("");
+  const [
+    passwordValue,
+    setPasswordValue,
+  ] =
+    useState("");
 
-  const [submitted, setSubmitted] = useState(false);
+  const [
+    submitted,
+    setSubmitted,
+  ] =
+    useState(false);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [
+    isSubmitting,
+    setIsSubmitting,
+  ] =
+    useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [
+    errorMessage,
+    setErrorMessage,
+  ] =
+    useState("");
 
-  const [successMessage, setSuccessMessage] = useState("");
+  const [
+    successMessage,
+    setSuccessMessage,
+  ] =
+    useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  /* =========================================
+     SUBMIT
+  ========================================= */
+
+  async function handleSubmit(
+    event:
+      FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
 
-    if (isSubmitting) {
+    if (
+      isSubmitting
+    ) {
       return;
     }
 
-    const form = event.currentTarget;
+    const form =
+      event.currentTarget;
 
-    const formData = new FormData(form);
+    const formData =
+      new FormData(
+        form,
+      );
 
-    const name = String(formData.get("name") ?? "").trim();
+    const name =
+      String(
+        formData.get(
+          "name",
+        ) ?? "",
+      ).trim();
 
-    const email = String(formData.get("email") ?? "").trim();
+    const email =
+      String(
+        formData.get(
+          "email",
+        ) ?? "",
+      ).trim();
 
-    const phone = String(formData.get("phone") ?? "").trim();
+    const phone =
+      String(
+        formData.get(
+          "phone",
+        ) ?? "",
+      ).trim();
 
-    const password = String(formData.get("password") ?? "");
+    const password =
+      String(
+        formData.get(
+          "password",
+        ) ?? "",
+      );
 
-    const confirmPassword = String(formData.get("confirmPassword") ?? "");
+    const confirmPassword =
+      String(
+        formData.get(
+          "confirmPassword",
+        ) ?? "",
+      );
 
-    const selectedStudentLevel = String(
-      formData.get("studentLevel") ?? "",
-    ).trim();
+    const selectedStudentLevel =
+      String(
+        formData.get(
+          "studentLevel",
+        ) ?? "",
+      ).trim();
 
-    const selectedCurrentClass = String(
-      formData.get("currentClass") ?? "",
-    ).trim();
+    const selectedCurrentClass =
+      String(
+        formData.get(
+          "currentClass",
+        ) ?? "",
+      ).trim();
 
-    const degreeName = String(formData.get("degreeName") ?? "").trim();
+    const program =
+      String(
+        formData.get(
+          "program",
+        ) ?? "",
+      ).trim();
 
-    const program = String(formData.get("program") ?? "").trim();
+    const parentPhone =
+      String(
+        formData.get(
+          "parentPhone",
+        ) ?? "",
+      ).trim();
 
-    const parentPhone = String(formData.get("parentPhone") ?? "").trim();
+    const subjectExpertise =
+      String(
+        formData.get(
+          "subjectExpertise",
+        ) ?? "",
+      ).trim();
 
-    const subjectExpertise = String(
-      formData.get("subjectExpertise") ?? "",
-    ).trim();
+    const experience =
+      String(
+        formData.get(
+          "experience",
+        ) ?? "",
+      ).trim();
 
-    const experience = String(formData.get("experience") ?? "").trim();
+    setErrorMessage(
+      "",
+    );
 
-    setErrorMessage("");
+    setSuccessMessage(
+      "",
+    );
 
-    setSuccessMessage("");
+    /* PASSWORD */
 
-    if (password !== confirmPassword) {
-      setErrorMessage("Password and confirm password do not match.");
-
-      return;
-    }
-
-    if (role === "student" && !selectedStudentLevel) {
-      setErrorMessage("Please select your program level.");
-
-      return;
-    }
-
-    if (role === "student" && !selectedCurrentClass) {
+    if (
+      password !==
+      confirmPassword
+    ) {
       setErrorMessage(
-        studentLevel === "college"
-          ? "Please select your current college year."
-          : "Please select your current standard.",
+        "Password and confirm password do not match.",
       );
 
       return;
     }
 
-    if (role === "student" && studentLevel === "college" && !degreeName) {
-      setErrorMessage("Please enter your degree or course name.");
+    /* STUDENT LEVEL */
+
+    if (
+      role === "student" &&
+      !selectedStudentLevel
+    ) {
+      setErrorMessage(
+        "Please select your program level.",
+      );
 
       return;
     }
 
-    setIsSubmitting(true);
+    /* FOUNDATION STANDARD */
+
+    if (
+      role === "student" &&
+      studentLevel ===
+        "foundation" &&
+      !selectedCurrentClass
+    ) {
+      setErrorMessage(
+        "Please select your current standard.",
+      );
+
+      return;
+    }
+
+    /* PROGRAM */
+
+    if (
+      role === "student" &&
+      !program
+    ) {
+      setErrorMessage(
+        "Please select a program.",
+      );
+
+      return;
+    }
+
+    /* FOUNDATION PARENT PHONE */
+
+    if (
+      role === "student" &&
+      studentLevel ===
+        "foundation" &&
+      !parentPhone
+    ) {
+      setErrorMessage(
+        "Please enter the parent phone number.",
+      );
+
+      return;
+    }
+
+    setIsSubmitting(
+      true,
+    );
 
     try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
+      const effectiveCurrentClass =
+        selectedStudentLevel ===
+        "foundation"
+          ? selectedCurrentClass
+          : "working";
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response =
+        await fetch(
+          "/api/auth/signup",
+          {
+            method:
+              "POST",
 
-        body: JSON.stringify({
-          name,
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
 
-          email,
+            body:
+              JSON.stringify({
+                name,
+                email,
+                phone,
+                password,
+                role,
 
-          phone,
+                ...(role ===
+                "student"
+                  ? {
+                      studentLevel:
+                        selectedStudentLevel,
 
-          password,
+                      currentClass:
+                        effectiveCurrentClass,
 
-          role,
+                      degreeName:
+                        "",
 
-          ...(role === "student"
-            ? {
-                studentLevel: selectedStudentLevel,
+                      program,
 
-                currentClass: selectedCurrentClass,
+                      parentPhone:
+                        selectedStudentLevel ===
+                        "foundation"
+                          ? parentPhone
+                          : "",
+                    }
+                  : {}),
 
-                degreeName:
-                  selectedStudentLevel === "college" ? degreeName : "",
+                ...(role ===
+                "faculty"
+                  ? {
+                      subjectExpertise,
+                      experience,
+                    }
+                  : {}),
+              }),
+          },
+        );
 
-                program,
+      const data =
+        (await response
+          .json()
+          .catch(
+            () =>
+              null,
+          )) as {
+          message?: string;
+          error?: string;
+          requiresApproval?: boolean;
+        } | null;
 
-                parentPhone:
-                  selectedStudentLevel === "college" ? "" : parentPhone,
-              }
-            : {}),
-
-          ...(role === "faculty"
-            ? {
-                subjectExpertise,
-
-                experience,
-              }
-            : {}),
-        }),
-      });
-
-      const data = (await response.json().catch(() => null)) as {
-        message?: string;
-
-        error?: string;
-
-        requiresApproval?: boolean;
-      } | null;
-
-      if (!response.ok) {
+      if (
+        !response.ok
+      ) {
         throw new Error(
-          data?.error ?? "Unable to create your account right now.",
+          data?.error ??
+            "Unable to create your account right now.",
         );
       }
 
       setSuccessMessage(
         data?.message ??
-          (role === "faculty"
-            ? "Your faculty application has been submitted for approval."
-            : "Your account has been created successfully."),
+          (
+            role ===
+            "faculty"
+              ? "Your faculty application has been submitted for approval."
+              : "Your account has been created successfully."
+          ),
       );
 
-      setSubmitted(true);
+      setSubmitted(
+        true,
+      );
 
       form.reset();
 
-      if (role !== "faculty") {
-        window.setTimeout(() => {
-          router.push("/login?registered=1");
-        }, 1500);
+      if (
+        role !==
+        "faculty"
+      ) {
+        window.setTimeout(
+          () => {
+            router.push(
+              "/login?registered=1",
+            );
+          },
+          1500,
+        );
       }
-    } catch (error: unknown) {
+    } catch (
+      error:
+        unknown
+    ) {
       setErrorMessage(
-        error instanceof Error
+        error instanceof
+          Error
           ? error.message
           : "Unable to create your account right now.",
       );
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(
+        false,
+      );
     }
   }
 
-  const passwordHasLength = passwordValue.length >= 8;
+  /* =========================================
+     PASSWORD VALIDATION UI
+  ========================================= */
 
-  const passwordHasNumber = /\d/.test(passwordValue);
+  const passwordHasLength =
+    passwordValue.length >=
+    8;
 
-  const passwordHasSpecial = /[^A-Za-z0-9]/.test(passwordValue);
+  const passwordHasNumber =
+    /\d/.test(
+      passwordValue,
+    );
+
+  const passwordHasSpecial =
+    /[^A-Za-z0-9]/.test(
+      passwordValue,
+    );
 
   const fieldClass =
     "h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#8f0024] focus:ring-2 focus:ring-[#8f0024]/10";
 
-  const labelClass = "mb-1 block text-xs font-bold text-[#111827]";
+  const labelClass =
+    "mb-1 block text-xs font-bold text-[#111827]";
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#1b050c] pt-[118px]">
       {/* ====================================== */}
-
       {/* PAGE BACKGROUND */}
-
       {/* ====================================== */}
 
       <Image
-        src={CAMPUS_IMAGE}
+        src={
+          CAMPUS_IMAGE
+        }
         alt="Prime Digital School campus"
         fill
         priority
@@ -391,66 +607,78 @@ function SignupForm() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
       {/* ====================================== */}
-
       {/* PAGE CONTENT */}
-
       {/* ====================================== */}
 
       <section className="relative z-10 grid min-h-[calc(100vh-118px)] items-start gap-8 px-5 pb-8 sm:px-8 lg:grid-cols-[1fr_0.95fr] lg:px-14">
         {/* ====================================== */}
-
-        {/* LEFT SIDE — UNCHANGED */}
-
+        {/* LEFT SIDE */}
         {/* ====================================== */}
 
         <div className="hidden lg:block lg:pt-16">
           <div className="max-w-xl">
             <div className="mb-6 inline-flex items-center gap-2 rounded-lg bg-[#fff1f4] px-4 py-2 text-sm font-black text-[#8f0024] shadow-sm">
-              <span>👥</span>
+              <span>
+                👥
+              </span>
+
               Join Our Community
             </div>
 
             <h1 className="text-5xl font-black leading-[1.08] tracking-tight text-[#111827]">
               Create Your Account
               <br />
+
               & Start Learning
               <br />
-              With <span className="text-[#8f0024]">Prime Digital</span>
+
+              With{" "}
+              <span className="text-[#8f0024]">
+                Prime Digital
+              </span>
             </h1>
 
             <p className="mt-6 max-w-md text-base font-medium leading-7 text-[#4b5563]">
-              Join thousands of learners gaining in-demand skills and building
-              successful careers with Prime Digital School.
+              Join thousands of
+              learners gaining
+              in-demand skills and
+              building successful
+              careers with Prime
+              Digital School.
             </p>
 
             <div className="mt-8 space-y-4">
               {[
                 "Expert-Led Courses",
-
                 "Industry Recognized Certificates",
-
                 "Career Support & Guidance",
-
                 "Learn Anytime, Anywhere",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8f0024] text-xs font-black text-white">
-                    ✓
-                  </span>
+              ].map(
+                (
+                  item,
+                ) => (
+                  <div
+                    key={
+                      item
+                    }
+                    className="flex items-center gap-3"
+                  >
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8f0024] text-xs font-black text-white">
+                      ✓
+                    </span>
 
-                  <span className="text-sm font-black text-[#111827]">
-                    {item}
-                  </span>
-                </div>
-              ))}
+                    <span className="text-sm font-black text-[#111827]">
+                      {item}
+                    </span>
+                  </div>
+                ),
+              )}
             </div>
           </div>
         </div>
 
         {/* ====================================== */}
-
         {/* SIGNUP CARD */}
-
         {/* ====================================== */}
 
         <div className="mx-auto w-full max-w-[560px]">
@@ -458,78 +686,105 @@ function SignupForm() {
             {!submitted ? (
               <>
                 {/* ====================================== */}
-
                 {/* FORM HEADING */}
-
                 {/* ====================================== */}
 
                 <div className="mb-4">
                   <h2 className="text-[30px] font-black leading-tight tracking-[-1px] text-[#111111]">
-                    Create Your <span className="text-[#8f0024]">Account</span>
+                    Create Your{" "}
+                    <span className="text-[#8f0024]">
+                      Account
+                    </span>
                   </h2>
 
                   <p className="mt-1 text-sm font-medium text-slate-700">
-                    Get started with Prime Digital School
+                    Get started with
+                    Prime Digital
+                    School
                   </p>
                 </div>
 
                 {/* ====================================== */}
-
                 {/* ROLE TABS */}
-
                 {/* ====================================== */}
 
                 <div className="mb-4 grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    disabled={isSubmitting}
+                    disabled={
+                      isSubmitting
+                    }
                     onClick={() => {
-                      setRole("student");
+                      setRole(
+                        "student",
+                      );
 
-                      setErrorMessage("");
+                      setErrorMessage(
+                        "",
+                      );
                     }}
                     className={[
                       "h-10 rounded-md border text-sm font-bold transition",
 
-                      role === "student"
+                      role ===
+                      "student"
                         ? "border-[#8f0024] bg-[#8f0024] text-white shadow-sm"
                         : "border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200",
-                    ].join(" ")}
+                    ].join(
+                      " ",
+                    )}
                   >
                     Student
                   </button>
 
                   <button
                     type="button"
-                    disabled={isSubmitting}
+                    disabled={
+                      isSubmitting
+                    }
                     onClick={() => {
-                      setRole("faculty");
+                      setRole(
+                        "faculty",
+                      );
 
-                      setErrorMessage("");
+                      setErrorMessage(
+                        "",
+                      );
                     }}
                     className={[
                       "h-10 rounded-md border text-sm font-bold transition",
 
-                      role === "faculty"
+                      role ===
+                      "faculty"
                         ? "border-[#8f0024] bg-[#8f0024] text-white shadow-sm"
                         : "border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200",
-                    ].join(" ")}
+                    ].join(
+                      " ",
+                    )}
                   >
                     Faculty
                   </button>
                 </div>
 
                 {/* ====================================== */}
-
                 {/* FORM */}
-
                 {/* ====================================== */}
 
-                <form onSubmit={handleSubmit} className="space-y-3">
+                <form
+                  onSubmit={
+                    handleSubmit
+                  }
+                  className="space-y-3"
+                >
                   {/* FULL NAME */}
 
                   <div>
-                    <label htmlFor="signup-name" className={labelClass}>
+                    <label
+                      htmlFor="signup-name"
+                      className={
+                        labelClass
+                      }
+                    >
                       Full Name
                     </label>
 
@@ -541,7 +796,11 @@ function SignupForm() {
                         strokeWidth="1.8"
                         className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500"
                       >
-                        <circle cx="12" cy="8" r="4" />
+                        <circle
+                          cx="12"
+                          cy="8"
+                          r="4"
+                        />
 
                         <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" />
                       </svg>
@@ -560,7 +819,12 @@ function SignupForm() {
                   {/* EMAIL */}
 
                   <div>
-                    <label htmlFor="signup-email" className={labelClass}>
+                    <label
+                      htmlFor="signup-email"
+                      className={
+                        labelClass
+                      }
+                    >
                       Email Address
                     </label>
 
@@ -572,7 +836,13 @@ function SignupForm() {
                         strokeWidth="1.8"
                         className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500"
                       >
-                        <rect x="3" y="5" width="18" height="14" rx="2" />
+                        <rect
+                          x="3"
+                          y="5"
+                          width="18"
+                          height="14"
+                          rx="2"
+                        />
 
                         <path d="m3 7 9 6 9-6" />
                       </svg>
@@ -591,17 +861,28 @@ function SignupForm() {
                   {/* MOBILE NUMBER */}
 
                   <div>
-                    <label htmlFor="signup-phone" className={labelClass}>
+                    <label
+                      htmlFor="signup-phone"
+                      className={
+                        labelClass
+                      }
+                    >
                       Mobile Number
                     </label>
 
                     <div className="flex gap-2">
                       <div className="flex h-10 w-[104px] flex-shrink-0 items-center justify-between rounded-md border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700">
-                        <span>🇮🇳</span>
+                        <span>
+                          🇮🇳
+                        </span>
 
-                        <span>+91</span>
+                        <span>
+                          +91
+                        </span>
 
-                        <span className="text-[9px] text-slate-500">▼</span>
+                        <span className="text-[9px] text-slate-500">
+                          ▼
+                        </span>
                       </div>
 
                       <div className="relative flex-1">
@@ -612,7 +893,7 @@ function SignupForm() {
                           inputMode="numeric"
                           required
                           placeholder="Enter your mobile number"
-                          className="h-10 w-full rounded-md border border-slate-300 bg-white pl-10 pr-3 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#8f0024] focus:ring-2 focus:ring-[#8f0024]/10"
+                          className="h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#8f0024] focus:ring-2 focus:ring-[#8f0024]/10"
                         />
                       </div>
                     </div>
@@ -621,7 +902,12 @@ function SignupForm() {
                   {/* CREATE PASSWORD */}
 
                   <div>
-                    <label htmlFor="signup-password" className={labelClass}>
+                    <label
+                      htmlFor="signup-password"
+                      className={
+                        labelClass
+                      }
+                    >
                       Create Password
                     </label>
 
@@ -633,7 +919,13 @@ function SignupForm() {
                         strokeWidth="1.8"
                         className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500"
                       >
-                        <rect x="4" y="10" width="16" height="10" rx="2" />
+                        <rect
+                          x="4"
+                          y="10"
+                          width="16"
+                          height="10"
+                          rx="2"
+                        />
 
                         <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                       </svg>
@@ -641,13 +933,27 @@ function SignupForm() {
                       <input
                         id="signup-password"
                         name="password"
-                        type={showPassword ? "text" : "password"}
+                        type={
+                          showPassword
+                            ? "text"
+                            : "password"
+                        }
                         required
-                        minLength={8}
+                        minLength={
+                          8
+                        }
                         autoComplete="new-password"
-                        value={passwordValue}
-                        onChange={(event) =>
-                          setPasswordValue(event.target.value)
+                        value={
+                          passwordValue
+                        }
+                        onChange={(
+                          event,
+                        ) =>
+                          setPasswordValue(
+                            event
+                              .target
+                              .value,
+                          )
                         }
                         placeholder="Create a strong password"
                         className="h-10 w-full rounded-md border border-slate-300 bg-white pl-10 pr-12 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#8f0024] focus:ring-2 focus:ring-[#8f0024]/10"
@@ -655,10 +961,19 @@ function SignupForm() {
 
                       <button
                         type="button"
-                        onClick={() => setShowPassword((value) => !value)}
+                        onClick={() =>
+                          setShowPassword(
+                            (
+                              value,
+                            ) =>
+                              !value,
+                          )
+                        }
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-slate-500"
                       >
-                        {showPassword ? "Hide" : "Show"}
+                        {showPassword
+                          ? "Hide"
+                          : "Show"}
                       </button>
                     </div>
 
@@ -672,7 +987,8 @@ function SignupForm() {
                             : "text-slate-400"
                         }
                       >
-                        ✓ At least 8 characters
+                        ✓ At least 8
+                        characters
                       </span>
 
                       <span
@@ -692,7 +1008,8 @@ function SignupForm() {
                             : "text-slate-400"
                         }
                       >
-                        ✓ One special character
+                        ✓ One special
+                        character
                       </span>
                     </div>
                   </div>
@@ -702,7 +1019,9 @@ function SignupForm() {
                   <div>
                     <label
                       htmlFor="signup-confirm-password"
-                      className={labelClass}
+                      className={
+                        labelClass
+                      }
                     >
                       Confirm Password
                     </label>
@@ -715,7 +1034,13 @@ function SignupForm() {
                         strokeWidth="1.8"
                         className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-500"
                       >
-                        <rect x="4" y="10" width="16" height="10" rx="2" />
+                        <rect
+                          x="4"
+                          y="10"
+                          width="16"
+                          height="10"
+                          rx="2"
+                        />
 
                         <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                       </svg>
@@ -723,9 +1048,15 @@ function SignupForm() {
                       <input
                         id="signup-confirm-password"
                         name="confirmPassword"
-                        type={showConfirmPassword ? "text" : "password"}
+                        type={
+                          showConfirmPassword
+                            ? "text"
+                            : "password"
+                        }
                         required
-                        minLength={8}
+                        minLength={
+                          8
+                        }
                         autoComplete="new-password"
                         placeholder="Confirm your password"
                         className="h-10 w-full rounded-md border border-slate-300 bg-white pl-10 pr-12 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#8f0024] focus:ring-2 focus:ring-[#8f0024]/10"
@@ -734,133 +1065,232 @@ function SignupForm() {
                       <button
                         type="button"
                         onClick={() =>
-                          setShowConfirmPassword((value) => !value)
+                          setShowConfirmPassword(
+                            (
+                              value,
+                            ) =>
+                              !value,
+                          )
                         }
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-slate-500"
                       >
-                        {showConfirmPassword ? "Hide" : "Show"}
+                        {showConfirmPassword
+                          ? "Hide"
+                          : "Show"}
                       </button>
                     </div>
                   </div>
 
                   {/* ====================================== */}
-
                   {/* STUDENT FIELDS */}
-
                   {/* ====================================== */}
 
-                  {role === "student" && (
+                  {role ===
+                    "student" && (
                     <div className="space-y-3 border-t border-slate-100 pt-3">
                       {/* PROGRAM LEVEL */}
 
                       <div>
-                        <label className={labelClass}>Program Level</label>
-
-                        <select
-                          name="studentLevel"
-                          value={studentLevel}
-                          required
-                          onChange={(event) => {
-                            const value = event.target.value as StudentLevel;
-
-                            setStudentLevel(value);
-
-                            setCurrentClass("");
-                          }}
-                          className={fieldClass}
+                        <label
+                          className={
+                            labelClass
+                          }
                         >
-                          {studentLevelOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {/* CURRENT STANDARD / YEAR */}
-
-                      <div>
-                        <label className={labelClass}>
-                          {studentLevel === "college"
-                            ? "Current College Year"
-                            : "Current Standard"}
+                          Program
+                          Level
                         </label>
 
                         <select
-                          name="currentClass"
-                          value={currentClass}
-                          required
-                          onChange={(event) =>
-                            setCurrentClass(event.target.value)
+                          name="studentLevel"
+                          value={
+                            studentLevel
                           }
-                          className={fieldClass}
-                        >
-                          <option value="" disabled>
-                            {studentLevel === "college"
-                              ? "Select your year"
-                              : "Select your standard"}
-                          </option>
+                          required
+                          onChange={(
+                            event,
+                          ) => {
+                            const value =
+                              event
+                                .target
+                                .value as StudentLevel;
 
-                          {classOptions[studentLevel].map((item) => (
-                            <option key={item} value={item}>
-                              {item}
-                            </option>
-                          ))}
+                            setStudentLevel(
+                              value,
+                            );
+
+                            setCurrentClass(
+                              value ===
+                                "Profession"
+                                ? "working"
+                                : "",
+                            );
+                          }}
+                          className={
+                            fieldClass
+                          }
+                        >
+                          {studentLevelOptions.map(
+                            (
+                              option,
+                            ) => (
+                              <option
+                                key={
+                                  option.value
+                                }
+                                value={
+                                  option.value
+                                }
+                              >
+                                {
+                                  option.label
+                                }
+                              </option>
+                            ),
+                          )}
                         </select>
                       </div>
 
-                      {/* DEGREE */}
+                      {/* CURRENT STANDARD */}
 
-                      {studentLevel === "college" && (
+                      {studentLevel ===
+                        "foundation" && (
                         <div>
-                          <label className={labelClass}>
-                            Degree / Course Name
+                          <label
+                            className={
+                              labelClass
+                            }
+                          >
+                            Current
+                            Standard
                           </label>
 
-                          <input
-                            name="degreeName"
-                            type="text"
+                          <select
+                            name="currentClass"
+                            value={
+                              currentClass
+                            }
                             required
-                            placeholder="Example: BSc IT, BBA, BCom, BTech"
-                            className={fieldClass}
-                          />
+                            onChange={(
+                              event,
+                            ) =>
+                              setCurrentClass(
+                                event
+                                  .target
+                                  .value,
+                              )
+                            }
+                            className={
+                              fieldClass
+                            }
+                          >
+                            <option
+                              value=""
+                              disabled
+                            >
+                              Select
+                              your
+                              standard
+                            </option>
+
+                            {foundationClasses.map(
+                              (
+                                item,
+                              ) => (
+                                <option
+                                  key={
+                                    item
+                                  }
+                                  value={
+                                    item
+                                  }
+                                >
+                                  {
+                                    item
+                                  }
+                                </option>
+                              ),
+                            )}
+                          </select>
                         </div>
+                      )}
+
+                      {/* PROFESSIONAL INTERNAL VALUE */}
+
+                      {studentLevel ===
+                        "Profession" && (
+                        <input
+                          type="hidden"
+                          name="currentClass"
+                          value="working"
+                        />
                       )}
 
                       {/* PROGRAM */}
 
                       <div>
-                        <label className={labelClass}>Select Program</label>
+                        <label
+                          className={
+                            labelClass
+                          }
+                        >
+                          Select
+                          Program
+                        </label>
 
                         <select
                           key={`${studentLevel}-${currentClass}`}
                           name="program"
                           defaultValue=""
                           required
-                          className={fieldClass}
+                          className={
+                            fieldClass
+                          }
                         >
-                          <option value="" disabled>
-                            {currentClass
-                              ? "Select a program"
-                              : studentLevel === "college"
-                                ? "Select a program"
-                                : "Select your standard first"}
+                          <option
+                            value=""
+                            disabled
+                          >
+                            {studentLevel ===
+                              "foundation" &&
+                            !currentClass
+                              ? "Select your standard first"
+                              : "Select a program"}
                           </option>
 
-                          {programOptions.map((programName) => (
-                            <option key={programName} value={programName}>
-                              {programName}
-                            </option>
-                          ))}
+                          {programOptions.map(
+                            (
+                              programName,
+                            ) => (
+                              <option
+                                key={
+                                  programName
+                                }
+                                value={
+                                  programName
+                                }
+                              >
+                                {
+                                  programName
+                                }
+                              </option>
+                            ),
+                          )}
                         </select>
                       </div>
 
-                      {/* PARENT PHONE */}
+                      {/* PARENT PHONE - FOUNDATION ONLY */}
 
-                      {studentLevel !== "college" && (
+                      {studentLevel ===
+                        "foundation" && (
                         <div>
-                          <label className={labelClass}>
-                            Parent Phone Number
+                          <label
+                            className={
+                              labelClass
+                            }
+                          >
+                            Parent
+                            Phone
+                            Number
                           </label>
 
                           <input
@@ -869,7 +1299,9 @@ function SignupForm() {
                             inputMode="numeric"
                             required
                             placeholder="Parent contact number"
-                            className={fieldClass}
+                            className={
+                              fieldClass
+                            }
                           />
                         </div>
                       )}
@@ -877,54 +1309,80 @@ function SignupForm() {
                   )}
 
                   {/* ====================================== */}
-
                   {/* FACULTY FIELDS */}
-
                   {/* ====================================== */}
 
-                  {role === "faculty" && (
+                  {role ===
+                    "faculty" && (
                     <div className="grid gap-3 border-t border-slate-100 pt-3 sm:grid-cols-2">
                       <div>
-                        <label className={labelClass}>Subject Expertise</label>
+                        <label
+                          className={
+                            labelClass
+                          }
+                        >
+                          Subject
+                          Expertise
+                        </label>
 
                         <input
                           name="subjectExpertise"
                           type="text"
                           required
                           placeholder="Maths, Coding, AI..."
-                          className={fieldClass}
+                          className={
+                            fieldClass
+                          }
                         />
                       </div>
 
                       <div>
-                        <label className={labelClass}>Experience</label>
+                        <label
+                          className={
+                            labelClass
+                          }
+                        >
+                          Experience
+                        </label>
 
                         <select
                           name="experience"
                           defaultValue=""
                           required
-                          className={fieldClass}
+                          className={
+                            fieldClass
+                          }
                         >
-                          <option value="" disabled>
-                            Select experience
+                          <option
+                            value=""
+                            disabled
+                          >
+                            Select
+                            experience
                           </option>
 
-                          <option>0 - 1 Year</option>
+                          <option>
+                            0 - 1 Year
+                          </option>
 
-                          <option>1 - 3 Years</option>
+                          <option>
+                            1 - 3 Years
+                          </option>
 
-                          <option>3 - 5 Years</option>
+                          <option>
+                            3 - 5 Years
+                          </option>
 
-                          <option>5+ Years</option>
+                          <option>
+                            5+ Years
+                          </option>
                         </select>
                       </div>
                     </div>
                   )}
 
                   {/* ====================================== */}
-
                   {/* TERMS */}
-
                   {/* ====================================== */}
 
                   <label className="flex cursor-pointer items-start gap-2 pt-1 text-[10px] leading-4 text-slate-700">
@@ -935,68 +1393,77 @@ function SignupForm() {
                     />
 
                     <span>
-                      I agree to the{" "}
+                      I agree to
+                      the{" "}
+
                       <Link
                         href="/terms"
                         className="font-semibold text-[#8f0024] hover:underline"
                       >
-                        Terms & Conditions
+                        Terms &
+                        Conditions
                       </Link>{" "}
+
                       and{" "}
+
                       <Link
                         href="/privacy-policy"
                         className="font-semibold text-[#8f0024] hover:underline"
                       >
-                        Privacy Policy
+                        Privacy
+                        Policy
                       </Link>{" "}
-                      of Prime Digital School.
+
+                      of Prime
+                      Digital
+                      School.
                     </span>
                   </label>
 
-                  {/* ====================================== */}
-
                   {/* ERROR */}
-
-                  {/* ====================================== */}
 
                   {errorMessage && (
                     <div
                       role="alert"
                       className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-xs font-semibold text-red-700"
                     >
-                      {errorMessage}
+                      {
+                        errorMessage
+                      }
                     </div>
                   )}
 
-                  {/* ====================================== */}
-
                   {/* SUBMIT */}
-
-                  {/* ====================================== */}
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={
+                      isSubmitting
+                    }
                     className="flex h-11 w-full items-center rounded-md bg-[#8f0024] px-5 text-sm font-bold text-white shadow-[0_8px_18px_rgba(143,0,36,0.22)] transition hover:bg-[#74001d] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <span className="flex-1 text-center">
                       {isSubmitting
-                        ? role === "faculty"
+                        ? role ===
+                          "faculty"
                           ? "Submitting Application..."
                           : "Creating Account..."
-                        : role === "faculty"
+                        : role ===
+                            "faculty"
                           ? "Submit Application"
                           : "Create Account"}
                     </span>
 
-                    {!isSubmitting && <span className="text-lg">→</span>}
+                    {!isSubmitting && (
+                      <span className="text-lg">
+                        →
+                      </span>
+                    )}
                   </button>
                 </form>
 
                 {/* ====================================== */}
-
                 {/* OR */}
-
                 {/* ====================================== */}
 
                 <div className="my-3 flex items-center gap-3">
@@ -1010,19 +1477,24 @@ function SignupForm() {
                 </div>
 
                 {/* ====================================== */}
-
                 {/* SOCIAL LOGIN */}
-
                 {/* ====================================== */}
 
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    onClick={() => auth.isConfigured && auth.signInWithGoogle()}
+                    onClick={() =>
+                      auth.isConfigured &&
+                      auth.signInWithGoogle()
+                    }
                     className="flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-2 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-50"
                   >
-                    <span className="font-black text-[#4285F4]">G</span>
-                    Continue with Google
+                    <span className="font-black text-[#4285F4]">
+                      G
+                    </span>
+
+                    Continue with
+                    Google
                   </button>
 
                   <button
@@ -1038,18 +1510,18 @@ function SignupForm() {
 
                       <i className="h-[5px] w-[5px] bg-[#ffba08]" />
                     </span>
-                    Continue with Microsoft
+
+                    Continue with
+                    Microsoft
                   </button>
                 </div>
 
-                {/* ====================================== */}
-
-                {/* LOGIN LINK */}
-
-                {/* ====================================== */}
+                {/* LOGIN */}
 
                 <p className="mt-4 text-center text-[11px] font-medium text-slate-600">
-                  Already have an account?{" "}
+                  Already have an
+                  account?{" "}
+
                   <Link
                     href="/login"
                     className="font-bold text-[#8f0024] hover:underline"
@@ -1065,16 +1537,20 @@ function SignupForm() {
                 </div>
 
                 <h2 className="mt-5 text-3xl font-black text-[#111827]">
-                  {role === "faculty"
+                  {role ===
+                  "faculty"
                     ? "Application Submitted"
                     : "Account Created"}
                 </h2>
 
                 <p className="mx-auto mt-3 max-w-sm text-sm leading-7 text-slate-500">
                   {successMessage ||
-                    (role === "faculty"
-                      ? "Your faculty account has been submitted for admin approval. You will be notified once approved."
-                      : "Your account has been created successfully. You will be redirected to login.")}
+                    (
+                      role ===
+                      "faculty"
+                        ? "Your faculty account has been submitted for admin approval. You will be notified once approved."
+                        : "Your account has been created successfully. You will be redirected to login."
+                    )}
                 </p>
 
                 <Link
@@ -1091,6 +1567,10 @@ function SignupForm() {
     </main>
   );
 }
+
+/* =========================================
+   PAGE
+========================================= */
 
 export default function SignupPage() {
   return (
