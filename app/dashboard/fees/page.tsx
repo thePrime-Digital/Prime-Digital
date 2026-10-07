@@ -1,7 +1,9 @@
-import FeesDashboard from "@/components/fees/fees-dashboard";
+import FeesCenter from "@/components/fees/fees-center";
 
 export default function StudentFeesPage() {
   return (
-    <FeesDashboard role="student" />
+    <FeesCenter
+      role="student"
+    />
   );
 }

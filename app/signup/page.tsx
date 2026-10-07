@@ -4,25 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-
 import { useContactAuth } from "self-iam";
 
 import { SelfIAMProvider } from "../providers";
 
-const CAMPUS_IMAGE =
-  "/pds-assets/campus-building.jpg";
+const CAMPUS_IMAGE = "/pds-assets/campus-building.jpg";
 
-type SignupRole =
-  | "student"
-  | "faculty";
-
-type StudentLevel =
-  | "foundation"
-  | "Profession";
-
-/* =========================================
-   PROGRAM LEVELS
-========================================= */
+type SignupRole = "student" | "faculty";
+type StudentLevel = "foundation" | "Profession";
 
 const studentLevelOptions: {
   value: StudentLevel;
@@ -30,19 +19,13 @@ const studentLevelOptions: {
 }[] = [
   {
     value: "foundation",
-    label:
-      "Foundation Programs (6th–12th Standard)",
+    label: "Foundation Programs (6th–12th Standard)",
   },
   {
     value: "Profession",
-    label:
-      "Professional Programs",
+    label: "Professional Programs",
   },
 ];
-
-/* =========================================
-   FOUNDATION STANDARDS
-========================================= */
 
 const foundationClasses = [
   "6th Standard",
@@ -54,12 +37,7 @@ const foundationClasses = [
   "12th Standard",
 ];
 
-/* =========================================
-   FOUNDATION PROGRAMS
-========================================= */
-
-const foundationProgramOptions:
-  Record<string, string[]> = {
+const foundationProgramOptions: Record<string, string[]> = {
   "6th Standard": [
     "Digital Foundations & Smart Computing",
     "Creative Coding with Scratch",
@@ -137,10 +115,6 @@ const foundationProgramOptions:
   ],
 };
 
-/* =========================================
-   PROFESSIONAL PROGRAMS
-========================================= */
-
 const professionalProgramOptions = [
   "Technology & Coding",
   "AI, Robotics & Future Tech",
@@ -149,59 +123,57 @@ const professionalProgramOptions = [
   "Entrepreneurship & Innovation",
 ];
 
-/* =========================================
-   PROGRAM OPTIONS HELPER
-========================================= */
-
 function getProgramOptions(
   studentLevel: StudentLevel,
   currentClass: string,
 ): string[] {
-  if (
-    studentLevel ===
-    "foundation"
-  ) {
-    return (
-      foundationProgramOptions[
-        currentClass
-      ] ?? []
-    );
+  if (studentLevel === "foundation") {
+    return foundationProgramOptions[currentClass] ?? [];
   }
 
   return professionalProgramOptions;
 }
 
-/* =========================================
-   SIGNUP FORM
-========================================= */
-
 function SignupForm() {
-  const router =
-    useRouter();
+  const router = useRouter();
+  const auth = useContactAuth();
 
-  const auth =
-    useContactAuth();
+  const [role, setRole] =
+    useState<SignupRole>("student");
+
+  const [studentLevel, setStudentLevel] =
+    useState<StudentLevel>("foundation");
+
+  const [currentClass, setCurrentClass] =
+    useState("");
+
+  const [selectedProgram, setSelectedProgram] =
+    useState("");
+
+  const [customProgram, setCustomProgram] =
+    useState("");
+
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   const [
-    role,
-    setRole,
-  ] =
-    useState<SignupRole>(
-      "student",
-    );
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] = useState(false);
 
-  const [
-    studentLevel,
-    setStudentLevel,
-  ] =
-    useState<StudentLevel>(
-      "foundation",
-    );
+  const [passwordValue, setPasswordValue] =
+    useState("");
 
-  const [
-    currentClass,
-    setCurrentClass,
-  ] =
+  const [submitted, setSubmitted] =
+    useState(false);
+
+  const [isSubmitting, setIsSubmitting] =
+    useState(false);
+
+  const [errorMessage, setErrorMessage] =
+    useState("");
+
+  const [successMessage, setSuccessMessage] =
     useState("");
 
   const programOptions =
@@ -210,61 +182,29 @@ function SignupForm() {
       currentClass,
     );
 
-  const [
-    showPassword,
-    setShowPassword,
-  ] =
-    useState(false);
+  const passwordHasLength =
+    passwordValue.length >= 8;
 
-  const [
-    showConfirmPassword,
-    setShowConfirmPassword,
-  ] =
-    useState(false);
+  const passwordHasNumber =
+    /\d/.test(passwordValue);
 
-  const [
-    passwordValue,
-    setPasswordValue,
-  ] =
-    useState("");
+  const passwordHasSpecial =
+    /[^A-Za-z0-9]/.test(
+      passwordValue,
+    );
 
-  const [
-    submitted,
-    setSubmitted,
-  ] =
-    useState(false);
+  const fieldClass =
+    "h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#8f0024] focus:ring-2 focus:ring-[#8f0024]/10";
 
-  const [
-    isSubmitting,
-    setIsSubmitting,
-  ] =
-    useState(false);
-
-  const [
-    errorMessage,
-    setErrorMessage,
-  ] =
-    useState("");
-
-  const [
-    successMessage,
-    setSuccessMessage,
-  ] =
-    useState("");
-
-  /* =========================================
-     SUBMIT
-  ========================================= */
+  const labelClass =
+    "mb-1 block text-xs font-bold text-[#111827]";
 
   async function handleSubmit(
-    event:
-      FormEvent<HTMLFormElement>,
+    event: FormEvent<HTMLFormElement>,
   ) {
     event.preventDefault();
 
-    if (
-      isSubmitting
-    ) {
+    if (isSubmitting) {
       return;
     }
 
@@ -272,9 +212,7 @@ function SignupForm() {
       event.currentTarget;
 
     const formData =
-      new FormData(
-        form,
-      );
+      new FormData(form);
 
     const name =
       String(
@@ -325,12 +263,25 @@ function SignupForm() {
         ) ?? "",
       ).trim();
 
-    const program =
+    const selectedProgramOption =
       String(
         formData.get(
           "program",
         ) ?? "",
       ).trim();
+
+    const customProgramName =
+      String(
+        formData.get(
+          "customProgram",
+        ) ?? "",
+      ).trim();
+
+    const program =
+      selectedProgramOption ===
+      "Others"
+        ? customProgramName
+        : selectedProgramOption;
 
     const parentPhone =
       String(
@@ -353,15 +304,8 @@ function SignupForm() {
         ) ?? "",
       ).trim();
 
-    setErrorMessage(
-      "",
-    );
-
-    setSuccessMessage(
-      "",
-    );
-
-    /* PASSWORD */
+    setErrorMessage("");
+    setSuccessMessage("");
 
     if (
       password !==
@@ -374,8 +318,6 @@ function SignupForm() {
       return;
     }
 
-    /* STUDENT LEVEL */
-
     if (
       role === "student" &&
       !selectedStudentLevel
@@ -386,8 +328,6 @@ function SignupForm() {
 
       return;
     }
-
-    /* FOUNDATION STANDARD */
 
     if (
       role === "student" &&
@@ -402,7 +342,18 @@ function SignupForm() {
       return;
     }
 
-    /* PROGRAM */
+    if (
+      role === "student" &&
+      selectedProgramOption ===
+        "Others" &&
+      !customProgramName
+    ) {
+      setErrorMessage(
+        "Please enter the program name you want.",
+      );
+
+      return;
+    }
 
     if (
       role === "student" &&
@@ -414,8 +365,6 @@ function SignupForm() {
 
       return;
     }
-
-    /* FOUNDATION PARENT PHONE */
 
     if (
       role === "student" &&
@@ -430,9 +379,7 @@ function SignupForm() {
       return;
     }
 
-    setIsSubmitting(
-      true,
-    );
+    setIsSubmitting(true);
 
     try {
       const effectiveCurrentClass =
@@ -445,52 +392,49 @@ function SignupForm() {
         await fetch(
           "/api/auth/signup",
           {
-            method:
-              "POST",
+            method: "POST",
 
             headers: {
               "Content-Type":
                 "application/json",
             },
 
-            body:
-              JSON.stringify({
-                name,
-                email,
-                phone,
-                password,
-                role,
+            body: JSON.stringify({
+              name,
+              email,
+              phone,
+              password,
+              role,
 
-                ...(role ===
-                "student"
-                  ? {
-                      studentLevel:
-                        selectedStudentLevel,
+              ...(role ===
+              "student"
+                ? {
+                    studentLevel:
+                      selectedStudentLevel,
 
-                      currentClass:
-                        effectiveCurrentClass,
+                    currentClass:
+                      effectiveCurrentClass,
 
-                      degreeName:
-                        "",
+                    degreeName: "",
 
-                      program,
+                    program,
 
-                      parentPhone:
-                        selectedStudentLevel ===
-                        "foundation"
-                          ? parentPhone
-                          : "",
-                    }
-                  : {}),
+                    parentPhone:
+                      selectedStudentLevel ===
+                      "foundation"
+                        ? parentPhone
+                        : "",
+                  }
+                : {}),
 
-                ...(role ===
-                "faculty"
-                  ? {
-                      subjectExpertise,
-                      experience,
-                    }
-                  : {}),
-              }),
+              ...(role ===
+              "faculty"
+                ? {
+                    subjectExpertise,
+                    experience,
+                  }
+                : {}),
+            }),
           },
         );
 
@@ -498,8 +442,7 @@ function SignupForm() {
         (await response
           .json()
           .catch(
-            () =>
-              null,
+            () => null,
           )) as {
           message?: string;
           error?: string;
@@ -525,11 +468,12 @@ function SignupForm() {
           ),
       );
 
-      setSubmitted(
-        true,
-      );
+      setSubmitted(true);
 
       form.reset();
+
+      setSelectedProgram("");
+      setCustomProgram("");
 
       if (
         role !==
@@ -545,56 +489,22 @@ function SignupForm() {
         );
       }
     } catch (
-      error:
-        unknown
+      error: unknown
     ) {
       setErrorMessage(
-        error instanceof
-          Error
+        error instanceof Error
           ? error.message
           : "Unable to create your account right now.",
       );
     } finally {
-      setIsSubmitting(
-        false,
-      );
+      setIsSubmitting(false);
     }
   }
 
-  /* =========================================
-     PASSWORD VALIDATION UI
-  ========================================= */
-
-  const passwordHasLength =
-    passwordValue.length >=
-    8;
-
-  const passwordHasNumber =
-    /\d/.test(
-      passwordValue,
-    );
-
-  const passwordHasSpecial =
-    /[^A-Za-z0-9]/.test(
-      passwordValue,
-    );
-
-  const fieldClass =
-    "h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#8f0024] focus:ring-2 focus:ring-[#8f0024]/10";
-
-  const labelClass =
-    "mb-1 block text-xs font-bold text-[#111827]";
-
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#1b050c] pt-[118px]">
-      {/* ====================================== */}
-      {/* PAGE BACKGROUND */}
-      {/* ====================================== */}
-
       <Image
-        src={
-          CAMPUS_IMAGE
-        }
+        src={CAMPUS_IMAGE}
         alt="Prime Digital School campus"
         fill
         priority
@@ -606,14 +516,8 @@ function SignupForm() {
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
-      {/* ====================================== */}
-      {/* PAGE CONTENT */}
-      {/* ====================================== */}
-
       <section className="relative z-10 grid min-h-[calc(100vh-118px)] items-start gap-8 px-5 pb-8 sm:px-8 lg:grid-cols-[1fr_0.95fr] lg:px-14">
-        {/* ====================================== */}
         {/* LEFT SIDE */}
-        {/* ====================================== */}
 
         <div className="hidden lg:block lg:pt-16">
           <div className="max-w-xl">
@@ -627,12 +531,15 @@ function SignupForm() {
 
             <h1 className="text-5xl font-black leading-[1.08] tracking-tight text-[#111827]">
               Create Your Account
+
               <br />
 
               & Start Learning
+
               <br />
 
               With{" "}
+
               <span className="text-[#8f0024]">
                 Prime Digital
               </span>
@@ -668,7 +575,9 @@ function SignupForm() {
                     </span>
 
                     <span className="text-sm font-black text-[#111827]">
-                      {item}
+                      {
+                        item
+                      }
                     </span>
                   </div>
                 ),
@@ -677,21 +586,18 @@ function SignupForm() {
           </div>
         </div>
 
-        {/* ====================================== */}
         {/* SIGNUP CARD */}
-        {/* ====================================== */}
 
         <div className="mx-auto w-full max-w-[560px]">
           <div className="rounded-[18px] border border-white/90 bg-white/[0.985] px-6 py-7 shadow-[0_30px_90px_rgba(35,0,12,0.30)] backdrop-blur-2xl sm:px-8 sm:py-8">
             {!submitted ? (
               <>
-                {/* ====================================== */}
-                {/* FORM HEADING */}
-                {/* ====================================== */}
+                {/* HEADING */}
 
                 <div className="mb-4">
                   <h2 className="text-[30px] font-black leading-tight tracking-[-1px] text-[#111111]">
                     Create Your{" "}
+
                     <span className="text-[#8f0024]">
                       Account
                     </span>
@@ -704,9 +610,7 @@ function SignupForm() {
                   </p>
                 </div>
 
-                {/* ====================================== */}
-                {/* ROLE TABS */}
-                {/* ====================================== */}
+                {/* ROLE */}
 
                 <div className="mb-4 grid grid-cols-2 gap-2">
                   <button
@@ -730,9 +634,7 @@ function SignupForm() {
                       "student"
                         ? "border-[#8f0024] bg-[#8f0024] text-white shadow-sm"
                         : "border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200",
-                    ].join(
-                      " ",
-                    )}
+                    ].join(" ")}
                   >
                     Student
                   </button>
@@ -758,17 +660,13 @@ function SignupForm() {
                       "faculty"
                         ? "border-[#8f0024] bg-[#8f0024] text-white shadow-sm"
                         : "border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200",
-                    ].join(
-                      " ",
-                    )}
+                    ].join(" ")}
                   >
                     Faculty
                   </button>
                 </div>
 
-                {/* ====================================== */}
                 {/* FORM */}
-                {/* ====================================== */}
 
                 <form
                   onSubmit={
@@ -776,7 +674,7 @@ function SignupForm() {
                   }
                   className="space-y-3"
                 >
-                  {/* FULL NAME */}
+                  {/* NAME */}
 
                   <div>
                     <label
@@ -858,7 +756,7 @@ function SignupForm() {
                     </div>
                   </div>
 
-                  {/* MOBILE NUMBER */}
+                  {/* PHONE */}
 
                   <div>
                     <label
@@ -899,7 +797,7 @@ function SignupForm() {
                     </div>
                   </div>
 
-                  {/* CREATE PASSWORD */}
+                  {/* PASSWORD */}
 
                   <div>
                     <label
@@ -976,8 +874,6 @@ function SignupForm() {
                           : "Show"}
                       </button>
                     </div>
-
-                    {/* PASSWORD REQUIREMENTS */}
 
                     <div className="mt-2 grid grid-cols-3 gap-2 text-[9px] leading-4">
                       <span
@@ -1081,14 +977,12 @@ function SignupForm() {
                     </div>
                   </div>
 
-                  {/* ====================================== */}
-                  {/* STUDENT FIELDS */}
-                  {/* ====================================== */}
+                  {/* STUDENT */}
 
                   {role ===
                     "student" && (
                     <div className="space-y-3 border-t border-slate-100 pt-3">
-                      {/* PROGRAM LEVEL */}
+                      {/* LEVEL */}
 
                       <div>
                         <label
@@ -1096,8 +990,7 @@ function SignupForm() {
                             labelClass
                           }
                         >
-                          Program
-                          Level
+                          Program Level
                         </label>
 
                         <select
@@ -1123,6 +1016,14 @@ function SignupForm() {
                                 "Profession"
                                 ? "working"
                                 : "",
+                            );
+
+                            setSelectedProgram(
+                              "",
+                            );
+
+                            setCustomProgram(
+                              "",
                             );
                           }}
                           className={
@@ -1150,7 +1051,7 @@ function SignupForm() {
                         </select>
                       </div>
 
-                      {/* CURRENT STANDARD */}
+                      {/* STANDARD */}
 
                       {studentLevel ===
                         "foundation" && (
@@ -1172,13 +1073,21 @@ function SignupForm() {
                             required
                             onChange={(
                               event,
-                            ) =>
+                            ) => {
                               setCurrentClass(
                                 event
                                   .target
                                   .value,
-                              )
-                            }
+                              );
+
+                              setSelectedProgram(
+                                "",
+                              );
+
+                              setCustomProgram(
+                                "",
+                              );
+                            }}
                             className={
                               fieldClass
                             }
@@ -1187,8 +1096,7 @@ function SignupForm() {
                               value=""
                               disabled
                             >
-                              Select
-                              your
+                              Select your
                               standard
                             </option>
 
@@ -1214,7 +1122,7 @@ function SignupForm() {
                         </div>
                       )}
 
-                      {/* PROFESSIONAL INTERNAL VALUE */}
+                      {/* PROFESSIONAL CLASS */}
 
                       {studentLevel ===
                         "Profession" && (
@@ -1233,18 +1141,43 @@ function SignupForm() {
                             labelClass
                           }
                         >
-                          Select
-                          Program
+                          Select Program
                         </label>
 
                         <select
                           key={`${studentLevel}-${currentClass}`}
                           name="program"
-                          defaultValue=""
-                          required
-                          className={
-                            fieldClass
+                          value={
+                            selectedProgram
                           }
+                          required
+                          disabled={
+                            studentLevel ===
+                              "foundation" &&
+                            !currentClass
+                          }
+                          onChange={(
+                            event,
+                          ) => {
+                            const value =
+                              event
+                                .target
+                                .value;
+
+                            setSelectedProgram(
+                              value,
+                            );
+
+                            if (
+                              value !==
+                              "Others"
+                            ) {
+                              setCustomProgram(
+                                "",
+                              );
+                            }
+                          }}
+                          className={`${fieldClass} disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500`}
                         >
                           <option
                             value=""
@@ -1275,10 +1208,78 @@ function SignupForm() {
                               </option>
                             ),
                           )}
+
+                          {(studentLevel ===
+                            "Profession" ||
+                            Boolean(
+                              currentClass,
+                            )) && (
+                            <option value="Others">
+                              Others
+                            </option>
+                          )}
                         </select>
                       </div>
 
-                      {/* PARENT PHONE - FOUNDATION ONLY */}
+                      {/* CUSTOM PROGRAM */}
+
+                      {selectedProgram ===
+                        "Others" && (
+                        <div className="rounded-lg border border-[#8f0024]/10 bg-[#fff7f8] p-3">
+                          <label
+                            htmlFor="signup-custom-program"
+                            className={
+                              labelClass
+                            }
+                          >
+                            Program Name
+                          </label>
+
+                          <input
+                            id="signup-custom-program"
+                            name="customProgram"
+                            type="text"
+                            required
+                            minLength={
+                              2
+                            }
+                            maxLength={
+                              120
+                            }
+                            value={
+                              customProgram
+                            }
+                            onChange={(
+                              event,
+                            ) =>
+                              setCustomProgram(
+                                event
+                                  .target
+                                  .value,
+                              )
+                            }
+                            placeholder="Enter the program you want to learn"
+                            className={
+                              fieldClass
+                            }
+                          />
+
+                          <p className="mt-2 text-[10px] leading-4 text-slate-500">
+                            Can&apos;t
+                            find your
+                            preferred
+                            program above?
+                            Enter the
+                            program you
+                            want and our
+                            team will
+                            review your
+                            request.
+                          </p>
+                        </div>
+                      )}
+
+                      {/* PARENT PHONE */}
 
                       {studentLevel ===
                         "foundation" && (
@@ -1288,8 +1289,7 @@ function SignupForm() {
                               labelClass
                             }
                           >
-                            Parent
-                            Phone
+                            Parent Phone
                             Number
                           </label>
 
@@ -1308,9 +1308,7 @@ function SignupForm() {
                     </div>
                   )}
 
-                  {/* ====================================== */}
-                  {/* FACULTY FIELDS */}
-                  {/* ====================================== */}
+                  {/* FACULTY */}
 
                   {role ===
                     "faculty" && (
@@ -1381,9 +1379,7 @@ function SignupForm() {
                     </div>
                   )}
 
-                  {/* ====================================== */}
                   {/* TERMS */}
-                  {/* ====================================== */}
 
                   <label className="flex cursor-pointer items-start gap-2 pt-1 text-[10px] leading-4 text-slate-700">
                     <input
@@ -1393,8 +1389,7 @@ function SignupForm() {
                     />
 
                     <span>
-                      I agree to
-                      the{" "}
+                      I agree to the{" "}
 
                       <Link
                         href="/terms"
@@ -1410,12 +1405,10 @@ function SignupForm() {
                         href="/privacy-policy"
                         className="font-semibold text-[#8f0024] hover:underline"
                       >
-                        Privacy
-                        Policy
+                        Privacy Policy
                       </Link>{" "}
 
-                      of Prime
-                      Digital
+                      of Prime Digital
                       School.
                     </span>
                   </label>
@@ -1462,9 +1455,7 @@ function SignupForm() {
                   </button>
                 </form>
 
-                {/* ====================================== */}
                 {/* OR */}
-                {/* ====================================== */}
 
                 <div className="my-3 flex items-center gap-3">
                   <div className="h-px flex-1 bg-slate-200" />
@@ -1476,9 +1467,7 @@ function SignupForm() {
                   <div className="h-px flex-1 bg-slate-200" />
                 </div>
 
-                {/* ====================================== */}
-                {/* SOCIAL LOGIN */}
-                {/* ====================================== */}
+                {/* SOCIAL */}
 
                 <div className="grid grid-cols-2 gap-2">
                   <button
@@ -1493,8 +1482,7 @@ function SignupForm() {
                       G
                     </span>
 
-                    Continue with
-                    Google
+                    Continue with Google
                   </button>
 
                   <button
@@ -1503,11 +1491,8 @@ function SignupForm() {
                   >
                     <span className="grid grid-cols-2 gap-[1px]">
                       <i className="h-[5px] w-[5px] bg-[#f35325]" />
-
                       <i className="h-[5px] w-[5px] bg-[#81bc06]" />
-
                       <i className="h-[5px] w-[5px] bg-[#05a6f0]" />
-
                       <i className="h-[5px] w-[5px] bg-[#ffba08]" />
                     </span>
 
@@ -1515,8 +1500,6 @@ function SignupForm() {
                     Microsoft
                   </button>
                 </div>
-
-                {/* LOGIN */}
 
                 <p className="mt-4 text-center text-[11px] font-medium text-slate-600">
                   Already have an
@@ -1567,10 +1550,6 @@ function SignupForm() {
     </main>
   );
 }
-
-/* =========================================
-   PAGE
-========================================= */
 
 export default function SignupPage() {
   return (

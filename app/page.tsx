@@ -24,6 +24,7 @@ import {
   Star,
   ShieldCheck,
 } from "lucide-react";
+import SchoolVideoPlayer from "@/components/home/SchoolVideoPlayer";
 
 type Program = {
   icon: LucideIcon;
@@ -277,7 +278,26 @@ export default function Home() {
                 <span className="text-[#8f0024]">Learn, Build & Grow</span>
               </h2>
 
-              <p className="mt-5 max-w-[470px] text-[14px] leading-7 text-slate-600">
+              <Link
+                href="/admissions"
+                className="mt-5 inline-flex w-fit items-center gap-3 rounded-full border border-[#8f0024]/15 bg-[#fff1f4] px-4 py-2.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#8f0024]/30 hover:bg-[#ffe9ee]"
+              >
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm">
+                  <CheckCircle2 size={14} strokeWidth={3} />
+                </span>
+
+                <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[#8f0024]">
+                  Admissions Open
+                </span>
+
+                <span className="h-4 w-px bg-[#8f0024]/20" />
+
+                <span className="text-[12px] font-black text-[#8f0024]">
+                  2026
+                </span>
+              </Link>
+
+              <p className="mt-4 max-w-[470px] text-[14px] leading-7 text-slate-600">
                 Discover how Prime Digital School combines practical learning,
                 technology, projects and future-ready skills to help students
                 build confidence for tomorrow.
@@ -301,92 +321,14 @@ export default function Home() {
             </div>
 
             {/* RIGHT SIDE - VIDEO */}
+
             <div className="p-4 sm:p-6 lg:p-7">
-              <div className="overflow-hidden rounded-[22px] bg-black shadow-[0_22px_55px_rgba(15,23,42,0.2)]">
-                <video
-                  controls
-                  playsInline
-                  preload="metadata"
-                  className="aspect-video w-full bg-black object-cover"
-                >
-                  <source
-                    src="/videos/prime-digital-school-intro.mp4"
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
+              <SchoolVideoPlayer />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===================================================== */}
-      {/* COMPACT ADMISSIONS STATUS */}
-      {/* ===================================================== */}
-      <section className="mx-auto mt-8 w-[min(1320px,calc(100%-96px))] max-[1180px]:w-[min(100%-48px,1320px)] max-[720px]:w-[min(100%-28px,1320px)]">
-        <div className="relative overflow-hidden rounded-[22px] border border-[#7a0019]/10 bg-[#fff8f9] px-6 py-6 shadow-[0_12px_35px_rgba(90,0,18,0.07)] md:px-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            {/* LEFT SIDE */}
-
-            <div className="flex items-start gap-5">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#7a0019]/10 text-[#7a0019]">
-                <GraduationCap size={30} />
-              </div>
-
-              <div>
-                <p className="m-0 text-[11px] font-black uppercase tracking-[0.14em] text-[#7a0019]">
-                  Admissions
-                </p>
-
-                <div className="mt-2 flex flex-wrap items-center gap-4">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-sm font-black text-white shadow-sm">
-                    <CheckCircle2 size={17} />
-                    OPEN
-                  </span>
-
-                  <div className="hidden h-9 w-px bg-[#7a0019]/15 sm:block" />
-
-                  <div>
-                    <p className="m-0 text-[10px] font-bold uppercase tracking-[0.08em] text-slate-500">
-                      Academic Session
-                    </p>
-
-                    <p className="mt-1 text-[15px] font-black text-[#7a0019]">
-                      2026–27
-                    </p>
-                  </div>
-                </div>
-
-                <p className="mt-3 max-w-[560px] text-[13px] leading-6 text-slate-600 md:text-sm">
-                  Limited seats available. Start your journey with Prime Digital
-                  School and build future-ready digital skills.
-                </p>
-              </div>
-            </div>
-
-            {/* RIGHT SIDE */}
-
-            <div className="flex flex-col gap-3 sm:flex-row lg:shrink-0">
-              <Link
-                href="/programs"
-                className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-xl bg-[#7a0019] px-6 text-[13px] font-extrabold text-white shadow-[0_10px_24px_rgba(122,0,25,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#5a0012]"
-              >
-                Explore Programs
-                <ArrowRight size={15} />
-              </Link>
-
-              <Link
-                href="/admissions#application-form"
-                className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-xl border border-[#7a0019]/35 bg-white px-6 text-[13px] font-extrabold text-[#7a0019] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fff2f5]"
-              >
-                Apply Now
-                <ArrowRight size={15} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
       <section className="pds-programs-section">
         <div className="pds-section-heading">
           <div>

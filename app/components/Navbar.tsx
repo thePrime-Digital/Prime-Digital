@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
+
+const PDA_CONNECTOR_URL = "https://services.primedigitalschool.com";
 
 const navItems = [
   {
@@ -17,72 +15,47 @@ const navItems = [
     label: "Programs",
     href: "/programs",
   },
-{
-  label: "Careers",
-  href: "/careers",
-},
+  {
+    label: "Careers",
+    href: "/careers",
+  },
   {
     label: "Support",
     href: "/support",
   },
-
-    {
+  {
     label: "About Us",
     href: "/about",
   },
 ];
 
 export default function Navbar() {
-  const pathname =
-    usePathname();
+  const pathname = usePathname();
 
-  const [
-    open,
-    setOpen,
-  ] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const [
-    visible,
-    setVisible,
-  ] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timer =
-      requestAnimationFrame(
-        () => {
-          setVisible(true);
-        },
-      );
+    const timer = requestAnimationFrame(() => {
+      setVisible(true);
+    });
 
-    return () =>
-      cancelAnimationFrame(
-        timer,
-      );
+    return () => cancelAnimationFrame(timer);
   }, []);
 
-  const isActive =
-    useCallback(
-      (href: string) => {
-        if (
-          href === "/"
-        ) {
-          return (
-            pathname === "/"
-          );
-        }
+  const isActive = useCallback(
+    (href: string) => {
+      if (href === "/") {
+        return pathname === "/";
+      }
 
-        return pathname.startsWith(
-          href,
-        );
-      },
-      [pathname],
-    );
+      return pathname.startsWith(href);
+    },
+    [pathname],
+  );
 
-  if (
-    !visible ||
-    pathname ===
-      "/services"
-  ) {
+  if (!visible || pathname === "/services") {
     return null;
   }
 
@@ -92,60 +65,66 @@ export default function Navbar() {
       className="fixed left-0 right-0 top-0 z-[1000] px-4 py-3"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between rounded-[1.4rem] border border-[#8b0022]/15 bg-white/95 px-5 py-3 shadow-[0_18px_45px_rgba(30,10,18,0.10)] backdrop-blur-xl">
-
+        {/* ======================================= */}
         {/* LOGO / BRAND */}
-        <Link
-          href="/"
-          className="flex items-center gap-3"
-        >
+        {/* ======================================= */}
+
+        <Link href="/" className="flex items-center gap-3">
           <span className="text-xl font-black tracking-tight text-[#7c001d] max-[480px]:text-base">
             Prime Digital School
           </span>
         </Link>
 
+        {/* ======================================= */}
         {/* DESKTOP NAVIGATION */}
-        <div className="hidden items-center gap-7 lg:flex">
-          {navItems.map(
-            (item) => {
-              const active =
-                isActive(
-                  item.href,
-                );
+        {/* ======================================= */}
 
-              return (
-                <Link
-                  key={
-                    item.href
-                  }
-                  href={
-                    item.href
-                  }
-                  className={[
-                    "relative text-sm font-semibold transition",
-                    active
-                      ? "text-[#7c001d]"
-                      : "text-slate-600 hover:text-[#7c001d]",
-                  ].join(
-                    " ",
-                  )}
-                >
-                  {
-                    item.label
-                  }
+        <div className="hidden items-center gap-6 lg:flex">
+          {navItems.map((item) => {
+            const active = isActive(item.href);
 
-                  {active && (
-                    <span className="absolute -bottom-3 left-0 h-[3px] w-full rounded-full bg-[#7c001d]" />
-                  )}
-                </Link>
-              );
-            },
-          )}
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={[
+                  "relative text-sm font-semibold transition",
+                  active
+                    ? "text-[#7c001d]"
+                    : "text-slate-600 hover:text-[#7c001d]",
+                ].join(" ")}
+              >
+                {item.label}
+
+                {active && (
+                  <span className="absolute -bottom-3 left-0 h-[3px] w-full rounded-full bg-[#7c001d]" />
+                )}
+              </Link>
+            );
+          })}
         </div>
 
+        {/* ======================================= */}
         {/* DESKTOP ACTIONS */}
-        <div className="hidden items-center gap-3 lg:flex">
+        {/* ======================================= */}
+
+        <div className="hidden items-center gap-2 lg:flex">
+          {/* PDA CONNECTOR */}
+
+          <a
+            href={PDA_CONNECTOR_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="group inline-flex items-center justify-center gap-2 rounded-xl border border-[#0A54B7]/20 bg-[#EEF5FF] px-4 py-3 text-sm font-bold text-[#0A54B7] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0A54B7]/40 hover:bg-[#D7E5FA]"
+          >
+            Prime Digital Agency
+            <span className="text-[13px] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              ↗
+            </span>
+          </a>
 
           {/* LOGIN */}
+
           <Link
             href="/login"
             className="inline-flex items-center justify-center rounded-xl border border-[#7c001d]/25 bg-white px-5 py-3 text-sm font-bold text-[#7c001d] transition hover:border-[#7c001d] hover:bg-[#fff4f7]"
@@ -154,104 +133,90 @@ export default function Navbar() {
           </Link>
 
           {/* APPLY NOW */}
+
           <Link
             href="/admissions"
             className="inline-flex items-center justify-center rounded-xl bg-[#7c001d] px-6 py-3 text-sm font-bold text-white shadow-[0_12px_24px_rgba(124,0,29,0.20)] transition hover:bg-[#5f0016]"
           >
             Apply Now
           </Link>
-
         </div>
 
+        {/* ======================================= */}
         {/* MOBILE MENU BUTTON */}
+        {/* ======================================= */}
+
         <button
           type="button"
-          onClick={() =>
-            setOpen(
-              (value) =>
-                !value,
-            )
-          }
+          onClick={() => setOpen((value) => !value)}
           className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#7c001d]/15 text-[#7c001d] lg:hidden"
           aria-label="Toggle menu"
-          aria-expanded={
-            open
-          }
+          aria-expanded={open}
         >
-          {open
-            ? "✕"
-            : "☰"}
+          {open ? "✕" : "☰"}
         </button>
       </div>
 
+      {/* ======================================= */}
       {/* MOBILE MENU */}
+      {/* ======================================= */}
+
       {open && (
         <div className="mx-auto mt-3 max-w-7xl rounded-[1.4rem] border border-[#8b0022]/15 bg-white p-4 shadow-[0_18px_45px_rgba(30,10,18,0.12)] backdrop-blur-xl lg:hidden">
           <div className="grid gap-2">
+            {navItems.map((item) => {
+              const active = isActive(item.href);
 
-            {navItems.map(
-              (item) => {
-                const active =
-                  isActive(
-                    item.href,
-                  );
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={[
+                    "rounded-xl px-4 py-3 text-sm font-bold transition",
+                    active
+                      ? "bg-[#7c001d] text-white"
+                      : "text-slate-700 hover:bg-[#fff4f7] hover:text-[#7c001d]",
+                  ].join(" ")}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
 
-                return (
-                  <Link
-                    key={
-                      item.href
-                    }
-                    href={
-                      item.href
-                    }
-                    onClick={() =>
-                      setOpen(
-                        false,
-                      )
-                    }
-                    className={[
-                      "rounded-xl px-4 py-3 text-sm font-bold transition",
-                      active
-                        ? "bg-[#7c001d] text-white"
-                        : "text-slate-700 hover:bg-[#fff4f7] hover:text-[#7c001d]",
-                    ].join(
-                      " ",
-                    )}
-                  >
-                    {
-                      item.label
-                    }
-                  </Link>
-                );
-              },
-            )}
+            {/* MOBILE PDA CONNECTOR */}
+
+            <a
+              href={PDA_CONNECTOR_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setOpen(false)}
+              className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-[#0A54B7]/20 bg-[#EEF5FF] px-4 py-3 text-center text-sm font-bold text-[#0A54B7] transition hover:border-[#0A54B7]/40 hover:bg-[#D7E5FA]"
+            >
+              <span className="flex h-2 w-2 rounded-full bg-[#0A54B7]" />
+              PDA Connector
+              <span>↗</span>
+            </a>
 
             {/* MOBILE LOGIN */}
+
             <Link
               href="/login"
-              onClick={() =>
-                setOpen(
-                  false,
-                )
-              }
-              className="mt-2 rounded-xl border border-[#7c001d]/25 bg-white px-4 py-3 text-center text-sm font-bold text-[#7c001d] transition hover:bg-[#fff4f7]"
+              onClick={() => setOpen(false)}
+              className="rounded-xl border border-[#7c001d]/25 bg-white px-4 py-3 text-center text-sm font-bold text-[#7c001d] transition hover:bg-[#fff4f7]"
             >
               Login
             </Link>
 
             {/* MOBILE APPLY NOW */}
+
             <Link
               href="/admissions"
-              onClick={() =>
-                setOpen(
-                  false,
-                )
-              }
+              onClick={() => setOpen(false)}
               className="rounded-xl bg-[#7c001d] px-4 py-3 text-center text-sm font-bold text-white transition hover:bg-[#5f0016]"
             >
               Apply Now
             </Link>
-
           </div>
         </div>
       )}
