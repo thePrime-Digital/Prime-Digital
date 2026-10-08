@@ -87,9 +87,9 @@ const quickQuestions = [
 ];
 
 const welcomeLines = [
-  "Hi 👋 I'm the Prime Digital School Assistant.",
-  "Ask me about admissions, programs and eligibility.",
-  "I can also help with fees, applications and downloads.",
+  "Hello! 👋 Welcome to Prime Digital School.",
+  "How may I assist you today?",
+  "Feel free to ask me about our programs, courses, fees, careers, or anything else!",
 ];
 
 const WHATSAPP_URL =
@@ -582,7 +582,7 @@ export default function SchoolChatbot() {
                     text-white/70
                   "
                 >
-                  AI Admissions & Program Assistant
+                  Your AI Learning & Support Assistant
                 </p>
 
                 <div className="mt-1 flex items-center gap-1.5">
@@ -937,7 +937,7 @@ export default function SchoolChatbot() {
                 }
               }}
               rows={1}
-              placeholder="Ask me anything about Prime Digital School..."
+              placeholder="Type your question here..."
               className="
                 max-h-24
                 min-h-[40px]

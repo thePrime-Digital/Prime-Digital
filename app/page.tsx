@@ -267,43 +267,41 @@ export default function Home() {
         <div className="mx-auto max-w-[1320px] overflow-hidden rounded-[26px] border border-[#7a0019]/10 bg-gradient-to-br from-[#fff7f8] via-white to-[#fffafb] shadow-[0_18px_50px_rgba(90,0,18,0.08)]">
           <div className="grid items-center lg:grid-cols-[0.72fr_1.28fr]">
             {/* LEFT SIDE */}
-            <div className="px-7 py-9 sm:px-10 lg:px-12 lg:py-12">
-              <div className="inline-flex items-center rounded-full bg-[#7a0019]/8 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-[#7a0019]">
-                Inside Prime Digital School
-              </div>
+            {/* LEFT SIDE */}
 
-              <h2 className="mt-5 text-[30px] font-black leading-[1.08] tracking-[-1px] text-[#111827] sm:text-[38px]">
-                See How We
-                <br />
-                <span className="text-[#8f0024]">Learn, Build & Grow</span>
-              </h2>
+            <div className="relative -top-3 px-7 py-9 sm:px-10 lg:-top-8 lg:px-12 lg:py-12">
+              {/* ADMISSIONS OPEN */}
 
               <Link
                 href="/admissions"
-                className="mt-5 inline-flex w-fit items-center gap-3 rounded-full border border-[#8f0024]/15 bg-[#fff1f4] px-4 py-2.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#8f0024]/30 hover:bg-[#ffe9ee]"
+                className="mt-0 inline-flex w-fit items-center gap-3 rounded-full border border-[#8f0024]/20 bg-[#fff1f4] px-5 py-3.5 shadow-[0_8px_24px_rgba(143,0,36,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#8f0024]/40 hover:bg-[#ffe9ee]"
               >
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm">
-                  <CheckCircle2 size={14} strokeWidth={3} />
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm">
+                  <CheckCircle2 size={20} strokeWidth={2.8} />
                 </span>
 
-                <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[#8f0024]">
+                <span className="text-[15px] font-black uppercase tracking-[0.08em] text-[#8f0024] sm:text-[17px]">
                   Admissions Open
                 </span>
 
-                <span className="h-4 w-px bg-[#8f0024]/20" />
+                <span className="h-6 w-px bg-[#8f0024]/25" />
 
-                <span className="text-[12px] font-black text-[#8f0024]">
+                <span className="text-[17px] font-black text-[#8f0024] sm:text-[19px]">
                   2026
                 </span>
               </Link>
 
-              <p className="mt-4 max-w-[470px] text-[14px] leading-7 text-slate-600">
+              {/* DESCRIPTION */}
+
+              <p className="mt-6 max-w-[490px] text-[16px] font-medium leading-8 text-slate-600 sm:text-[17px]">
                 Discover how Prime Digital School combines practical learning,
                 technology, projects and future-ready skills to help students
                 build confidence for tomorrow.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-2">
+              {/* FEATURE TAGS */}
+
+              <div className="mt-7 flex flex-wrap gap-3">
                 {[
                   "Hands-on Learning",
                   "Grades 6–12",
@@ -312,7 +310,7 @@ export default function Home() {
                 ].map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-[#8f0024]/15 bg-[#fff1f4] px-4 py-2 text-[10px] font-black text-[#8f0024]"
+                    className="rounded-full border border-[#8f0024]/15 bg-[#fff1f4] px-4 py-2.5 text-[12px] font-black text-[#8f0024] sm:text-[13px]"
                   >
                     {item}
                   </span>
