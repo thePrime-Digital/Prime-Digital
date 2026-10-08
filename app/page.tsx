@@ -270,25 +270,39 @@ export default function Home() {
             {/* LEFT SIDE */}
 
             <div className="relative -top-3 px-7 py-9 sm:px-10 lg:-top-8 lg:px-12 lg:py-12">
-              {/* ADMISSIONS OPEN */}
+              {/* ADMISSIONS OPEN - PDS BRAND COLOURS */}
 
               <Link
                 href="/admissions"
-                className="mt-0 inline-flex w-fit items-center gap-3 rounded-full border border-[#8f0024]/20 bg-[#fff1f4] px-5 py-3.5 shadow-[0_8px_24px_rgba(143,0,36,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#8f0024]/40 hover:bg-[#ffe9ee]"
+                className="group inline-flex min-h-[88px] w-full max-w-[505px] items-center justify-between gap-3 rounded-[24px] border border-[#8f0024]/20 bg-gradient-to-r from-white to-[#fff5f7] px-4 py-4 shadow-[0_12px_30px_rgba(143,0,36,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#8f0024]/40 hover:shadow-[0_18px_35px_rgba(143,0,36,0.14)] sm:px-5"
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm">
-                  <CheckCircle2 size={20} strokeWidth={2.8} />
-                </span>
+                {/* LEFT - ADMISSIONS OPEN */}
 
-                <span className="text-[15px] font-black uppercase tracking-[0.08em] text-[#8f0024] sm:text-[17px]">
-                  Admissions Open
-                </span>
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#009B6D] text-white shadow-[0_4px_12px_rgba(0,155,109,0.20)]">
+                    <CheckCircle2 size={22} strokeWidth={3} />
+                  </span>
 
-                <span className="h-6 w-px bg-[#8f0024]/25" />
+                  <span className="whitespace-nowrap text-[12px] font-black uppercase tracking-[0.04em] text-[#8f0024] sm:text-[14px] xl:text-[15px]">
+                    Admissions Open
+                  </span>
+                </div>
 
-                <span className="text-[17px] font-black text-[#8f0024] sm:text-[19px]">
-                  2026
-                </span>
+                {/* DIVIDER */}
+
+                <span className="h-11 w-px shrink-0 bg-[#8f0024]/20" />
+
+                {/* RIGHT - ACADEMIC SESSION */}
+
+                <div className="flex shrink-0 flex-col justify-center">
+                  <span className="whitespace-nowrap text-[9px] font-black uppercase tracking-[0.08em] text-[#9B5265] sm:text-[10px]">
+                    Academic Session
+                  </span>
+
+                  <span className="mt-1 whitespace-nowrap text-[19px] font-black leading-none tracking-tight text-[#8f0024] sm:text-[22px]">
+                    2027–28
+                  </span>
+                </div>
               </Link>
 
               {/* DESCRIPTION */}
@@ -299,22 +313,28 @@ export default function Home() {
                 build confidence for tomorrow.
               </p>
 
-              {/* FEATURE TAGS */}
+              {/* ENROLL NOW + EXPLORE PROGRAMS */}
 
-              <div className="mt-7 flex flex-wrap gap-3">
-                {[
-                  "Hands-on Learning",
-                  "Grades 6–12",
-                  "Project Based",
-                  "Future Skills",
-                ].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-[#8f0024]/15 bg-[#fff1f4] px-4 py-2.5 text-[12px] font-black text-[#8f0024] sm:text-[13px]"
-                  >
-                    {item}
-                  </span>
-                ))}
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                {/* ENROLL NOW */}
+
+                <Link
+                  href="/admissions#application-form"
+                  className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-[#8f0024] px-5 text-[14px] font-black text-white shadow-[0_12px_25px_rgba(143,0,36,0.20)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#69001a]"
+                >
+                  Enroll Now
+                  <ArrowRight size={17} strokeWidth={2.5} />
+                </Link>
+
+                {/* EXPLORE PROGRAMS */}
+
+                <Link
+                  href="/programs"
+                  className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-[#8f0024]/40 bg-white px-5 text-[14px] font-black text-[#8f0024] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#8f0024] hover:bg-[#fff1f4]"
+                >
+                  Explore Programs
+                  <ArrowRight size={17} strokeWidth={2.5} />
+                </Link>
               </div>
             </div>
 
