@@ -1,28 +1,34 @@
+
 "use client";
 
+import Link from "next/link";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-
-import {
+  ArrowRight,
   BookOpen,
   CalendarDays,
   CheckCircle2,
-  ClipboardList,
   Clock3,
+  ClipboardList,
   GraduationCap,
   Loader2,
   Megaphone,
   RefreshCw,
   TrendingUp,
+  Video,
+  Wallet,
 } from "lucide-react";
 
-type StudentLevel =
-  | "foundation"
-  | "advanced"
-  | "college";
+type ScheduleItem = {
+  id: string;
+  classId: string;
+  className: string;
+  title: string;
+  startAt: string | null;
+  endAt: string | null;
+  mode: string;
+  location: string;
+};
 
 type StudentOverview = {
   student: {
@@ -30,36 +36,18 @@ type StudentOverview = {
     name: string;
     email: string;
     greeting: string;
-
-    studentLevel:
-      | StudentLevel
-      | null;
-
-    currentClass:
-      | string
-      | null;
-
-    degreeName:
-      | string
-      | null;
-
-    program:
-      | string
-      | null;
+    studentLevel: string | null;
+    currentClass: string | null;
+    degreeName: string | null;
+    program: string | null;
   };
-
   summary: {
     enrolledClasses: number;
     classesToday: number;
-
-    attendanceRate:
-      | number
-      | null;
-
+    attendanceRate: number | null;
     pendingAssignments: number;
   };
-
-  classes: {
+  classes: Array<{
     id: string;
     name: string;
     program: string;
@@ -68,837 +56,621 @@ type StudentOverview = {
     room: string;
     deliveryMode: string;
     status: string;
-  }[];
-
-  todaySchedule: {
-    id: string;
-    classId: string;
-    className: string;
-    title: string;
-
-    startAt:
-      | string
-      | null;
-
-    endAt:
-      | string
-      | null;
-
-    mode: string;
-    location: string;
-  }[];
-
-  upcomingSchedule: {
-    id: string;
-    classId: string;
-    className: string;
-    title: string;
-
-    startAt:
-      | string
-      | null;
-
-    endAt:
-      | string
-      | null;
-
-    mode: string;
-    location: string;
-  }[];
-
-  assignments: {
+  }>;
+  todaySchedule: ScheduleItem[];
+  upcomingSchedule: ScheduleItem[];
+  assignments: Array<{
     id: string;
     classId: string;
     className: string;
     title: string;
     description: string;
-
-    dueAt:
-      | string
-      | null;
-
+    dueAt: string | null;
     maxScore: number;
-
-    submissionStatus:
-      | string
-      | null;
-
-    grade:
-      | number
-      | null;
-
+    submissionStatus: string | null;
+    grade: number | null;
     feedback: string;
-
-    submittedAt:
-      | string
-      | null;
-  }[];
-
-  announcements: {
+    submittedAt: string | null;
+  }>;
+  announcements: Array<{
     id: string;
     title: string;
     message: string;
     severity: string;
-
-    createdAt:
-      | string
-      | null;
-  }[];
+    createdAt: string | null;
+  }>;
 };
 
-function levelLabel(
-  level:
-    | StudentLevel
-    | null,
-): string {
-  if (
-    level ===
-    "foundation"
-  ) {
-    return "Foundation";
-  }
+function dateLabel(
+  value: string | null,
+  includeTime = false,
+) {
+  if (!value) return "Not scheduled";
 
-  if (
-    level ===
-    "advanced"
-  ) {
-    return "Advanced";
-  }
+  const date = new Date(value);
 
-  if (
-    level ===
-    "college"
-  ) {
-    return "College";
-  }
-
-  return "Student";
-}
-
-function dateTimeLabel(
-  value:
-    | string
-    | null,
-): string {
-  if (!value) {
+  if (Number.isNaN(date.getTime())) {
     return "Not scheduled";
   }
 
-  const date =
-    new Date(value);
+  return date.toLocaleString("en-IN", {
+    day: "numeric",
+    month: "short",
+    ...(includeTime
+      ? {
+          hour: "numeric" as const,
+          minute: "2-digit" as const,
+        }
+      : {}),
+  });
+}
 
-  if (
-    Number.isNaN(
-      date.getTime(),
-    )
-  ) {
-    return "Not scheduled";
-  }
+function Panel({
+  title,
+  subtitle,
+  href,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  href?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="overflow-hidden rounded-xl border border-[#ece6df] bg-white shadow-[0_2px_10px_rgba(40,18,23,0.03)]">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#eee9e3] px-5 py-4">
+        <div>
+          <h2 className="text-sm font-extrabold text-[#281c20]">
+            {title}
+          </h2>
 
-  return date.toLocaleString(
-    undefined,
-    {
-      day:
-        "2-digit",
+          {subtitle && (
+            <p className="mt-1 text-[11px] text-[#8a8182]">
+              {subtitle}
+            </p>
+          )}
+        </div>
 
-      month:
-        "short",
+        {href && (
+          <Link
+            href={href}
+            className="inline-flex items-center gap-1 text-[11px] font-bold text-[#8f0024] hover:underline"
+          >
+            View all
+            <ArrowRight size={13} />
+          </Link>
+        )}
+      </div>
 
-      hour:
-        "numeric",
-
-      minute:
-        "2-digit",
-    },
+      {children}
+    </section>
   );
 }
 
-function dueLabel(
-  value:
-    | string
-    | null,
-): string {
-  if (!value) {
-    return "No due date";
-  }
-
-  const date =
-    new Date(value);
-
-  if (
-    Number.isNaN(
-      date.getTime(),
-    )
-  ) {
-    return "No due date";
-  }
-
-  return date.toLocaleDateString(
-    undefined,
-    {
-      day:
-        "2-digit",
-
-      month:
-        "short",
-
-      year:
-        "numeric",
-    },
+function Empty({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <p className="px-5 py-9 text-center text-xs font-medium text-[#91888a]">
+      {children}
+    </p>
   );
-}
-
-function announcementClasses(
-  severity: string,
-): string {
-  if (
-    severity ===
-    "warning"
-  ) {
-    return "border-amber-200 bg-amber-50";
-  }
-
-  if (
-    severity ===
-      "urgent" ||
-    severity ===
-      "error"
-  ) {
-    return "border-red-200 bg-red-50";
-  }
-
-  if (
-    severity ===
-    "success"
-  ) {
-    return "border-emerald-200 bg-emerald-50";
-  }
-
-  return "border-slate-200 bg-slate-50";
 }
 
 export default function StudentDashboard() {
-  const [
-    data,
-    setData,
-  ] =
-    useState<
-      StudentOverview | null
-    >(null);
+  const [data, setData] =
+    useState<StudentOverview | null>(null);
 
-  const [
-    loading,
-    setLoading,
-  ] =
+  const [loading, setLoading] =
     useState(true);
 
-  const [
-    error,
-    setError,
-  ] =
+  const [error, setError] =
     useState("");
 
-  const loadOverview =
-    useCallback(
-      async () => {
-        setLoading(true);
-        setError("");
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
 
-        try {
-          const response =
-            await fetch(
-              "/api/student/overview",
-              {
-                method:
-                  "GET",
+    try {
+      const response = await fetch(
+        "/api/student/overview",
+        {
+          credentials: "include",
+          cache: "no-store",
+        },
+      );
 
-                credentials:
-                  "include",
+      const json =
+        (await response.json()) as StudentOverview & {
+          error?: string;
+        };
 
-                cache:
-                  "no-store",
-              },
-            );
+      if (!response.ok) {
+        throw new Error(
+          json.error ||
+            "Unable to load your dashboard.",
+        );
+      }
 
-          const result =
-            await response.json();
-
-          if (
-            !response.ok
-          ) {
-            throw new Error(
-              result.error ||
-                "Unable to load dashboard.",
-            );
-          }
-
-          setData(
-            result,
-          );
-        } catch (
-          loadError
-        ) {
-          setError(
-            loadError instanceof
-              Error
-              ? loadError.message
-              : "Unable to load dashboard.",
-          );
-        } finally {
-          setLoading(
-            false,
-          );
-        }
-      },
-      [],
-    );
+      setData(json);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to load your dashboard.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    loadOverview();
-  }, [loadOverview]);
+    void load();
+  }, [load]);
 
   if (loading) {
     return (
-      <main className="flex min-h-[60vh] items-center justify-center p-6">
-        <div className="text-center">
-          <Loader2 className="mx-auto h-7 w-7 animate-spin text-[#8f0024]" />
-
-          <p className="mt-3 text-xs font-bold text-slate-500">
-            Loading your dashboard...
-          </p>
+      <main className="flex min-h-[65vh] items-center justify-center bg-[#f8f5f0]">
+        <div className="text-center text-xs font-semibold text-[#8f0024]">
+          <Loader2 className="mx-auto mb-3 h-7 w-7 animate-spin" />
+          Loading dashboard...
         </div>
       </main>
     );
   }
 
-  if (
-    error ||
-    !data
-  ) {
+  if (error || !data) {
     return (
-      <main className="p-5 sm:p-7 lg:p-8">
-        <div className="mx-auto max-w-7xl rounded-2xl border border-red-200 bg-red-50 p-6">
-          <p className="font-black text-red-800">
-            Student dashboard could not be loaded.
-          </p>
+      <main className="min-h-full bg-[#f8f5f0] p-6">
+        <div className="mx-auto max-w-5xl rounded-xl border border-rose-200 bg-white p-6">
+          <h1 className="font-bold text-[#8f0024]">
+            Unable to load Student Dashboard
+          </h1>
 
-          <p className="mt-2 text-sm text-red-700">
+          <p className="mt-2 text-sm text-slate-600">
             {error}
           </p>
 
           <button
             type="button"
-            onClick={
-              loadOverview
-            }
-            className="mt-4 inline-flex h-10 items-center gap-2 rounded-lg bg-[#8f0024] px-4 text-xs font-black text-white"
+            onClick={() => void load()}
+            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#8f0024] px-4 py-2 text-xs font-bold text-white"
           >
-            <RefreshCw className="h-4 w-4" />
-            Try Again
+            <RefreshCw size={15} />
+            Try again
           </button>
         </div>
       </main>
     );
   }
 
-  const {
-    student,
-    summary,
-  } = data;
+  const { student, summary } = data;
+
+  const cards = [
+    {
+      label: "Enrolled Classes",
+      value: summary.enrolledClasses,
+      note: "Active enrolments",
+      icon: BookOpen,
+      bg: "#fff0eb",
+      ink: "#9a432f",
+      href: "/dashboard/classes",
+    },
+    {
+      label: "Today's Classes",
+      value: summary.classesToday,
+      note: "Sessions scheduled",
+      icon: CalendarDays,
+      bg: "#f0ecfc",
+      ink: "#6945a6",
+      href: "/dashboard/classes",
+    },
+    {
+      label: "Attendance",
+      value:
+        summary.attendanceRate === null
+          ? "—"
+          : `${summary.attendanceRate}%`,
+      note: "Present and late",
+      icon: TrendingUp,
+      bg: "#e8f5ef",
+      ink: "#16805b",
+      href: "/dashboard/attendance",
+    },
+    {
+      label: "Pending Work",
+      value: summary.pendingAssignments,
+      note: "Assignments to submit",
+      icon: ClipboardList,
+      bg: "#fff4d9",
+      ink: "#9a6b16",
+      href: "/dashboard/assignments",
+    },
+  ];
 
   return (
-    <main className="p-5 sm:p-7 lg:p-8">
-      <div className="mx-auto max-w-7xl">
-        <section className="overflow-hidden rounded-2xl bg-[#690019] shadow-sm">
-          <div className="p-6 text-white sm:p-8">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-pink-200">
-              Prime Digital School
+    <main className="min-h-full bg-[#f8f5f0] px-4 py-5 text-[#281c20] sm:px-6 lg:px-8 lg:py-7">
+      <div className="mx-auto max-w-[1450px] space-y-5">
+
+        {/* PAGE HEADING */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8f0024]">
+              Student Portal / Dashboard
             </p>
 
-            <div className="mt-3 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <h1 className="text-2xl font-black tracking-tight sm:text-3xl">
-                  {student.greeting},{" "}
-                  {student.name}
-                </h1>
+            <h1 className="mt-1 text-xl font-extrabold tracking-tight sm:text-2xl">
+              Good to see you,{" "}
+              {student.name.split(" ")[0]}!
+            </h1>
 
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-black">
-                    {levelLabel(
-                      student.studentLevel,
-                    )}
+            <p className="mt-1 text-xs text-[#857d80]">
+              Here is an overview of your learning journey.
+            </p>
+          </div>
+
+          <Link
+            href="/dashboard/courses"
+            className="inline-flex items-center gap-2 rounded-lg border border-[#e2c7cf] bg-white px-4 py-2.5 text-xs font-extrabold text-[#8f0024] hover:bg-[#fff1f4]"
+          >
+            <GraduationCap size={15} />
+            My Courses
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        {/* MAROON WELCOME CARD */}
+        <section className="relative overflow-hidden rounded-xl bg-[#650019] px-5 py-6 text-white shadow-[0_10px_25px_rgba(101,0,25,0.12)] sm:px-7">
+          <div className="pointer-events-none absolute -right-12 -top-24 h-64 w-64 rounded-full border-[35px] border-white/5" />
+
+          <div className="relative flex flex-wrap items-center justify-between gap-5">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#f1b8c8]">
+                Your Learning Space
+              </p>
+
+              <h2 className="mt-2 text-xl font-black sm:text-2xl">
+                {student.greeting}, {student.name}
+              </h2>
+
+              <p className="mt-2 text-xs text-white/75">
+                {student.program ||
+                  "Your program will appear once assigned."}
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {student.studentLevel && (
+                  <span className="rounded-md bg-white/15 px-3 py-1.5 text-[10px] font-semibold capitalize">
+                    {student.studentLevel}
                   </span>
+                )}
 
-                  {student.currentClass && (
-                    <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-black">
-                      {student.currentClass}
-                    </span>
-                  )}
+                {student.currentClass && (
+                  <span className="rounded-md bg-white/15 px-3 py-1.5 text-[10px] font-semibold">
+                    {student.currentClass}
+                  </span>
+                )}
 
-                  {student.degreeName && (
-                    <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-black">
-                      {student.degreeName}
-                    </span>
-                  )}
-                </div>
-
-                <p className="mt-4 text-sm font-semibold text-pink-100">
-                  {student.program ||
-                    "Your program has not been assigned yet."}
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-white/10 bg-white/10 px-5 py-4">
-                <p className="text-[9px] font-black uppercase tracking-wider text-pink-200">
-                  Student Portal
-                </p>
-
-                <p className="mt-1 text-xs font-bold text-white">
-                  {student.email}
-                </p>
+                {student.degreeName && (
+                  <span className="rounded-md bg-white/15 px-3 py-1.5 text-[10px] font-semibold">
+                    {student.degreeName}
+                  </span>
+                )}
               </div>
             </div>
+
+            <Link
+              href="/dashboard/classes"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-extrabold text-[#650019] transition hover:bg-[#fff0f3]"
+            >
+              Continue Learning
+              <ArrowRight size={15} />
+            </Link>
           </div>
         </section>
 
         {!student.studentLevel && (
-          <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs font-semibold text-amber-800">
-            Your academic profile is incomplete. An administrator needs to assign your student level, class/year and program.
-          </div>
+          <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+            Your academic profile is incomplete. Contact
+            the school administration to assign your
+            class and program.
+          </p>
         )}
 
-        <section className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <SummaryCard
-            label="Enrolled Classes"
-            value={
-              summary.enrolledClasses
-            }
-            icon={BookOpen}
-            note="Active class enrollments"
-          />
-
-          <SummaryCard
-            label="Classes Today"
-            value={
-              summary.classesToday
-            }
-            icon={
-              CalendarDays
-            }
-            note="Scheduled for today"
-          />
-
-          <SummaryCard
-            label="Attendance"
-            value={
-              summary.attendanceRate ===
-              null
-                ? "—"
-                : `${summary.attendanceRate}%`
-            }
-            icon={
-              TrendingUp
-            }
-            note="Present + late"
-          />
-
-          <SummaryCard
-            label="Pending Assignments"
-            value={
-              summary.pendingAssignments
-            }
-            icon={
-              ClipboardList
-            }
-            note="Published and not submitted"
-          />
-        </section>
-
-        <div className="mt-5 grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
-          <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <SectionHeading
-              title="Today's Schedule"
-              subtitle="Your classes scheduled for today"
-              icon={
-                Clock3
-              }
-            />
-
-            {data.todaySchedule.length ===
-            0 ? (
-              <EmptyState text="No classes are scheduled for today." />
-            ) : (
-              <div className="divide-y divide-slate-100">
-                {data.todaySchedule.map(
-                  (
-                    session,
-                  ) => (
-                    <div
-                      key={
-                        session.id
-                      }
-                      className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between"
-                    >
-                      <div>
-                        <p className="text-sm font-black text-slate-800">
-                          {
-                            session.title
-                          }
-                        </p>
-
-                        <p className="mt-1 text-[11px] font-semibold text-[#8f0024]">
-                          {
-                            session.className
-                          }
-                        </p>
-
-                        <p className="mt-2 text-[10px] text-slate-500">
-                          {session.mode ||
-                            "Class"}
-                          {session.location
-                            ? ` • ${session.location}`
-                            : ""}
-                        </p>
-                      </div>
-
-                      <span className="w-fit rounded-lg bg-[#fff1f4] px-3 py-2 text-[10px] font-black text-[#8f0024]">
-                        {dateTimeLabel(
-                          session.startAt,
-                        )}
-                      </span>
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
-          </section>
-
-          <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <SectionHeading
-              title="My Classes"
-              subtitle="Current enrollments"
-              icon={
-                GraduationCap
-              }
-            />
-
-            {data.classes.length ===
-            0 ? (
-              <EmptyState text="You have not been enrolled in a class yet." />
-            ) : (
-              <div className="space-y-3 p-4">
-                {data.classes
-                  .slice(
-                    0,
-                    5,
-                  )
-                  .map(
-                    (
-                      classRecord,
-                    ) => (
-                      <div
-                        key={
-                          classRecord.id
-                        }
-                        className="rounded-xl border border-slate-100 bg-slate-50 p-4"
-                      >
-                        <p className="text-xs font-black text-slate-800">
-                          {
-                            classRecord.name
-                          }
-                        </p>
-
-                        <p className="mt-1 text-[10px] font-semibold text-[#8f0024]">
-                          {classRecord.program ||
-                            student.program ||
-                            "Prime Digital School"}
-                        </p>
-
-                        {(classRecord.faculty ||
-                          classRecord.schedule) && (
-                          <p className="mt-2 text-[9px] text-slate-500">
-                            {classRecord.faculty ||
-                              ""}
-                            {classRecord.faculty &&
-                            classRecord.schedule
-                              ? " • "
-                              : ""}
-                            {classRecord.schedule ||
-                              ""}
-                          </p>
-                        )}
-                      </div>
-                    ),
-                  )}
-              </div>
-            )}
-          </section>
-        </div>
-
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <SectionHeading
-              title="Assignments"
-              subtitle="Published work from your classes"
-              icon={
-                ClipboardList
-              }
-            />
-
-            {data.assignments.length ===
-            0 ? (
-              <EmptyState text="No published assignments yet." />
-            ) : (
-              <div className="divide-y divide-slate-100">
-                {data.assignments.map(
-                  (
-                    assignment,
-                  ) => (
-                    <div
-                      key={
-                        assignment.id
-                      }
-                      className="p-5"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-xs font-black text-slate-800">
-                            {
-                              assignment.title
-                            }
-                          </p>
-
-                          <p className="mt-1 text-[10px] font-semibold text-[#8f0024]">
-                            {
-                              assignment.className
-                            }
-                          </p>
-                        </div>
-
-                        {assignment.submissionStatus ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[9px] font-black capitalize text-emerald-700">
-                            <CheckCircle2 className="h-3 w-3" />
-                            {
-                              assignment.submissionStatus
-                            }
-                          </span>
-                        ) : (
-                          <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[9px] font-black text-amber-700">
-                            Pending
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="mt-3 flex flex-wrap items-center gap-3 text-[9px] font-semibold text-slate-500">
-                        <span>
-                          Due{" "}
-                          {dueLabel(
-                            assignment.dueAt,
-                          )}
-                        </span>
-
-                        {assignment.grade !==
-                          null && (
-                          <span className="font-black text-emerald-700">
-                            Grade:{" "}
-                            {
-                              assignment.grade
-                            }
-                            /
-                            {
-                              assignment.maxScore
-                            }
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
-          </section>
-
-          <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <SectionHeading
-              title="Announcements"
-              subtitle="Latest school updates"
-              icon={
-                Megaphone
-              }
-            />
-
-            {data.announcements.length ===
-            0 ? (
-              <EmptyState text="No announcements right now." />
-            ) : (
-              <div className="space-y-3 p-4">
-                {data.announcements.map(
-                  (
-                    announcement,
-                  ) => (
-                    <div
-                      key={
-                        announcement.id
-                      }
-                      className={`rounded-xl border p-4 ${announcementClasses(
-                        announcement.severity,
-                      )}`}
-                    >
-                      <p className="text-xs font-black text-slate-800">
-                        {
-                          announcement.title
-                        }
-                      </p>
-
-                      <p className="mt-2 text-[10px] leading-5 text-slate-600">
-                        {
-                          announcement.message
-                        }
-                      </p>
-
-                      {announcement.createdAt && (
-                        <p className="mt-2 text-[9px] font-semibold text-slate-400">
-                          {dateTimeLabel(
-                            announcement.createdAt,
-                          )}
-                        </p>
-                      )}
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
-          </section>
-        </div>
-
-        {data.upcomingSchedule.length >
-          0 && (
-          <section className="mt-5 rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <SectionHeading
-              title="Upcoming Classes"
-              subtitle="Your next scheduled sessions"
-              icon={
-                CalendarDays
-              }
-            />
-
-            <div className="grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-3">
-              {data.upcomingSchedule.map(
-                (
-                  session,
-                ) => (
-                  <div
-                    key={
-                      session.id
-                    }
-                    className="rounded-xl border border-slate-100 bg-slate-50 p-4"
-                  >
-                    <p className="text-xs font-black text-slate-800">
-                      {
-                        session.title
-                      }
+        {/* STATISTICS */}
+        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {cards.map(
+            ({
+              label,
+              value,
+              note,
+              icon: Icon,
+              bg,
+              ink,
+              href,
+            }) => (
+              <Link
+                key={label}
+                href={href}
+                className="group rounded-xl border border-[#ece6df] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-[#877e81]">
+                      {label}
                     </p>
 
-                    <p className="mt-1 text-[10px] font-semibold text-[#8f0024]">
-                      {
-                        session.className
-                      }
-                    </p>
-
-                    <p className="mt-3 text-[10px] font-bold text-slate-500">
-                      {dateTimeLabel(
-                        session.startAt,
-                      )}
+                    <p className="mt-2 text-2xl font-black text-[#281c20]">
+                      {value}
                     </p>
                   </div>
-                ),
-              )}
-            </div>
-          </section>
-        )}
+
+                  <span
+                    className="grid h-10 w-10 place-items-center rounded-xl"
+                    style={{
+                      background: bg,
+                      color: ink,
+                    }}
+                  >
+                    <Icon size={18} />
+                  </span>
+                </div>
+
+                <p className="mt-3 text-[10px] text-[#938a8c]">
+                  {note}
+                </p>
+              </Link>
+            ),
+          )}
+        </section>
+
+        {/* TODAY'S SCHEDULE + COURSES */}
+        <div className="grid gap-5 xl:grid-cols-[1.5fr_1fr]">
+          <Panel
+            title="Today's Schedule"
+            subtitle="Classes planned for today"
+            href="/dashboard/classes"
+          >
+            {data.todaySchedule.length === 0 ? (
+              <Empty>
+                No classes scheduled for today.
+              </Empty>
+            ) : (
+              <div className="divide-y divide-[#eee9e3]">
+                {data.todaySchedule
+                  .slice(0, 4)
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#fff0f3] text-[#8f0024]">
+                          <Clock3 size={17} />
+                        </div>
+
+                        <div>
+                          <p className="text-xs font-extrabold">
+                            {item.title}
+                          </p>
+
+                          <p className="mt-1 text-[11px] text-[#8d8286]">
+                            {item.className} ·{" "}
+                            {item.mode ||
+                              item.location ||
+                              "Class"}
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] font-bold text-[#8f0024]">
+                        {dateLabel(item.startAt, true)}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </Panel>
+
+          <Panel
+            title="My Courses"
+            subtitle="Your currently enrolled classes"
+            href="/dashboard/courses"
+          >
+            {data.classes.length === 0 ? (
+              <Empty>
+                No enrolled classes yet.
+              </Empty>
+            ) : (
+              <div className="divide-y divide-[#eee9e3]">
+                {data.classes
+                  .slice(0, 4)
+                  .map((item) => (
+                    <Link
+                      href={`/dashboard/classes/${encodeURIComponent(
+                        item.id,
+                      )}`}
+                      key={item.id}
+                      className="flex items-center gap-3 px-5 py-4 hover:bg-[#fffafa]"
+                    >
+                      <div className="grid h-9 w-9 place-items-center rounded-lg bg-[#f7eff2] text-[#8f0024]">
+                        <BookOpen size={17} />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold">
+                          {item.name}
+                        </p>
+
+                        <p className="mt-1 truncate text-[10px] text-[#91878a]">
+                          {item.faculty ||
+                            item.program ||
+                            "Course"}
+                        </p>
+                      </div>
+
+                      <ArrowRight className="h-4 w-4 shrink-0 text-[#8f0024]" />
+                    </Link>
+                  ))}
+              </div>
+            )}
+          </Panel>
+        </div>
+
+        {/* ASSIGNMENTS + ANNOUNCEMENTS */}
+        <div className="grid gap-5 xl:grid-cols-[1.5fr_1fr]">
+          <Panel
+            title="Upcoming Assignments"
+            subtitle="Keep track of important due dates"
+            href="/dashboard/assignments"
+          >
+            {data.assignments.length === 0 ? (
+              <Empty>
+                No assignments available.
+              </Empty>
+            ) : (
+              <div className="divide-y divide-[#eee9e3]">
+                {data.assignments
+                  .slice(0, 5)
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold">
+                          {item.title}
+                        </p>
+
+                        <p className="mt-1 text-[10px] text-[#91878a]">
+                          {item.className} · Due{" "}
+                          {dateLabel(item.dueAt)}
+                        </p>
+                      </div>
+
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${
+                          item.submissionStatus ===
+                            "submitted" ||
+                          item.submittedAt
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-amber-50 text-amber-800"
+                        }`}
+                      >
+                        {item.submissionStatus ===
+                          "submitted" ||
+                        item.submittedAt
+                          ? "Submitted"
+                          : "Pending"}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </Panel>
+
+          <Panel
+            title="Announcements"
+            subtitle="Latest updates from your school"
+            href="/dashboard/notifications"
+          >
+            {data.announcements.length === 0 ? (
+              <Empty>
+                No announcements yet.
+              </Empty>
+            ) : (
+              <div className="divide-y divide-[#eee9e3]">
+                {data.announcements
+                  .slice(0, 4)
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex gap-3 px-5 py-3.5"
+                    >
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#fff2df] text-[#9e671d]">
+                        <Megaphone size={16} />
+                      </span>
+
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold">
+                          {item.title}
+                        </p>
+
+                        <p className="mt-1 line-clamp-2 text-[11px] leading-5 text-[#82787c]">
+                          {item.message}
+                        </p>
+
+                        <p className="mt-1.5 text-[10px] text-[#a49b9e]">
+                          {dateLabel(
+                            item.createdAt,
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </Panel>
+        </div>
+
+        {/* QUICK ACCESS */}
+        <section className="grid gap-3 sm:grid-cols-3">
+          {[
+            {
+              href: "/dashboard/live-classes",
+              icon: Video,
+              title: "Live Classes",
+              desc: "Join your scheduled classes",
+            },
+            {
+              href: "/dashboard/fees",
+              icon: Wallet,
+              title: "Fees & Payments",
+              desc: "View invoices and installments",
+            },
+            {
+              href: "/dashboard/performance",
+              icon: CheckCircle2,
+              title: "Performance",
+              desc: "Track your learning progress",
+            },
+          ].map(
+            ({
+              href,
+              icon: Icon,
+              title,
+              desc,
+            }) => (
+              <Link
+                href={href}
+                key={href}
+                className="flex items-center gap-3 rounded-xl border border-[#ece6df] bg-white p-4 transition hover:border-[#d9a7b4] hover:shadow-sm"
+              >
+                <span className="grid h-10 w-10 place-items-center rounded-lg bg-[#fff0f3] text-[#8f0024]">
+                  <Icon size={19} />
+                </span>
+
+                <span className="min-w-0 flex-1">
+                  <span className="block text-xs font-extrabold">
+                    {title}
+                  </span>
+
+                  <span className="mt-1 block text-[10px] text-[#91878a]">
+                    {desc}
+                  </span>
+                </span>
+
+                <ArrowRight
+                  size={15}
+                  className="text-[#8f0024]"
+                />
+              </Link>
+            ),
+          )}
+        </section>
       </div>
     </main>
-  );
-}
-
-function SummaryCard({
-  label,
-  value,
-  note,
-  icon: Icon,
-}: {
-  label: string;
-
-  value:
-    | string
-    | number;
-
-  note: string;
-  icon: typeof BookOpen;
-}) {
-  return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[9px] font-black uppercase tracking-wider text-slate-400">
-            {label}
-          </p>
-
-          <p className="mt-2 text-2xl font-black text-[#271a1e]">
-            {value}
-          </p>
-
-          <p className="mt-1 text-[9px] font-semibold text-slate-400">
-            {note}
-          </p>
-        </div>
-
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff1f4] text-[#8f0024]">
-          <Icon className="h-4 w-4" />
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function SectionHeading({
-  title,
-  subtitle,
-  icon: Icon,
-}: {
-  title: string;
-  subtitle: string;
-  icon: typeof BookOpen;
-}) {
-  return (
-    <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-4">
-      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#fff1f4] text-[#8f0024]">
-        <Icon className="h-4 w-4" />
-      </div>
-
-      <div>
-        <h2 className="text-sm font-black text-[#271a1e]">
-          {title}
-        </h2>
-
-        <p className="mt-0.5 text-[9px] font-semibold text-slate-400">
-          {subtitle}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function EmptyState({
-  text,
-}: {
-  text: string;
-}) {
-  return (
-    <div className="p-8 text-center">
-      <p className="text-xs font-semibold text-slate-400">
-        {text}
-      </p>
-    </div>
   );
 }

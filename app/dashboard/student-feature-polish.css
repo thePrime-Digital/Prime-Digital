@@ -1,0 +1,61 @@
+/*
+  PDS Student feature visual polish.
+  Scoped to the student workspace.
+  Does not change working React component logic.
+*/
+
+.student-dashboard-brand {
+  --student-ink: #390c19;
+  --student-panel: #ffffff;
+  --student-surface: #f8f4ee;
+  --student-divider: #eee4dd;
+}
+
+/* Consistent canvas */
+.student-dashboard-brand > div:last-child > div:last-child {
+  background-color: #f8f4ee;
+}
+
+/* Common light-maroon Tailwind background utilities */
+.student-dashboard-brand .bg-\[\#8f0024\],
+.student-dashboard-brand .bg-\[\#a51c40\],
+.student-dashboard-brand .bg-\[\#ad123d\],
+.student-dashboard-brand .bg-\[\#be123c\],
+.student-dashboard-brand .bg-\[\#c31943\],
+.student-dashboard-brand .bg-\[\#c51b45\] {
+  background-color: #390c19 !important;
+}
+
+/* Common maroon text */
+.student-dashboard-brand .text-\[\#8f0024\],
+.student-dashboard-brand .text-\[\#a51c40\],
+.student-dashboard-brand .text-\[\#ad123d\] {
+  color: #390c19 !important;
+}
+
+/* Common border colors */
+.student-dashboard-brand .border-\[\#8f0024\],
+.student-dashboard-brand .border-\[\#ad123d\] {
+  border-color: #390c19 !important;
+}
+
+/* Buttons, cards and inputs */
+.student-dashboard-brand main button,
+.student-dashboard-brand main a {
+  transition:
+    background-color .15s ease,
+    color .15s ease,
+    border-color .15s ease;
+}
+
+.student-dashboard-brand main input,
+.student-dashboard-brand main select,
+.student-dashboard-brand main textarea {
+  accent-color: #390c19;
+}
+
+.student-dashboard-brand main input:focus,
+.student-dashboard-brand main textarea:focus,
+.student-dashboard-brand main select:focus {
+  outline-color: #390c19;
+}

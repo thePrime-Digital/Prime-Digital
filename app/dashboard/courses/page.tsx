@@ -1,7 +1,5 @@
-import StudentPortalSection from "@/components/student/student-portal-section";
+import StudentReferenceScreen from "@/components/student/student-reference-screen";
 
 export default function Page() {
-  return (
-    <StudentPortalSection section="courses" />
-  );
+  return <StudentReferenceScreen screen="course" />;
 }

@@ -1,0 +1,19 @@
+.staff-portal {
+  --staff-burgundy: #390b17;
+  --staff-accent: #ad123d;
+  --staff-background: #f7f3ed;
+}
+
+.staff-no-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.staff-no-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.staff-portal button,
+.staff-portal a {
+  transition: background-color .15s ease, color .15s ease;
+}

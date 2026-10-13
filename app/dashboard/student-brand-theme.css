@@ -1,0 +1,86 @@
+
+.student-dashboard-brand {
+  --student-maroon: #390c19;
+  --student-maroon-hover: #501524;
+  --student-gold: #f6c44f;
+  --student-cream: #f8f5f0;
+}
+
+/* Sidebar */
+.student-dashboard-brand aside > div {
+  background-color: var(--student-maroon) !important;
+}
+
+/* Active navigation */
+.student-dashboard-brand aside nav a[aria-current="page"] {
+  background-color: #633023 !important;
+  color: var(--student-gold) !important;
+}
+
+.student-dashboard-brand aside nav a[aria-current="page"] svg {
+  color: var(--student-gold) !important;
+}
+
+/* Sidebar headings */
+.student-dashboard-brand aside nav section > p {
+  color: #c7a3aa !important;
+}
+
+/* Main welcome banner and other maroon panels */
+.student-dashboard-brand .bg-\[\#650019\],
+.student-dashboard-brand .bg-\[\#510014\],
+.student-dashboard-brand .bg-\[\#550017\],
+.student-dashboard-brand .bg-\[\#8f0024\],
+.student-dashboard-brand .bg-\[\#a51c40\],
+.student-dashboard-brand .bg-\[\#ad123d\],
+.student-dashboard-brand .bg-\[\#be123c\],
+.student-dashboard-brand .bg-\[\#c31943\],
+.student-dashboard-brand .bg-\[\#c51b45\] {
+  background-color: var(--student-maroon) !important;
+}
+
+/* Light maroon text and icons */
+.student-dashboard-brand .text-\[\#8f0024\],
+.student-dashboard-brand .text-\[\#a51c40\],
+.student-dashboard-brand .text-\[\#ad123d\],
+.student-dashboard-brand .text-\[\#be123c\],
+.student-dashboard-brand .text-\[\#c31943\] {
+  color: var(--student-maroon) !important;
+}
+
+/* Maroon borders */
+.student-dashboard-brand .border-\[\#8f0024\],
+.student-dashboard-brand .border-\[\#a51c40\],
+.student-dashboard-brand .border-\[\#ad123d\] {
+  border-color: var(--student-maroon) !important;
+}
+
+/* Hover shades */
+.student-dashboard-brand .hover\:bg-\[\#8f0024\]:hover,
+.student-dashboard-brand .hover\:bg-\[\#ad123d\]:hover {
+  background-color: var(--student-maroon-hover) !important;
+}
+
+/* Sidebar inactive links */
+.student-dashboard-brand aside nav a:not([aria-current="page"]) {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.student-dashboard-brand aside nav a:not([aria-current="page"]):hover {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* Preserve cream workspace */
+.student-dashboard-brand .bg-\[\#f8f5f0\] {
+  background-color: var(--student-cream);
+}
+
+/* Hidden sidebar scrollbar */
+.student-dashboard-brand aside nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.student-dashboard-brand aside nav::-webkit-scrollbar {
+  display: none;
+}

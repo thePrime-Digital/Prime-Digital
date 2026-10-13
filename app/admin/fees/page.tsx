@@ -1,9 +1,5 @@
-import FeesCenter from "@/components/fees/fees-center";
+import AdminFinalScreen from "@/components/admin/admin-final-screen";
 
-export default function AdminFeesPage() {
-  return (
-    <FeesCenter
-      role="admin"
-    />
-  );
+export default function Page() {
+  return <AdminFinalScreen screen="fees" />;
 }

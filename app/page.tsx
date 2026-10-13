@@ -267,7 +267,6 @@ export default function Home() {
         <div className="mx-auto max-w-[1320px] overflow-hidden rounded-[26px] border border-[#7a0019]/10 bg-gradient-to-br from-[#fff7f8] via-white to-[#fffafb] shadow-[0_18px_50px_rgba(90,0,18,0.08)]">
           <div className="grid items-center lg:grid-cols-[0.72fr_1.28fr]">
             {/* LEFT SIDE */}
-            {/* LEFT SIDE */}
 
             <div className="relative -top-3 px-7 py-9 sm:px-10 lg:-top-8 lg:px-12 lg:py-12">
               {/* ADMISSIONS OPEN - PDS BRAND COLOURS */}

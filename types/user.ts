@@ -1,7 +1,7 @@
 export const USER_ROLES = [
   "student",
   "faculty",
-  "client",
+  "staff",
   "admin",
 ] as const;
 

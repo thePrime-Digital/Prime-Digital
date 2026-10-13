@@ -183,6 +183,11 @@ export const facultyNavigation: DashboardNavigationItem[] = [
 
 export const adminNavigation: DashboardNavigationItem[] = [
   {
+    label: "Staff Management",
+    href: "/admin/staff",
+    icon: UsersRound,
+  },
+  {
     label: "Dashboard",
     href: "/admin",
     icon: LayoutDashboard,
@@ -307,6 +312,34 @@ export const clientNavigation: DashboardNavigationItem[] = [
   },
 ];
 
+export const staffNavigation: DashboardNavigationItem[] = [
+  {
+    label: "Dashboard",
+    href: "/staff",
+    icon: LayoutDashboard,
+  },
+  {
+    label: "My Tasks",
+    href: "/staff/tasks",
+    icon: CheckSquare,
+  },
+  {
+    label: "Students",
+    href: "/staff/students",
+    icon: Users,
+  },
+  {
+    label: "Notices",
+    href: "/staff/notices",
+    icon: Bell,
+  },
+  {
+    label: "Settings",
+    href: "/staff/settings",
+    icon: Settings,
+  },
+];
+
 export function getDashboardNavigation(
   role: DashboardRole,
 ): DashboardNavigationItem[] {
@@ -318,11 +351,15 @@ export function getDashboardNavigation(
     return facultyNavigation;
   }
 
-  if (role === "admin") {
-    return adminNavigation;
-  }
+if (role === "admin") {
+  return adminNavigation;
+}
 
-  return clientNavigation;
+if (role === "staff") {
+  return staffNavigation;
+}
+
+return clientNavigation;
 }
 
 export function getRoleTitle(role: DashboardRole): string {
@@ -336,6 +373,10 @@ export function getRoleTitle(role: DashboardRole): string {
 
   if (role === "admin") {
     return "Administrator";
+  }
+
+  if (role === "staff") {
+  return "Staff Portal";
   }
 
   return "Client";

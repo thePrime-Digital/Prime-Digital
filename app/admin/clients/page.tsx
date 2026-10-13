@@ -1,12 +1,5 @@
-﻿import AccountDirectory from "@/components/admin/account-directory";
+﻿import { redirect } from "next/navigation";
 
 export default function AdminClientsPage() {
-  return (
-    <AccountDirectory
-      initialRole="client"
-      lockRole
-      title="Client Management"
-      description="Manage Prime Digital Solutions client accounts and access."
-    />
-  );
+  redirect("/admin");
 }

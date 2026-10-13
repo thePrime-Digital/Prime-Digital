@@ -1,5 +1,5 @@
-﻿import AdminReports from "@/components/admin/admin-reports";
+import AdminFinalScreen from "@/components/admin/admin-final-screen";
 
-export default function AdminReportsPage() {
-  return <AdminReports />;
+export default function Page() {
+  return <AdminFinalScreen screen="reports" />;
 }

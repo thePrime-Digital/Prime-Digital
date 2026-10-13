@@ -1,0 +1,250 @@
+.admin-portal {
+  --admin-maroon: #390c19;
+  --admin-red: #c21a40;
+  --admin-gold: #f6c44f;
+  --admin-cream: #f7f3ed;
+  --admin-border: #eee5df;
+}
+
+.admin-hide-scroll {
+  scrollbar-width: none;
+}
+
+.admin-hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-portal button,
+.admin-portal a {
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+
+.admin-portal input:focus,
+.admin-portal textarea:focus,
+.admin-portal select:focus {
+  outline-color: #390c19;
+}
+
+.admin-screen {
+  min-height: 100%;
+  padding: 27px;
+  background: #f7f3ed;
+  color: #28171f;
+}
+
+.admin-screen h1,
+.admin-screen h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #310f1b;
+}
+
+.admin-screen h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.admin-screen h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.admin-screen .ad-sub {
+  margin-top: 5px;
+  color: #8b737a;
+  font-size: 12px;
+}
+
+.admin-screen .ad-top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-screen .ad-card {
+  min-width: 0;
+  padding: 19px;
+  background: white;
+  border: 1px solid #eee5df;
+  border-radius: 11px;
+  box-shadow: 0 7px 20px rgba(57,12,25,.055);
+}
+
+.admin-screen .ad-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.admin-screen .ad-four {
+  grid-template-columns: repeat(4,minmax(0,1fr));
+}
+
+.admin-screen .ad-two {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+}
+
+.admin-screen .ad-split {
+  grid-template-columns: minmax(0,1.15fr) minmax(300px,.85fr);
+}
+
+.admin-screen .ad-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 35px;
+  gap: 7px;
+  padding: 8px 12px;
+  background: white;
+  color: #390c19;
+  border: 1px solid #e7dcd5;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.admin-screen .ad-primary {
+  color: white;
+  background: #390c19;
+  border-color: #390c19;
+}
+
+.admin-screen .ad-red {
+  color: white;
+  background: #c21a40;
+  border-color: #c21a40;
+}
+
+.admin-screen .ad-btn:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+}
+
+.admin-screen .ad-label {
+  font-size: 11px;
+  color: #826c74;
+}
+
+.admin-screen .ad-value {
+  margin-top: 9px;
+  font-size: 25px;
+  font-weight: 800;
+  color: #390c19;
+}
+
+.admin-screen .ad-table-scroll {
+  overflow-x: auto;
+}
+
+.admin-screen .ad-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+  font-size: 12px;
+}
+
+.admin-screen .ad-table th {
+  padding: 13px 10px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #826d75;
+  border-bottom: 1px solid #eee7e2;
+}
+
+.admin-screen .ad-table td {
+  padding: 13px 10px;
+  border-bottom: 1px solid #f1ebe6;
+  vertical-align: middle;
+}
+
+.admin-screen .ad-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-screen .ad-input {
+  display: block;
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 11px;
+  border-radius: 7px;
+  border: 1px solid #e6dad4;
+  background: white;
+  font-size: 12px;
+  margin-top: 7px;
+}
+
+.admin-screen .ad-pill {
+  display: inline-block;
+  border-radius: 999px;
+  background: #f2e7df;
+  color: #6d3845;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 9px;
+}
+
+.admin-screen .ad-green {
+  background: #def4e7;
+  color: #087447;
+}
+
+.admin-screen .ad-yellow {
+  background: #fff0c8;
+  color: #886000;
+}
+
+.admin-screen .ad-pink {
+  background: #fbe5e9;
+  color: #b21b3e;
+}
+
+.admin-screen .ad-progress {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 50px;
+  background: #efe6df;
+}
+
+.admin-screen .ad-progress > div {
+  height: 100%;
+  background: #390c19;
+  border-radius: inherit;
+}
+
+.admin-screen .ad-empty {
+  padding: 28px 12px;
+  color: #8e7880;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.admin-screen .ad-muted {
+  font-size: 12px;
+  color: #846e77;
+  line-height: 1.7;
+}
+
+@media(max-width:1050px) {
+  .admin-screen .ad-four {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  .admin-screen .ad-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width:640px) {
+  .admin-screen {
+    padding: 15px;
+  }
+  .admin-screen .ad-four,
+  .admin-screen .ad-two {
+    grid-template-columns: 1fr;
+  }
+}

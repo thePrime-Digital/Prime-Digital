@@ -29,6 +29,7 @@ const selfIamConfig: ContactKitConfig | null =
 function getRedirectPath(role: string): string {
   if (role === "admin") return "/admin";
   if (role === "faculty") return "/faculty";
+  if (role === "staff") return "/staff";
   if (role === "client") return "/client-dashboard";
   return "/dashboard";
 }

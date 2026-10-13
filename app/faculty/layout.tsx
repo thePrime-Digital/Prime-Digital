@@ -1,27 +1,19 @@
-﻿import type {
-  ReactNode,
-} from "react";
+import type { ReactNode } from "react";
+import { redirect } from "next/navigation";
 
-import {
-  redirect,
-} from "next/navigation";
+import FacultyDashboardShell from "@/components/faculty/faculty-dashboard-shell";
+import { getCurrentUser } from "@/lib/auth/current-user";
 
-import DashboardShell from "@/components/dashboard/dashboard-shell";
+import "./faculty-theme.css";
 
-import {
-  getCurrentUser,
-} from "@/lib/auth/current-user";
-
-export const dynamic =
-  "force-dynamic";
+export const dynamic = "force-dynamic";
 
 export default async function FacultyLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const user =
-    await getCurrentUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/login");
@@ -31,8 +23,8 @@ export default async function FacultyLayout({
     redirect("/admin");
   }
 
-  if (user.role === "client") {
-    redirect("/client-dashboard");
+  if (user.role === "staff") {
+    redirect("/staff");
   }
 
   if (user.role === "student") {
@@ -43,15 +35,18 @@ export default async function FacultyLayout({
     redirect("/login");
   }
 
+  if (user.status !== "active") {
+    redirect("/login");
+  }
+
   return (
-    <DashboardShell
-      role="faculty"
+    <FacultyDashboardShell
       user={{
         name: user.name,
         email: user.email,
       }}
     >
       {children}
-    </DashboardShell>
+    </FacultyDashboardShell>
   );
 }

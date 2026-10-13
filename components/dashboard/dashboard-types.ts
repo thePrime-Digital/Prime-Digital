@@ -3,8 +3,8 @@
 export type DashboardRole =
   | "student"
   | "faculty"
-  | "admin"
-  | "client";
+  | "staff"
+  | "admin";
 
 export type DashboardUser = {
   name: string;

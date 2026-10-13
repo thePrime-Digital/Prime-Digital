@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   useCallback,
@@ -33,7 +33,7 @@ import {
 type UserRole =
   | "student"
   | "faculty"
-  | "client"
+  | "staff"
   | "admin";
 
 type UserStatus =
@@ -81,7 +81,7 @@ type Counts = {
   total: number;
   students: number;
   faculty: number;
-  clients: number;
+  staff: number;
   admins: number;
   active: number;
   pending: number;
@@ -108,7 +108,7 @@ const emptyCounts: Counts = {
   total: 0,
   students: 0,
   faculty: 0,
-  clients: 0,
+  staff: 0,
   admins: 0,
   active: 0,
   pending: 0,
@@ -134,8 +134,8 @@ function roleLabel(
     return "Faculty";
   }
 
-  if (role === "client") {
-    return "Client";
+  if (role === "staff") {
+    return "Staff";
   }
 
   return "Student";
@@ -761,11 +761,11 @@ export default function AccountDirectory({
     },
     {
       value:
-        "client",
+        "staff",
       label:
-        "Clients",
+        "Staff",
       count:
-        counts.clients,
+        counts.staff,
     },
     {
       value:
@@ -1425,8 +1425,8 @@ export default function AccountDirectory({
                       Faculty
                     </option>
 
-                    <option value="client">
-                      Client
+                    <option value="staff">
+                      Staff
                     </option>
 
                     <option value="admin">

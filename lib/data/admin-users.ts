@@ -1,4 +1,4 @@
-﻿import {
+import {
   ObjectId,
   type WithId,
 } from "mongodb";
@@ -53,7 +53,7 @@ export function isAllowedAdminRole(
   return (
     value === "student" ||
     value === "faculty" ||
-    value === "client" ||
+    value === "staff" ||
     value === "admin"
   );
 }

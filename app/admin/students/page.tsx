@@ -1,12 +1,5 @@
-﻿import AccountDirectory from "@/components/admin/account-directory";
+import AdminFinalScreen from "@/components/admin/admin-final-screen";
 
-export default function AdminStudentsPage() {
-  return (
-    <AccountDirectory
-      initialRole="student"
-      lockRole
-      title="Student Management"
-      description="Search, create and manage student accounts, access and account details."
-    />
-  );
+export default function Page() {
+  return <AdminFinalScreen screen="students" />;
 }

@@ -121,29 +121,35 @@ export default function DashboardShell({
       role,
     );
 
-  const baseRoute =
-    role === "student"
-      ? "/dashboard"
-      : role === "faculty"
-        ? "/faculty"
+const baseRoute =
+  role === "student"
+    ? "/dashboard"
+    : role === "faculty"
+      ? "/faculty"
+      : role === "staff"
+        ? "/staff"
         : role === "admin"
           ? "/admin"
           : "/client-dashboard";
 
-  const notificationsRoute =
-    role === "student"
-      ? "/dashboard/notifications"
-      : role === "faculty"
-        ? "/faculty/notifications"
+const notificationsRoute =
+  role === "student"
+    ? "/dashboard/notifications"
+    : role === "faculty"
+      ? "/faculty/notifications"
+      : role === "staff"
+        ? "/staff/notices"
         : role === "admin"
           ? "/admin/notifications"
           : "/client-dashboard/notifications";
 
-  const settingsRoute =
-    role === "student"
-      ? "/dashboard/settings"
-      : role === "faculty"
-        ? "/faculty/settings"
+const settingsRoute =
+  role === "student"
+    ? "/dashboard/settings"
+    : role === "faculty"
+      ? "/faculty/settings"
+      : role === "staff"
+        ? "/staff/settings"
         : role === "admin"
           ? "/admin/settings"
           : "/client-dashboard/settings";

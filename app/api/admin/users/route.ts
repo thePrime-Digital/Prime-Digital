@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   Filter,
 } from "mongodb";
 
@@ -229,7 +229,7 @@ export async function GET(
       totalAccounts,
       students,
       faculty,
-      clients,
+      staff,
       admins,
       active,
       pending,
@@ -262,7 +262,7 @@ export async function GET(
       }),
 
       collection.countDocuments({
-        role: "client",
+        role: "staff",
       }),
 
       collection.countDocuments({
@@ -342,7 +342,7 @@ export async function GET(
             totalAccounts,
           students,
           faculty,
-          clients,
+          staff,
           admins,
           active,
           pending,
