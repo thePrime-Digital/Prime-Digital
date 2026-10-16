@@ -44,7 +44,7 @@ const allowedNavigationRoutes = new Set([
 ]);
 
 const allowedDownloads = new Set([
-  "/downloads/prime-digital-school-brochure.pdf",
+  "/downloads/prime-digital-school-brochure-v2.pdf",
   "/downloads/prime-digital-school-prospectus.pdf",
 ]);
 
@@ -253,7 +253,7 @@ Allowed navigation routes:
  /programs/digital-content-creation
 
 Allowed downloads:
- /downloads/prime-digital-school-brochure.pdf
+ /downloads/prime-digital-school-brochure-v2.pdf
  /downloads/prime-digital-school-prospectus.pdf
 
 For downloads use:
@@ -261,8 +261,8 @@ For downloads use:
 {
   "type": "download",
   "label": "Download Brochure",
-  "value": "/downloads/prime-digital-school-brochure.pdf",
-  "filename": "prime-digital-school-brochure.pdf"
+  "value": "/downloads/prime-digital-school-brochure-v2.pdf",
+  "filename": "prime-digital-school-brochure-v2.pdf"
 }
 
 Rules for actions:

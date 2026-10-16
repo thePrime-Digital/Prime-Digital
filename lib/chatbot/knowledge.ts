@@ -165,7 +165,7 @@ ABOUT PAGE
 /about
 
 BROCHURE
-/downloads/prime-digital-school-brochure.pdf
+/downloads/prime-digital-school-brochure-v2.pdf
 
 PROSPECTUS
 /downloads/prime-digital-school-prospectus.pdf
