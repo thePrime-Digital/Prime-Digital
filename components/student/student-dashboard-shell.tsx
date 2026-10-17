@@ -17,6 +17,7 @@ import {
   ClipboardList,
   FileQuestion,
   GraduationCap,
+  Globe,
   LayoutDashboard,
   LibraryBig,
   LogOut,
@@ -290,6 +291,16 @@ export default function StudentDashboardShell({ user, children }: Props) {
       </nav>
 
       <div className="shrink-0 border-t border-white/10 px-3 pb-10 pt-3">
+        <Link
+          href="/"
+          rel="noopener noreferrer"
+          onClick={() => setMobileOpen(false)}
+          className="mb-1 flex w-full items-center gap-3 rounded-lg px-3 py-3 text-xs font-bold text-white/80 transition hover:bg-white/10 hover:text-white"
+        >
+          <Globe size={16} />
+          Visit Website
+          <ArrowRight size={14} className="ml-auto opacity-60" />
+        </Link>
         <button
           type="button"
           onClick={() => void logout()}
@@ -434,7 +445,16 @@ export default function StudentDashboardShell({ user, children }: Props) {
                     Settings
                   </Link>
 
-                  <button
+                                    <Link
+                    href="/"
+                    rel="noopener noreferrer"
+                    onClick={() => setProfileOpen(false)}
+                    className="flex items-center gap-2 px-4 py-3 text-xs hover:bg-slate-50"
+                  >
+                    <Globe size={15} />
+                    Visit Website
+                  </Link>
+<button
                     type="button"
                     onClick={() => void logout()}
                     disabled={loggingOut}

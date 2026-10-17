@@ -1,5 +1,5 @@
-import StudentReferenceScreen from "@/components/student/student-reference-screen";
+import StudentPlacementJobs from "@/components/student/student-placement-jobs";
 
 export default function Page() {
-  return <StudentReferenceScreen screen="placement" />;
+  return <StudentPlacementJobs />;
 }

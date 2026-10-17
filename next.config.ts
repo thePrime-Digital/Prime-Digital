@@ -1,6 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/mumbai-jobs",
+        destination: "/job-connect",
+        permanent: true,
+      },
+      {
+        source: "/mumbai-jobs/:path*",
+        destination: "/job-connect/:path*",
+        permanent: true,
+      },
+    ];
+  },
+
   allowedDevOrigins: ['192.168.1.245', '192.168.1.15', '*.local', 'localhost'],
 
   images: {
