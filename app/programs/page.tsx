@@ -1623,55 +1623,25 @@ export default function ProgramsPage() {
             </div>
           </div>
 
-          <div className="w-full lg:w-1/2 relative flex justify-center py-10">
-            <div className="absolute inset-0 bg-[#5C021A]/5 rounded-xl -rotate-2 transform scale-95" />
+          {/* Official A4 course completion certificate preview */}
+          <div className="relative flex w-full justify-center py-8 lg:w-1/2 lg:py-10">
+            <div className="pointer-events-none absolute inset-6 rounded-3xl bg-[#5C021A]/5 blur-2xl" />
 
-            <div className="bg-white border border-[#DCC0C1] rounded-xl p-10 w-full max-w-[500px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] rotate-2 relative z-10">
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-xl font-bold text-[#5C021A]">
-                  Prime Digital School
-                </h2>
-
-                <span className="text-sm text-[#5D5F5F]">ID: PDS-2026-X98</span>
+            <div className="relative z-10 w-full max-w-[440px]">
+              <div className="overflow-hidden rounded-xl border border-[#DCC0C1] bg-[#FFF9F0] p-2 shadow-[0_24px_55px_-15px_rgba(72,12,28,0.23)] transition-transform duration-300 hover:-translate-y-1 sm:p-3">
+                <Image
+                  src="/certificates/pds-course-completion.jpg"
+                  alt="Prime Digital School Certificate of Course Completion sample"
+                  width={1241}
+                  height={1755}
+                  sizes="(max-width: 1024px) 90vw, 440px"
+                  className="block h-auto w-full rounded-sm object-contain"
+                />
               </div>
 
-              <div className="text-center mb-6">
-                <h3 className="text-2xl text-[#1C1B1B] mb-2">
-                  Certificate of Completion
-                </h3>
-
-                <p className="text-base text-[#5D5F5F] italic mb-4">
-                  This acknowledges that
-                </p>
-
-                <div className="border-b border-[#5C021A]/20 pb-2 mb-6">
-                  <span className="text-3xl text-[#1C1B1B] font-serif">
-                    Ankit Mali
-                  </span>
-                </div>
-
-                <p className="text-base text-[#1C1B1B] mb-2">
-                  has successfully completed the
-                </p>
-
-                <p className="text-base font-bold text-[#1C1B1B]">
-                  AI & Machine Learning Explorer Program
-                </p>
-              </div>
-
-              <div className="border-t border-[#5C021A]/10 pt-6 flex justify-between items-end">
-                <div>
-                  <p className="text-sm font-bold text-[#1C1B1B] mb-1">
-                    June 26, 2026
-                  </p>
-
-                  <p className="text-sm text-[#5D5F5F]">Date of Issue</p>
-                </div>
-
-                <div className="opacity-30">
-                  <AwardIcon className="w-12 h-12 text-[#5C021A]" />
-                </div>
-              </div>
+              <p className="mt-4 text-center text-xs font-medium text-[#7A686D]">
+                Sample Certificate of Course Completion
+              </p>
             </div>
           </div>
         </div>
