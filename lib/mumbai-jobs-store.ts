@@ -1,6 +1,11 @@
 import "server-only";
+
 import { getDatabase } from "@/lib/mongodb";
-import { getMumbaiJobs, type MumbaiJob } from "@/lib/mumbai-jobs";
+
+import {
+  getMumbaiJobs,
+  type MumbaiJob,
+} from "@/lib/mumbai-jobs";
 
 type StoredJob = MumbaiJob & {
   firstSeenAt: Date;
@@ -8,41 +13,82 @@ type StoredJob = MumbaiJob & {
   lastSyncAt: Date;
 };
 
-const COLLECTION = "mumbai_job_listings";
+const LEGACY = "mumbai_job_listings";
+const GLOBAL = "job_listings";
+
+function validatedJob(job: MumbaiJob): MumbaiJob | null {
+  if (
+    !/^[a-zA-Z0-9_-]{1,150}$/.test(job.id) ||
+    !job.title?.trim() ||
+    !job.company?.trim() ||
+    !["Mumbai", "Navi Mumbai"].includes(job.location)
+  ) {
+    return null;
+  }
+
+  try {
+    const url = new URL(job.officialUrl);
+    const career = new URL(job.careerUrl);
+
+    if (
+      url.protocol !== "https:" ||
+      career.protocol !== "https:"
+    ) {
+      return null;
+    }
+
+    return {
+      ...job,
+      officialUrl: url.toString(),
+      careerUrl: career.toString(),
+    };
+  } catch {
+    return null;
+  }
+}
 
 export async function syncMumbaiJobsToDatabase() {
-  const jobs = await getMumbaiJobs();
+  const discovered = await getMumbaiJobs();
   const db = await getDatabase();
-  const collection = db.collection<StoredJob>(COLLECTION);
 
-  await collection.createIndex(
+  const legacy = db.collection<StoredJob>(LEGACY);
+  const global = db.collection(GLOBAL);
+
+  await legacy.createIndex(
     { companyKey: 1, officialUrl: 1 },
     { unique: true }
   );
 
-  const now = new Date();
+  await global.createIndex(
+    { id: 1 },
+    { unique: true }
+  );
+
   const unique = new Map<string, MumbaiJob>();
 
-  for (const job of jobs) {
-    try {
-      const url = new URL(job.officialUrl);
-      if (url.protocol !== "https:") continue;
-      unique.set(job.companyKey + "|" + url.href, {
-        ...job,
-        officialUrl: url.href,
-      });
-    } catch {
-      continue;
-    }
+  for (const item of discovered) {
+    const job = validatedJob(item);
+
+    if (!job) continue;
+
+    unique.set(
+      `${job.companyKey}|${job.officialUrl}`,
+      job
+    );
   }
 
-  const values = [...unique.values()];
+  const jobs = [...unique.values()];
+  const now = new Date();
+
   let inserted = 0;
   let updated = 0;
+  let globalInserted = 0;
+  let globalUpdated = 0;
 
-  for (let i = 0; i < values.length; i += 100) {
-    const batch = values.slice(i, i + 100);
-    const result = await collection.bulkWrite(
+  for (let i = 0; i < jobs.length; i += 100) {
+    const batch = jobs.slice(i, i + 100);
+
+    const legacyResult = await legacy.bulkWrite(
       batch.map((job) => ({
         updateOne: {
           filter: {
@@ -65,22 +111,85 @@ export async function syncMumbaiJobsToDatabase() {
       { ordered: false }
     );
 
-    inserted += result.upsertedCount;
-    updated += result.modifiedCount;
+    inserted += legacyResult.upsertedCount;
+    updated += legacyResult.modifiedCount;
+
+    const globalResult = await global.bulkWrite(
+      batch.map((job) => ({
+        updateOne: {
+          filter: { id: job.id },
+          update: {
+            $set: {
+              title: job.title,
+              company: job.company,
+              companyKey: job.companyKey,
+              category: job.category,
+              type: job.type,
+
+              location: job.location,
+              city: job.location,
+              state: "Maharashtra",
+              country: "India",
+              countryCode: "IN",
+              locationLabel:
+                `${job.location}, Maharashtra, India`,
+
+              officialUrl: job.officialUrl,
+              careerUrl: job.careerUrl,
+              postedDate: job.postedDate ?? null,
+
+              lastSeenAt: now,
+              lastSyncAt: now,
+            },
+            $setOnInsert: {
+              id: job.id,
+              firstSeenAt: now,
+              lastVerifiedAt: null,
+              status: "unverified",
+              workMode: "unknown",
+              experienceLevel: "unknown",
+              experienceMinYears: null,
+              experienceMaxYears: null,
+              salaryMin: null,
+              salaryMax: null,
+              salaryCurrency: null,
+              salaryPeriod: "unknown",
+              skills: [],
+              visaSponsorship: "unknown",
+              sourceId: job.companyKey,
+              sourceJobId: null,
+              remoteEligibleCountries: [],
+              workAuthorization: null,
+            },
+          },
+          upsert: true,
+        },
+      })),
+      { ordered: false }
+    );
+
+    globalInserted += globalResult.upsertedCount;
+    globalUpdated += globalResult.modifiedCount;
   }
 
   return {
-    discovered: values.length,
+    discovered: jobs.length,
     inserted,
     updated,
-    totalStored: await collection.countDocuments(),
+    totalStored: await legacy.countDocuments(),
+    global: {
+      inserted: globalInserted,
+      updated: globalUpdated,
+      totalStored: await global.countDocuments(),
+    },
     completedAt: now.toISOString(),
   };
 }
 
-export async function getStoredMumbaiJobs(): Promise<MumbaiJob[]> {
+export async function getStoredMumbaiJobs():
+  Promise<MumbaiJob[]> {
   const db = await getDatabase();
-  const collection = db.collection<StoredJob>(COLLECTION);
+  const collection = db.collection<StoredJob>(LEGACY);
 
   const rows = await collection
     .find({}, { projection: { _id: 0 } })
@@ -98,7 +207,8 @@ export async function getStoredMumbaiJobs(): Promise<MumbaiJob[]> {
       : latest;
   }, 0);
 
-  const reviewCutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const reviewCutoff =
+    Date.now() - 7 * 24 * 60 * 60 * 1000;
 
   function getDiscoveryStatus(lastSeenAt?: Date) {
     const timestamp = lastSeenAt
@@ -119,6 +229,7 @@ export async function getStoredMumbaiJobs(): Promise<MumbaiJob[]> {
 
     return "not-seen-latest-sync";
   }
+
   return rows.map((row) => ({
     id: row.id,
     title: row.title,

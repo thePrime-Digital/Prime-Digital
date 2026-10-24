@@ -16,7 +16,7 @@ const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Programs", href: "/programs" },
   { label: "Admissions", href: "/admissions" },
-  { label: "Careers", href: "/careers" },
+  { label: "Careers at PDS", href: "/job-connect?tab=careers" },
 ];
 
 const supportLinks = [

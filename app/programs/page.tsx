@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
+import PlacementMarquee from "@/components/careers/placement-marquee";
 import Link from "next/link";
 
 import {
@@ -1830,6 +1831,7 @@ export default function ProgramsPage() {
       </section>
 
       {/* ===================================================== */}
+      <PlacementMarquee />
       {/* FAQ */}
       {/* ===================================================== */}
 

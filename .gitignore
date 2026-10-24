@@ -76,3 +76,30 @@ jobs-cron-backup-20261015-153917/route.ts
 app/api/student/placement-jobs/route.ts.backup-20261017-152146
 app/job-connect/page.tsx.backup
 app/job-connect/page.tsx.backup-20261017-154941
+PDS_Final_India_Job_Audit.json
+PDS_India_Candidates_For_Review.json
+PDS_India_Flagged_Jobs.csv
+PDS_India_Staging_Verification_Report.json
+PDS_Publishing_Final_Report.json
+backups/PDS_Live_Jobs_PrePublish_2026-10-24T11-09-36-324Z.json
+config/ats-company-directory.csv
+config/ats-company-directory.json
+config/job-sources-before-300-20261024-150630.json
+config/job-sources.backup.json
+config/job-sources.json
+# PDS temporary job discovery and audit scripts
+/scripts/audit-final-india-jobs.mjs
+/scripts/audit-global-job-safety.mjs
+/scripts/audit-india-expansion.mjs
+/scripts/audit-job-expansion-duplicates.mjs
+/scripts/discover-india-jobs.mjs
+/scripts/discover-india-multi-source.mjs
+/scripts/expand-india-company-sources.mjs
+/scripts/expand-india-v2.mjs
+
+# Generated audit reports
+/PDS_*.json
+/PDS_*.csv
+
+# Local database backups
+/backups/

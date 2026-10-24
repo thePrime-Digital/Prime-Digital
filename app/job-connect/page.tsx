@@ -2,37 +2,74 @@ import type { Metadata } from "next";
 
 import MumbaiJobsClient from "@/components/mumbai-jobs-client";
 
-import {
-  getMumbaiJobs,
-  OFFICIAL_MUMBAI_JOB_SOURCES,
-  type MumbaiJob,
-} from "@/lib/mumbai-jobs";
+import { OFFICIAL_MUMBAI_JOB_SOURCES } from "@/lib/mumbai-jobs";
 
-import { getStoredMumbaiJobs } from "@/lib/mumbai-jobs-store";
+import { searchGlobalJobs } from "@/lib/jobs/repository";
+
+import {
+  getPublishedCareerJobs,
+  type PublicCareerJob,
+} from "@/lib/careers/public-careers";
+
+import type { JobListing } from "@/lib/jobs/types";
 
 export const runtime = "nodejs";
-export const revalidate = 900;
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Job Connect | Prime Digital School",
   description:
-    "Discover jobs and internships across Mumbai and Navi Mumbai through Prime Digital School Job Connect.",
+    "Explore job opportunities across India and discover career openings at Prime Digital School.",
   alternates: {
     canonical: "/job-connect",
   },
 };
 
-export default async function MumbaiJobsPage() {
-  let jobs: MumbaiJob[] = [];
+type PageProps = {
+  searchParams: Promise<{
+    tab?: string;
+  }>;
+};
 
-  try {
-    jobs = await getStoredMumbaiJobs();
-  } catch (error) {
-    console.error("Mumbai Jobs database unavailable:", error);
+export default async function JobConnectPage({ searchParams }: PageProps) {
+  const { tab } = await searchParams;
+
+  const initialTab: "jobs" | "careers" = tab === "careers" ? "careers" : "jobs";
+
+  let externalJobs: JobListing[] = [];
+
+  let externalTotal = 0;
+
+  let pdsJobs: PublicCareerJob[] = [];
+
+  const [externalResult, pdsResult] = await Promise.allSettled([
+    searchGlobalJobs({
+      page: 1,
+      limit: 20,
+      sortBy: "recent",
+    }),
+
+    getPublishedCareerJobs(),
+  ]);
+
+  if (externalResult.status === "fulfilled") {
+    externalJobs = externalResult.value.jobs;
+    externalTotal = externalResult.value.total;
+  } else {
+    console.error(
+      "[JOB_CONNECT] Unable to load external jobs:",
+      externalResult.reason,
+    );
   }
 
-  if (jobs.length === 0) {
-    jobs = await getMumbaiJobs();
+  if (pdsResult.status === "fulfilled") {
+    pdsJobs = pdsResult.value;
+  } else {
+    console.error(
+      "[JOB_CONNECT] Unable to load PDS career jobs:",
+      pdsResult.reason,
+    );
   }
 
   const checkedAt = new Intl.DateTimeFormat("en-IN", {
@@ -43,9 +80,12 @@ export default async function MumbaiJobsPage() {
 
   return (
     <MumbaiJobsClient
-      jobs={jobs}
+      jobs={externalJobs}
+      initialTotal={externalTotal}
       sources={OFFICIAL_MUMBAI_JOB_SOURCES}
       checkedAt={checkedAt}
+      pdsJobs={pdsJobs}
+      initialTab={initialTab}
     />
   );
 }

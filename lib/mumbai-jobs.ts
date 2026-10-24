@@ -648,6 +648,39 @@ function officialUrl(
   }
 }
 
+function explicitCityFromJobUrl(
+  rawUrl: string
+): string | null {
+  try {
+    const url = new URL(rawUrl);
+    const path = decodeURIComponent(url.pathname);
+
+    const match = path.match(
+      /\/job\/(Navi[-_]Mumbai|Mumbai|Bangalore|Bengaluru|Gandhinagar|Pune|Hyderabad|Chennai|New[-_]Delhi|Delhi|Kolkata)[-_/]/i
+    );
+
+    if (!match) return null;
+
+    const city = match[1].toLowerCase().replace(/_/g, "-");
+
+    if (city === "bangalore") return "Bengaluru";
+    if (city === "new-delhi") return "Delhi";
+    if (city === "navi-mumbai") return "Navi Mumbai";
+
+    return city.charAt(0).toUpperCase() + city.slice(1);
+  } catch {
+    return null;
+  }
+}
+
+function hasConflictingJobCity(
+  url: string,
+  location: "Mumbai" | "Navi Mumbai"
+): boolean {
+  const indicated = explicitCityFromJobUrl(url);
+
+  return indicated !== null && indicated !== location;
+}
 function locationFromText(
   value: string,
 ): "Mumbai" | "Navi Mumbai" | null {
@@ -1202,6 +1235,13 @@ async function fetchSource(
       job:
         MumbaiJob,
     ) {
+      if (hasConflictingJobCity(job.officialUrl, job.location)) {
+        console.warn(
+          `[Mumbai Jobs] Location conflict skipped: ${job.id}`
+        );
+        return;
+      }
+
       const key =
         job.officialUrl;
 

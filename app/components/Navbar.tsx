@@ -19,8 +19,7 @@ const PDA_CONNECTOR_URL = "https://services.primedigitalschool.com";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Programs", href: "/programs" },
-  { label: "Careers", href: "/careers" },
-  { label: "Job Connect", href: "/mumbai-jobs" },
+  { label: "Career", href: "/job-connect" },
   { label: "Support", href: "/support" },
   { label: "About Us", href: "/about" },
 ];
@@ -161,12 +160,9 @@ export default function Navbar() {
     (href: string) => {
       if (href === "/") return pathname === "/";
 
-      return (
-        pathname === href ||
-        pathname.startsWith(href + "/")
-      );
+      return pathname === href || pathname.startsWith(href + "/");
     },
-    [pathname]
+    [pathname],
   );
 
   const dashboardHref = dashboardForRole(user?.role || "student");
@@ -205,12 +201,8 @@ export default function Navbar() {
   return (
     <header className="fixed left-0 right-0 top-0 z-[1000] px-4 py-3">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 rounded-[1.4rem] border border-[#8b0022]/15 bg-white/95 px-5 py-3 shadow-[0_18px_45px_rgba(30,10,18,0.10)] backdrop-blur-xl">
-
         {/* BRAND */}
-        <Link
-          href="/"
-          className="flex shrink-0 items-center gap-3"
-        >
+        <Link href="/" className="flex shrink-0 items-center gap-3">
           <span className="text-lg font-black tracking-tight text-[#7c001d] max-[480px]:text-base xl:text-xl">
             Prime Digital School
           </span>
@@ -245,7 +237,6 @@ export default function Navbar() {
 
         {/* DESKTOP ACTIONS */}
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
-
           <a
             href={PDA_CONNECTOR_URL}
             target="_blank"
@@ -296,7 +287,6 @@ export default function Navbar() {
 
                 {profileOpen && (
                   <div className="absolute right-0 top-14 z-50 w-64 overflow-hidden rounded-2xl border border-[#eadce0] bg-white shadow-[0_20px_50px_rgba(40,0,15,0.15)]">
-
                     <div className="border-b border-[#f0e7ea] px-4 py-4">
                       <p className="truncate text-sm font-bold text-[#28131b]">
                         {user.name}
@@ -381,7 +371,6 @@ export default function Navbar() {
       {open && (
         <div className="mx-auto mt-3 max-w-[1440px] rounded-[1.4rem] border border-[#8b0022]/15 bg-white p-4 shadow-[0_18px_45px_rgba(30,10,18,0.12)] lg:hidden">
           <div className="grid gap-2">
-
             {navItems.map((item) => {
               const active = isActive(item.href);
 
