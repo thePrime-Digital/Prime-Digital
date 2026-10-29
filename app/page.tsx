@@ -23,6 +23,8 @@ import {
   MapPin,
   Star,
   ShieldCheck,
+  Award,
+  Globe,
 } from "lucide-react";
 import SchoolVideoPlayer from "@/components/home/SchoolVideoPlayer";
 
@@ -239,23 +241,36 @@ export default function Home() {
       {/* RECOGNITION STRIP */}
       {/* ===================================================== */}
 
-      <section className="bg-white px-6 py-8 md:px-10 md:py-10">
-        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-center gap-x-10 gap-y-5 border-y border-slate-200 py-6 md:justify-between">
-          <span className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">
-            Recognized By
-          </span>
+      <section className="bg-white px-6 py-10 md:px-10">
+        <div className="mx-auto max-w-[1400px] border-y border-[#eadde1] py-7">
+          <div className="flex flex-col items-center gap-7 lg:flex-row lg:justify-between lg:gap-10">
+            <div className="flex shrink-0 items-center gap-3">
+              <div className="h-8 w-1 rounded-full bg-[#800020]" />
+              <p className="text-sm font-bold uppercase tracking-[0.12em] text-[#800020]">
+                Our Credentials
+              </p>
+            </div>
 
-          <span className="text-[17px] font-black text-[#3f3f46] md:text-[20px]">
-            ISO 9001:2015
-          </span>
+            <div className="grid w-full grid-cols-1 gap-6 text-center sm:grid-cols-3 lg:max-w-[950px]">
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-xl font-black tracking-tight text-[#20171b] md:text-2xl">
+                  ISO 9001:2015
+                </span>
+              </div>
 
-          <span className="text-[17px] font-black text-[#3f3f46] md:text-[20px]">
-            MSME Certified
-          </span>
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-xl font-black tracking-tight text-[#20171b] md:text-2xl">
+                  MSME Registered
+                </span>
+              </div>
 
-          <span className="text-[17px] font-black text-[#3f3f46] md:text-[20px]">
-            Digital India
-          </span>
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-xl font-black tracking-tight text-[#20171b] md:text-2xl">
+                  Digital India
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
