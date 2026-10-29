@@ -176,7 +176,7 @@ export default function Home() {
               href="/programs"
               className="min-h-[44px] inline-flex items-center justify-center gap-[11px] px-5 rounded-[13px] text-[14px]  transition-all duration-300 ease-in-out bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] hover:-translate-y-[3px] max-[720px]:w-full w-full lg:w-1/2 font-extrabold text-white"
             >
-              Explore Programs <ArrowRight size={16} />
+              Explore Courses <ArrowRight size={16} />
             </Link>
 
             <Link
@@ -331,7 +331,7 @@ export default function Home() {
                   href="/programs"
                   className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-[#8f0024]/40 bg-white px-5 text-[14px] font-black text-[#8f0024] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#8f0024] hover:bg-[#fff1f4]"
                 >
-                  Explore Programs
+                  Explore Courses
                   <ArrowRight size={17} strokeWidth={2.5} />
                 </Link>
               </div>
@@ -349,12 +349,12 @@ export default function Home() {
       <section className="pds-programs-section">
         <div className="pds-section-heading">
           <div>
-            <h2>Explore Our Future-Ready Programs</h2>
+            <h2>Explore Our Future-Ready Courses</h2>
             <span />
           </div>
 
           <Link href="/programs">
-            View All Programs <ArrowRight size={15} />
+            View All Courses <ArrowRight size={15} />
           </Link>
         </div>
 
@@ -607,7 +607,7 @@ export default function Home() {
                 </h2>
 
                 <p className="mt-7 max-w-[400px] text-sm leading-7 text-white/65">
-                  Upskill students and future leaders with structured programs,
+                  Upskill students and future leaders with structured courses,
                   digital education, expert mentors, and practical learning.
                 </p>
 

@@ -485,7 +485,7 @@ export default function ProgramsPage() {
           <div className="text-center w-full flex flex-col items-center gap-3">
             <h1 className="text-4xl md:text-5xl lg:text-[52px] font-bold text-[#1A1A1A] leading-[1.1] tracking-tight max-w-[724px]">
               Explore Industry-Aligned{" "}
-              <span className="text-[#5C021A]">Programs</span>
+              <span className="text-[#5C021A]">Courses</span>
             </h1>
 
             <p className="text-lg md:text-[18px] text-[#5D5F5F] leading-[1.7] max-w-[640px]">
@@ -500,7 +500,7 @@ export default function ProgramsPage() {
 
             <input
               type="text"
-              placeholder="Search for programs (e.g., Python, UI Design...)"
+              placeholder="Search for courses (e.g., Python, UI Design...)"
               className="w-full pl-14 pr-6 py-[18px] bg-white border border-[#DCC0C1] rounded-full shadow-[0px_1px_2px_rgba(0,0,0,0.05)] text-[16px] leading-[19px] placeholder-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#5C021A]/20 focus:border-[#5C021A]"
             />
           </div>
@@ -676,7 +676,7 @@ export default function ProgramsPage() {
                     : "text-[#5D5F5F]"
                 }`}
               >
-                Advanced technology, design, business and digital programs built
+                Advanced technology, design, business and digital courses built
                 for professional and career-focused learning.
               </p>
 
@@ -701,7 +701,7 @@ export default function ProgramsPage() {
             <div className="mx-auto mt-8 max-w-[960px] rounded-2xl border border-dashed border-[#DCC0C1] bg-[#FCF9F8] px-6 py-5 text-center">
               <p className="text-sm font-semibold text-[#6B5A5E]">
                 Select Foundation Batch or Professional Courses above to view
-                available programs.
+                available courses.
               </p>
             </div>
           )}
@@ -906,7 +906,7 @@ export default function ProgramsPage() {
               <div className="mb-7 flex items-end justify-between gap-4">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#5C021A]">
-                    Professional Programs
+                    Professional Courses
                   </p>
 
                   <h3 className="mt-1 text-2xl font-semibold text-[#1C1B1B]">
@@ -968,7 +968,7 @@ export default function ProgramsPage() {
                           href={`/programs/${prog.slug}`}
                           className="flex h-12 w-full items-center justify-center rounded-lg border border-[#9f1735] text-sm font-bold text-[#9f1735] transition hover:bg-[#9f1735] hover:text-white"
                         >
-                          View Program
+                          View Course
                         </Link>
                       </div>
                     </div>
@@ -1049,7 +1049,7 @@ export default function ProgramsPage() {
 
                 <div className="mt-4 space-y-3">
                   {[
-                    "Explore Program",
+                    "Explore Course",
                     "Check Eligibility",
                     "Submit Application",
                     "Review & Confirmation",
@@ -1081,7 +1081,7 @@ export default function ProgramsPage() {
 
                 <p className="mt-4 text-xs leading-5 text-[#5D5F5F]">
                   Students from 6th to 12th standard can apply depending on the
-                  selected program and learning pathway.
+                  selected course and learning pathway.
                 </p>
               </div>
 
@@ -1095,7 +1095,7 @@ export default function ProgramsPage() {
                 <h3 className="text-sm font-black text-[#1C1B1B]">Fees</h3>
 
                 <p className="mt-4 text-xs leading-5 text-[#5D5F5F]">
-                  Fees vary depending on the selected program, duration, and
+                  Fees vary depending on the selected course, duration, and
                   learning level.
                 </p>
 
@@ -1670,7 +1670,7 @@ export default function ProgramsPage() {
                 step: "01",
                 icon: Search,
                 title: "Choose Your Path",
-                desc: "Browse our programs and find the one that matches your passion and goals.",
+                desc: "Browse our courses and find the one that matches your passion and goals.",
               },
               {
                 step: "02",
@@ -1920,6 +1920,13 @@ const programs = [
     desc: "Turn raw data into useful insights using spreadsheets, SQL, dashboards, visualization, and business analytics.",
   },
   {
+  slug: "banking-investment-management",
+  title: "Banking & Investment Management",
+  image: "/programs/banking-investment-management/hero.png",
+  tags: ["12 Weeks", "Beginner to Intermediate"],
+  desc: "Master banking fundamentals, financial markets, equity and mutual fund analysis, investment strategies, portfolio management, and financial risk assessment through practical projects.",
+},
+  {
     slug: "teen-entrepreneurship",
     title: "Entrepreneurship",
     image: "/programs/entrepreneurship/hero.png",
@@ -1978,7 +1985,7 @@ const faqs = [
   "Do I need prior coding experience to join?",
   "What hardware or software requirements are there?",
   "Is job placement guaranteed after graduation?",
-  "Can I switch my learning path mid-program?",
+  "Can I switch my learning path mid-course?",
   "Are there any scholarship opportunities available?",
 ];
 

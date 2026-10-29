@@ -1311,6 +1311,226 @@ export const programs: Program[] = [
   },
 
   // =========================================================
+  // BANKING & INVESTMENT MANAGEMENT
+  // =========================================================
+
+  {
+    slug: "banking-investment-management",
+
+    title: "Banking & Investment",
+
+    highlight: "Management",
+
+    description:
+      "Build practical knowledge of banking operations, financial markets, investment products, financial statement analysis, portfolio management, and risk assessment. Learn to evaluate financial information and create research-based investment plans through real-world case studies.",
+
+    // Temporary image. We will replace this in the image stage.
+    image: "/programs/banking-investment-management/hero.png",
+
+    age: "Students & Working Professionals",
+
+    duration: "12 Weeks",
+
+    level: "Beginner to Intermediate",
+
+    stats: [
+      {
+        title: "Duration",
+        value: "12 Weeks",
+        subtext: "Structured learning",
+      },
+      {
+        title: "Projects",
+        value: "2 Practical",
+        subtext: "Finance portfolio",
+      },
+      {
+        title: "Focus",
+        value: "Banking + Investments",
+        subtext: "Financial markets",
+      },
+      {
+        title: "Learning",
+        value: "Project Based",
+        subtext: "Case studies and analysis",
+      },
+    ],
+
+    // =====================================================
+    // WHAT YOU WILL LEARN
+    // =====================================================
+
+    learning: [
+      {
+        title: "Banking Fundamentals",
+        description:
+          "Understand how commercial banks operate, banking products, deposits, lending, payments, interest rates, and the role of the Reserve Bank of India.",
+      },
+      {
+        title: "Financial Markets",
+        description:
+          "Explore the Indian financial system, stock exchanges, equity markets, debt markets, and investment instruments.",
+      },
+      {
+        title: "Financial Analysis",
+        description:
+          "Learn to interpret balance sheets, income statements, cash flows, financial ratios, profitability, and company performance.",
+      },
+      {
+        title: "Investment Products",
+        description:
+          "Understand equities, mutual funds, ETFs, bonds, fixed deposits, and how different products serve different financial goals.",
+      },
+      {
+        title: "Portfolio & Risk Management",
+        description:
+          "Learn asset allocation, diversification, risk-return analysis, portfolio monitoring, and long-term investment planning.",
+      },
+      {
+        title: "Financial Modelling",
+        description:
+          "Use Excel and practical financial datasets to compare investments, evaluate companies, create reports, and build a sample investment portfolio.",
+      },
+    ],
+
+    // =====================================================
+    // 12-WEEK LEARNING JOURNEY
+    // =====================================================
+
+    journey: [
+      {
+        title: "Banking Basics",
+        time: "Week 1-2",
+      },
+      {
+        title: "Financial Markets",
+        time: "Week 3-4",
+      },
+      {
+        title: "Financial Analysis",
+        time: "Week 5-6",
+      },
+      {
+        title: "Investment Products",
+        time: "Week 7-8",
+      },
+      {
+        title: "Portfolio Management",
+        time: "Week 9-10",
+      },
+      {
+        title: "Finance Capstone",
+        time: "Week 11-12",
+      },
+    ],
+
+    // =====================================================
+    // COMPLETE COURSE CURRICULUM
+    // =====================================================
+
+    curriculum: [
+      {
+        title: "Module 1: Banking & Financial Systems",
+        lessons: "6 Lessons",
+        items: [
+          "Introduction to Banking and Financial Services",
+          "Types of Banks and Banking Institutions",
+          "Savings, Current Accounts and Fixed Deposits",
+          "Loans, Credit, Interest Rates and EMI Calculations",
+          "RBI, Monetary Policy and Banking Regulation",
+          "Banking Operations Case Study",
+        ],
+      },
+
+      {
+        title: "Module 2: Financial Markets & Instruments",
+        lessons: "6 Lessons",
+        items: [
+          "Introduction to Capital Markets",
+          "Primary and Secondary Markets",
+          "NSE, BSE and How Stock Exchanges Work",
+          "Shares, Bonds, ETFs and Government Securities",
+          "Market Indices, Liquidity and Price Movements",
+          "Financial Markets Research Assignment",
+        ],
+      },
+
+      {
+        title: "Module 3: Financial Statement Analysis",
+        lessons: "6 Lessons",
+        items: [
+          "Introduction to Financial Statements",
+          "Balance Sheet Analysis",
+          "Income Statement and Profitability",
+          "Cash Flow Statement Analysis",
+          "Financial Ratios and Company Comparison",
+          "Company Financial Performance Project",
+        ],
+      },
+
+      {
+        title: "Module 4: Investment Research & Products",
+        lessons: "6 Lessons",
+        items: [
+          "Investment Goals and Time Horizons",
+          "Equity Investment Fundamentals",
+          "Mutual Funds, NAV and Expense Ratios",
+          "ETFs, Bonds and Fixed-Income Investments",
+          "Fundamental Valuation Concepts",
+          "Mutual Fund and Investment Product Comparison",
+        ],
+      },
+
+      {
+        title: "Module 5: Portfolio Management & Risk",
+        lessons: "6 Lessons",
+        items: [
+          "Understanding Investment Risk and Return",
+          "Diversification and Asset Allocation",
+          "Portfolio Construction and Rebalancing",
+          "Market, Credit and Liquidity Risk",
+          "Excel-Based Risk and Performance Analysis",
+          "Sample Investment Portfolio Project",
+        ],
+      },
+
+      {
+        title: "Module 6: Financial Modelling & Capstone",
+        lessons: "6 Lessons",
+        items: [
+          "Financial Modelling with Microsoft Excel",
+          "Investment Research and Data Interpretation",
+          "Building a Financial Performance Dashboard",
+          "Preparing an Investment Research Report",
+          "Banking and Investment Management Capstone",
+          "Final Presentation and Career Preparation",
+        ],
+      },
+    ],
+
+    // =====================================================
+    // CAPSTONE PROJECTS
+    // =====================================================
+
+    projects: [
+      {
+        title: "Investment Planning & Financial Analysis",
+        description:
+          "Analyze financial statements, compare investment instruments, evaluate risk and return, and prepare a structured investment plan using Excel-based financial analysis.",
+        image:
+          "/programs/banking-investment-management/investment-analysis.png",
+      },
+      {
+        title: "Investment Portfolio Simulator",
+        description:
+          "Create a hypothetical diversified investment portfolio using equities, mutual funds, and fixed-income products. Evaluate asset allocation, monitor performance, and simulate market risks without investing real money.",
+        image:
+          "/programs/banking-investment-management/portfolio-management.png",
+      },
+    ],
+  },
+
+  // =========================================================
 
   // 7. ENTREPRENEURSHIP
 
