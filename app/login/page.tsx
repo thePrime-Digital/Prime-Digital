@@ -51,7 +51,24 @@ function LoginForm() {
         return;
       }
 
-      window.location.assign(data.redirectTo || "/dashboard");
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get("next");
+
+      const safeCourseReturn =
+        next?.startsWith("/programs/") &&
+        !next.startsWith("//") &&
+        !next.includes("\\") &&
+        !next.includes("\n") &&
+        !next.includes("\r")
+          ? next
+          : null;
+
+      const destination =
+        safeCourseReturn && data.redirectTo === "/dashboard"
+          ? safeCourseReturn
+          : data.redirectTo || "/dashboard";
+
+      window.location.assign(destination);
     } catch (requestError) {
       console.error("Login request failed:", requestError);
       setError("Unable to connect to the server. Please try again.");
@@ -96,8 +113,6 @@ function LoginForm() {
       {/* Login card */}
       <section className="relative z-30 ml-auto flex min-h-[calc(100vh-118px)] w-full items-center justify-center px-5 py-6 sm:px-8 lg:w-[42%] lg:justify-center lg:px-8 xl:px-12">
         <div className="w-full max-w-[455px] rounded-[2rem] border border-white/80 bg-white/[0.98] p-7 shadow-[0_30px_90px_rgba(20,0,7,0.42)] backdrop-blur-2xl sm:p-8">
-
-
           {/* Heading */}
           <div className="mb-6 text-center">
             <h1 className="font-serif text-4xl font-bold tracking-tight text-slate-950 sm:text-[42px]">

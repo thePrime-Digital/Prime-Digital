@@ -53,19 +53,20 @@ type NavItem = {
 const main: NavItem[] = [
   { label: "Home", href: "/dashboard", icon: LayoutDashboard },
   { label: "Timetable", href: "/dashboard/timetable", icon: CalendarDays },
+  { label: "Attendance", href: "/dashboard/attendance", icon: ClipboardCheck },
 ];
 
 const learn: NavItem[] = [
   { label: "Course", href: "/dashboard/courses", icon: BookOpen },
+  { label: "My Classes", href: "/dashboard/classes", icon: GraduationCap },
+  { label: "Live Classes", href: "/dashboard/live-classes", icon: MonitorPlay },
   { label: "Lectures", href: "/dashboard/recorded-lectures", icon: Video },
+  { label: "Lessons", href: "/dashboard/lessons", icon: LibraryBig },
+  { label: "Learning Content", href: "/dashboard/learning-content", icon: LibraryBig },
   { label: "Assignments", href: "/dashboard/assignments", icon: ClipboardList },
   { label: "Tests", href: "/dashboard/exams", icon: FileQuestion },
   { label: "Doubts", href: "/dashboard/doubts", icon: MessageCircleQuestion },
-  {
-    label: "Learning Progress",
-    href: "/dashboard/learning-progress",
-    icon: TrendingUp,
-  },
+  { label: "Learning Progress", href: "/dashboard/learning-progress", icon: TrendingUp },
 ];
 
 const career: NavItem[] = [
@@ -106,7 +107,6 @@ const navigation = [
   ...career,
   ...finance,
   ...support,
-  ...more,
 ];
 function initials(name: string) {
   const words = name.trim().split(/\s+/).filter(Boolean);
@@ -280,13 +280,6 @@ export default function StudentDashboardShell({ user, children }: Props) {
             Support
           </p>
           {renderLinks(support)}
-        </section>
-
-        <section>
-          <p className="mb-2 px-3 text-[10px] font-black uppercase tracking-[0.15em] text-white/45">
-            More Learning Tools
-          </p>
-          {renderLinks(more)}
         </section>
       </nav>
 

@@ -26,19 +26,14 @@ type AdminRecord = {
   status: string;
   adminNote: string;
   createdAt: string | null;
-
   updatedAt: string | null;
-
   data: Record<string, unknown>;
 };
 
 type ApiResponse = {
   records: AdminRecord[];
-
   statuses: string[];
-
   counts: Record<string, number>;
-
   pagination: {
     page: number;
     totalPages: number;
@@ -51,11 +46,8 @@ type Props = {
 
   title: string;
   description: string;
-
   columns: ColumnConfig[];
-
   embedded?: boolean;
-
   variant?: "default" | "admissions";
 };
 
@@ -133,28 +125,61 @@ function shortDate(value: string | null): string {
 }
 
 function statusStyle(status: string): string {
-  if (status === "approved") {
-    return "border-emerald-200 bg-emerald-50 text-emerald-700";
-  }
+  switch (status) {
+    case "enrolled":
+    case "approved":
+      return "border-emerald-200 bg-emerald-50 text-emerald-700";
 
-  if (status === "rejected") {
-    return "border-red-200 bg-red-50 text-red-700";
-  }
+    case "rejected":
+      return "border-red-200 bg-red-50 text-red-700";
 
-  if (status === "reviewing") {
-    return "border-indigo-200 bg-indigo-50 text-indigo-700";
-  }
+    case "payment_pending":
+      return "border-orange-200 bg-orange-50 text-orange-700";
 
-  if (status === "contacted") {
-    return "border-blue-200 bg-blue-50 text-blue-700";
-  }
+    case "counselling":
+      return "border-violet-200 bg-violet-50 text-violet-700";
 
-  if (status === "closed") {
-    return "border-slate-200 bg-slate-100 text-slate-600";
-  }
+    case "reviewing":
+      return "border-indigo-200 bg-indigo-50 text-indigo-700";
 
-  return "border-amber-200 bg-amber-50 text-amber-700";
+    case "contacted":
+      return "border-blue-200 bg-blue-50 text-blue-700";
+
+    case "closed":
+      return "border-slate-200 bg-slate-100 text-slate-600";
+
+    default:
+      return "border-amber-200 bg-amber-50 text-amber-700";
+  }
 }
+
+const ADMISSION_JOURNEY = [
+  {
+    number: "01",
+    label: "New Enquiry",
+    text: "Application received",
+  },
+  {
+    number: "02",
+    label: "Contacted",
+    text: "Initial student follow-up",
+  },
+  {
+    number: "03",
+    label: "Counselling",
+    text: "Discuss course and eligibility",
+  },
+  {
+    number: "04",
+    label: "Payment Pending",
+    text: "Share payment details manually",
+  },
+  {
+    number: "05",
+    label: "Enrolled",
+    text: "Enrolment confirmed by the team",
+  },
+];
 
 export default function AdminRecordsManager({
   resource,
@@ -165,37 +190,41 @@ export default function AdminRecordsManager({
   variant = "default",
 }: Props) {
   const isAdmissions = variant === "admissions";
+
   const [records, setRecords] = useState<AdminRecord[]>([]);
-
   const [statuses, setStatuses] = useState<string[]>([]);
-
   const [counts, setCounts] = useState<Record<string, number>>({
     total: 0,
   });
 
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
-
   const [success, setSuccess] = useState("");
 
   const [searchInput, setSearchInput] = useState("");
-
   const [search, setSearch] = useState("");
-
   const [status, setStatus] = useState("all");
 
   const [page, setPage] = useState(1);
-
   const [totalPages, setTotalPages] = useState(1);
 
   const [selected, setSelected] = useState<AdminRecord | null>(null);
-
   const [editStatus, setEditStatus] = useState("");
-
   const [adminNote, setAdminNote] = useState("");
 
   const [saving, setSaving] = useState(false);
+
+  /*
+   * Status and Received are already rendered by this manager.
+   * Avoid duplicate columns when supplied by the admissions page.
+   */
+  const visibleColumns = isAdmissions
+    ? columns.filter((column) => {
+        const label = column.label.trim().toLowerCase();
+
+        return !["status", "submitted on", "received"].includes(label);
+      })
+    : columns;
 
   const loadRecords = useCallback(async () => {
     setLoading(true);
@@ -213,25 +242,18 @@ export default function AdminRecordsManager({
       }
 
       params.set("page", String(page));
-
       params.set("limit", "25");
 
       const response = await fetch(
         `/api/admin/resources/${resource}?${params.toString()}`,
         {
           method: "GET",
-
           credentials: "include",
-
           cache: "no-store",
         },
       );
 
-      const data = (await response.json()) as
-        | ApiResponse
-        | {
-            error?: string;
-          };
+      const data = (await response.json()) as ApiResponse | { error?: string };
 
       if (!response.ok) {
         throw new Error(
@@ -244,16 +266,9 @@ export default function AdminRecordsManager({
       const payload = data as ApiResponse;
 
       setRecords(payload.records || []);
-
       setStatuses(payload.statuses || []);
-
-      setCounts(
-        payload.counts || {
-          total: 0,
-        },
-      );
-
-      setTotalPages(payload.pagination?.totalPages || 1);
+      setCounts(payload.counts || { total: 0 });
+      setTotalPages(Math.max(1, payload.pagination?.totalPages || 1));
     } catch (loadError) {
       setError(
         loadError instanceof Error
@@ -273,7 +288,7 @@ export default function AdminRecordsManager({
   }, [resource]);
 
   useEffect(() => {
-    loadRecords();
+    void loadRecords();
   }, [loadRecords]);
 
   function openRecord(record: AdminRecord) {
@@ -284,8 +299,15 @@ export default function AdminRecordsManager({
     setSuccess("");
   }
 
+  function closeRecord() {
+    if (saving) return;
+
+    setSelected(null);
+    setError("");
+  }
+
   async function saveRecord() {
-    if (!selected) {
+    if (!selected || saving) {
       return;
     }
 
@@ -298,16 +320,12 @@ export default function AdminRecordsManager({
         `/api/admin/resources/${resource}/${selected.id}`,
         {
           method: "PATCH",
-
           credentials: "include",
-
           headers: {
             "Content-Type": "application/json",
           },
-
           body: JSON.stringify({
             status: editStatus,
-
             adminNote,
           }),
         },
@@ -323,7 +341,12 @@ export default function AdminRecordsManager({
         throw new Error(data.error || "Unable to save record.");
       }
 
-      setSuccess(data.message || "Record updated.");
+      setSuccess(
+        data.message ||
+          (isAdmissions
+            ? "Admission enquiry updated successfully."
+            : "Record updated."),
+      );
 
       setSelected(null);
 
@@ -341,27 +364,28 @@ export default function AdminRecordsManager({
 
   const content = (
     <>
+      {/* PAGE HEADER */}
       {!embedded &&
         (isAdmissions ? (
           <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#650018] via-[#8f0024] to-[#a9183b] px-6 py-7 text-white shadow-lg sm:px-8">
             <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/5" />
-
             <div className="absolute -bottom-28 right-24 h-56 w-56 rounded-full bg-white/5" />
 
             <div className="relative z-10 grid gap-7 xl:grid-cols-[1.1fr_0.9fr] xl:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.18em] text-white/90">
                   <Sparkles className="h-3.5 w-3.5" />
-                  Admissions Control Centre
+                  Admission Enquiries
                 </div>
 
                 <h1 className="mt-4 max-w-xl text-3xl font-black tracking-tight sm:text-4xl">
-                  Manage every applicant from enquiry to decision.
+                  Manage every enquiry from application to enrolment.
                 </h1>
 
                 <p className="mt-3 max-w-xl text-sm leading-6 text-white/70">
-                  Review applications, track communication, record decisions and
-                  keep your admission workflow organised from one dashboard.
+                  Review admission and course enrolment applications, track
+                  student follow-ups, record counselling notes, and manage
+                  admission decisions from one dashboard.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
@@ -376,39 +400,18 @@ export default function AdminRecordsManager({
                   </a>
 
                   <div className="flex h-10 items-center rounded-lg border border-white/15 bg-white/10 px-4 text-[10px] font-bold text-white/80">
-                    Applications update automatically
+                    Student enquiries and course applications
                   </div>
                 </div>
               </div>
 
               <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
                 <p className="text-[9px] font-black uppercase tracking-[0.18em] text-white/60">
-                  Admission Journey
+                  Admission Enquiry Journey
                 </p>
 
                 <div className="mt-5 space-y-3">
-                  {[
-                    {
-                      number: "01",
-                      label: "New Application",
-                      text: "Application received",
-                    },
-                    {
-                      number: "02",
-                      label: "Reviewing",
-                      text: "Team reviews applicant",
-                    },
-                    {
-                      number: "03",
-                      label: "Contacted",
-                      text: "Applicant communication",
-                    },
-                    {
-                      number: "04",
-                      label: "Decision",
-                      text: "Approve, reject or close",
-                    },
-                  ].map((step) => (
+                  {ADMISSION_JOURNEY.map((step) => (
                     <div
                       key={step.number}
                       className="flex items-center gap-3 rounded-xl border border-white/10 bg-black/10 px-3 py-3"
@@ -429,6 +432,11 @@ export default function AdminRecordsManager({
                     </div>
                   ))}
                 </div>
+
+                <p className="mt-4 text-[10px] leading-5 text-white/65">
+                  Counselling, payment follow-up and enrolment decisions are
+                  recorded manually by the team.
+                </p>
               </div>
             </div>
           </section>
@@ -448,44 +456,83 @@ export default function AdminRecordsManager({
           </div>
         ))}
 
-      <section className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <SummaryCard
-          label={isAdmissions ? "Total Applications" : "Total"}
-          value={counts.total || 0}
-          helper={isAdmissions ? "All received applications" : undefined}
-        />
+      {/* SUMMARY CARDS */}
+      <section
+        className={`mt-5 grid gap-3 sm:grid-cols-2 ${
+          isAdmissions ? "lg:grid-cols-3 xl:grid-cols-6" : "lg:grid-cols-4"
+        }`}
+      >
+        {isAdmissions ? (
+          <>
+            <SummaryCard
+              label="Total Enquiries"
+              value={counts.total || 0}
+              helper="All applications"
+            />
 
-        <SummaryCard
-          label={isAdmissions ? "New Applications" : "New"}
-          value={counts.new || 0}
-          helper={isAdmissions ? "Awaiting first review" : undefined}
-        />
+            <SummaryCard
+              label="New"
+              value={counts.new || 0}
+              helper="Awaiting contact"
+            />
 
-        <SummaryCard
-          label={isAdmissions ? "Under Review" : "Reviewing"}
-          value={counts.reviewing || 0}
-          helper={isAdmissions ? "Currently being assessed" : undefined}
-        />
+            <SummaryCard
+              label="Contacted"
+              value={counts.contacted || 0}
+              helper="Initial follow-up"
+            />
 
-        <SummaryCard
-          label="Contacted"
-          value={counts.contacted || 0}
-          helper={isAdmissions ? "Applicants contacted" : undefined}
-        />
+            <SummaryCard
+              label="Counselling"
+              value={counts.counselling || 0}
+              helper="Discussion in progress"
+            />
+
+            <SummaryCard
+              label="Payment Pending"
+              value={counts.payment_pending || 0}
+              helper="Awaiting confirmation"
+            />
+
+            <SummaryCard
+              label="Enrolled"
+              value={counts.enrolled || 0}
+              helper="Confirmed by team"
+            />
+          </>
+        ) : (
+          <>
+            <SummaryCard label="Total" value={counts.total || 0} />
+
+            <SummaryCard label="New" value={counts.new || 0} />
+
+            <SummaryCard label="Reviewing" value={counts.reviewing || 0} />
+
+            <SummaryCard label="Contacted" value={counts.contacted || 0} />
+          </>
+        )}
       </section>
 
+      {/* ERROR AND SUCCESS */}
       {error && (
-        <div className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-xs font-semibold text-red-700">
+        <div
+          role="alert"
+          className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-xs font-semibold text-red-700"
+        >
           {error}
         </div>
       )}
 
       {success && (
-        <div className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-700">
+        <div
+          role="status"
+          className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-700"
+        >
           {success}
         </div>
       )}
 
+      {/* RECORDS TABLE */}
       <section className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row">
           <div className="relative flex-1">
@@ -500,16 +547,20 @@ export default function AdminRecordsManager({
                   setPage(1);
                 }
               }}
-              placeholder="Search records..."
+              placeholder={
+                isAdmissions
+                  ? "Search name, course, email, phone or reference..."
+                  : "Search records..."
+              }
               className="h-10 w-full rounded-lg border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs outline-none transition focus:border-[#8f0024]/40 focus:bg-white focus:ring-4 focus:ring-[#8f0024]/5"
             />
           </div>
 
           <select
+            aria-label="Filter records by status"
             value={status}
             onChange={(event) => {
               setStatus(event.target.value);
-
               setPage(1);
             }}
             className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold outline-none"
@@ -527,8 +578,8 @@ export default function AdminRecordsManager({
             type="button"
             onClick={() => {
               setSearch(searchInput);
-
               setPage(1);
+              void loadRecords();
             }}
             className="h-10 rounded-lg bg-[#8f0024] px-5 text-xs font-black text-white"
           >
@@ -537,8 +588,10 @@ export default function AdminRecordsManager({
 
           <button
             type="button"
-            onClick={() => loadRecords()}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-500"
+            onClick={() => void loadRecords()}
+            aria-label="Refresh records"
+            title="Refresh records"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:text-[#8f0024]"
           >
             <RefreshCw className="h-4 w-4" />
           </button>
@@ -548,7 +601,7 @@ export default function AdminRecordsManager({
           <table className="w-full min-w-[900px]">
             <thead>
               <tr className="border-b border-slate-100 bg-slate-50/70">
-                {columns.map((column) => (
+                {visibleColumns.map((column) => (
                   <th
                     key={column.label}
                     className="px-5 py-3 text-left text-[9px] font-black uppercase tracking-wider text-slate-400"
@@ -575,7 +628,7 @@ export default function AdminRecordsManager({
               {loading ? (
                 <tr>
                   <td
-                    colSpan={columns.length + 3}
+                    colSpan={visibleColumns.length + 3}
                     className="py-16 text-center"
                   >
                     <Loader2 className="mx-auto h-6 w-6 animate-spin text-[#8f0024]" />
@@ -588,7 +641,7 @@ export default function AdminRecordsManager({
               ) : records.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={columns.length + 3}
+                    colSpan={visibleColumns.length + 3}
                     className="py-16 text-center"
                   >
                     <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#fff1f4] text-[#8f0024]">
@@ -597,13 +650,13 @@ export default function AdminRecordsManager({
 
                     <p className="mt-4 text-sm font-black text-slate-700">
                       {isAdmissions
-                        ? "No admission applications yet"
+                        ? "No admission enquiries found"
                         : "No records found"}
                     </p>
 
                     <p className="mx-auto mt-2 max-w-sm text-[10px] leading-5 text-slate-400">
                       {isAdmissions
-                        ? "Applications submitted through the Prime Digital School admissions form will automatically appear here."
+                        ? "Admission and course enrolment applications will appear here after successful submission."
                         : "Try changing your search or status filter."}
                     </p>
 
@@ -626,7 +679,7 @@ export default function AdminRecordsManager({
                     key={record.id}
                     className="border-b border-slate-100 transition hover:bg-[#fffafb]"
                   >
-                    {columns.map((column) => (
+                    {visibleColumns.map((column) => (
                       <td
                         key={column.label}
                         className="max-w-[240px] px-5 py-4 text-[11px] font-semibold text-slate-700"
@@ -678,6 +731,7 @@ export default function AdminRecordsManager({
               type="button"
               disabled={page <= 1}
               onClick={() => setPage((current) => Math.max(1, current - 1))}
+              aria-label="Previous page"
               className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 text-slate-500 disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -689,6 +743,7 @@ export default function AdminRecordsManager({
               onClick={() =>
                 setPage((current) => Math.min(totalPages, current + 1))
               }
+              aria-label="Next page"
               className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 text-slate-500 disabled:opacity-40"
             >
               <ChevronRight className="h-4 w-4" />
@@ -697,34 +752,63 @@ export default function AdminRecordsManager({
         </div>
       </section>
 
+      {/* RECORD DETAILS POPUP */}
       {selected && (
-        <div className="fixed inset-0 z-[10050] flex items-center justify-center bg-black/45 p-4">
+        <div
+          className="fixed inset-0 z-[10050] flex items-center justify-center bg-black/45 p-4"
+          role="presentation"
+        >
           <button
             type="button"
-            aria-label="Close"
-            onClick={() => setSelected(null)}
+            aria-label="Close record details"
+            onClick={closeRecord}
             className="absolute inset-0"
           />
 
-          <section className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-record-title"
+            className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+          >
             <div className="flex items-start justify-between border-b border-slate-100 px-6 py-5">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8f0024]">
-                  Record Details
+                  {isAdmissions
+                    ? "Admission Enquiry Details"
+                    : "Record Details"}
                 </p>
 
-                <h2 className="mt-1 text-xl font-black text-[#271a1e]">
-                  {title}
+                <h2
+                  id="admin-record-title"
+                  className="mt-1 text-xl font-black text-[#271a1e]"
+                >
+                  {isAdmissions
+                    ? displayValue(
+                        getValue(selected.data, [
+                          "studentName",
+                          "fullName",
+                          "name",
+                        ]),
+                      )
+                    : title}
                 </h2>
 
                 <p className="mt-1 text-[10px] text-slate-400">
                   Received {shortDate(selected.createdAt)}
                 </p>
+
+                {isAdmissions && selected.data.reference != null && (
+                  <p className="mt-1 text-[10px] font-semibold text-[#8f0024]">
+                    Reference: {displayValue(selected.data.reference)}
+                  </p>
+                )}
               </div>
 
               <button
                 type="button"
-                onClick={() => setSelected(null)}
+                onClick={closeRecord}
+                aria-label="Close"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500"
               >
                 <X className="h-4 w-4" />
@@ -732,6 +816,7 @@ export default function AdminRecordsManager({
             </div>
 
             <div className="p-6">
+              {/* APPLICANT FIELDS */}
               <div className="grid gap-3 sm:grid-cols-2">
                 {Object.entries(selected.data).map(([key, value]) => (
                   <div
@@ -749,43 +834,79 @@ export default function AdminRecordsManager({
                 ))}
               </div>
 
+              {/* STATUS */}
               <div className="mt-5">
-                <label className="mb-2 block text-[11px] font-black text-slate-700">
-                  Application Status
+                <label
+                  htmlFor="admin-record-status"
+                  className="mb-2 block text-[11px] font-black text-slate-700"
+                >
+                  {isAdmissions ? "Admission Enquiry Status" : "Record Status"}
                 </label>
 
                 <select
+                  id="admin-record-status"
                   value={editStatus}
                   onChange={(event) => setEditStatus(event.target.value)}
-                  className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold outline-none"
+                  className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold outline-none focus:border-[#8f0024]/40"
                 >
-                  {statuses.map((option) => (
-                    <option key={option} value={option}>
-                      {titleCase(option)}
-                    </option>
-                  ))}
+                  {[...new Set([editStatus, ...statuses].filter(Boolean))].map(
+                    (option) => (
+                      <option key={option} value={option}>
+                        {titleCase(option)}
+                      </option>
+                    ),
+                  )}
                 </select>
+
+                {isAdmissions && (
+                  <p className="mt-2 text-[10px] leading-5 text-slate-500">
+                    Update the stage manually after contacting or counselling
+                    the applicant. Mark Enrolled only after your team has
+                    confirmed admission.
+                  </p>
+                )}
               </div>
 
+              {/* FOLLOW-UP NOTES */}
               <div className="mt-4">
-                <label className="mb-2 block text-[11px] font-black text-slate-700">
-                  Internal Admin Note
+                <label
+                  htmlFor="admin-record-note"
+                  className="mb-2 block text-[11px] font-black text-slate-700"
+                >
+                  {isAdmissions
+                    ? "Counselling & Follow-up Notes"
+                    : "Internal Admin Note"}
                 </label>
 
                 <textarea
+                  id="admin-record-note"
                   value={adminNote}
                   onChange={(event) => setAdminNote(event.target.value)}
                   rows={5}
-                  placeholder="Add notes about follow-up, decision, call status, etc."
-                  className="w-full resize-none rounded-lg border border-slate-200 bg-white p-3 text-xs outline-none focus:border-[#8f0024]/40 focus:ring-4 focus:ring-[#8f0024]/5"
+                  maxLength={5000}
+                  placeholder={
+                    isAdmissions
+                      ? "Record calls, counselling discussions, follow-up dates, fee discussions, or manual payment-link details."
+                      : "Add notes about follow-up, decision, call status, etc."
+                  }
+                  className="w-full resize-y rounded-lg border border-slate-200 bg-white p-3 text-xs outline-none focus:border-[#8f0024]/40 focus:ring-4 focus:ring-[#8f0024]/5"
                 />
+
+                {isAdmissions && (
+                  <p className="mt-2 text-[10px] text-slate-500">
+                    Internal note only. Do not enter payment card details,
+                    passwords, or other sensitive financial information.
+                  </p>
+                )}
               </div>
 
+              {/* ACTIONS */}
               <div className="mt-6 flex justify-end gap-3 border-t border-slate-100 pt-5">
                 <button
                   type="button"
-                  onClick={() => setSelected(null)}
-                  className="h-10 rounded-lg border border-slate-200 px-5 text-xs font-black text-slate-600"
+                  onClick={closeRecord}
+                  disabled={saving}
+                  className="h-10 rounded-lg border border-slate-200 px-5 text-xs font-black text-slate-600 disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -801,7 +922,8 @@ export default function AdminRecordsManager({
                   ) : (
                     <Save className="h-4 w-4" />
                   )}
-                  Save Changes
+
+                  {saving ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </div>

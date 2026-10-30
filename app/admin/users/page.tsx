@@ -4,7 +4,7 @@ export default function AdminUsersPage() {
   return (
     <AccountDirectory
       title="Account Directory"
-      description="Search, create and manage student, faculty, client and administrator accounts."
+      description="Search, create and manage student, faculty, staff and administrator accounts."
     />
   );
 }

@@ -41,23 +41,33 @@ type Item = {
 const main: Item[] = [
   { name: "Home", href: "/faculty", icon: Home },
   { name: "Timetable", href: "/faculty/timetable", icon: CalendarDays },
+  { name: "Reports", href: "/faculty/reports", icon: BriefcaseBusiness },
 ];
 
 const teaching: Item[] = [
   { name: "Attendance", href: "/faculty/attendance", icon: ClipboardCheck },
   { name: "Batches", href: "/faculty/batches", icon: Users },
+  { name: "Students", href: "/faculty/students", icon: GraduationCap },
+  { name: "Assignments", href: "/faculty/assignments", icon: ClipboardList },
   { name: "Review", href: "/faculty/review", icon: ClipboardList },
   { name: "Tests", href: "/faculty/tests", icon: FileCheck2 },
   { name: "Doubts", href: "/faculty/doubts", icon: MessageCircle },
   { name: "Content", href: "/faculty/content", icon: BookOpen },
+  { name: "eBooks", href: "/faculty/ebooks", icon: BookOpen },
+  { name: "Live Classes", href: "/faculty/live-classes", icon: CalendarDays },
+  { name: "Recorded Lectures", href: "/faculty/recorded-lectures", icon: BookOpen },
   { name: "Projects", href: "/faculty/projects", icon: FolderOpen },
 ];
 
 const work: Item[] = [
   { name: "Leave", href: "/faculty/leave", icon: Clock3 },
   { name: "Payslips", href: "/faculty/payslips", icon: ReceiptText },
+  { name: "Fees", href: "/faculty/fees", icon: ReceiptText },
   { name: "Profile", href: "/faculty/settings", icon: Settings },
+  { name: "Messages", href: "/faculty/messages", icon: MessageCircle },
+  { name: "Notifications", href: "/faculty/notifications", icon: Bell },
 ];
+
 
 const more: Item[] = [
   { name: "Assignments", href: "/faculty/assignments", icon: ClipboardList },
@@ -213,13 +223,6 @@ export default function FacultyDashboardShell({
             My Work
           </p>
           {links(work)}
-        </div>
-
-        <div className="mb-5">
-          <p className="mb-2 px-3 text-[10px] font-extrabold uppercase tracking-[0.17em] text-[#c7a3aa]">
-            More Tools
-          </p>
-          {links(more)}
         </div>
       </nav>
 

@@ -1,26 +1,23 @@
-﻿import {
-  type Document,
-} from "mongodb";
+﻿import { randomBytes } from "node:crypto";
 
-import {
-  NextResponse,
-} from "next/server";
+import { type Document } from "mongodb";
 
-import {
-  getAdminResourceConfig,
-} from "@/lib/admin/admin-resource-registry";
+import { NextResponse } from "next/server";
 
-import {
-  getDatabase,
-} from "@/lib/mongodb";
+import { getAdminResourceConfig } from "@/lib/admin/admin-resource-registry";
 
-export const runtime =
-  "nodejs";
+import { getCurrentUser } from "@/lib/auth/current-user";
 
-export const dynamic =
-  "force-dynamic";
+import { programs } from "@/lib/program-data";
+
+import { getDatabase } from "@/lib/mongodb";
+
+export const runtime = "nodejs";
+
+export const dynamic = "force-dynamic";
 
 type AdmissionBody = {
+  courseSlug?: unknown;
   studentName?: unknown;
   parentName?: unknown;
   email?: unknown;
@@ -32,378 +29,304 @@ type AdmissionBody = {
   consent?: unknown;
 };
 
-function text(
-  value: unknown,
-  maxLength: number,
-): string {
-  if (
-    typeof value !==
-    "string"
-  ) {
+function text(value: unknown, maxLength: number): string {
+  if (typeof value !== "string") {
     return "";
   }
 
   return value
-    .replace(
-      /[\u0000-\u001F\u007F]/g,
-      "",
-    )
-    .replace(
-      /[<>]/g,
-      "",
-    )
+    .replace(/[\u0000-\u001F\u007F]/g, "")
+    .replace(/[<>]/g, "")
     .trim()
-    .slice(
-      0,
-      maxLength,
-    );
+    .slice(0, maxLength);
 }
 
-function createReference() {
-  const date =
-    new Date();
+function createReference(): string {
+  const day = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 
-  const day =
-    date
-      .toISOString()
-      .slice(
-        0,
-        10,
-      )
-      .replace(
-        /-/g,
-        "",
-      );
-
-  const random =
-    Math.random()
-      .toString(
-        36,
-      )
-      .slice(
-        2,
-        8,
-      )
-      .toUpperCase();
+  const random = randomBytes(4).toString("hex").toUpperCase();
 
   return `PDS-ADM-${day}-${random}`;
 }
 
-export async function POST(
-  request: Request,
-): Promise<NextResponse> {
-  let body:
-    AdmissionBody;
+export async function POST(request: Request): Promise<NextResponse> {
+  let body: AdmissionBody;
 
   try {
-    body =
-      (await request.json()) as
-        AdmissionBody;
+    const parsed: unknown = await request.json();
+
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return NextResponse.json(
+        { error: "Invalid application data." },
+        { status: 400 },
+      );
+    }
+
+    body = parsed as AdmissionBody;
   } catch {
     return NextResponse.json(
-      {
-        error:
-          "Invalid application data.",
-      },
-      {
-        status: 400,
-      },
+      { error: "Invalid application data." },
+      { status: 400 },
     );
   }
 
-  const studentName =
-    text(
-      body.studentName,
-      120,
-    );
+  const courseSlug = text(body.courseSlug, 150);
+  const isCourseEnrolment = courseSlug.length > 0;
 
-  const parentName =
-    text(
-      body.parentName,
-      120,
-    );
+  const studentName = text(body.studentName, 120);
+  const parentName = text(body.parentName, 120);
+  const email = text(body.email, 160).toLowerCase();
+  const phone = text(body.phone, 30);
+  const grade = text(body.grade, 80);
+  const currentSchool = text(body.currentSchool, 180);
+  const message = text(body.message, 3000);
 
-  const email =
-    text(
-      body.email,
-      160,
-    ).toLowerCase();
+  let program = text(body.program, 200);
 
-  const phone =
-    text(
-      body.phone,
-      30,
-    );
+  let applicantUserId: string | undefined;
 
-  const grade =
-    text(
-      body.grade,
-      80,
-    );
+  /*
+   * For course enrolments, the authenticated student and
+   * selected course must be verified on the server.
+   *
+   * General admissions continue using their existing
+   * public submission workflow.
+   */
+  if (isCourseEnrolment) {
+    const currentUser = await getCurrentUser();
 
-  const program =
-    text(
-      body.program,
-      120,
-    );
+    if (!currentUser || currentUser.role !== "student") {
+      return NextResponse.json(
+        {
+          error:
+            "Please log in with your student account to enrol in this course.",
+        },
+        { status: 401 },
+      );
+    }
 
-  const currentSchool =
-    text(
-      body.currentSchool,
-      180,
-    );
+    const selectedCourse = programs.find((item) => item.slug === courseSlug);
 
-  const message =
-    text(
-      body.message,
-      3000,
-    );
+    if (!selectedCourse) {
+      return NextResponse.json(
+        {
+          error:
+            "The selected course is invalid. Please return to the Programs page.",
+        },
+        { status: 400 },
+      );
+    }
 
-  if (
-    studentName.length <
-    2
-  ) {
+    program = [selectedCourse.title, selectedCourse.highlight]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+
+    /*
+     * Associate the application with the logged-in user.
+     * String conversion supports ObjectId/string IDs.
+     */
+    applicantUserId = String(currentUser._id);
+  }
+
+  /*
+   * Existing field validations.
+   */
+  if (studentName.length < 2) {
     return NextResponse.json(
       {
-        error:
-          "Please enter the student's full name.",
+        error: "Please enter the student's full name.",
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
-  if (
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-      email,
-    )
-  ) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json(
       {
-        error:
-          "Please enter a valid email address.",
+        error: "Please enter a valid email address.",
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
-  if (
-    phone.length <
-      7 ||
-    phone.length >
-      30
-  ) {
+  if (phone.length < 7 || phone.length > 30) {
     return NextResponse.json(
       {
-        error:
-          "Please enter a valid phone number.",
+        error: "Please enter a valid phone number.",
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
   if (!grade) {
     return NextResponse.json(
       {
-        error:
-          "Please select the class or academic level.",
+        error: "Please select the class or academic level.",
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
   if (!program) {
     return NextResponse.json(
       {
-        error:
-          "Please select a program.",
+        error: "Please select a program.",
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
-  if (
-    body.consent !==
-    true
-  ) {
+  if (body.consent !== true) {
     return NextResponse.json(
       {
-        error:
-          "Please confirm your consent before submitting.",
+        error: "Please confirm your consent before submitting.",
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
   try {
-    const database =
-      await getDatabase();
+    const database = await getDatabase();
 
     /*
-     * Check whether admissions are
-     * currently enabled by Admin.
+     * Respect the existing Admin admission switch.
      */
-    const platformSettings =
-      await database
-        .collection(
-          "platform_settings",
-        )
-        .findOne({
-          key: "main",
-        });
+    const platformSettings = await database
+      .collection("platform_settings")
+      .findOne({
+        key: "main",
+      });
 
-    if (
-      platformSettings?.admissionsOpen ===
-      false
-    ) {
+    if (platformSettings?.admissionsOpen === false) {
       return NextResponse.json(
         {
-          error:
-            "Admissions are currently closed.",
+          error: "Admissions are currently closed.",
         },
-        {
-          status: 403,
-        },
+        { status: 403 },
       );
     }
 
-    const config =
-      getAdminResourceConfig(
-        "admissions",
-      );
+    /*
+     * Reuse the existing admissions resource.
+     * No new collection is created.
+     */
+    const config = getAdminResourceConfig("admissions");
 
     if (!config) {
       return NextResponse.json(
         {
-          error:
-            "Admissions are temporarily unavailable.",
+          error: "Admissions are temporarily unavailable.",
         },
-        {
-          status: 500,
-        },
+        { status: 500 },
       );
     }
 
-    const collection =
-      database.collection<Document>(
-        config.collection,
-      );
+    const collection = database.collection<Document>(config.collection);
 
     /*
-     * Prevent accidental duplicate
-     * applications from repeated clicks.
+     * Duplicate checks:
+     *
+     * Course enrolment:
+     * Prevent duplicate active applications for the
+     * same course by the same logged-in student.
+     *
+     * General admission:
+     * Preserve the existing email + phone behaviour,
+     * limited to general admission submissions.
      */
-    const existing =
-      await collection.findOne({
-        email,
-        phone,
-
-        status: {
-          $nin: [
-            "rejected",
-            "closed",
+    const duplicateQuery: Document = isCourseEnrolment
+      ? {
+          applicantUserId,
+          courseSlug,
+          status: {
+            $nin: ["rejected", "closed"],
+          },
+        }
+      : {
+          email,
+          phone,
+          $or: [
+            {
+              courseSlug: {
+                $exists: false,
+              },
+            },
+            {
+              courseSlug: "",
+            },
           ],
-        },
-      });
+          status: {
+            $nin: ["rejected", "closed"],
+          },
+        };
+
+    const existing = await collection.findOne(duplicateQuery);
 
     if (existing) {
       return NextResponse.json(
         {
-          error:
-            "An active admission application already exists for these contact details.",
+          error: isCourseEnrolment
+            ? "You already have an active application for this course. Our counsellor will contact you shortly."
+            : "An active admission application already exists for these contact details.",
         },
-        {
-          status: 409,
-        },
+        { status: 409 },
       );
     }
 
-    const now =
-      new Date();
+    const now = new Date();
+    const reference = createReference();
 
-    const reference =
-      createReference();
-
-    await collection.insertOne({
+    const application: Document = {
       reference,
 
       studentName,
-
-      name:
-        studentName,
-
-      fullName:
-        studentName,
+      name: studentName,
+      fullName: studentName,
 
       parentName,
-
       email,
-
       phone,
-
       grade,
-
       program,
-
       currentSchool,
-
       message,
 
-      status:
-        config.defaultStatus,
+      status: config.defaultStatus,
+      adminNote: "",
 
-      adminNote:
-        "",
+      source: isCourseEnrolment
+        ? "program-enrolment"
+        : "public-admissions-page",
 
-      source:
-        "public-admissions-page",
+      consentAt: now,
+      createdAt: now,
+      updatedAt: now,
+    };
 
-      consentAt:
-        now,
+    if (isCourseEnrolment) {
+      application.courseSlug = courseSlug;
+      application.applicantUserId = applicantUserId;
+    }
 
-      createdAt:
-        now,
-
-      updatedAt:
-        now,
-    });
+    await collection.insertOne(application);
 
     return NextResponse.json(
       {
         message:
-          "Your admission application has been submitted successfully.",
-
+          "Your application has been submitted successfully. Our counsellor will contact you shortly.",
         reference,
       },
-      {
-        status: 201,
-      },
+      { status: 201 },
     );
   } catch (error) {
-    console.error(
-      "Public admissions POST error:",
-      error,
-    );
+    console.error("Public admissions POST error:", error);
 
     return NextResponse.json(
       {
-        error:
-          "Unable to submit your application right now. Please try again.",
+        error: "Unable to submit your application right now. Please try again.",
       },
-      {
-        status: 500,
-      },
+      { status: 500 },
     );
   }
 }

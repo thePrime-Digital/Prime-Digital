@@ -1,14 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from "react";
-import Link from "next/link";
 import {
-  ArrowRight, Bell, CalendarDays, Check, Clock3,
-  CreditCard, Download, Loader2, Plus,
-  RefreshCw, Search, TrendingUp, Users,
+  useCallback,
+  useEffect,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from "react";
+
+import Link from "next/link";
+
+import {
+  ArrowRight,
+  Check,
+  Clock3,
+  Eye,
+  Loader2,
+  Plus,
+  RefreshCw,
+  Save,
+  Search,
+  X,
 } from "lucide-react";
 
-type RecordItem = Record<string, unknown> & { id?: string };
+type RecordItem = Record<string, unknown> & {
+  id?: string;
+};
 
 type Field = {
   name: string;
@@ -26,10 +43,27 @@ type Config = {
   labels?: string[];
 };
 
+const ADMISSION_STATUSES = [
+  "new",
+  "contacted",
+  "counselling",
+  "payment_pending",
+  "enrolled",
+  "reviewing",
+  "approved",
+  "rejected",
+  "closed",
+];
+
 export const screens = {
-  home: { title: "Home", description: "Your daily admissions and operations workspace." },
+  home: {
+    title: "Home",
+    description: "Your daily admissions and operations workspace.",
+  },
+
   tasks: {
-    title: "Tasks", description: "Stay on top of your work.",
+    title: "Tasks",
+    description: "Stay on top of your work.",
     resource: "tasks",
     fields: [
       { name: "title", label: "Task" },
@@ -39,78 +73,152 @@ export const screens = {
     columns: ["title", "dueDate", "status"],
     labels: ["Task", "Due", "Status"],
   },
+
   leads: {
-    title: "Leads", description: "Manage enquiries and follow-ups.",
+    title: "Leads",
+    description: "Manage enquiries and follow-ups.",
     resource: "leads",
     fields: [
       { name: "name", label: "Lead name" },
       { name: "phone", label: "Phone", kind: "tel" },
       { name: "email", label: "Email", kind: "email" },
       { name: "course", label: "Interested course" },
-      { name: "source", label: "Source", kind: "select", choices: ["Website", "Walk-in", "Instagram", "Google", "WhatsApp", "Referral", "Other"] },
-      { name: "stage", label: "Stage", kind: "select", choices: ["New", "Contacted", "Counselled", "Demo booked", "Applied", "Closed"] },
-      { name: "nextFollowUp", label: "Next follow-up", kind: "datetime-local" },
+      {
+        name: "source",
+        label: "Source",
+        kind: "select",
+        choices: [
+          "Website",
+          "Walk-in",
+          "Instagram",
+          "Google",
+          "WhatsApp",
+          "Referral",
+          "Other",
+        ],
+      },
+      {
+        name: "stage",
+        label: "Stage",
+        kind: "select",
+        choices: [
+          "New",
+          "Contacted",
+          "Counselled",
+          "Demo booked",
+          "Applied",
+          "Closed",
+        ],
+      },
+      {
+        name: "nextFollowUp",
+        label: "Next follow-up",
+        kind: "datetime-local",
+      },
       { name: "note", label: "Notes", kind: "textarea" },
     ],
     columns: ["name", "course", "stage", "nextFollowUp"],
     labels: ["Lead", "Course", "Stage", "Follow-up"],
   },
+
   demos: {
-    title: "Demos", description: "Book and track demo classes and walk-ins.",
+    title: "Demos",
+    description: "Book and track demo classes and walk-ins.",
     resource: "demos",
     fields: [
       { name: "name", label: "Student / lead" },
       { name: "course", label: "Course" },
       { name: "date", label: "Demo date", kind: "date" },
       { name: "time", label: "Time" },
-      { name: "mode", label: "Mode", kind: "select", choices: ["In centre", "Online"] },
-      { name: "status", label: "Outcome", kind: "select", choices: ["Booked", "Came", "No-show"] },
+      {
+        name: "mode",
+        label: "Mode",
+        kind: "select",
+        choices: ["In centre", "Online"],
+      },
+      {
+        name: "status",
+        label: "Outcome",
+        kind: "select",
+        choices: ["Booked", "Came", "No-show"],
+      },
       { name: "note", label: "Notes", kind: "textarea" },
     ],
     columns: ["name", "course", "date", "time", "status"],
     labels: ["Lead", "Course", "Date", "Time", "Outcome"],
   },
+
   admissions: {
-    title: "Admissions", description: "Review the existing admissions pipeline.",
+    title: "Admission Enquiries",
+    description:
+      "Review applications, contact students, manage counselling and track enrolment follow-ups.",
     resource: "admissions",
     columns: ["studentName", "program", "grade", "status", "reference"],
-    labels: ["Student", "Program", "Class", "Status", "Reference"],
+    labels: ["Student", "Course / Program", "Class", "Status", "Reference"],
   },
+
   counselling: {
-    title: "Counselling", description: "Track counselling sessions and reports.",
+    title: "Counselling",
+    description: "Track counselling sessions and reports.",
     resource: "counselling",
     fields: [
       { name: "name", label: "Student name" },
       { name: "phone", label: "WhatsApp number", kind: "tel" },
       { name: "studentClass", label: "Class" },
       { name: "session", label: "Session date", kind: "date" },
-      { name: "reportStatus", label: "Report status", kind: "select", choices: ["Not started", "Draft", "To approve"] },
-      { name: "note", label: "Counselling notes", kind: "textarea" },
+      {
+        name: "reportStatus",
+        label: "Report status",
+        kind: "select",
+        choices: ["Not started", "Draft", "To approve"],
+      },
+      {
+        name: "note",
+        label: "Counselling notes",
+        kind: "textarea",
+      },
     ],
     columns: ["name", "studentClass", "session", "reportStatus"],
     labels: ["Student", "Class", "Session", "Report"],
   },
+
   students: {
-    title: "Students", description: "Active student directory.",
+    title: "Students",
+    description: "Active student directory.",
     resource: "students",
     columns: ["name", "enrollmentNo", "program", "currentClass"],
     labels: ["Student", "ID", "Program", "Class"],
   },
+
   fees: {
-    title: "Fees", description: "Review outstanding fees and invoice status.",
+    title: "Fees",
+    description: "Review outstanding fees and invoice status.",
     resource: "fees",
-    columns: ["studentName", "invoiceId", "amount", "paid", "balance", "status"],
+    columns: [
+      "studentName",
+      "invoiceId",
+      "amount",
+      "paid",
+      "balance",
+      "status",
+    ],
     labels: ["Student", "Invoice", "Amount", "Paid", "Balance", "Status"],
   },
+
   reports: {
-    title: "Reports", description: "Admissions and sales activity at a glance.",
+    title: "Reports",
+    description: "Admissions and sales activity at a glance.",
   },
+
   attendance: {
-    title: "Attendance", description: "Your check-in and check-out history.",
+    title: "Attendance",
+    description: "Your check-in and check-out history.",
     resource: "attendance",
   },
+
   profile: {
-    title: "Profile", description: "Your details and notification preferences.",
+    title: "Profile",
+    description: "Your details and notification preferences.",
     resource: "profile",
   },
 } satisfies Record<string, Config>;
@@ -118,19 +226,71 @@ export const screens = {
 export type StaffScreen = keyof typeof screens;
 
 function label(value: unknown): string {
-  if (value === null || value === undefined || value === "") return "—";
-  if (typeof value === "boolean") return value ? "Yes" : "No";
-  if (typeof value === "number") return value.toLocaleString("en-IN");
-  if (typeof value !== "string") return "—";
+  if (value === null || value === undefined || value === "") {
+    return "—";
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  }
+
+  if (typeof value === "number") {
+    return value.toLocaleString("en-IN");
+  }
+
+  if (typeof value !== "string") {
+    return "—";
+  }
 
   if (/^\d{4}-\d{2}-\d{2}T/.test(value)) {
     const date = new Date(value);
+
     return Number.isNaN(date.getTime())
       ? value
-      : date.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+      : date.toLocaleString("en-IN", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        });
   }
 
   return value;
+}
+
+function statusLabel(value: unknown): string {
+  return typeof value === "string"
+    ? value
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (character) => character.toUpperCase())
+    : "—";
+}
+
+function statusStyle(value: unknown): string {
+  switch (value) {
+    case "enrolled":
+    case "approved":
+      return "border-emerald-200 bg-emerald-50 text-emerald-700";
+
+    case "contacted":
+      return "border-blue-200 bg-blue-50 text-blue-700";
+
+    case "counselling":
+      return "border-violet-200 bg-violet-50 text-violet-700";
+
+    case "payment_pending":
+      return "border-orange-200 bg-orange-50 text-orange-700";
+
+    case "rejected":
+      return "border-red-200 bg-red-50 text-red-700";
+
+    case "closed":
+      return "border-slate-200 bg-slate-100 text-slate-600";
+
+    case "reviewing":
+      return "border-indigo-200 bg-indigo-50 text-indigo-700";
+
+    default:
+      return "border-amber-200 bg-amber-50 text-amber-700";
+  }
 }
 
 function Card({
@@ -148,6 +308,7 @@ function Card({
         <h2 className="text-sm font-extrabold">{title}</h2>
         {extra}
       </div>
+
       <div className="p-5">{children}</div>
     </section>
   );
@@ -165,27 +326,253 @@ function Stat({
   return (
     <div className="rounded-xl border border-[#ece5df] bg-white p-5 shadow-sm">
       <p className="text-xs font-semibold text-slate-500">{name}</p>
+
       <p className="mt-2 text-2xl font-black text-[#3f101c]">{value}</p>
+
       {sub && <p className="mt-2 text-[11px] text-slate-500">{sub}</p>}
     </div>
   );
 }
 
-const buttonClass = "inline-flex min-h-9 items-center justify-center gap-2 rounded-lg bg-[#ad123d] px-4 py-2 text-xs font-bold text-white hover:bg-[#850e30] disabled:opacity-50";
-const inputClass = "w-full rounded-lg border border-[#e6e0dc] bg-white px-3 py-2.5 text-xs outline-none focus:border-[#ad123d]";
+const buttonClass =
+  "inline-flex min-h-9 items-center justify-center gap-2 rounded-lg bg-[#ad123d] px-4 py-2 text-xs font-bold text-white hover:bg-[#850e30] disabled:opacity-50";
+
+const inputClass =
+  "w-full rounded-lg border border-[#e6e0dc] bg-white px-3 py-2.5 text-xs outline-none focus:border-[#ad123d]";
 
 async function fetchRecords(resource: string) {
   const res = await fetch("/api/staff/" + resource, {
     credentials: "include",
     cache: "no-store",
   });
+
   const body = await res.json();
-  if (!res.ok) throw new Error(body.error || "Unable to load data.");
+
+  if (!res.ok) {
+    throw new Error(body.error || "Unable to load data.");
+  }
+
   return body as {
     records?: RecordItem[];
     record?: RecordItem | null;
-    user?: { name: string; email: string; phone: string };
+    statuses?: string[];
+    user?: {
+      name: string;
+      email: string;
+      phone: string;
+    };
   };
+}
+
+function AdmissionDetail({
+  record,
+  statuses,
+  saving,
+  onClose,
+  onSave,
+}: {
+  record: RecordItem;
+  statuses: string[];
+  saving: boolean;
+  onClose: () => void;
+  onSave: (id: string, changes: Record<string, string>) => Promise<boolean>;
+}) {
+  const [editStatus, setEditStatus] = useState(String(record.status || "new"));
+
+  const [adminNote, setAdminNote] = useState(String(record.adminNote || ""));
+
+  const [error, setError] = useState("");
+
+  const options = Array.from(
+    new Set([editStatus, ...statuses, ...ADMISSION_STATUSES]),
+  );
+
+  async function save() {
+    setError("");
+
+    if (!record.id) {
+      setError("Invalid admission record.");
+      return;
+    }
+
+    const success = await onSave(record.id, {
+      status: editStatus,
+      adminNote,
+    });
+
+    if (!success) {
+      setError(
+        "Could not save the enquiry. Please check the error message and try again.",
+      );
+    }
+  }
+
+  const details = [
+    ["Application Reference", record.reference],
+    ["Student Name", record.studentName || record.name],
+    ["Parent / Guardian", record.parentName],
+    ["Email", record.email],
+    ["Phone", record.phone],
+    ["Course / Program", record.program],
+    ["Class / Academic Level", record.grade],
+    ["Current School", record.currentSchool],
+    ["Application Source", record.source],
+    ["Student Message", record.message],
+    ["Submitted On", record.createdAt],
+  ];
+
+  return (
+    <div className="fixed inset-0 z-[10050] flex items-center justify-center bg-black/50 p-4">
+      <button
+        type="button"
+        aria-label="Close admission enquiry"
+        onClick={onClose}
+        disabled={saving}
+        className="absolute inset-0"
+      />
+
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="admission-detail-title"
+        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+      >
+        <div className="flex items-start justify-between border-b px-6 py-5">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#ad123d]">
+              Admission Enquiry
+            </p>
+
+            <h2
+              id="admission-detail-title"
+              className="mt-2 text-xl font-black text-[#3f101c]"
+            >
+              {label(record.studentName || record.name)}
+            </h2>
+
+            <p className="mt-1 text-xs text-slate-500">
+              {label(record.reference)}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={saving}
+            aria-label="Close"
+            className="rounded-full bg-slate-100 p-2 text-slate-600"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="space-y-6 p-6">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {details.map(([name, value]) => (
+              <div
+                key={String(name)}
+                className="rounded-lg border border-[#eee5e2] bg-[#faf8f6] p-3"
+              >
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                  {String(name)}
+                </p>
+
+                <p className="mt-2 break-words text-xs font-semibold leading-5 text-slate-800">
+                  {label(value)}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="border-t pt-5">
+            <label
+              htmlFor="staff-admission-status"
+              className="block text-xs font-bold text-slate-800"
+            >
+              Admission Status
+            </label>
+
+            <select
+              id="staff-admission-status"
+              value={editStatus}
+              onChange={(event) => setEditStatus(event.target.value)}
+              className={"mt-2 " + inputClass}
+            >
+              {options.map((value) => (
+                <option key={value} value={value}>
+                  {statusLabel(value)}
+                </option>
+              ))}
+            </select>
+
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">
+              Update the enquiry as the student progresses through contact,
+              counselling and payment follow-up. Confirm enrolment only after
+              admission has been verified.
+            </p>
+          </div>
+
+          <div>
+            <label
+              htmlFor="staff-admission-note"
+              className="block text-xs font-bold text-slate-800"
+            >
+              Counselling & Follow-up Notes
+            </label>
+
+            <textarea
+              id="staff-admission-note"
+              rows={5}
+              maxLength={5000}
+              value={adminNote}
+              onChange={(event) => setAdminNote(event.target.value)}
+              placeholder="Record student calls, counselling discussions, next follow-up and payment status."
+              className={"mt-2 " + inputClass}
+            />
+
+            <p className="mt-2 text-[11px] text-slate-500">
+              Internal notes shared with authorised admissions staff and
+              administrators.
+            </p>
+          </div>
+
+          {error && (
+            <p
+              role="alert"
+              className="rounded-lg bg-red-50 p-3 text-xs text-red-700"
+            >
+              {error}
+            </p>
+          )}
+
+          <div className="flex flex-wrap justify-end gap-3 border-t pt-5">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={saving}
+              className="rounded-lg border px-5 py-2.5 text-xs font-bold text-slate-600"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="button"
+              onClick={() => void save()}
+              disabled={saving}
+              className={buttonClass}
+            >
+              {saving ? (
+                <Loader2 size={15} className="animate-spin" />
+              ) : (
+                <Save size={15} />
+              )}
+              {saving ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
 
 export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
@@ -194,14 +581,26 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
 
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [form, setForm] = useState<Record<string, string>>({});
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [filter, setFilter] = useState("");
+
+  const [admissionStatuses, setAdmissionStatuses] =
+    useState<string[]>(ADMISSION_STATUSES);
+
+  const [selectedAdmission, setSelectedAdmission] = useState<RecordItem | null>(
+    null,
+  );
+
   const [profileUser, setProfileUser] = useState({
-    name: "", email: "", phone: "",
+    name: "",
+    email: "",
+    phone: "",
   });
+
   const [reportData, setReportData] = useState({
     leads: [] as RecordItem[],
     demos: [] as RecordItem[],
@@ -212,6 +611,7 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
+
     try {
       if (screen === "home" || screen === "reports") {
         const [leads, demos, admissions, tasks] = await Promise.all([
@@ -220,6 +620,7 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
           fetchRecords("admissions"),
           fetchRecords("tasks"),
         ]);
+
         setReportData({
           leads: leads.records || [],
           demos: demos.records || [],
@@ -228,15 +629,28 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
         });
       } else if (resource) {
         const data = await fetchRecords(resource);
+
         setRecords(data.records || []);
-        if (data.user) setProfileUser(data.user);
+
+        if (resource === "admissions") {
+          setAdmissionStatuses(
+            data.statuses?.length ? data.statuses : ADMISSION_STATUSES,
+          );
+        }
+
+        if (data.user) {
+          setProfileUser(data.user);
+        }
+
         if (screen === "profile" && data.record) {
           const next: Record<string, string> = {};
+
           for (const [key, value] of Object.entries(data.record)) {
             if (typeof value === "string" || typeof value === "boolean") {
               next[key] = String(value);
             }
           }
+
           setForm(next);
         }
       }
@@ -253,7 +667,10 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!resource) return;
+
+    if (!resource || saving) {
+      return;
+    }
 
     setSaving(true);
     setError("");
@@ -263,13 +680,24 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
       const res = await fetch("/api/staff/" + resource, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(form),
       });
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Unable to save.");
+
+      if (!res.ok) {
+        throw new Error(data.error || "Unable to save.");
+      }
+
       setNotice(data.message || "Saved.");
-      if (screen !== "profile") setForm({});
+
+      if (screen !== "profile") {
+        setForm({});
+      }
+
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to save.");
@@ -278,24 +706,54 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
     }
   }
 
-  async function update(id: string, changes: Record<string, string>) {
-    if (!resource) return;
+  async function update(
+    id: string,
+    changes: Record<string, string>,
+  ): Promise<boolean> {
+    if (!resource || saving) {
+      return false;
+    }
+
     setSaving(true);
     setError("");
+    setNotice("");
 
     try {
       const response = await fetch("/api/staff/" + resource, {
         method: "PATCH",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, ...changes }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          ...changes,
+        }),
       });
+
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Update failed.");
-      setNotice("Record updated.");
+
+      if (!response.ok) {
+        throw new Error(result.error || "Update failed.");
+      }
+
+      /*
+       * Close the admission popup after
+       * the server confirms a successful save.
+       */
+      if (screen === "admissions") {
+        setSelectedAdmission(null);
+      }
+
       await load();
+
+      setNotice(result.message || "Record updated.");
+
+      return true;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Update failed.");
+
+      return false;
     } finally {
       setSaving(false);
     }
@@ -304,15 +762,23 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
   async function attendanceAction(action: "checkin" | "checkout") {
     setSaving(true);
     setError("");
+
     try {
       const response = await fetch("/api/staff/attendance", {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ action }),
       });
+
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Attendance failed.");
+
+      if (!response.ok) {
+        throw new Error(result.error || "Attendance failed.");
+      }
+
       setNotice(result.message);
       await load();
     } catch (err) {
@@ -322,21 +788,47 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
     }
   }
 
-  const visible = records.filter((item) =>
-    !filter || JSON.stringify(item).toLowerCase().includes(filter.toLowerCase())
+  const visible = records.filter(
+    (item) =>
+      !filter ||
+      JSON.stringify(item).toLowerCase().includes(filter.toLowerCase()),
   );
 
   const leadCount = reportData.leads.length;
+
   const admissionCount = reportData.admissions.length;
-  const bookedDemos = reportData.demos.filter((d) => d.status === "Booked").length;
-  const pendingTasks = reportData.tasks.filter((t) => t.status !== "done").length;
+
+  const bookedDemos = reportData.demos.filter(
+    (item) => item.status === "Booked",
+  ).length;
+
+  const pendingTasks = reportData.tasks.filter(
+    (item) => item.status !== "done",
+  ).length;
+
   const conversion = "—";
 
   const summaryCards = [
-    { name: "Tracked Leads", value: leadCount, sub: "Leads created by you" },
-    { name: "Admission Applications", value: admissionCount, sub: "Current application records" },
-    { name: "Demos Booked", value: bookedDemos, sub: "Your pending demos" },
-    { name: "Open Tasks", value: pendingTasks, sub: "Tasks not yet completed" },
+    {
+      name: "Tracked Leads",
+      value: leadCount,
+      sub: "Leads created by you",
+    },
+    {
+      name: "Admission Enquiries",
+      value: admissionCount,
+      sub: "Current application records",
+    },
+    {
+      name: "Demos Booked",
+      value: bookedDemos,
+      sub: "Your pending demos",
+    },
+    {
+      name: "Open Tasks",
+      value: pendingTasks,
+      sub: "Tasks not yet completed",
+    },
   ];
 
   const profileFields: Field[] = [
@@ -345,6 +837,16 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
     { name: "location", label: "Location" },
   ];
 
+  const admissionCounts = {
+    total: records.length,
+    new: records.filter((item) => item.status === "new").length,
+    contacted: records.filter((item) => item.status === "contacted").length,
+    counselling: records.filter((item) => item.status === "counselling").length,
+    paymentPending: records.filter((item) => item.status === "payment_pending")
+      .length,
+    enrolled: records.filter((item) => item.status === "enrolled").length,
+  };
+
   return (
     <div className="mx-auto max-w-[1500px] space-y-6 p-5 sm:p-7">
       <header className="flex flex-wrap items-start justify-between gap-4">
@@ -352,27 +854,38 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
           <p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#9f5f6b]">
             Prime Digital School / Staff
           </p>
+
           <h1 className="mt-2 text-[26px] font-black tracking-tight">
             {config.title}
           </h1>
+
           <p className="mt-1 text-sm text-slate-500">{config.description}</p>
         </div>
+
         <button
           type="button"
           onClick={() => void load()}
           className="inline-flex items-center gap-2 rounded-lg border border-[#e6ddd7] bg-white px-4 py-2 text-xs font-bold"
         >
-          <RefreshCw size={14} /> Refresh
+          <RefreshCw size={14} />
+          Refresh
         </button>
       </header>
 
       {error && (
-        <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-xs text-red-700">
+        <div
+          role="alert"
+          className="rounded-lg border border-red-200 bg-red-50 p-4 text-xs text-red-700"
+        >
           {error}
         </div>
       )}
+
       {notice && (
-        <div role="status" className="rounded-lg border border-green-200 bg-green-50 p-4 text-xs text-green-800">
+        <div
+          role="status"
+          className="rounded-lg border border-green-200 bg-green-50 p-4 text-xs text-green-800"
+        >
           {notice}
         </div>
       )}
@@ -383,24 +896,42 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
         </div>
       ) : (
         <>
+          {/* HOME AND REPORTS */}
           {(screen === "home" || screen === "reports") && (
             <>
               {screen === "home" && (
                 <div className="rounded-xl bg-[#490e20] p-6 text-white">
                   <p className="text-xs text-white/65">Staff Workspace</p>
-                  <h2 className="mt-2 text-2xl font-black">Your daily overview</h2>
+
+                  <h2 className="mt-2 text-2xl font-black">
+                    Your daily overview
+                  </h2>
+
                   <p className="mt-2 text-sm text-white/70">
-                    Follow up on leads, manage demos and finish your assigned tasks.
+                    Follow up on leads, manage demos and finish your assigned
+                    tasks.
                   </p>
+
                   <div className="mt-5 flex flex-wrap gap-3">
-                    <Link href="/staff/leads" className="rounded-lg bg-white px-4 py-2 text-xs font-bold text-[#490e20]">
+                    <Link
+                      href="/staff/leads"
+                      className="rounded-lg bg-white px-4 py-2 text-xs font-bold text-[#490e20]"
+                    >
                       Add lead
                     </Link>
-                    <Link href="/staff/demos" className="rounded-lg border border-white/25 px-4 py-2 text-xs font-bold">
+
+                    <Link
+                      href="/staff/demos"
+                      className="rounded-lg border border-white/25 px-4 py-2 text-xs font-bold"
+                    >
                       Book demo
                     </Link>
-                    <Link href="/staff/admissions" className="rounded-lg border border-white/25 px-4 py-2 text-xs font-bold">
-                      Admissions
+
+                    <Link
+                      href="/staff/admissions"
+                      className="rounded-lg border border-white/25 px-4 py-2 text-xs font-bold"
+                    >
+                      Admission Enquiries
                     </Link>
                   </div>
                 </div>
@@ -416,66 +947,120 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
                 <div className="grid gap-5 xl:grid-cols-2">
                   <Card
                     title="Recent Follow-ups"
-                    extra={<Link href="/staff/leads" className="text-xs font-bold text-[#ad123d]">All leads →</Link>}
+                    extra={
+                      <Link
+                        href="/staff/leads"
+                        className="text-xs font-bold text-[#ad123d]"
+                      >
+                        All leads →
+                      </Link>
+                    }
                   >
                     {reportData.leads.length ? (
                       <div className="space-y-3">
                         {reportData.leads.slice(0, 6).map((item) => (
-                          <div key={String(item.id)} className="flex justify-between gap-3 border-b pb-3 text-xs last:border-0">
+                          <div
+                            key={String(item.id)}
+                            className="flex justify-between gap-3 border-b pb-3 text-xs last:border-0"
+                          >
                             <div>
                               <p className="font-bold">{label(item.name)}</p>
-                              <p className="mt-1 text-slate-500">{label(item.course)}</p>
+
+                              <p className="mt-1 text-slate-500">
+                                {label(item.course)}
+                              </p>
                             </div>
-                            <span className="font-semibold text-[#9c2444]">{label(item.stage)}</span>
+
+                            <span className="font-semibold text-[#9c2444]">
+                              {label(item.stage)}
+                            </span>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-slate-500">No leads entered yet.</p>
+                      <p className="text-xs text-slate-500">
+                        No leads entered yet.
+                      </p>
                     )}
                   </Card>
 
-                  <Card title="Your Task List" extra={<Link href="/staff/tasks" className="text-xs font-bold text-[#ad123d]">Open tasks →</Link>}>
+                  <Card
+                    title="Your Task List"
+                    extra={
+                      <Link
+                        href="/staff/tasks"
+                        className="text-xs font-bold text-[#ad123d]"
+                      >
+                        Open tasks →
+                      </Link>
+                    }
+                  >
                     {reportData.tasks.length ? (
                       <div className="space-y-3">
                         {reportData.tasks.slice(0, 6).map((item) => (
-                          <div key={String(item.id)} className="flex items-center justify-between gap-3 border-b pb-3 text-xs">
+                          <div
+                            key={String(item.id)}
+                            className="flex items-center justify-between gap-3 border-b pb-3 text-xs"
+                          >
                             <span>{label(item.title)}</span>
-                            <span className="font-bold text-[#ad123d]">{label(item.status)}</span>
+
+                            <span className="font-bold text-[#ad123d]">
+                              {label(item.status)}
+                            </span>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-slate-500">No tasks added yet.</p>
+                      <p className="text-xs text-slate-500">
+                        No tasks added yet.
+                      </p>
                     )}
                   </Card>
 
                   <Card title="Upcoming Demos">
                     {reportData.demos.length ? (
                       <div className="space-y-3">
-                        {reportData.demos.slice(0, 5).map((d) => (
-                          <div key={String(d.id)} className="flex items-center justify-between gap-3 text-xs">
+                        {reportData.demos.slice(0, 5).map((item) => (
+                          <div
+                            key={String(item.id)}
+                            className="flex items-center justify-between gap-3 text-xs"
+                          >
                             <div>
-                              <p className="font-bold">{label(d.name)}</p>
-                              <p className="text-slate-500">{label(d.course)}</p>
+                              <p className="font-bold">{label(item.name)}</p>
+
+                              <p className="text-slate-500">
+                                {label(item.course)}
+                              </p>
                             </div>
-                            <span className="text-[#ad123d]">{label(d.date)}</span>
+
+                            <span className="text-[#ad123d]">
+                              {label(item.date)}
+                            </span>
                           </div>
                         ))}
                       </div>
-                    ) : <p className="text-xs text-slate-500">No demos booked yet.</p>}
+                    ) : (
+                      <p className="text-xs text-slate-500">
+                        No demos booked yet.
+                      </p>
+                    )}
                   </Card>
 
                   <Card title="Quick Access">
                     <div className="grid grid-cols-2 gap-3">
                       {[
                         ["Tasks", "/staff/tasks"],
-                        ["Admissions", "/staff/admissions"],
+                        ["Admission Enquiries", "/staff/admissions"],
                         ["Students", "/staff/students"],
                         ["Fees", "/staff/fees"],
                       ].map(([name, href]) => (
-                        <Link key={href} href={href} className="flex items-center justify-between rounded-lg border p-3 text-xs font-bold hover:bg-[#fff4f6]">
-                          {name} <ArrowRight size={14} />
+                        <Link
+                          key={href}
+                          href={href}
+                          className="flex items-center justify-between rounded-lg border p-3 text-xs font-bold hover:bg-[#fff4f6]"
+                        >
+                          {name}
+                          <ArrowRight size={14} />
                         </Link>
                       ))}
                     </div>
@@ -486,15 +1071,33 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
                   <Card title="Lead Performance">
                     <div className="space-y-4">
                       <Stat name="Tracked leads" value={leadCount} />
-                      <Stat name="Verified lead-to-admission conversion" value={conversion} sub="Requires admissions linked to individual leads. Not yet available." />
+
+                      <Stat
+                        name="Verified lead-to-admission conversion"
+                        value={conversion}
+                        sub="Requires admissions linked to individual leads. Not yet available."
+                      />
                     </div>
                   </Card>
+
                   <Card title="Activity Summary">
                     <div className="space-y-3 text-xs">
-                      <p>Booked demos: <strong>{bookedDemos}</strong></p>
-                      <p>Open tasks: <strong>{pendingTasks}</strong></p>
-                      <p>Admission applications: <strong>{admissionCount}</strong></p>
-                      <p className="text-slate-500">Call metrics, targets and individual admissions attribution need additional tracking.</p>
+                      <p>
+                        Booked demos: <strong>{bookedDemos}</strong>
+                      </p>
+
+                      <p>
+                        Open tasks: <strong>{pendingTasks}</strong>
+                      </p>
+
+                      <p>
+                        Admission enquiries: <strong>{admissionCount}</strong>
+                      </p>
+
+                      <p className="text-slate-500">
+                        Call metrics, targets and individual admissions
+                        attribution need additional tracking.
+                      </p>
                     </div>
                   </Card>
                 </div>
@@ -502,60 +1105,128 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
             </>
           )}
 
+          {/* ATTENDANCE */}
           {screen === "attendance" && (
             <>
               <div className="grid gap-4 sm:grid-cols-3">
                 <Stat name="Recorded Days" value={records.length} />
-                <Stat name="Checked Out" value={records.filter((r) => Boolean(r.checkOutAt)).length} />
-                <Stat name="Open Check-ins" value={records.filter((r) => Boolean(r.checkInAt) && !r.checkOutAt).length} />
+
+                <Stat
+                  name="Checked Out"
+                  value={
+                    records.filter((item) => Boolean(item.checkOutAt)).length
+                  }
+                />
+
+                <Stat
+                  name="Open Check-ins"
+                  value={
+                    records.filter(
+                      (item) => Boolean(item.checkInAt) && !item.checkOutAt,
+                    ).length
+                  }
+                />
               </div>
+
               <Card title="Today">
                 <div className="flex flex-wrap gap-3">
-                  <button disabled={saving} type="button" onClick={() => void attendanceAction("checkin")} className={buttonClass}>
-                    <Clock3 size={15} /> Check In
+                  <button
+                    disabled={saving}
+                    type="button"
+                    onClick={() => void attendanceAction("checkin")}
+                    className={buttonClass}
+                  >
+                    <Clock3 size={15} />
+                    Check In
                   </button>
-                  <button disabled={saving} type="button" onClick={() => void attendanceAction("checkout")} className={buttonClass}>
-                    <Check size={15} /> Check Out
+
+                  <button
+                    disabled={saving}
+                    type="button"
+                    onClick={() => void attendanceAction("checkout")}
+                    className={buttonClass}
+                  >
+                    <Check size={15} />
+                    Check Out
                   </button>
                 </div>
-                <p className="mt-4 text-xs text-slate-500">Attendance timestamps are recorded on the server. Leave approval is not enabled yet.</p>
+
+                <p className="mt-4 text-xs text-slate-500">
+                  Attendance timestamps are recorded on the server. Leave
+                  approval is not enabled yet.
+                </p>
               </Card>
+
               <Card title="Attendance History">
                 {records.length ? (
                   <div className="space-y-3">
                     {records.map((record) => (
-                      <div key={String(record.id)} className="flex flex-wrap justify-between gap-3 rounded-lg border p-3 text-xs">
+                      <div
+                        key={String(record.id)}
+                        className="flex flex-wrap justify-between gap-3 rounded-lg border p-3 text-xs"
+                      >
                         <strong>{label(record.dateKey)}</strong>
+
                         <span>In: {label(record.checkInAt)}</span>
+
                         <span>Out: {label(record.checkOutAt)}</span>
                       </div>
                     ))}
                   </div>
-                ) : <p className="text-xs text-slate-500">No attendance history yet.</p>}
+                ) : (
+                  <p className="text-xs text-slate-500">
+                    No attendance history yet.
+                  </p>
+                )}
               </Card>
             </>
           )}
 
+          {/* PROFILE */}
           {screen === "profile" && (
             <div className="grid gap-5 lg:grid-cols-2">
               <Card title="Personal Details">
                 <div className="mb-5 space-y-2 rounded-lg bg-[#faf6f2] p-4 text-xs">
-                  <p><strong>Name:</strong> {profileUser.name}</p>
-                  <p><strong>Email:</strong> {profileUser.email}</p>
-                  <p className="text-slate-500">Account email and name are managed by the administrator.</p>
+                  <p>
+                    <strong>Name:</strong> {profileUser.name}
+                  </p>
+
+                  <p>
+                    <strong>Email:</strong> {profileUser.email}
+                  </p>
+
+                  <p className="text-slate-500">
+                    Account email and name are managed by the administrator.
+                  </p>
                 </div>
 
-                <form onSubmit={(e) => void submit(e)} className="space-y-4">
+                <form
+                  onSubmit={(event) => void submit(event)}
+                  className="space-y-4"
+                >
                   {profileFields.map((field) => (
-                    <label key={field.name} className="block text-xs font-semibold">
+                    <label
+                      key={field.name}
+                      className="block text-xs font-semibold"
+                    >
                       {field.label}
+
                       <input
-                        value={form[field.name] ?? (field.name === "phone" ? profileUser.phone : "")}
-                        onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
+                        value={
+                          form[field.name] ??
+                          (field.name === "phone" ? profileUser.phone : "")
+                        }
+                        onChange={(event) =>
+                          setForm({
+                            ...form,
+                            [field.name]: event.target.value,
+                          })
+                        }
                         className={"mt-2 " + inputClass}
                       />
                     </label>
                   ))}
+
                   <button disabled={saving} className={buttonClass}>
                     Save Profile
                   </button>
@@ -563,149 +1234,148 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
               </Card>
 
               <Card title="Alerts & Preferences">
-                <form onSubmit={(e) => void submit(e)} className="space-y-5">
+                <form
+                  onSubmit={(event) => void submit(event)}
+                  className="space-y-5"
+                >
                   {[
                     ["alertLeads", "New lead"],
                     ["alertFollowups", "Follow-up reminders"],
                     ["alertFees", "Fee payment alerts"],
                   ].map(([key, title]) => (
-                    <label key={key} className="flex items-center justify-between gap-3 text-xs">
+                    <label
+                      key={key}
+                      className="flex items-center justify-between gap-3 text-xs"
+                    >
                       <span>{title}</span>
+
                       <input
                         type="checkbox"
                         checked={form[key] !== "false"}
-                        onChange={(e) => setForm({ ...form, [key]: String(e.target.checked) })}
+                        onChange={(event) =>
+                          setForm({
+                            ...form,
+                            [key]: String(event.target.checked),
+                          })
+                        }
                         className="accent-[#ad123d]"
                       />
                     </label>
                   ))}
-                  <button className={buttonClass} disabled={saving}>Save Preferences</button>
-                  <p className="text-xs text-slate-500">These preferences are stored; automated notifications require a separate notification service.</p>
+
+                  <button className={buttonClass} disabled={saving}>
+                    Save Preferences
+                  </button>
+
+                  <p className="text-xs text-slate-500">
+                    These preferences are stored; automated notifications
+                    require a separate notification service.
+                  </p>
                 </form>
               </Card>
             </div>
           )}
 
-          {resource && !["profile", "attendance"].includes(screen) && (
-            <>
-              {config.fields && (
-                <Card title={"Add " + config.title.replace(/s$/, "")}>
-                  <form onSubmit={(e) => void submit(e)} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                    {config.fields.map((field) => (
-                      <label key={field.name} className="block text-xs font-semibold">
-                        {field.label}
-                        {field.kind === "textarea" ? (
-                          <textarea
-                            value={form[field.name] || ""}
-                            onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
-                            rows={2}
-                            className={"mt-2 " + inputClass}
-                          />
-                        ) : field.kind === "select" ? (
-                          <select
-                            value={form[field.name] || ""}
-                            onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
-                            className={"mt-2 " + inputClass}
-                          >
-                            <option value="">Select</option>
-                            {field.choices?.map((choice) => (
-                              <option key={choice} value={choice}>{choice}</option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input
-                            type={field.kind || "text"}
-                            value={form[field.name] || ""}
-                            onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
-                            className={"mt-2 " + inputClass}
-                          />
-                        )}
-                      </label>
-                    ))}
-                    <div className="flex items-end">
-                      <button type="submit" disabled={saving} className={buttonClass}>
-                        <Plus size={15} />
-                        {saving ? "Saving..." : "Save Record"}
-                      </button>
-                    </div>
-                  </form>
-                </Card>
-              )}
+          {/* ADMISSION ENQUIRIES */}
+          {screen === "admissions" && (
+            <div className="space-y-5">
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                <Stat name="Total Enquiries" value={admissionCounts.total} />
+                <Stat name="New" value={admissionCounts.new} />
+                <Stat name="Contacted" value={admissionCounts.contacted} />
+                <Stat name="Counselling" value={admissionCounts.counselling} />
+                <Stat
+                  name="Payment Pending"
+                  value={admissionCounts.paymentPending}
+                />
+                <Stat name="Enrolled" value={admissionCounts.enrolled} />
+              </div>
 
               <Card
-                title={config.fields ? "Your Records" : config.title + " Records"}
+                title="Admission Enquiries"
                 extra={
                   <div className="relative">
-                    <Search size={14} className="absolute left-2.5 top-2.5 text-slate-400" />
+                    <Search
+                      size={14}
+                      className="absolute left-2.5 top-2.5 text-slate-400"
+                    />
+
                     <input
                       value={filter}
-                      onChange={(e) => setFilter(e.target.value)}
-                      placeholder="Filter..."
-                      aria-label="Filter records"
-                      className="w-40 rounded-lg border px-3 py-2 pl-8 text-xs outline-none"
+                      onChange={(event) => setFilter(event.target.value)}
+                      placeholder="Search enquiries..."
+                      aria-label="Search admission enquiries"
+                      className="w-44 rounded-lg border px-3 py-2 pl-8 text-xs outline-none"
                     />
                   </div>
                 }
               >
                 {visible.length ? (
                   <div className="overflow-x-auto">
-                    <table className="w-full min-w-[580px] text-left text-xs">
+                    <table className="w-full min-w-[780px] text-left text-xs">
                       <thead>
                         <tr className="border-b text-[10px] uppercase tracking-wider text-slate-500">
-                          {config.labels?.map((name) => (
-                            <th key={name} className="px-3 py-3">{name}</th>
-                          ))}
-                          {["tasks", "leads", "demos", "counselling"].includes(screen) && <th className="px-3 py-3">Action</th>}
+                          <th className="px-3 py-3">Applicant</th>
+                          <th className="px-3 py-3">Course / Program</th>
+                          <th className="px-3 py-3">Contact</th>
+                          <th className="px-3 py-3">Status</th>
+                          <th className="px-3 py-3">Reference</th>
+                          <th className="px-3 py-3">Action</th>
                         </tr>
                       </thead>
+
                       <tbody>
                         {visible.map((row) => (
-                          <tr key={String(row.id)} className="border-b border-[#f1ece8] last:border-0">
-                            {config.columns?.map((column) => (
-                              <td key={column} className="px-3 py-4">
-                                {["amount", "paid", "balance"].includes(column)
-                                  ? "₹" + label(row[column])
-                                  : label(row[column])}
-                              </td>
-                            ))}
-                            {["tasks", "leads", "demos", "counselling"].includes(screen) && (
-                              <td className="px-3 py-3">
-                                {screen === "tasks" ? (
-                                  <button
-                                    type="button"
-                                    disabled={saving}
-                                    onClick={() => void update(String(row.id), {
-                                      status: row.status === "done" ? "pending" : "done",
-                                    })}
-                                    className="rounded-lg border border-[#e9dce0] px-3 py-1.5 text-[11px] font-bold text-[#a0193b]"
-                                  >
-                                    {row.status === "done" ? "Reopen" : "Done"}
-                                  </button>
-                                ) : (
-                                  <select
-                                    aria-label="Update status"
-                                    disabled={saving}
-                                    value={String(row[screen === "leads" ? "stage" : screen === "demos" ? "status" : "reportStatus"] || "")}
-                                    onChange={(e) =>
-                                      void update(String(row.id), {
-                                        [screen === "leads" ? "stage" : screen === "demos" ? "status" : "reportStatus"]: e.target.value,
-                                      })
-                                    }
-                                    className="rounded-lg border px-2 py-1.5 text-[11px]"
-                                  >
-                                    <option value="">Select</option>
-                                    {(screen === "leads"
-                                      ? ["New", "Contacted", "Counselled", "Demo booked", "Applied", "Closed"]
-                                      : screen === "demos"
-                                        ? ["Booked", "Came", "No-show"]
-                                        : ["Not started", "Draft", "To approve"]
-                                    ).map((choice) => (
-                                      <option key={choice} value={choice}>{choice}</option>
-                                    ))}
-                                  </select>
-                                )}
-                              </td>
-                            )}
+                          <tr
+                            key={String(row.id)}
+                            className="border-b border-[#f1ece8] last:border-0"
+                          >
+                            <td className="px-3 py-4">
+                              <p className="font-bold text-slate-800">
+                                {label(row.studentName || row.name)}
+                              </p>
+
+                              <p className="mt-1 text-[11px] text-slate-500">
+                                {label(row.grade)}
+                              </p>
+                            </td>
+
+                            <td className="max-w-[200px] px-3 py-4">
+                              {label(row.program)}
+                            </td>
+
+                            <td className="px-3 py-4">
+                              <p>{label(row.phone)}</p>
+
+                              <p className="mt-1 max-w-[180px] truncate text-slate-500">
+                                {label(row.email)}
+                              </p>
+                            </td>
+
+                            <td className="px-3 py-4">
+                              <span
+                                className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold ${statusStyle(
+                                  row.status,
+                                )}`}
+                              >
+                                {statusLabel(row.status)}
+                              </span>
+                            </td>
+
+                            <td className="px-3 py-4 text-[11px] text-slate-500">
+                              {label(row.reference)}
+                            </td>
+
+                            <td className="px-3 py-4">
+                              <button
+                                type="button"
+                                onClick={() => setSelectedAdmission(row)}
+                                className="inline-flex items-center gap-2 rounded-lg border border-[#e9dce0] px-3 py-2 text-[11px] font-bold text-[#a0193b] hover:bg-[#fff4f6]"
+                              >
+                                <Eye size={14} />
+                                Manage
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -713,27 +1383,281 @@ export default function StaffWorkspace({ screen }: { screen: StaffScreen }) {
                   </div>
                 ) : (
                   <div className="rounded-xl border border-dashed border-[#e7d9d8] bg-[#fffbfa] p-12 text-center">
-                    <p className="text-sm font-bold">No records found</p>
+                    <p className="text-sm font-bold">
+                      No admission enquiries found
+                    </p>
+
                     <p className="mt-2 text-xs text-slate-500">
-                      {filter ? "Try a different filter." : "Records will appear here when available."}
+                      {filter
+                        ? "Try a different search."
+                        : "Applications will appear after submission."}
                     </p>
                   </div>
                 )}
 
-                {screen === "fees" && (
-                  <p className="mt-4 text-xs text-slate-500">
-                    Fee collection, payment recording and receipt issuing remain restricted to authorized Admin workflows.
-                  </p>
-                )}
-                {screen === "admissions" && (
-                  <p className="mt-4 text-xs text-slate-500">
-                    Admission approval and document verification remain in the Admin workflow.
-                  </p>
-                )}
+                <p className="mt-4 text-xs leading-5 text-slate-500">
+                  Staff can update enquiry statuses and internal follow-up
+                  notes. Applicant information cannot be edited here. Payment
+                  confirmation and formal enrolment must be verified by the
+                  authorised team.
+                </p>
               </Card>
-            </>
+            </div>
           )}
+
+          {/* OTHER STAFF RESOURCE SCREENS */}
+          {resource &&
+            !["profile", "attendance", "admissions"].includes(screen) && (
+              <>
+                {config.fields && (
+                  <Card title={"Add " + config.title.replace(/s$/, "")}>
+                    <form
+                      onSubmit={(event) => void submit(event)}
+                      className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+                    >
+                      {config.fields.map((field) => (
+                        <label
+                          key={field.name}
+                          className="block text-xs font-semibold"
+                        >
+                          {field.label}
+
+                          {field.kind === "textarea" ? (
+                            <textarea
+                              value={form[field.name] || ""}
+                              onChange={(event) =>
+                                setForm({
+                                  ...form,
+                                  [field.name]: event.target.value,
+                                })
+                              }
+                              rows={2}
+                              className={"mt-2 " + inputClass}
+                            />
+                          ) : field.kind === "select" ? (
+                            <select
+                              value={form[field.name] || ""}
+                              onChange={(event) =>
+                                setForm({
+                                  ...form,
+                                  [field.name]: event.target.value,
+                                })
+                              }
+                              className={"mt-2 " + inputClass}
+                            >
+                              <option value="">Select</option>
+
+                              {field.choices?.map((choice) => (
+                                <option key={choice} value={choice}>
+                                  {choice}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              type={field.kind || "text"}
+                              value={form[field.name] || ""}
+                              onChange={(event) =>
+                                setForm({
+                                  ...form,
+                                  [field.name]: event.target.value,
+                                })
+                              }
+                              className={"mt-2 " + inputClass}
+                            />
+                          )}
+                        </label>
+                      ))}
+
+                      <div className="flex items-end">
+                        <button
+                          type="submit"
+                          disabled={saving}
+                          className={buttonClass}
+                        >
+                          <Plus size={15} />
+                          {saving ? "Saving..." : "Save Record"}
+                        </button>
+                      </div>
+                    </form>
+                  </Card>
+                )}
+
+                <Card
+                  title={
+                    config.fields ? "Your Records" : config.title + " Records"
+                  }
+                  extra={
+                    <div className="relative">
+                      <Search
+                        size={14}
+                        className="absolute left-2.5 top-2.5 text-slate-400"
+                      />
+
+                      <input
+                        value={filter}
+                        onChange={(event) => setFilter(event.target.value)}
+                        placeholder="Filter..."
+                        aria-label="Filter records"
+                        className="w-40 rounded-lg border px-3 py-2 pl-8 text-xs outline-none"
+                      />
+                    </div>
+                  }
+                >
+                  {visible.length ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[580px] text-left text-xs">
+                        <thead>
+                          <tr className="border-b text-[10px] uppercase tracking-wider text-slate-500">
+                            {config.labels?.map((name) => (
+                              <th key={name} className="px-3 py-3">
+                                {name}
+                              </th>
+                            ))}
+
+                            {[
+                              "tasks",
+                              "leads",
+                              "demos",
+                              "counselling",
+                            ].includes(screen) && (
+                              <th className="px-3 py-3">Action</th>
+                            )}
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {visible.map((row) => (
+                            <tr
+                              key={String(row.id)}
+                              className="border-b border-[#f1ece8] last:border-0"
+                            >
+                              {config.columns?.map((column) => (
+                                <td key={column} className="px-3 py-4">
+                                  {["amount", "paid", "balance"].includes(
+                                    column,
+                                  )
+                                    ? "₹" + label(row[column])
+                                    : label(row[column])}
+                                </td>
+                              ))}
+
+                              {[
+                                "tasks",
+                                "leads",
+                                "demos",
+                                "counselling",
+                              ].includes(screen) && (
+                                <td className="px-3 py-3">
+                                  {screen === "tasks" ? (
+                                    <button
+                                      type="button"
+                                      disabled={saving}
+                                      onClick={() =>
+                                        void update(String(row.id), {
+                                          status:
+                                            row.status === "done"
+                                              ? "pending"
+                                              : "done",
+                                        })
+                                      }
+                                      className="rounded-lg border border-[#e9dce0] px-3 py-1.5 text-[11px] font-bold text-[#a0193b]"
+                                    >
+                                      {row.status === "done"
+                                        ? "Reopen"
+                                        : "Done"}
+                                    </button>
+                                  ) : (
+                                    <select
+                                      aria-label="Update status"
+                                      disabled={saving}
+                                      value={String(
+                                        row[
+                                          screen === "leads"
+                                            ? "stage"
+                                            : screen === "demos"
+                                              ? "status"
+                                              : "reportStatus"
+                                        ] || "",
+                                      )}
+                                      onChange={(event) =>
+                                        void update(String(row.id), {
+                                          [screen === "leads"
+                                            ? "stage"
+                                            : screen === "demos"
+                                              ? "status"
+                                              : "reportStatus"]:
+                                            event.target.value,
+                                        })
+                                      }
+                                      className="rounded-lg border px-2 py-1.5 text-[11px]"
+                                    >
+                                      <option value="">Select</option>
+
+                                      {(screen === "leads"
+                                        ? [
+                                            "New",
+                                            "Contacted",
+                                            "Counselled",
+                                            "Demo booked",
+                                            "Applied",
+                                            "Closed",
+                                          ]
+                                        : screen === "demos"
+                                          ? ["Booked", "Came", "No-show"]
+                                          : [
+                                              "Not started",
+                                              "Draft",
+                                              "To approve",
+                                            ]
+                                      ).map((choice) => (
+                                        <option key={choice} value={choice}>
+                                          {choice}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  )}
+                                </td>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-dashed border-[#e7d9d8] bg-[#fffbfa] p-12 text-center">
+                      <p className="text-sm font-bold">No records found</p>
+
+                      <p className="mt-2 text-xs text-slate-500">
+                        {filter
+                          ? "Try a different filter."
+                          : "Records will appear here when available."}
+                      </p>
+                    </div>
+                  )}
+
+                  {screen === "fees" && (
+                    <p className="mt-4 text-xs text-slate-500">
+                      Fee collection, payment recording and receipt issuing
+                      remain restricted to authorised Admin workflows.
+                    </p>
+                  )}
+                </Card>
+              </>
+            )}
         </>
+      )}
+
+      {/* ADMISSION MANAGEMENT POPUP */}
+      {screen === "admissions" && selectedAdmission && (
+        <AdmissionDetail
+          key={String(selectedAdmission.id)}
+          record={selectedAdmission}
+          statuses={admissionStatuses}
+          saving={saving}
+          onClose={() => setSelectedAdmission(null)}
+          onSave={update}
+        />
       )}
     </div>
   );

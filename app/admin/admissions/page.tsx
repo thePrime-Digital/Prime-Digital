@@ -5,38 +5,36 @@ export default function AdminAdmissionsPage() {
     <AdminRecordsManager
       variant="admissions"
       resource="admissions"
-      title="Admissions"
-      description="Review incoming admission applications, track follow-ups and record decisions."
+      title="Admission Enquiries"
+      description="Manage admission and course enrolment enquiries, review applicant details, track counselling follow-ups, and update application decisions."
       columns={[
         {
           label: "Applicant",
-          keys: [
-            "name",
-            "fullName",
-            "studentName",
-          ],
+          keys: ["studentName", "fullName", "name"],
         },
-
         {
           label: "Email",
           keys: ["email"],
         },
-
         {
           label: "Phone",
-          keys: [
-            "phone",
-            "mobile",
-          ],
+          keys: ["phone", "mobile"],
         },
-
         {
-          label: "Program",
-          keys: [
-            "program",
-            "course",
-            "programName",
-          ],
+          label: "Selected Course / Program",
+          keys: ["program", "course", "programName"],
+        },
+        {
+          label: "Academic Level",
+          keys: ["grade", "standard", "academicLevel"],
+        },
+        {
+          label: "Status",
+          keys: ["status"],
+        },
+        {
+          label: "Submitted On",
+          keys: ["createdAt", "submittedAt"],
         },
       ]}
     />

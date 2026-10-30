@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import type { Program } from "@/lib/program-data";
 
 import {
@@ -16,6 +20,7 @@ import {
   FolderKanban,
   GraduationCap,
   Lightbulb,
+  LockKeyhole,
   Monitor,
   PenTool,
   Rocket,
@@ -23,10 +28,18 @@ import {
   Sparkles,
   Target,
   Users,
+  X,
 } from "lucide-react";
 
 type ProgramDetailProps = {
   program: Program;
+};
+
+type AuthResponse = {
+  authenticated?: boolean;
+  user?: {
+    role?: string;
+  };
 };
 
 const learningIcons = [
@@ -50,11 +63,78 @@ const journeyIcons = [
 ];
 
 export default function ProgramDetail({ program }: ProgramDetailProps) {
+  const router = useRouter();
+
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [checkingLogin, setCheckingLogin] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
+  const courseUrl = `/programs/${encodeURIComponent(program.slug)}`;
+
+  const loginUrl = `/login?next=${encodeURIComponent(courseUrl)}`;
+
+  useEffect(() => {
+    if (!showLoginPopup) return;
+
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowLoginPopup(false);
+      }
+    };
+
+    document.addEventListener("keydown", onEscape);
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onEscape);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showLoginPopup]);
+
+  async function handleEnroll() {
+    if (checkingLogin) return;
+
+    setCheckingLogin(true);
+    setLoginError("");
+
+    try {
+      const response = await fetch("/api/auth/me", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      const data = (await response.json()) as AuthResponse;
+
+      if (response.ok && data.authenticated && data.user?.role === "student") {
+        router.push(
+          `/admissions?course=${encodeURIComponent(program.slug)}#application-form`,
+        );
+        return;
+      }
+
+      if (response.ok && data.authenticated && data.user?.role !== "student") {
+        setLoginError(
+          "Please sign in with a student account to enrol in this course.",
+        );
+      }
+
+      setShowLoginPopup(true);
+    } catch {
+      setLoginError(
+        "We couldn't verify your session. Please log in to continue.",
+      );
+      setShowLoginPopup(true);
+    } finally {
+      setCheckingLogin(false);
+    }
+  }
+
   return (
     <main className="min-h-screen overflow-hidden bg-[#fffafa] text-[#1c1b1b]">
-      {/* ====================================================== */}
       {/* BREADCRUMB */}
-      {/* ====================================================== */}
       <section className="px-5 pb-3 pt-8 sm:px-8 lg:px-10">
         <div className="mx-auto flex max-w-[1200px] items-center gap-2 text-xs font-semibold text-[#7a6c70]">
           <Link
@@ -73,16 +153,12 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
         </div>
       </section>
 
-      {/* ====================================================== */}
       {/* HERO */}
-      {/* ====================================================== */}
       <section className="relative px-5 pb-12 pt-5 sm:px-8 lg:px-10">
         <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-[#f7dbe3]/65 blur-[110px]" />
-
         <div className="pointer-events-none absolute right-[-100px] top-12 h-80 w-80 rounded-full bg-[#f5cad6]/55 blur-[110px]" />
 
         <div className="relative mx-auto grid max-w-[1200px] items-center gap-10 lg:grid-cols-[0.92fr_1.08fr]">
-          {/* LEFT CONTENT */}
           <div>
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#e7c5ce] bg-white px-4 py-2 text-[11px] font-black uppercase tracking-[0.16em] text-[#9f1735] shadow-sm">
               <Sparkles className="h-3.5 w-3.5" />
@@ -99,7 +175,6 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
               {program.description}
             </p>
 
-            {/* META */}
             <div className="mt-7 flex flex-wrap gap-3">
               <div className="flex items-center gap-2 rounded-xl border border-[#ead6dc] bg-white px-4 py-3 text-xs font-bold text-[#4f4548] shadow-sm">
                 <Users className="h-4 w-4 text-[#a30f32]" />
@@ -117,15 +192,17 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
               </div>
             </div>
 
-            {/* BUTTONS */}
+            {/* HERO BUTTONS */}
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                href="/admissions"
-                className="inline-flex h-13 items-center justify-center gap-3 rounded-xl bg-[#9f1735] px-7 text-sm font-black text-white shadow-[0_15px_35px_rgba(159,23,53,0.22)] transition hover:-translate-y-1 hover:bg-[#86132d]"
+              <button
+                type="button"
+                onClick={handleEnroll}
+                disabled={checkingLogin}
+                className="inline-flex h-13 items-center justify-center gap-3 rounded-xl bg-[#9f1735] px-7 text-sm font-black text-white shadow-[0_15px_35px_rgba(159,23,53,0.22)] transition hover:-translate-y-1 hover:bg-[#86132d] disabled:cursor-wait disabled:opacity-60"
               >
-                Enroll Now
+                {checkingLogin ? "Checking..." : "Enroll Now"}
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </button>
 
               <a
                 href="/downloads/prime-digital-school-brochure-v2.pdf"
@@ -138,7 +215,7 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
             </div>
           </div>
 
-          {/* RIGHT HERO IMAGE */}
+          {/* HERO IMAGE */}
           <div className="relative">
             <div className="relative h-[360px] overflow-hidden rounded-[34px] border border-[#ead7dc] bg-[#f8ecef] shadow-[0_28px_80px_rgba(100,30,48,0.13)] sm:h-[430px] lg:h-[500px]">
               <Image
@@ -153,7 +230,6 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#400b17]/10 via-transparent to-transparent" />
             </div>
 
-            {/* FLOATING CARD */}
             <div className="absolute -bottom-5 right-4 rounded-2xl border border-[#ead6dc] bg-white/95 px-5 py-4 shadow-[0_20px_45px_rgba(92,2,26,0.18)] backdrop-blur-md sm:right-7">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#9f1735] text-white">
@@ -175,9 +251,7 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
         </div>
       </section>
 
-      {/* ====================================================== */}
       {/* STATS STRIP */}
-      {/* ====================================================== */}
       <section className="px-5 py-10 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-[1200px] overflow-hidden rounded-[26px] bg-gradient-to-r from-[#8b0829] via-[#a40d34] to-[#8b0829] shadow-[0_18px_50px_rgba(92,2,26,0.2)] sm:grid-cols-2 lg:grid-cols-4">
           {program.stats.map((stat, index) => {
@@ -213,9 +287,7 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
         </div>
       </section>
 
-      {/* ====================================================== */}
       {/* WHAT YOU WILL LEARN */}
-      {/* ====================================================== */}
       <section className="px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-[1200px]">
           <SectionHeading
@@ -252,9 +324,7 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
         </div>
       </section>
 
-      {/* ====================================================== */}
       {/* LEARNING JOURNEY */}
-      {/* ====================================================== */}
       <section className="bg-[#fff7f8] px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-[1200px]">
           <SectionHeading
@@ -301,9 +371,7 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
         </div>
       </section>
 
-      {/* ====================================================== */}
       {/* CURRICULUM + CAPSTONE */}
-      {/* ====================================================== */}
       <section
         id="curriculum"
         className="scroll-mt-24 px-5 py-16 sm:px-8 lg:px-10"
@@ -361,33 +429,22 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
                           ))
                         ) : (
                           <>
-                            <div className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#b01b3d]" />
-                              <p className="text-xs leading-5 text-[#6e6064]">
-                                Core concepts and fundamentals of {module.title}
-                              </p>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#b01b3d]" />
-                              <p className="text-xs leading-5 text-[#6e6064]">
-                                Guided practical exercises and demonstrations
-                              </p>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#b01b3d]" />
-                              <p className="text-xs leading-5 text-[#6e6064]">
-                                Hands-on activity and real-world application
-                              </p>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#b01b3d]" />
-                              <p className="text-xs leading-5 text-[#6e6064]">
-                                Module assessment and skill review
-                              </p>
-                            </div>
+                            {[
+                              `Core concepts and fundamentals of ${module.title}`,
+                              "Guided practical exercises and demonstrations",
+                              "Hands-on activity and real-world application",
+                              "Module assessment and skill review",
+                            ].map((item) => (
+                              <div
+                                key={item}
+                                className="flex items-start gap-3"
+                              >
+                                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#b01b3d]" />
+                                <p className="text-xs leading-5 text-[#6e6064]">
+                                  {item}
+                                </p>
+                              </div>
+                            ))}
                           </>
                         )}
                       </div>
@@ -453,9 +510,7 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
         </div>
       </section>
 
-      {/* ====================================================== */}
       {/* WHY THIS PROGRAM */}
-      {/* ====================================================== */}
       <section className="bg-[#fff7f8] px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-[1200px]">
           <div className="grid gap-5 md:grid-cols-3">
@@ -480,15 +535,11 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
         </div>
       </section>
 
-      {/* ====================================================== */}
       {/* FINAL CTA */}
-      {/* ====================================================== */}
       <section className="px-5 py-16 sm:px-8 lg:px-10">
         <div className="relative mx-auto max-w-[1200px] overflow-hidden rounded-[30px] bg-gradient-to-r from-[#790821] via-[#a30f32] to-[#810922] px-7 py-10 text-white shadow-[0_28px_70px_rgba(92,2,26,0.24)] sm:px-10 lg:px-14">
           <div className="pointer-events-none absolute -left-16 -top-16 h-60 w-60 rounded-full bg-white/10 blur-[80px]" />
-
           <div className="pointer-events-none absolute -bottom-24 left-1/2 h-64 w-64 rounded-full bg-[#f3be53]/20 blur-[95px]" />
-
           <div className="pointer-events-none absolute -right-14 top-0 h-64 w-64 rounded-full bg-[#f66b91]/20 blur-[90px]" />
 
           <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_auto]">
@@ -508,13 +559,15 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
             </div>
 
             <div className="flex flex-wrap gap-3 lg:justify-end">
-              <Link
-                href="/admissions"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 text-sm font-black text-[#8f0b2b] transition hover:-translate-y-1"
+              <button
+                type="button"
+                onClick={handleEnroll}
+                disabled={checkingLogin}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 text-sm font-black text-[#8f0b2b] transition hover:-translate-y-1 disabled:cursor-wait disabled:opacity-60"
               >
-                Enroll Now
+                {checkingLogin ? "Checking..." : "Enroll Now"}
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </button>
 
               <a
                 href="#curriculum"
@@ -527,13 +580,82 @@ export default function ProgramDetail({ program }: ProgramDetailProps) {
           </div>
         </div>
       </section>
+
+      {/* LOGIN REQUIRED POPUP */}
+      {showLoginPopup && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setShowLoginPopup(false);
+            }
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="login-required-title"
+            className="relative w-full max-w-md rounded-3xl border border-[#ead7dc] bg-white p-8 text-center shadow-2xl"
+          >
+            <button
+              type="button"
+              onClick={() => setShowLoginPopup(false)}
+              aria-label="Close login popup"
+              className="absolute right-5 top-5 text-gray-500 transition hover:text-gray-900"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#fff0f3]">
+              <LockKeyhole className="h-8 w-8 text-[#9f1735]" />
+            </div>
+
+            <h2
+              id="login-required-title"
+              className="text-2xl font-black text-[#21191b]"
+            >
+              Login Required
+            </h2>
+
+            <p className="mt-3 text-sm leading-6 text-gray-600">
+              Please log in to your student account before enrolling in this
+              course.
+            </p>
+
+            <p className="mt-3 rounded-xl bg-[#fff6f8] px-4 py-3 text-sm font-bold text-[#9f1735]">
+              {program.title} {program.highlight}
+            </p>
+
+            {loginError && (
+              <p role="alert" className="mt-4 text-sm font-medium text-red-600">
+                {loginError}
+              </p>
+            )}
+
+            <Link
+              href={loginUrl}
+              className="mt-7 flex h-12 w-full items-center justify-center rounded-xl bg-[#9f1735] font-bold text-white transition hover:bg-[#86132d]"
+            >
+              Login to Continue
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setShowLoginPopup(false)}
+              className="mt-4 text-sm font-semibold text-gray-500 hover:text-gray-900"
+            >
+              Maybe Later
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
 
-/* ========================================================== */
 /* SECTION HEADING */
-/* ========================================================== */
 
 function SectionHeading({
   title,
@@ -548,7 +670,7 @@ function SectionHeading({
         {title}
       </h2>
 
-      <div className="mx-auto mt-3 h-1 w-12 rounded-full bg-[#9f1735]" />
+      <div className="mx-auto mt-3 h-1 w-12 bg-[#9f1735]" />
 
       {description && (
         <p className="mt-5 text-sm leading-7 text-[#706266]">{description}</p>
@@ -557,9 +679,7 @@ function SectionHeading({
   );
 }
 
-/* ========================================================== */
 /* FEATURE BOX */
-/* ========================================================== */
 
 function FeatureBox({
   icon: Icon,

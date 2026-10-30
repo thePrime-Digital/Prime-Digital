@@ -13,6 +13,10 @@ export type AdminResourceConfig = {
   defaultStatus: string;
 };
 
+/*
+ * Existing statuses for other Admin resources.
+ * Keep these unchanged.
+ */
 const COMMON_STATUSES = [
   "new",
   "reviewing",
@@ -22,67 +26,81 @@ const COMMON_STATUSES = [
   "closed",
 ];
 
-const registry: Record<
-  AdminResourceKey,
-  AdminResourceConfig
-> = {
+/*
+ * Admission Enquiries workflow.
+ *
+ * New
+ *  -> Contacted
+ *  -> Counselling
+ *  -> Payment Pending
+ *  -> Enrolled
+ *
+ * Rejected and Closed remain available.
+ * Reviewing and Approved are retained for
+ * compatibility with existing application records.
+ */
+const ADMISSION_STATUSES = [
+  "new",
+  "contacted",
+  "counselling",
+  "payment_pending",
+  "enrolled",
+  "reviewing",
+  "approved",
+  "rejected",
+  "closed",
+];
+
+const registry: Record<AdminResourceKey, AdminResourceConfig> = {
   admissions: {
     key: "admissions",
-    collection:
-      "admission_applications",
 
-    label:
-      "Admission Applications",
+    collection: "admission_applications",
+
+    label: "Admission Enquiries",
 
     searchFields: [
+      "reference",
       "name",
       "fullName",
       "studentName",
+      "parentName",
       "email",
       "phone",
+      "grade",
       "program",
       "course",
+      "courseSlug",
+      "currentSchool",
       "message",
+      "status",
     ],
 
-    statuses:
-      COMMON_STATUSES,
+    statuses: ADMISSION_STATUSES,
 
-    defaultStatus:
-      "new",
+    defaultStatus: "new",
   },
 
   contacts: {
     key: "contacts",
-    collection:
-      "contact_submissions",
 
-    label:
-      "Contact Enquiries",
+    collection: "contact_submissions",
 
-    searchFields: [
-      "name",
-      "fullName",
-      "email",
-      "phone",
-      "subject",
-      "message",
-    ],
+    label: "Contact Enquiries",
 
-    statuses:
-      COMMON_STATUSES,
+    searchFields: ["name", "fullName", "email", "phone", "subject", "message"],
 
-    defaultStatus:
-      "new",
+    statuses: COMMON_STATUSES,
+
+    defaultStatus: "new",
   },
 
   careers: {
     key: "careers",
-    collection:
-      "career_applications",
 
-    label:
-      "Career Applications",
+    collection: "career_applications",
+
+    label: "Career Applications",
 
     searchFields: [
       "name",
@@ -94,22 +112,17 @@ const registry: Record<
       "message",
     ],
 
-    statuses:
-      COMMON_STATUSES,
+    statuses: COMMON_STATUSES,
 
-    defaultStatus:
-      "new",
+    defaultStatus: "new",
   },
 
   "service-leads": {
-    key:
-      "service-leads",
+    key: "service-leads",
 
-    collection:
-      "service_leads",
+    collection: "service_leads",
 
-    label:
-      "Service Leads",
+    label: "Service Leads",
 
     searchFields: [
       "name",
@@ -122,11 +135,9 @@ const registry: Record<
       "message",
     ],
 
-    statuses:
-      COMMON_STATUSES,
+    statuses: COMMON_STATUSES,
 
-    defaultStatus:
-      "new",
+    defaultStatus: "new",
   },
 };
 
@@ -137,8 +148,7 @@ export function getAdminResourceConfig(
     resource === "admissions" ||
     resource === "contacts" ||
     resource === "careers" ||
-    resource ===
-      "service-leads"
+    resource === "service-leads"
   ) {
     return registry[resource];
   }

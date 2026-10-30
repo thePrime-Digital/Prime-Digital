@@ -18,8 +18,8 @@ const PDA_CONNECTOR_URL = "https://services.primedigitalschool.com";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Programs", href: "/programs" },
-  { label: "Career", href: "/job-connect" },
+  { label: "Courses", href: "/programs" },
+  { label: "Careers", href: "/job-connect" },
   { label: "Support", href: "/support" },
   { label: "About Us", href: "/about" },
 ];
