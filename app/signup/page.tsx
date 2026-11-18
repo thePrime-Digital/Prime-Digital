@@ -121,6 +121,10 @@ const professionalProgramOptions = [
   "Business & Digital Marketing",
   "Design & Creative Arts",
   "Entrepreneurship & Innovation",
+  "digital marketing",
+  "investment banking",
+  "data science",
+  "cyber security",
 ];
 
 function getProgramOptions(
