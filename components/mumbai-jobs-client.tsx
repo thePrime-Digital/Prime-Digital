@@ -21,6 +21,7 @@ import type { MumbaiEmployer } from "@/lib/mumbai-jobs";
 import type { JobListing } from "@/lib/jobs/types";
 import type { PublicCareerJob } from "@/lib/careers/public-careers";
 import { INDIA_REGIONS } from "@/lib/jobs/locations";
+import { ALL_JOB_COUNTRIES } from "@/lib/jobs/global-countries";
 import CareerApplicationForm from "@/components/careers/career-application-form";
 
 type Tab = "jobs" | "careers";
@@ -127,6 +128,7 @@ export default function MumbaiJobsClient({
   );
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
+  const [countryCode, setCountryCode] = useState("ALL");
   const [quickLocation, setQuickLocation] = useState("All");
   const [state, setState] = useState("All");
   const [city, setCity] = useState("All");
@@ -147,6 +149,7 @@ export default function MumbaiJobsClient({
     Array<[string, string]>
   >([]);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
+  const [availableStates, setAvailableStates] = useState<string[]>([]);
 
   useEffect(() => {
     const t = window.setTimeout(() => setDebounced(search), 350);
@@ -205,6 +208,26 @@ export default function MumbaiJobsClient({
       url.pathname + url.search + url.hash,
     );
   }
+  function changeCountry(value: string) {
+    if (value !== "ALL" && !ALL_JOB_COUNTRIES.some((item) => item.code === value)) {
+      return;
+    }
+
+    setCountryCode(value);
+    setQuickLocation("All");
+    setState("All");
+    setCity("All");
+    setCompany("All");
+    setCategory("All");
+    setJobType("All");
+    setWorkMode("All");
+    setPage(1);
+    setSelectedKey(null);
+    setAvailableCompanies([]);
+    setAvailableCities([]);
+    setAvailableStates([]);
+  }
+
   function chooseQuickLocation(value: string) {
     setQuickLocation(value);
     setState("All");
@@ -230,6 +253,7 @@ export default function MumbaiJobsClient({
     if (pds) return;
     const abort = new AbortController();
     const qs = new URLSearchParams();
+    if (countryCode !== "ALL") qs.set("countryCode", countryCode);
     if (state !== "All") qs.set("state", state);
     fetch(`/api/jobs/filter-options?${qs}`, {
       signal: abort.signal,
@@ -241,16 +265,18 @@ export default function MumbaiJobsClient({
           success: boolean;
           companies?: Array<{ key: string; name: string }>;
           cities?: string[];
+          states?: string[];
         }>;
       })
       .then((d) => {
         if (!d.success || abort.signal.aborted) return;
         setAvailableCompanies((d.companies || []).map((x) => [x.key, x.name]));
         setAvailableCities(d.cities || []);
+        setAvailableStates(d.states || []);
       })
       .catch(() => {});
     return () => abort.abort();
-  }, [pds, state]);
+  }, [pds, state, countryCode]);
   useEffect(() => {
     if (pds || !savedLoaded) return;
     const abort = new AbortController();
@@ -260,6 +286,7 @@ export default function MumbaiJobsClient({
       limit: String(PAGE_SIZE),
       sortBy,
     });
+    if (countryCode !== "ALL") qs.set("countryCode", countryCode);
     if (state !== "All") qs.set("state", state);
     if (city !== "All") qs.set("city", city);
     if (company !== "All") qs.set("companyKey", company);
@@ -302,6 +329,7 @@ export default function MumbaiJobsClient({
     pds,
     savedLoaded,
     page,
+    countryCode,
     state,
     city,
     company,
@@ -344,14 +372,22 @@ export default function MumbaiJobsClient({
     [pds, pdsJobs, jobs],
   );
   const cities = useMemo(() => {
+    if (!pds && countryCode !== "IN") {
+      return [...new Set(availableCities)].sort();
+    }
+
     if (state === "All") return [];
+
     const region = INDIA_REGIONS.find((r) => r.name === state);
+
     return [
       ...new Set(
-        !pds && availableCities.length ? availableCities : region?.cities || [],
+        !pds && availableCities.length
+          ? availableCities
+          : region?.cities || [],
       ),
     ].sort();
-  }, [pds, state, availableCities]);
+  }, [pds, countryCode, state, availableCities]);
   const pdsFiltered = useMemo(
     () =>
       pdsJobs
@@ -450,6 +486,7 @@ export default function MumbaiJobsClient({
     pds ? x.startsWith("pds-career-") : !x.startsWith("pds-career-"),
   ).length;
   const activeFilters = [
+    !pds && countryCode !== "IN",
     state !== "All",
     city !== "All",
     company !== "All",
@@ -516,9 +553,9 @@ export default function MumbaiJobsClient({
             <span className="hidden h-4 w-px bg-white/30 sm:block" />
             <span>
               <strong className="text-base text-white">
-                {pds ? "PDS" : "India"}
+                {pds ? "PDS" : countryCode === "ALL" ? "All Countries" : ALL_JOB_COUNTRIES.find((item) => item.code === countryCode)?.shortName ?? "India"}
               </strong>{" "}
-              {pds ? "internal jobs" : "nationwide jobs"}
+              {pds ? "internal jobs" : "job opportunities"}
             </span>
             <span className="hidden h-4 w-px bg-white/30 sm:block" />
             <span>
@@ -569,7 +606,7 @@ export default function MumbaiJobsClient({
         <p className="mt-2 text-sm text-[#625d60]">
           {pds
             ? "Browse published job openings at Prime Digital School."
-            : "Browse external employer vacancies with nationwide location filters."}
+            : "Browse employer opportunities across India and international markets."}
         </p>
         <section
           aria-label="Job filters"
@@ -601,23 +638,33 @@ export default function MumbaiJobsClient({
               </button>
             </div>
           </div>
-          <label className="mt-4 flex h-11 items-center gap-2 rounded-lg border border-[#d8d4d3] px-3 text-[#7d0a2b]">
-            <Search size={17} />
-            <span className="sr-only">Filter jobs</span>
-            <input
-              value={search}
-              onChange={(e) => change(setSearch, e.target.value)}
-              placeholder={
-                pds
-                  ? "Search PDS jobs, departments or locations"
-                  : "Search job title, keyword or company"
-              }
-              className="w-full bg-transparent text-sm text-[#1b1b1f] outline-none"
-            />
-          </label>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <label className="space-y-1">
-              <span className="text-xs text-[#625d60]">State / UT</span>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {!pds && (
+              <label className="space-y-1">
+                <span className="text-xs text-[#625d60]">Country</span>
+                <select
+                  value={countryCode}
+                  onChange={(e) => changeCountry(e.target.value)}
+                  className={inputClass}
+                >
+                  <option value="ALL">All Countries</option>
+                  {ALL_JOB_COUNTRIES.map((item) => (
+                    <option key={item.code} value={item.code}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
+            {(
+              <>
+                <label className="space-y-1">
+                  <span className="text-xs text-[#625d60]">
+                    {pds || countryCode === "IN"
+                      ? "State / UT"
+                      : "State / Region"}
+                  </span>
               <select
                 value={state}
                 onChange={(e) => {
@@ -627,30 +674,30 @@ export default function MumbaiJobsClient({
                 }}
                 className={inputClass}
               >
-                <option value="All">All states / UTs</option>
-                {INDIA_REGIONS.map((r) => (
+                <option value="All">
+                  {pds || countryCode === "IN"
+                    ? "All states / UTs"
+                    : "All states / regions"}
+                </option>
+                {(pds || countryCode === "IN"
+                  ? INDIA_REGIONS.map((r) => ({
+                      code: r.code,
+                      name: r.name,
+                    }))
+                  : availableStates.map((name) => ({
+                      code: name,
+                      name,
+                    }))
+                ).map((r) => (
                   <option key={r.code} value={r.name}>
                     {r.name}
                   </option>
                 ))}
               </select>
             </label>
-            <label className="space-y-1">
-              <span className="text-xs text-[#625d60]">City</span>
-              <select
-                value={city}
-                onChange={(e) => change(setCity, e.target.value)}
-                className={inputClass}
-                disabled={state === "All"}
-              >
-                <option value="All">All cities</option>
-                {cities.map((x) => (
-                  <option key={x} value={x}>
-                    {x}
-                  </option>
-                ))}
-              </select>
-            </label>
+              </>
+            )}
+
             <label className="space-y-1">
               <span className="text-xs text-[#625d60]">Company</span>
               <select
@@ -687,7 +734,7 @@ export default function MumbaiJobsClient({
             </label>
           </div>
           {moreFilters && (
-            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
               <label className="space-y-1">
                 <span className="text-xs text-[#625d60]">Employment type</span>
                 <select
@@ -733,10 +780,7 @@ export default function MumbaiJobsClient({
                   <option value="remote">Remote</option>
                 </select>
               </label>
-              <div className="space-y-1">
-                <span className="text-xs text-[#625d60]">Country</span>
-                <div className={`${inputClass} flex items-center`}>India</div>
-              </div>
+              
             </div>
           )}
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#efeeee] pt-4">
@@ -768,10 +812,10 @@ export default function MumbaiJobsClient({
                     {pds ? "Featured first" : "Recently discovered"}
                   </option>
                   <option value="company">
-                    {pds ? "Department A–Z" : "Company A–Z"}
+                    {pds ? "Department AÃ¢â‚¬â€œZ" : "Company AÃ¢â‚¬â€œZ"}
                   </option>
-                  <option value="title">Job title A–Z</option>
-                  <option value="location">Location A–Z</option>
+                  <option value="title">Job title AÃ¢â‚¬â€œZ</option>
+                  <option value="location">Location AÃ¢â‚¬â€œZ</option>
                 </select>
               </label>
             </div>

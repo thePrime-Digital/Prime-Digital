@@ -46,6 +46,7 @@ export async function searchGlobalJobs(filters: JobSearchFilters = {}): Promise<
 
   const query: Filter<JobListing> = {
     locationReviewStatus: { $ne: "needs-review" },
+    publicationStatus: { $ne: "not-published" },
     status: filters.status && ["active", "unverified"].includes(filters.status)
       ? filters.status as JobListing["status"]
       : { $nin: ["closed", "expired"] },
@@ -119,7 +120,7 @@ export async function getGlobalJobById(id: string): Promise<JobListing | null> {
   if (!/^[a-zA-Z0-9_-]{1,150}$/.test(id)) return null;
   const db = await getDatabase();
   return db.collection<JobListing>("job_listings").findOne(
-    { id, locationReviewStatus: { $ne: "needs-review" }, status: { $nin: ["closed", "expired"] } },
+    { id, publicationStatus: { $ne: "not-published" }, locationReviewStatus: { $ne: "needs-review" }, status: { $nin: ["closed", "expired"] } },
     { projection: { _id: 0 } },
   );
 }

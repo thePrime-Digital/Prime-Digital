@@ -37,7 +37,8 @@ export async function GET(_request: Request, context: RouteContext) {
       if (
         globalJob.locationReviewStatus === "needs-review" ||
         globalJob.status === "closed" ||
-        globalJob.status === "expired"
+        globalJob.status === "expired" ||
+        globalJob.publicationStatus === "not-published"
       ) {
         return NextResponse.json(
           {

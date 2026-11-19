@@ -45,6 +45,7 @@ export default async function JobConnectPage({ searchParams }: PageProps) {
 
   const [externalResult, pdsResult] = await Promise.allSettled([
     searchGlobalJobs({
+      countryCode: "IN",
       page: 1,
       limit: 20,
       sortBy: "recent",

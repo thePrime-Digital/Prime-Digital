@@ -1,222 +1,705 @@
-"use client";
+﻿"use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
+import Image, { type StaticImageData } from "next/image";
+import {
+  BarChart3,
+  Megaphone,
+  BrainCircuit,
+  Code2,
+  ShieldCheck,
+  Cloud,
+} from "lucide-react";
 
-type PlacementCard = {
+// ============================================================
+// DATA ANALYTICS â€” 10 PORTRAITS
+// ============================================================
+
+import da01 from "@/public/students/Data-Analytics/data-analytics-aditi-kulkarni.webp";
+import da02 from "@/public/students/Data-Analytics/data-analytics-rohan-jadhav.webp";
+import da03 from "@/public/students/Data-Analytics/data-analytics-sneha-patil.webp";
+import da04 from "@/public/students/Data-Analytics/data-analytics-aryan-deshmukh.webp";
+import da05 from "@/public/students/Data-Analytics/data-analytics-kavya-joshi.webp";
+import da06 from "@/public/students/Data-Analytics/data-analytics-siddharth-more.webp";
+import da07 from "@/public/students/Data-Analytics/data-analytics-anushka-shah.webp";
+import da08 from "@/public/students/Data-Analytics/data-analytics-kunal-mehta.webp";
+import da09 from "@/public/students/Data-Analytics/data-analytics-isha-nair.webp";
+import da10 from "@/public/students/Data-Analytics/data-analytics-yash-bhosale.webp";
+
+// ============================================================
+// DIGITAL MARKETING â€” 10 PORTRAITS
+// ============================================================
+
+import dm01 from "@/public/students/Digital-Marketing/digital-marketing-priya-deshpande.webp";
+import dm02 from "@/public/students/Digital-Marketing/digital-marketing-aditya-pawar.webp";
+import dm03 from "@/public/students/Digital-Marketing/digital-marketing-neha-kulkarni.webp";
+import dm04 from "@/public/students/Digital-Marketing/digital-marketing-omkar-patil.webp";
+import dm05 from "@/public/students/Digital-Marketing/digital-marketing-riya-jadhav.webp";
+import dm06 from "@/public/students/Digital-Marketing/digital-marketing-harsh-shah.webp";
+import dm07 from "@/public/students/Digital-Marketing/digital-marketing-sakshi-more.webp";
+import dm08 from "@/public/students/Digital-Marketing/digital-marketing-nikhil-joshi.webp";
+import dm09 from "@/public/students/Digital-Marketing/digital-marketing-pooja-chavan.webp";
+import dm10 from "@/public/students/Digital-Marketing/digital-marketing-atharva-shinde.webp";
+
+// ============================================================
+// AI & MACHINE LEARNING â€” 10 PORTRAITS
+// ============================================================
+
+import ai01 from "@/public/students/AI-Machine-Learning/ai-ml-meera-sharma.webp";
+import ai02 from "@/public/students/AI-Machine-Learning/ai-ml-arjun-verma.webp";
+import ai03 from "@/public/students/AI-Machine-Learning/ai-ml-simran-kapoor.webp";
+import ai04 from "@/public/students/AI-Machine-Learning/ai-ml-rahul-sinha.webp";
+import ai05 from "@/public/students/AI-Machine-Learning/ai-ml-tanvi-malhotra.webp";
+import ai06 from "@/public/students/AI-Machine-Learning/ai-ml-dev-khanna.webp";
+import ai07 from "@/public/students/AI-Machine-Learning/ai-ml-nandini-gupta.webp";
+import ai08 from "@/public/students/AI-Machine-Learning/ai-ml-rishabh-batra.webp";
+import ai09 from "@/public/students/AI-Machine-Learning/ai-ml-ananya-arora.webp";
+import ai10 from "@/public/students/AI-Machine-Learning/ai-ml-karan-mehta.webp";
+
+// ============================================================
+// FULL-STACK DEVELOPMENT â€” 10 PORTRAITS
+// ============================================================
+
+import fs01 from "@/public/students/Full-Stack-Development/full-stack-avni-deshmukh.webp";
+import fs02 from "@/public/students/Full-Stack-Development/full-stack-pranav-kulkarni.webp";
+import fs03 from "@/public/students/Full-Stack-Development/full-stack-shruti-patil.webp";
+import fs04 from "@/public/students/Full-Stack-Development/full-stack-saurabh-jadhav.webp";
+import fs05 from "@/public/students/Full-Stack-Development/full-stack-kritika-sharma.webp";
+import fs06 from "@/public/students/Full-Stack-Development/full-stack-mohit-verma.webp";
+import fs07 from "@/public/students/Full-Stack-Development/full-stack-akash-bansal.webp";
+import fs08 from "@/public/students/Full-Stack-Development/full-stack-ishita-rao.webp";
+import fs09 from "@/public/students/Full-Stack-Development/full-stack-varun-yadav.webp";
+import fs10 from "@/public/students/Full-Stack-Development/full-stack-diya-sethi.webp";
+
+// ============================================================
+// CYBERSECURITY â€” 10 PORTRAITS
+// ============================================================
+
+import cs01 from "@/public/students/Cybersecurity/cybersecurity-radhika-menon.webp";
+import cs02 from "@/public/students/Cybersecurity/cybersecurity-aayush-saxena.webp";
+import cs03 from "@/public/students/Cybersecurity/cybersecurity-shreya-anand.webp";
+import cs04 from "@/public/students/Cybersecurity/cybersecurity-kabir-ahuja.webp";
+import cs05 from "@/public/students/Cybersecurity/cybersecurity-nisha-yadav.webp";
+import cs06 from "@/public/students/Cybersecurity/cybersecurity-manav-dutta.webp";
+import cs07 from "@/public/students/Cybersecurity/cybersecurity-sanya-bhatia.webp";
+import cs08 from "@/public/students/Cybersecurity/cybersecurity-dhruv-chawla.webp";
+import cs09 from "@/public/students/Cybersecurity/cybersecurity-aisha-khan.webp";
+import cs10 from "@/public/students/Cybersecurity/cybersecurity-rohit-tiwari.webp";
+
+// ============================================================
+// CLOUD COMPUTING & DEVOPS â€” 10 PORTRAITS
+// ============================================================
+
+import cd01 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-vaishnavi-gokhale.webp";
+import cd02 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-sameer-joshi.webp";
+import cd03 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-pallavi-bhosale.webp";
+import cd04 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-tejas-kulkarni.webp";
+import cd05 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-aastha-singh.webp";
+import cd06 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-naman-oberoi.webp";
+import cd07 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-mrunal-patil.webp";
+import cd08 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-om-deshpande.webp";
+import cd09 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-vivek-mishra.webp";
+import cd10 from "@/public/students/Cloud-Computing-DevOps/cloud-devops-priyanka-sinha.webp";
+
+// ============================================================
+// TYPES
+// ============================================================
+
+type ProgrammeId =
+  | "data-analytics"
+  | "digital-marketing"
+  | "ai-ml"
+  | "full-stack"
+  | "cybersecurity"
+  | "cloud-devops";
+
+type StudentProfile = {
   id: number;
   name: string;
   role: string;
-  company: string;
-  package: string;
   location: string;
-  batch: string;
-  image: string;
+  skill: string;
+  image: StaticImageData;
 };
 
-const placements: PlacementCard[] = [
+type Programme = {
+  id: ProgrammeId;
+  label: string;
+  heading: string;
+  description: string;
+  students: StudentProfile[];
+};
+
+// ============================================================
+// PROGRAMME DATA
+// ============================================================
+
+const PROGRAMMES: Programme[] = [
   {
-    id: 1,
-    name: "Aditya Agarwal",
-    role: "Data Analyst",
-    company: "Tata Consultancy Services",
-    package: "₹4.5 LPA",
-    location: "Mumbai",
-    batch: "2024",
-    image: "/students/aditya-agarwal.webp",
+    id: "data-analytics",
+    label: "Data Analytics",
+    heading: "Explore Careers in Data Analytics",
+    description:
+      "Discover career pathways in data analysis, business intelligence, reporting, SQL and data visualisation.",
+    students: [
+      {
+        id: 1,
+        name: "Aditi Kulkarni",
+        role: "Junior Data Analyst",
+        location: "Pune",
+        skill: "Data Analysis",
+        image: da01,
+      },
+      {
+        id: 2,
+        name: "Rohan Jadhav",
+        role: "Business Intelligence Analyst",
+        location: "Pune",
+        skill: "Business Intelligence",
+        image: da02,
+      },
+      {
+        id: 3,
+        name: "Sneha Patil",
+        role: "Data Reporting Analyst",
+        location: "Pune",
+        skill: "Data Reporting",
+        image: da03,
+      },
+      {
+        id: 4,
+        name: "Aryan Deshmukh",
+        role: "SQL Analyst",
+        location: "Pune",
+        skill: "SQL",
+        image: da04,
+      },
+      {
+        id: 5,
+        name: "Kavya Joshi",
+        role: "Power BI Analyst",
+        location: "Pune",
+        skill: "Power BI",
+        image: da05,
+      },
+      {
+        id: 6,
+        name: "Siddharth More",
+        role: "Business Data Analyst",
+        location: "Pune",
+        skill: "Business Analytics",
+        image: da06,
+      },
+      {
+        id: 7,
+        name: "Anushka Shah",
+        role: "Analytics Associate",
+        location: "Pune",
+        skill: "Data Analytics",
+        image: da07,
+      },
+      {
+        id: 8,
+        name: "Kunal Mehta",
+        role: "Data Visualisation Analyst",
+        location: "Pune",
+        skill: "Data Visualisation",
+        image: da08,
+      },
+      {
+        id: 9,
+        name: "Isha Nair",
+        role: "Junior Business Analyst",
+        location: "Pune",
+        skill: "Business Analysis",
+        image: da09,
+      },
+      {
+        id: 10,
+        name: "Yash Bhosale",
+        role: "Python Data Analyst",
+        location: "Pune",
+        skill: "Python",
+        image: da10,
+      },
+    ],
   },
   {
-    id: 2,
-    name: "Aditya Verma",
-    role: "Business Intelligence Analyst",
-    company: "Infosys",
-    package: "₹6.0 LPA",
-    location: "Pune",
-    batch: "2024",
-    image: "/students/aditya-verma.webp",
+    id: "digital-marketing",
+    label: "Digital Marketing",
+    heading: "Explore Careers in Digital Marketing",
+    description:
+      "Discover career pathways in SEO, social media, content marketing, paid advertising and digital campaigns.",
+    students: [
+      {
+        id: 11,
+        name: "Priya Deshpande",
+        role: "Digital Marketing Executive",
+        location: "Nashik",
+        skill: "Digital Marketing",
+        image: dm01,
+      },
+      {
+        id: 12,
+        name: "Aditya Pawar",
+        role: "SEO Analyst",
+        location: "Nashik",
+        skill: "SEO",
+        image: dm02,
+      },
+      {
+        id: 13,
+        name: "Neha Kulkarni",
+        role: "Social Media Executive",
+        location: "Nashik",
+        skill: "Social Media",
+        image: dm03,
+      },
+      {
+        id: 14,
+        name: "Omkar Patil",
+        role: "Performance Marketing Associate",
+        location: "Nashik",
+        skill: "Performance Marketing",
+        image: dm04,
+      },
+      {
+        id: 15,
+        name: "Riya Jadhav",
+        role: "Content Marketing Executive",
+        location: "Nashik",
+        skill: "Content Marketing",
+        image: dm05,
+      },
+      {
+        id: 16,
+        name: "Harsh Shah",
+        role: "Google Ads Specialist",
+        location: "Nashik",
+        skill: "Google Ads",
+        image: dm06,
+      },
+      {
+        id: 17,
+        name: "Sakshi More",
+        role: "Email Marketing Associate",
+        location: "Nashik",
+        skill: "Email Marketing",
+        image: dm07,
+      },
+      {
+        id: 18,
+        name: "Nikhil Joshi",
+        role: "Digital Campaign Analyst",
+        location: "Nashik",
+        skill: "Campaign Analytics",
+        image: dm08,
+      },
+      {
+        id: 19,
+        name: "Pooja Chavan",
+        role: "Social Media Strategist",
+        location: "Nashik",
+        skill: "Social Media Strategy",
+        image: dm09,
+      },
+      {
+        id: 20,
+        name: "Atharva Shinde",
+        role: "Marketing Analytics Associate",
+        location: "Nashik",
+        skill: "Marketing Analytics",
+        image: dm10,
+      },
+    ],
   },
   {
-    id: 3,
-    name: "Akash",
-    role: "Power BI Developer",
-    company: "Deloitte",
-    package: "₹5.2 LPA",
-    location: "Hyderabad",
-    batch: "2025",
-    image: "/students/akash.webp",
+    id: "ai-ml",
+    label: "AI & Machine Learning",
+    heading: "Explore Careers in AI & Machine Learning",
+    description:
+      "Discover career pathways in artificial intelligence, machine learning, Python, computer vision and data science.",
+    students: [
+      {
+        id: 21,
+        name: "Meera Sharma",
+        role: "Junior AI Engineer",
+        location: "Delhi",
+        skill: "Artificial Intelligence",
+        image: ai01,
+      },
+      {
+        id: 22,
+        name: "Arjun Verma",
+        role: "Machine Learning Associate",
+        location: "Delhi",
+        skill: "Machine Learning",
+        image: ai02,
+      },
+      {
+        id: 23,
+        name: "Simran Kapoor",
+        role: "Python AI Developer",
+        location: "Delhi",
+        skill: "Python AI",
+        image: ai03,
+      },
+      {
+        id: 24,
+        name: "Rahul Sinha",
+        role: "NLP Developer",
+        location: "Delhi",
+        skill: "Natural Language Processing",
+        image: ai04,
+      },
+      {
+        id: 25,
+        name: "Tanvi Malhotra",
+        role: "AI Research Associate",
+        location: "Delhi",
+        skill: "AI Research",
+        image: ai05,
+      },
+      {
+        id: 26,
+        name: "Dev Khanna",
+        role: "Computer Vision Associate",
+        location: "Delhi",
+        skill: "Computer Vision",
+        image: ai06,
+      },
+      {
+        id: 27,
+        name: "Nandini Gupta",
+        role: "Machine Learning Analyst",
+        location: "Delhi",
+        skill: "ML Analytics",
+        image: ai07,
+      },
+      {
+        id: 28,
+        name: "Rishabh Batra",
+        role: "AI Software Developer",
+        location: "Delhi",
+        skill: "AI Development",
+        image: ai08,
+      },
+      {
+        id: 29,
+        name: "Ananya Arora",
+        role: "Data Science Associate",
+        location: "Delhi",
+        skill: "Data Science",
+        image: ai09,
+      },
+      {
+        id: 30,
+        name: "Karan Mehta",
+        role: "Deep Learning Associate",
+        location: "Delhi",
+        skill: "Deep Learning",
+        image: ai10,
+      },
+    ],
   },
   {
-    id: 4,
-    name: "Akshay Patil",
-    role: "Reporting Analyst",
-    company: "Accenture",
-    package: "₹4.8 LPA",
-    location: "Navi Mumbai",
-    batch: "2025",
-    image: "/students/akshay-patil.webp",
+    id: "full-stack",
+    label: "Full-Stack Development",
+    heading: "Explore Careers in Full-Stack Development",
+    description:
+      "Discover career pathways in frontend development, backend systems, React, Node.js and modern web applications.",
+    students: [
+      {
+        id: 31,
+        name: "Avni Deshmukh",
+        role: "React Developer",
+        location: "Pune",
+        skill: "React",
+        image: fs01,
+      },
+      {
+        id: 32,
+        name: "Pranav Kulkarni",
+        role: "Junior Full-Stack Developer",
+        location: "Nashik",
+        skill: "Full-Stack Development",
+        image: fs02,
+      },
+      {
+        id: 33,
+        name: "Shruti Patil",
+        role: "Frontend Developer",
+        location: "Nashik",
+        skill: "Frontend Development",
+        image: fs03,
+      },
+      {
+        id: 34,
+        name: "Saurabh Jadhav",
+        role: "Node.js Developer",
+        location: "Nashik",
+        skill: "Node.js",
+        image: fs04,
+      },
+      {
+        id: 35,
+        name: "Kritika Sharma",
+        role: "UI Developer",
+        location: "Delhi",
+        skill: "UI Development",
+        image: fs05,
+      },
+      {
+        id: 36,
+        name: "Mohit Verma",
+        role: "Backend Developer",
+        location: "Delhi",
+        skill: "Backend Development",
+        image: fs06,
+      },
+      {
+        id: 37,
+        name: "Akash Bansal",
+        role: "MERN Stack Developer",
+        location: "Delhi",
+        skill: "MERN Stack",
+        image: fs07,
+      },
+      {
+        id: 38,
+        name: "Ishita Rao",
+        role: "Web Application Developer",
+        location: "Gurugram",
+        skill: "Web Applications",
+        image: fs08,
+      },
+      {
+        id: 39,
+        name: "Varun Yadav",
+        role: "JavaScript Developer",
+        location: "Gurugram",
+        skill: "JavaScript",
+        image: fs09,
+      },
+      {
+        id: 40,
+        name: "Diya Sethi",
+        role: "Next.js Developer",
+        location: "Gurugram",
+        skill: "Next.js",
+        image: fs10,
+      },
+    ],
   },
   {
-    id: 5,
-    name: "Alok Singh",
-    role: "Analytics Associate",
-    company: "Capgemini",
-    package: "₹5.5 LPA",
-    location: "Bengaluru",
-    batch: "2025",
-    image: "/students/alok-singh.webp",
+    id: "cybersecurity",
+    label: "Cybersecurity",
+    heading: "Explore Careers in Cybersecurity",
+    description:
+      "Discover career pathways in security operations, threat monitoring, network security and vulnerability assessment.",
+    students: [
+      {
+        id: 41,
+        name: "Radhika Menon",
+        role: "Cybersecurity Analyst",
+        location: "Delhi",
+        skill: "Cybersecurity",
+        image: cs01,
+      },
+      {
+        id: 42,
+        name: "Aayush Saxena",
+        role: "Junior Security Analyst",
+        location: "Delhi",
+        skill: "Security Analysis",
+        image: cs02,
+      },
+      {
+        id: 43,
+        name: "Shreya Anand",
+        role: "SOC Analyst",
+        location: "Delhi",
+        skill: "SOC Monitoring",
+        image: cs03,
+      },
+      {
+        id: 44,
+        name: "Kabir Ahuja",
+        role: "Network Security Associate",
+        location: "Gurugram",
+        skill: "Network Security",
+        image: cs04,
+      },
+      {
+        id: 45,
+        name: "Nisha Yadav",
+        role: "Information Security Analyst",
+        location: "Gurugram",
+        skill: "Information Security",
+        image: cs05,
+      },
+      {
+        id: 46,
+        name: "Manav Dutta",
+        role: "Vulnerability Assessment Analyst",
+        location: "Gurugram",
+        skill: "Vulnerability Assessment",
+        image: cs06,
+      },
+      {
+        id: 47,
+        name: "Sanya Bhatia",
+        role: "Security Operations Associate",
+        location: "Gurugram",
+        skill: "Security Operations",
+        image: cs07,
+      },
+      {
+        id: 48,
+        name: "Dhruv Chawla",
+        role: "Ethical Hacking Associate",
+        location: "Gurugram",
+        skill: "Ethical Hacking",
+        image: cs08,
+      },
+      {
+        id: 49,
+        name: "Aisha Khan",
+        role: "IT Security Analyst",
+        location: "Noida",
+        skill: "IT Security",
+        image: cs09,
+      },
+      {
+        id: 50,
+        name: "Rohit Tiwari",
+        role: "Application Security Associate",
+        location: "Noida",
+        skill: "Application Security",
+        image: cs10,
+      },
+    ],
   },
   {
-    id: 6,
-    name: "Aman",
-    role: "Junior Data Analyst",
-    company: "Genpact",
-    package: "₹3.8 LPA",
-    location: "Delhi NCR",
-    batch: "2026",
-    image: "/students/aman.webp",
-  },
-  {
-    id: 7,
-    name: "Ananya Joshi",
-    role: "MIS Analyst",
-    company: "Tech Mahindra",
-    package: "₹4.6 LPA",
-    location: "Mumbai",
-    batch: "2026",
-    image: "/students/ananya-joshi.webp",
-  },
-  {
-    id: 8,
-    name: "Arpit Gupta",
-    role: "Data Operations Associate",
-    company: "Wipro",
-    package: "₹4.9 LPA",
-    location: "Pune",
-    batch: "2026",
-    image: "/students/arpit-gupta.webp",
-  },
-  {
-    id: 9,
-    name: "Darshit",
-    role: "Data Analyst",
-    company: "Cognizant",
-    package: "₹5.4 LPA",
-    location: "Mumbai",
-    batch: "2026",
-    image: "/students/darshit.webp",
-  },
-  {
-    id: 10,
-    name: "Harshita More",
-    role: "Business Analyst",
-    company: "LTIMindtree",
-    package: "₹5.1 LPA",
-    location: "Mumbai",
-    batch: "2024",
-    image: "/students/harshita-more.webp",
-  },
-  {
-    id: 11,
-    name: "Kanade",
-    role: "SQL Data Analyst",
-    company: "Persistent Systems",
-    package: "₹4.7 LPA",
-    location: "Pune",
-    batch: "2024",
-    image: "/students/kanade.webp",
-  },
-  {
-    id: 12,
-    name: "Karan Deshmukh",
-    role: "Power BI Analyst",
-    company: "HCLTech",
-    package: "₹5.6 LPA",
-    location: "Noida",
-    batch: "2025",
-    image: "/students/karan-deshmukh.webp",
-  },
-  {
-    id: 13,
-    name: "Neha Singh",
-    role: "Data Analytics Associate",
-    company: "IBM",
-    package: "₹6.2 LPA",
-    location: "Bengaluru",
-    batch: "2025",
-    image: "/students/neha-singh.webp",
-  },
-  {
-    id: 14,
-    name: "Omkar Paturkar",
-    role: "MIS Executive",
-    company: "WNS Global Services",
-    package: "₹4.2 LPA",
-    location: "Mumbai",
-    batch: "2025",
-    image: "/students/omkar-paturkar.webp",
-  },
-  {
-    id: 15,
-    name: "Priyanka",
-    role: "Reporting & Insights Analyst",
-    company: "EY",
-    package: "₹5.8 LPA",
-    location: "Hyderabad",
-    batch: "2025",
-    image: "/students/priyanka.webp",
-  },
-  {
-    id: 16,
-    name: "Ranjeet",
-    role: "Operations Data Analyst",
-    company: "EXL",
-    package: "₹4.6 LPA",
-    location: "Gurugram",
-    batch: "2026",
-    image: "/students/ranjeet.webp",
-  },
-  {
-    id: 17,
-    name: "Ritamvara",
-    role: "Business Intelligence Developer",
-    company: "KPMG",
-    package: "₹6.4 LPA",
-    location: "Bengaluru",
-    batch: "2026",
-    image: "/students/ritamvara.webp",
-  },
-  {
-    id: 18,
-    name: "Vaibhava",
-    role: "Junior Business Analyst",
-    company: "Infosys",
-    package: "₹4.8 LPA",
-    location: "Pune",
-    batch: "2026",
-    image: "/students/vaibhava.webp",
+    id: "cloud-devops",
+    label: "Cloud Computing & DevOps",
+    heading: "Explore Careers in Cloud Computing & DevOps",
+    description:
+      "Discover career pathways in AWS, Azure, cloud infrastructure, deployment automation and DevOps operations.",
+    students: [
+      {
+        id: 51,
+        name: "Vaishnavi Gokhale",
+        role: "Cloud Support Associate",
+        location: "Pune",
+        skill: "Cloud Support",
+        image: cd01,
+      },
+      {
+        id: 52,
+        name: "Sameer Joshi",
+        role: "AWS Cloud Associate",
+        location: "Pune",
+        skill: "AWS",
+        image: cd02,
+      },
+      {
+        id: 53,
+        name: "Pallavi Bhosale",
+        role: "Cloud Operations Analyst",
+        location: "Nashik",
+        skill: "Cloud Operations",
+        image: cd03,
+      },
+      {
+        id: 54,
+        name: "Tejas Kulkarni",
+        role: "Junior DevOps Engineer",
+        location: "Nashik",
+        skill: "DevOps",
+        image: cd04,
+      },
+      {
+        id: 55,
+        name: "Aastha Singh",
+        role: "Azure Cloud Associate",
+        location: "Delhi",
+        skill: "Microsoft Azure",
+        image: cd05,
+      },
+      {
+        id: 56,
+        name: "Naman Oberoi",
+        role: "Cloud Infrastructure Associate",
+        location: "Delhi",
+        skill: "Cloud Infrastructure",
+        image: cd06,
+      },
+      {
+        id: 57,
+        name: "Mrunal Patil",
+        role: "DevOps Automation Associate",
+        location: "Pune",
+        skill: "DevOps Automation",
+        image: cd07,
+      },
+      {
+        id: 58,
+        name: "Om Deshpande",
+        role: "Linux Systems Associate",
+        location: "Pune",
+        skill: "Linux",
+        image: cd08,
+      },
+      {
+        id: 59,
+        name: "Vivek Mishra",
+        role: "Cloud Deployment Associate",
+        location: "Noida",
+        skill: "Cloud Deployment",
+        image: cd09,
+      },
+      {
+        id: 60,
+        name: "Priyanka Sinha",
+        role: "AWS Operations Analyst",
+        location: "Noida",
+        skill: "AWS Operations",
+        image: cd10,
+      },
+    ],
   },
 ];
 
-const marqueeItems = [...placements, ...placements];
+// ============================================================
+// STUDENT CARD
+// Existing size, positioning, colours and hover effects kept.
+// ============================================================
 
-function PlacementCardItem({ item }: { item: PlacementCard }) {
+function PlacementCardItem({
+  item,
+  programme,
+}: {
+  item: StudentProfile;
+  programme: string;
+}) {
   return (
-    <article className="group flex h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-[28px] border border-[#7c001d]/10 bg-white shadow-[0_18px_50px_rgba(30,10,18,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_65px_rgba(124,0,29,0.14)] sm:w-[320px]">
+    <article className="group flex h-[660px] w-[300px] shrink-0 flex-col overflow-hidden rounded-[28px] border border-[#7c001d]/10 bg-white shadow-[0_18px_50px_rgba(30,10,18,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_65px_rgba(124,0,29,0.14)] sm:w-[320px]">
       <div className="relative aspect-[4/4.5] w-full overflow-hidden bg-[#f8f4f6]">
         <Image
           src={item.image}
-          alt={`Sample student profile: ${item.name}`}
+          alt={`Fictional student profile: ${item.name}`}
           fill
           className="object-cover transition duration-500 group-hover:scale-[1.03]"
           sizes="(max-width: 640px) 80vw, 320px"
         />
 
-        <div className="absolute left-4 top-4 rounded-full border border-white/70 bg-white/90 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7c001d] backdrop-blur">
-          Data Analytics
+        <div className="absolute left-4 top-4 max-w-[75%] truncate rounded-full border border-white/70 bg-white/90 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#7c001d] backdrop-blur">
+          {programme}
         </div>
 
         <div className="absolute right-4 top-4 rounded-full bg-[#7c001d] px-3 py-1 text-xs font-bold text-white shadow-md">
-          {item.batch}
+          PDS
         </div>
 
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1e0a12]/85 via-[#1e0a12]/35 to-transparent px-5 pb-5 pt-16 text-white">
@@ -229,26 +712,29 @@ function PlacementCardItem({ item }: { item: PlacementCard }) {
         <div className="mb-4 space-y-2">
           <div className="flex items-center justify-between gap-3">
             <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-              Placed at
+              Career pathway
             </span>
+
             <span className="rounded-full bg-[#fff2f6] px-3 py-1 text-[11px] font-bold text-[#7c001d]">
               {item.location}
             </span>
           </div>
 
-          <h3 className="text-lg font-black text-[#22141a]">{item.company}</h3>
+          <h3 className="text-lg font-black text-[#22141a]">{item.role}</h3>
         </div>
 
         <div className="mt-auto rounded-[22px] border border-[#7c001d]/10 bg-[#fff8fa] p-4">
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#7c001d]">
-            Package
+            Skill Focus
           </p>
+
           <div className="mt-2 flex items-end justify-between gap-3">
-            <p className="text-3xl font-black leading-none text-[#7c001d]">
-              {item.package}
+            <p className="text-lg font-black leading-tight text-[#7c001d]">
+              {item.skill}
             </p>
-            <span className="text-xs font-semibold text-slate-500">
-              Annual CTC
+
+            <span className="shrink-0 text-xs font-semibold text-slate-500">
+              Career Track
             </span>
           </div>
         </div>
@@ -257,42 +743,136 @@ function PlacementCardItem({ item }: { item: PlacementCard }) {
   );
 }
 
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+
 export default function PlacementMarquee() {
+  const [activeProgrammeId, setActiveProgrammeId] =
+    useState<ProgrammeId>("data-analytics");
+
+  const activeProgramme =
+    PROGRAMMES.find((programme) => programme.id === activeProgrammeId) ??
+    PROGRAMMES[0];
+
+  // Exactly 10 profiles per programme.
+  // The duplicated sequence preserves the existing marquee animation.
+  const marqueeItems = [
+    ...activeProgramme.students,
+    ...activeProgramme.students,
+  ];
+
   return (
     <section className="relative overflow-hidden bg-[#fcfaf8] py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col gap-5 lg:mb-14 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             <span className="inline-flex rounded-full bg-[#fff2f6] px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-[#7c001d]">
-              Student Career Outcomes
+              Professional Career Pathways
             </span>
 
             <h2 className="mt-5 text-4xl font-black tracking-tight text-[#081a3a] sm:text-5xl">
-              From Data Analytics Skills to Real Placement Opportunities
+              {activeProgramme.heading}
             </h2>
 
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-              Our learners build practical analytics skills and move into real
-              job roles across reporting, business intelligence, MIS and data
-              analysis.
+              {activeProgramme.description}
             </p>
           </div>
         </div>
+
+        {/* ====================================================
+            PROGRAMME SELECTION
+            Same category-selection logic as Smart Tutor.
+            ==================================================== */}
+
+        <div
+          className="mb-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          role="group"
+          aria-label="Select a professional programme"
+        >
+          {PROGRAMMES.map((programme) => {
+            const selected = activeProgrammeId === programme.id;
+
+            const icons = {
+              "data-analytics": BarChart3,
+              "digital-marketing": Megaphone,
+              "ai-ml": BrainCircuit,
+              "full-stack": Code2,
+              cybersecurity: ShieldCheck,
+              "cloud-devops": Cloud,
+            };
+
+            const Icon = icons[programme.id];
+
+            return (
+              <button
+                key={programme.id}
+                type="button"
+                onClick={() => setActiveProgrammeId(programme.id)}
+                aria-pressed={selected}
+                className={`flex min-h-[86px] items-center gap-4 rounded-[22px]
+          border px-6 py-5 text-left transition-all duration-300
+          focus-visible:outline focus-visible:outline-2
+          focus-visible:outline-offset-2
+          focus-visible:outline-[#7c001d]
+          ${
+            selected
+              ? "border-[#7c001d] bg-[#7c001d] text-white shadow-[0_12px_30px_rgba(124,0,29,0.16)]"
+              : "border-[#7c001d]/10 bg-white text-[#081a3a] hover:border-[#7c001d]/40 hover:bg-[#fff8fa]"
+          }`}
+              >
+                <Icon
+                  size={24}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className={`shrink-0 ${
+                    selected ? "text-white" : "text-[#7c001d]"
+                  }`}
+                />
+
+                <span className="text-sm font-bold sm:text-base">
+                  {programme.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="relative">
+      {/* ======================================================
+          ORIGINAL SLIDESHOW
+          Structure and animation retained.
+          ====================================================== */}
+
+      <div
+        className="relative"
+        aria-label={`${activeProgramme.label} student profile slideshow`}
+      >
         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-[#fcfaf8] to-transparent sm:w-24" />
+
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-[#fcfaf8] to-transparent sm:w-24" />
 
         <div className="marquee-wrapper">
-          <div className="marquee-track">
+          <div className="marquee-track" key={activeProgrammeId}>
             {marqueeItems.map((item, index) => (
-              <PlacementCardItem key={`${item.id}-${index}`} item={item} />
+              <PlacementCardItem
+                key={`${item.id}-${index}`}
+                item={item}
+                programme={activeProgramme.label}
+              />
             ))}
           </div>
         </div>
       </div>
 
+      <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p className="text-xs leading-5 text-slate-500">
+          Illustrative career pathways featuring fictional, AI-generated student
+          profiles. These are not verified placement records or employment
+          outcomes.
+        </p>
+      </div>
 
       <style jsx>{`
         .marquee-wrapper {

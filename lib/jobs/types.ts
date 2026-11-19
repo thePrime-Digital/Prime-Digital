@@ -12,6 +12,7 @@ export type CountryCode =
   | "AE"
   | "SG"
   | "GB"
+  | "DE"
   | "CA"
   | "AU"
   | (string & {});
@@ -108,6 +109,10 @@ export type JobListing = Omit<MumbaiJob, "location" | "category" | "type"> & {
   lastVerifiedAt?: string | null;
 
   status?: JobStatus;
+
+  publicationStatus?:
+    | "published"
+    | "not-published";
   visaSponsorship?: VisaSponsorship;
 
   remoteEligibleCountries?: CountryCode[];

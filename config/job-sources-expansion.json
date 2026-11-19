@@ -1,0 +1,88 @@
+{
+    "sources":  [
+                    {
+                        "company":  "Entrata",
+                        "provider":  "lever",
+                        "token":  "entrata",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "ION Group",
+                        "provider":  "lever",
+                        "token":  "ion",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "Acceldata",
+                        "provider":  "lever",
+                        "token":  "acceldata",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "Level AI",
+                        "provider":  "lever",
+                        "token":  "levelai",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "FloQast",
+                        "provider":  "lever",
+                        "token":  "floqast",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "Matillion",
+                        "provider":  "lever",
+                        "token":  "matillion",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "BrightEdge",
+                        "provider":  "lever",
+                        "token":  "brightedge",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "SurveyMonkey",
+                        "provider":  "ashby",
+                        "token":  "surveymonkey",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "SpotOn",
+                        "provider":  "ashby",
+                        "token":  "spoton",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "Sarvam",
+                        "provider":  "ashby",
+                        "token":  "sarvam",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "Lambda",
+                        "provider":  "ashby",
+                        "token":  "Lambda",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "CodeRabbit",
+                        "provider":  "ashby",
+                        "token":  "coderabbit",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "Axelera AI",
+                        "provider":  "ashby",
+                        "token":  "axelera",
+                        "enabled":  true
+                    },
+                    {
+                        "company":  "CynLr",
+                        "provider":  "ashby",
+                        "token":  "cynlr",
+                        "enabled":  true
+                    }
+                ]
+}

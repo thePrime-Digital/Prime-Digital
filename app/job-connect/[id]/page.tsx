@@ -27,7 +27,8 @@ async function findJob(id: string): Promise<JobListing | null> {
     !job ||
     job.locationReviewStatus === "needs-review" ||
     job.status === "closed" ||
-    job.status === "expired"
+    job.status === "expired" ||
+    job.publicationStatus === "not-published"
   ) {
     return null;
   }
@@ -97,7 +98,7 @@ export default async function JobDetailsPage({ params }: Props) {
           href="/job-connect"
           className="inline-flex items-center gap-2 text-sm font-bold text-[#8f0024] transition hover:text-[#65001d]"
         >
-          ← Back to all jobs
+          â† Back to all jobs
         </Link>
 
         <article className="mt-6 rounded-2xl border border-[#eadfe2] bg-white p-6 shadow-sm sm:p-10">
@@ -146,7 +147,7 @@ export default async function JobDetailsPage({ params }: Props) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-xl bg-[#8f0024] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#65001d]"
               >
-                Apply on employer website ↗
+                Apply on employer website â†—
               </a>
             ) : (
               <p className="text-sm text-red-700">
