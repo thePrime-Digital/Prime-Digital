@@ -520,50 +520,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="pds-testimonials-scroll">
-        <div className="pds-testimonials-track">
-          {[...testimonials, ...testimonials].map((t, i) => (
-            <div className="pds-review-card" key={i}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-[#6B0025] flex items-center justify-center text-white font-bold text-lg shrink-0">
-                  {t.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
-                <div>
-                  <div className="font-semibold text-[15px] leading-tight text-[#1C1B1B]">
-                    {t.name}
-                  </div>
-                  <div className="flex gap-0.5 mt-1">
-                    {Array.from({ length: t.rating }).map((_, ri) => (
-                      <svg
-                        key={ri}
-                        className="w-4 h-4 fill-[#FFB800]"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <p className="text-[14px] leading-[1.6] text-[#3f3f46] m-0">
-                {t.text}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-      <div className="flex justify-center bg-white px-6 pb-10 pt-4">
-        <Link
-          href="/student-stories"
-          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#8f0024]/20 bg-white px-7 text-sm font-black text-[#8f0024] shadow-[0_10px_30px_rgba(105,0,25,0.08)] transition duration-300 hover:-translate-y-1 hover:border-[#8f0024] hover:bg-[#fff4f7]"
-        >
-          View All Student Stories
-          <ArrowRight size={16} />
-        </Link>
-      </div>
       {/* ALL DIGITAL ↔ PRIME DIGITAL SCHOOL */}
       <section className="bg-white px-6 py-16 md:px-12 md:py-20">
         <div className="mx-auto max-w-[1232px] overflow-hidden rounded-[34px] border border-slate-200 bg-white shadow-[0_30px_85px_rgba(15,23,42,0.12)]">
