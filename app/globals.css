@@ -1362,3 +1362,23 @@ html::-webkit-scrollbar-thumb:active,
 body::-webkit-scrollbar-thumb:active {
   background: #5c021a;
 }
+
+/* Homepage excellence feature cards — improved typography */
+.pds-excellence-features > div > span {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.pds-excellence-features > div > p {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+@media (max-width: 640px) {
+  .pds-excellence-features > div > p {
+    font-size: 16px;
+  }
+}
+

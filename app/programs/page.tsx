@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import React from "react";
-import PlacementMarquee from "@/components/careers/placement-marquee";
 import Link from "next/link";
 
 import {
@@ -1830,10 +1829,6 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* ===================================================== */}
-      <PlacementMarquee />
-      {/* FAQ */}
-      {/* ===================================================== */}
 
       <section className="bg-[#FCF9F8] py-16 px-6 md:px-20">
         <div className="max-w-[800px] mx-auto flex flex-col items-center">

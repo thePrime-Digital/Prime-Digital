@@ -111,6 +111,161 @@ function paragraphs(value: string) {
     .filter(Boolean);
 }
 
+function CareerHeroAnimation() {
+  return (
+    <div
+      aria-label="Animated career opportunities"
+      className="relative mx-auto h-[350px] w-full max-w-[450px] select-none sm:h-[380px]"
+    >
+      <style>{`
+        @keyframes pdsCareerFloatOne {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+        }
+
+        @keyframes pdsCareerFloatTwo {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(10px); }
+        }
+
+        @keyframes pdsCareerFloatThree {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pdsCareerOrbit {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        @keyframes pdsCareerEnter {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .pds-career-card-one {
+          animation: pdsCareerFloatOne 6s ease-in-out infinite;
+        }
+
+        .pds-career-card-two {
+          animation: pdsCareerFloatTwo 7s ease-in-out infinite;
+        }
+
+        .pds-career-card-three {
+          animation: pdsCareerFloatThree 5.5s ease-in-out infinite;
+        }
+
+        .pds-career-orbit {
+          animation: pdsCareerOrbit 65s linear infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .pds-career-card-one,
+          .pds-career-card-two,
+          .pds-career-card-three,
+          .pds-career-orbit {
+            animation: none !important;
+          }
+        }
+      `}</style>
+
+      {/* Background geometry */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-[20px] rounded-full border border-white/10"
+      />
+
+      <div
+        aria-hidden="true"
+        className="absolute inset-[55px] rounded-full border border-white/[0.07]"
+      />
+
+      <div
+        aria-hidden="true"
+        className="pds-career-orbit absolute inset-[35px] rounded-full border border-dashed border-white/20"
+      >
+        <span className="absolute left-1/2 top-[-5px] h-2.5 w-2.5 rounded-full bg-white/70" />
+      </div>
+
+      {/* Data Analyst */}
+      <div className="pds-career-card-one absolute left-2 top-10 z-10 w-[70%] rounded-2xl border border-white/80 bg-white/95 p-4 text-[#6b0a26] shadow-[0_18px_45px_rgba(30,0,14,0.18)] backdrop-blur-md sm:left-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#faedf1]">
+            <svg
+              width="25"
+              height="25"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 19V11" />
+              <path d="M10 19V5" />
+              <path d="M15 19v-8" />
+              <path d="M20 19V8" />
+            </svg>
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-base font-bold">Data Analyst</p>
+            <p className="mt-1 text-xs text-[#76646b]">India</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Software Engineer - Primary card */}
+      <div className="pds-career-card-two absolute right-0 top-[125px] z-20 w-[88%] rounded-2xl border border-[#f5e9ed] bg-white p-5 text-[#6b0a26] shadow-[0_24px_60px_rgba(30,0,14,0.24)] sm:top-[135px]">
+        <div className="flex items-center gap-4">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[#faedf1]">
+            <BriefcaseBusiness size={30} strokeWidth={1.7} />
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <p className="text-lg font-bold tracking-tight sm:text-xl">
+              Software Engineer
+            </p>
+
+            <p className="mt-2 text-sm text-[#76646b]">
+              United Kingdom
+            </p>
+          </div>
+
+          <span
+            aria-hidden="true"
+            className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#8a0c34]"
+          />
+        </div>
+      </div>
+
+      {/* Digital Marketing */}
+      <div className="pds-career-card-three absolute bottom-8 right-2 z-30 w-[78%] rounded-2xl border border-white/80 bg-white/95 px-4 py-4 text-[#6b0a26] shadow-[0_18px_45px_rgba(30,0,14,0.18)] backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#faedf1]">
+            <ArrowUpRight size={23} strokeWidth={1.8} />
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-sm font-bold sm:text-base">
+              Digital Marketing
+            </p>
+            <p className="mt-1 text-xs text-[#76646b]">
+              Remote Opportunities
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 export default function MumbaiJobsClient({
   jobs,
   initialTotal,
@@ -503,6 +658,8 @@ export default function MumbaiJobsClient({
       {/* Site-wide Navbar and Footer remain provided by the Next.js layout. */}
       <section className="bg-[#6b0a26] text-white">
         <div className="mx-auto max-w-[1248px] px-5 pb-8 pt-28 sm:px-8 sm:pt-32">
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(330px,1fr)] lg:gap-10">
+            <div className="min-w-0">
           <div className="flex items-center gap-2 text-xs text-[#f1dce2]">
             <a href="/" className="hover:underline">
               Home
@@ -562,6 +719,10 @@ export default function MumbaiJobsClient({
               <strong className="text-base text-white">{savedCount}</strong>{" "}
               saved jobs
             </span>
+          </div>
+            </div>
+
+            <CareerHeroAnimation />
           </div>
         </div>
       </section>
@@ -1152,11 +1313,6 @@ export default function MumbaiJobsClient({
             <CareerApplicationForm jobs={pdsJobs} />
           </div>
         )}
-        <p className="mt-8 text-xs leading-5 text-[#747076]">
-          * The displayed time is the page render time, not a confirmation that
-          individual vacancies remain open. External listings should be verified
-          on the employer website.
-        </p>
       </div>
     </main>
   );
