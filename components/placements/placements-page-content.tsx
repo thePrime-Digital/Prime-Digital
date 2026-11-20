@@ -412,24 +412,7 @@ export default function PlacementsPageContent() {
               and see how industry-focused learning can open new possibilities.
             </p>
           </div>
-          <div className="grid aspect-[1.65] grid-cols-2 grid-rows-2 gap-1 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
-            {[
-              studentsByCategory.data[0],
-              studentsByCategory.marketing[0],
-              studentsByCategory.ai[1],
-              studentsByCategory.cyber[0],
-            ].map((student) => (
-              <div className="relative min-h-0" key={student.id}>
-                <Image
-                  src={student.image}
-                  alt="Student portrait illustration"
-                  fill
-                  className="object-cover object-[center_25%]"
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
-            ))}
-          </div>
+
         </div>
       </section>
 
