@@ -1,5 +1,6 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
+import AboutHeroAnimation from "@/components/about/AboutHeroAnimation";
 
 const PIC_IMAGE = "/about/pic.jpg";
 const STUDENTS_IMAGE = "/about/strudents.jpg";
@@ -73,58 +74,73 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#f7f3f4] text-slate-950">
       {/* HERO */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-10 lg:py-20">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#990024]">
-                About Prime Digital School
-              </p>
+      <section className="relative isolate overflow-hidden bg-[#790021] text-white">
+        {/* Background gradient */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#65001b] via-[#790021] to-[#430011]" />
 
-              <h1 className="mt-4 max-w-2xl text-4xl font-black leading-[1.05] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-                Shaping Future Leaders Through{" "}
-                <span className="text-[#990024]">Digital Education</span>
+        {/* Subtle grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage: `
+        linear-gradient(rgba(255,255,255,0.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px)
+      `,
+            backgroundSize: "70px 70px",
+          }}
+        />
+
+        {/* Decorative glow */}
+        <div className="pointer-events-none absolute -left-40 top-20 h-[450px] w-[450px] rounded-full bg-[#bc174d]/20 blur-[110px]" />
+
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-[400px] w-[400px] rounded-full bg-[#e1a74b]/10 blur-[110px]" />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-5 pb-8 pt-[105px] sm:px-8 sm:pt-[115px] lg:px-10 lg:pb-10 lg:pt-[120px]">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+            {/* LEFT CONTENT */}
+            <div>
+              <div className="inline-flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full bg-[#f2be59] shadow-[0_0_15px_rgba(242,190,89,0.7)]" />
+
+                <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#f3c86a]">
+                  About Prime Digital School
+                </p>
+              </div>
+
+              <h1 className="mt-4 max-w-2xl text-[34px] font-black leading-[1.1] tracking-[-0.035em] text-white sm:text-[42px] lg:text-[48px]">
+                Shaping Future
+                <br />
+                Leaders Through
+                <br />
+                <span className="text-[#f3c86a]">Digital Education</span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-8 text-slate-600">
+              <p className="mt-5 max-w-xl text-sm leading-7 text-[#f2dfe5] sm:text-base">
                 Prime Digital School is a modern learning ecosystem designed to
                 bring students, parents, and educators together through smart
                 technology, structured academics, and future-ready learning.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
+              <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/programs"
-                  className="rounded-full bg-[#990024] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(153,0,36,0.22)] transition hover:bg-[#78001c]"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-extrabold text-[#790021] shadow-[0_14px_35px_rgba(20,0,10,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#fff2f5]"
                 >
                   Explore Programs
                 </Link>
 
                 <Link
                   href="/contact"
-                  className="rounded-full border border-[#990024]/20 bg-white px-6 py-3 text-sm font-bold text-[#990024] transition hover:bg-[#fff4f7]"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/35 bg-white/10 px-7 py-3 text-sm font-bold text-white backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/20"
                 >
                   Contact Us
                 </Link>
               </div>
             </div>
 
-            <div className="relative">
-              <div className="absolute -right-5 -top-5 h-28 w-28 rounded-full bg-[#990024]/10 blur-2xl" />
-              <div className="absolute -bottom-5 -left-5 h-32 w-32 rounded-full bg-yellow-200/40 blur-2xl" />
-
-              <div className="relative overflow-hidden rounded-[2rem] border border-[#eadce1] bg-white p-3 shadow-[0_24px_70px_rgba(30,10,18,0.12)]">
-                <div className="relative h-[330px] overflow-hidden rounded-[1.45rem] sm:h-[410px]">
-                  <Image
-                    src={STUDENTS_IMAGE}
-                    alt="Students learning together"
-                    fill
-                    priority
-                    sizes="(min-width: 1024px) 48vw, 100vw"
-                    className="scale-[1.15] object-cover object-center"
-                  />
-                </div>
-              </div>
+            {/* RIGHT ANIMATION */}
+            <div className="relative min-w-0">
+              <AboutHeroAnimation />
             </div>
           </div>
         </div>
@@ -379,7 +395,8 @@ export default function AboutPage() {
 
             <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-600">
               Our goal is to help every student feel supported, every parent
-              feel informed, and every educator feel empowered with better tools.
+              feel informed, and every educator feel empowered with better
+              tools.
             </p>
           </div>
         </div>
@@ -434,3 +451,4 @@ export default function AboutPage() {
     </main>
   );
 }
+

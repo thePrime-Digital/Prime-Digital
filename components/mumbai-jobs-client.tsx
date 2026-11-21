@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -234,9 +234,7 @@ function CareerHeroAnimation() {
               Software Engineer
             </p>
 
-            <p className="mt-2 text-sm text-[#76646b]">
-              United Kingdom
-            </p>
+            <p className="mt-2 text-sm text-[#76646b]">United Kingdom</p>
           </div>
 
           <span
@@ -254,12 +252,8 @@ function CareerHeroAnimation() {
           </div>
 
           <div className="min-w-0">
-            <p className="text-sm font-bold sm:text-base">
-              Digital Marketing
-            </p>
-            <p className="mt-1 text-xs text-[#76646b]">
-              Remote Opportunities
-            </p>
+            <p className="text-sm font-bold sm:text-base">Digital Marketing</p>
+            <p className="mt-1 text-xs text-[#76646b]">Remote Opportunities</p>
           </div>
         </div>
       </div>
@@ -364,7 +358,10 @@ export default function MumbaiJobsClient({
     );
   }
   function changeCountry(value: string) {
-    if (value !== "ALL" && !ALL_JOB_COUNTRIES.some((item) => item.code === value)) {
+    if (
+      value !== "ALL" &&
+      !ALL_JOB_COUNTRIES.some((item) => item.code === value)
+    ) {
       return;
     }
 
@@ -537,9 +534,7 @@ export default function MumbaiJobsClient({
 
     return [
       ...new Set(
-        !pds && availableCities.length
-          ? availableCities
-          : region?.cities || [],
+        !pds && availableCities.length ? availableCities : region?.cities || [],
       ),
     ].sort();
   }, [pds, countryCode, state, availableCities]);
@@ -654,256 +649,221 @@ export default function MumbaiJobsClient({
     pds && pdsJobs.length === 0 && !savedOnly && !search && !activeFilters;
 
   return (
-    <main className="min-h-screen bg-[#f6f4f2] text-[#1b1b1f]">
-      {/* Site-wide Navbar and Footer remain provided by the Next.js layout. */}
-      <section className="bg-[#6b0a26] text-white">
-        <div className="mx-auto max-w-[1248px] px-5 pb-8 pt-28 sm:px-8 sm:pt-32">
-          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(330px,1fr)] lg:gap-10">
-            <div className="min-w-0">
-          <div className="flex items-center gap-2 text-xs text-[#f1dce2]">
-            <a href="/" className="hover:underline">
-              Home
-            </a>
-            <span>/</span>
-            <span className="font-semibold text-white">Careers</span>
-          </div>
-          <h1 className="mt-4 max-w-[1100px] text-3xl font-bold tracking-tight sm:text-[44px] sm:leading-[1.15]">
-            Your next career move starts right here.
-          </h1>
-          <p className="mt-3 max-w-[1050px] text-base leading-7 text-[#f1dce2]">
-            Explore opportunities from leading employers across India and
-            discover careers at Prime Digital School.
-          </p>
-          <div className="mt-6 flex w-full max-w-[900px] flex-col gap-1.5 rounded-xl bg-white p-1.5 shadow-lg sm:flex-row sm:items-stretch">
-            <label className="flex min-h-12 min-w-0 flex-1 items-center gap-3 px-3 text-[#7d0a2b]">
-              <Search size={19} />
-              <span className="sr-only">Search jobs</span>
-              <input
-                value={search}
-                onChange={(e) => change(setSearch, e.target.value)}
-                placeholder={
-                  pds
-                    ? "Search PDS jobs or departments"
-                    : "Job title, keyword or company"
-                }
-                className="w-full min-w-0 bg-transparent text-sm text-[#1b1b1f] outline-none"
-              />
-              {search && (
-                <button
-                  type="button"
-                  onClick={() => change(setSearch, "")}
-                  aria-label="Clear search"
-                >
-                  <X size={15} />
-                </button>
-              )}
-            </label>
-            <a href="#browse-jobs" className={`${primary} min-h-12 shrink-0 px-6`}>
-              Search jobs <ArrowRight size={16} />
-            </a>
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#f1dce2]">
-            <span>
-              <strong className="text-base text-white">{total}</strong> matching
-              listings
-            </span>
-            <span className="hidden h-4 w-px bg-white/30 sm:block" />
-            <span>
-              <strong className="text-base text-white">
-                {pds ? "PDS" : countryCode === "ALL" ? "All Countries" : ALL_JOB_COUNTRIES.find((item) => item.code === countryCode)?.shortName ?? "India"}
-              </strong>{" "}
-              {pds ? "internal jobs" : "job opportunities"}
-            </span>
-            <span className="hidden h-4 w-px bg-white/30 sm:block" />
-            <span>
-              <strong className="text-base text-white">{savedCount}</strong>{" "}
-              saved jobs
-            </span>
-          </div>
+    <main className="min-h-screen bg-[#f8f7f6] text-[#231c20]">
+      {/* CAREERS HERO */}
+      <section className="bg-gradient-to-r from-[#97002c] via-[#790021] to-[#510019] text-white">
+        <div className="mx-auto max-w-[1600px] px-5 pb-7 pt-28 sm:px-8 sm:pt-32 lg:px-10">
+          <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(380px,.85fr)]">
+            <div>
+              <nav
+                aria-label="Breadcrumb"
+                className="flex items-center gap-2 text-xs text-white/80"
+              >
+                <a href="/" className="hover:text-white hover:underline">
+                  Home
+                </a>
+                <span>/</span>
+                <span className="font-semibold text-white">Careers</span>
+              </nav>
+
+              <div className="mt-2 h-0.5 w-9 rounded-full bg-[#e9b24a]" />
+
+              <h1 className="mt-4 text-[30px] font-extrabold tracking-tight sm:text-[38px] lg:text-[42px]">
+                Discover your next opportunity
+              </h1>
+
+              <p className="mt-2 max-w-[660px] text-sm leading-6 text-white/85 sm:text-base">
+                Explore opportunities from leading employers across India and
+                beyond, including careers at Prime Digital School.
+              </p>
             </div>
 
-            <CareerHeroAnimation />
+            <div className="flex min-w-0 items-center gap-1.5 rounded-xl bg-white p-1.5 shadow-[0_14px_35px_rgba(35,0,13,.15)]">
+              <label className="flex min-w-0 flex-1 items-center gap-3 px-3 text-[#790021]">
+                <Search size={19} className="shrink-0" />
+
+                <span className="sr-only">Search jobs</span>
+
+                <input
+                  value={search}
+                  onChange={(e) => change(setSearch, e.target.value)}
+                  placeholder={
+                    pds
+                      ? "Search PDS jobs or departments"
+                      : "Job title, keyword or company"
+                  }
+                  className="h-11 w-full min-w-0 bg-transparent text-sm text-[#231c20] outline-none placeholder:text-[#8c8589]"
+                />
+
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => change(setSearch, "")}
+                    aria-label="Clear search"
+                    className="shrink-0"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </label>
+
+              <a
+                href="#browse-jobs"
+                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#790021] px-4 text-xs font-bold text-white transition hover:bg-[#5b0019] sm:px-6 sm:text-sm"
+              >
+                Search Jobs
+                <ArrowRight size={16} className="hidden sm:block" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
-      <div className="border-b border-[#e3e1df] bg-white">
-        <div className="mx-auto flex max-w-[1248px] flex-wrap items-center justify-between gap-x-5 px-5 sm:px-8">
-          <div role="tablist" aria-label="Job source" className="flex gap-7">
-            {(
-              [
-                ["jobs", "Explore Opportunities", externalTotal],
-                ["careers", "Prime Digital School Careers", pdsJobs.length],
-              ] as const
-            ).map(([value, label, count]) => (
-              <button
-                key={value}
-                type="button"
-                role="tab"
-                aria-selected={tab === value}
-                onClick={() => switchTab(value)}
-                className={`flex min-h-14 items-center gap-2 border-b-[3px] text-sm font-semibold ${tab === value ? "border-[#7d0a2b] text-[#7d0a2b]" : "border-transparent text-[#4b4347] hover:text-[#7d0a2b]"}`}
-              >
-                {label}
-                <span
-                  className={`rounded px-1.5 py-0.5 text-xs ${tab === value ? "bg-[#7d0a2b] text-white" : "bg-[#f1eeee] text-[#655a5e]"}`}
-                >
-                  {count}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+
+      {/* MAIN JOB BOARD */}
       <div
         id="browse-jobs"
-        className="mx-auto max-w-[1248px] scroll-mt-28 px-5 pb-12 pt-8 sm:px-8"
+        className="mx-auto max-w-[1600px] scroll-mt-24 px-4 py-6 sm:px-8 lg:px-10"
       >
-        <p className="text-xs font-bold uppercase tracking-[.16em] text-[#8f1a3a]">
-          {pds ? "Prime Digital School Recruitment" : "Explore Opportunities"}
-        </p>
-        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-          Find a role that fits you.
-        </h2>
-        <p className="mt-2 text-sm text-[#625d60]">
-          {pds
-            ? "Browse published job openings at Prime Digital School."
-            : "Browse employer opportunities across India and international markets."}
-        </p>
-        <section
-          aria-label="Job filters"
-          className="mt-6 rounded-xl border border-[#e4e0de] bg-white p-4 shadow-sm sm:p-5"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="flex items-center gap-2 text-sm font-semibold">
-              <SlidersHorizontal size={16} className="text-[#7d0a2b]" />
-              Refine your search
-            </h3>
-            <div className="flex items-center gap-4">
+        <div className="grid items-start gap-5 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)_300px]">
+          {/* LEFT FILTER SIDEBAR */}
+          <aside
+            aria-label="Job filters"
+            className="rounded-2xl border border-[#eee6e8] bg-white p-5 shadow-[0_4px_24px_rgba(35,0,13,.045)] lg:sticky lg:top-24"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="flex items-center gap-2.5 text-lg font-extrabold text-[#790021]">
+                <SlidersHorizontal size={20} />
+                Filter jobs
+              </h2>
+
               <button
                 type="button"
-                onClick={() => setMoreFilters((v) => !v)}
-                className="flex items-center gap-1 text-xs font-semibold text-[#7d0a2b]"
+                onClick={() => setMoreFilters((value) => !value)}
+                className="rounded-lg border border-[#eadce1] p-2 text-[#790021] lg:hidden"
+                aria-label="Toggle job filters"
+                aria-expanded={moreFilters}
               >
-                {moreFilters ? "Fewer filters" : "More filters"}
                 <ChevronDown
-                  size={15}
+                  size={17}
                   className={moreFilters ? "rotate-180" : ""}
                 />
               </button>
-              <button
-                type="button"
-                onClick={reset}
-                className="text-xs font-semibold text-[#7d0a2b]"
-              >
-                Reset filters
-              </button>
             </div>
-          </div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {!pds && (
-              <label className="space-y-1">
-                <span className="text-xs text-[#625d60]">Country</span>
+
+            <div
+              className={`${moreFilters ? "block" : "hidden"} mt-5 space-y-4 lg:block`}
+            >
+              {!pds && (
+                <label className="block space-y-2">
+                  <span className="text-xs font-bold text-[#342a2e]">
+                    Location / Country
+                  </span>
+
+                  <select
+                    value={countryCode}
+                    onChange={(e) => changeCountry(e.target.value)}
+                    className={inputClass}
+                  >
+                    <option value="ALL">All Countries</option>
+
+                    {ALL_JOB_COUNTRIES.map((item) => (
+                      <option key={item.code} value={item.code}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+
+              <label className="block space-y-2">
+                <span className="text-xs font-bold text-[#342a2e]">
+                  {pds || countryCode === "IN"
+                    ? "State / UT"
+                    : "State / Region"}
+                </span>
+
                 <select
-                  value={countryCode}
-                  onChange={(e) => changeCountry(e.target.value)}
+                  value={state}
+                  onChange={(e) => {
+                    change(setState, e.target.value);
+                    setCity("All");
+                    setQuickLocation("All");
+                  }}
                   className={inputClass}
                 >
-                  <option value="ALL">All Countries</option>
-                  {ALL_JOB_COUNTRIES.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {item.name}
+                  <option value="All">All states / regions</option>
+
+                  {(pds || countryCode === "IN"
+                    ? INDIA_REGIONS.map((region) => ({
+                        code: region.code,
+                        name: region.name,
+                      }))
+                    : availableStates.map((name) => ({
+                        code: name,
+                        name,
+                      }))
+                  ).map((region) => (
+                    <option key={region.code} value={region.name}>
+                      {region.name}
                     </option>
                   ))}
                 </select>
               </label>
-            )}
 
-            {(
-              <>
-                <label className="space-y-1">
-                  <span className="text-xs text-[#625d60]">
-                    {pds || countryCode === "IN"
-                      ? "State / UT"
-                      : "State / Region"}
-                  </span>
-              <select
-                value={state}
-                onChange={(e) => {
-                  change(setState, e.target.value);
-                  setCity("All");
-                  setQuickLocation("All");
-                }}
-                className={inputClass}
-              >
-                <option value="All">
-                  {pds || countryCode === "IN"
-                    ? "All states / UTs"
-                    : "All states / regions"}
-                </option>
-                {(pds || countryCode === "IN"
-                  ? INDIA_REGIONS.map((r) => ({
-                      code: r.code,
-                      name: r.name,
-                    }))
-                  : availableStates.map((name) => ({
-                      code: name,
-                      name,
-                    }))
-                ).map((r) => (
-                  <option key={r.code} value={r.name}>
-                    {r.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-              </>
-            )}
+              {cities.length > 0 && (
+                <label className="block space-y-2">
+                  <span className="text-xs font-bold text-[#342a2e]">City</span>
 
-            <label className="space-y-1">
-              <span className="text-xs text-[#625d60]">Company</span>
-              <select
-                value={company}
-                onChange={(e) => change(setCompany, e.target.value)}
-                className={inputClass}
-              >
-                <option value="All">All companies</option>
-                {companies.map(([k, n]) => (
-                  <option key={k} value={k}>
-                    {n}
+                  <select
+                    value={city}
+                    onChange={(e) => change(setCity, e.target.value)}
+                    className={inputClass}
+                  >
+                    <option value="All">All cities</option>
+
+                    {cities.map((name) => (
+                      <option key={name} value={name}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+
+              <label className="block space-y-2">
+                <span className="text-xs font-bold text-[#342a2e]">
+                  {pds ? "Department" : "Industry"}
+                </span>
+
+                <select
+                  value={category}
+                  onChange={(e) => change(setCategory, e.target.value)}
+                  className={inputClass}
+                >
+                  <option value="All">
+                    {pds ? "All departments" : "All industries"}
                   </option>
-                ))}
-              </select>
-            </label>
-            <label className="space-y-1">
-              <span className="text-xs text-[#625d60]">
-                {pds ? "Department" : "Industry"}
-              </span>
-              <select
-                value={category}
-                onChange={(e) => change(setCategory, e.target.value)}
-                className={inputClass}
-              >
-                <option value="All">
-                  {pds ? "All departments" : "All industries"}
-                </option>
-                {categories.map((x) => (
-                  <option key={x} value={x}>
-                    {x}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          {moreFilters && (
-            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
-              <label className="space-y-1">
-                <span className="text-xs text-[#625d60]">Employment type</span>
+
+                  {categories.map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="block space-y-2">
+                <span className="text-xs font-bold text-[#342a2e]">
+                  Employment type
+                </span>
+
                 <select
                   value={jobType}
                   onChange={(e) => change(setJobType, e.target.value)}
                   className={inputClass}
                 >
                   <option value="All">All employment types</option>
+
                   {(pds
                     ? [
                         "Full Time",
@@ -921,15 +881,19 @@ export default function MumbaiJobsClient({
                         "Contract",
                         "Temporary",
                       ]
-                  ).map((x) => (
-                    <option key={x} value={x}>
-                      {x}
+                  ).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
                     </option>
                   ))}
                 </select>
               </label>
-              <label className="space-y-1">
-                <span className="text-xs text-[#625d60]">Work mode</span>
+
+              <label className="block space-y-2">
+                <span className="text-xs font-bold text-[#342a2e]">
+                  Work mode
+                </span>
+
                 <select
                   value={workMode}
                   onChange={(e) => change(setWorkMode, e.target.value)}
@@ -941,375 +905,579 @@ export default function MumbaiJobsClient({
                   <option value="remote">Remote</option>
                 </select>
               </label>
-              
-            </div>
-          )}
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#efeeee] pt-4">
-            <div className="flex items-center gap-3">
-              <strong className="text-sm">
-                {loading && !pds ? "Loading..." : `${total} matching jobs`}
-              </strong>
-              <button
-                type="button"
-                onClick={() => change(setSavedOnly, !savedOnly)}
-                className={`flex min-h-9 items-center gap-1 rounded-lg border px-3 text-xs font-semibold ${savedOnly ? "bg-[#7d0a2b] text-white" : "border-[#d8c9ce] text-[#7d0a2b]"}`}
-              >
-                <Bookmark size={13} /> Saved ({savedCount})
-              </button>
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="text-xs text-[#625d60]">
-                <ShieldCheck size={13} className="mr-1 inline text-[#7d0a2b]" />
-                {pds ? "Official PDS vacancies" : "Employer career-site links"}
-              </span>
-              <label className="flex items-center gap-2 text-xs text-[#625d60]">
-                Sort by
+
+              <label className="block space-y-2">
+                <span className="text-xs font-bold text-[#342a2e]">
+                  Company
+                </span>
+
                 <select
-                  value={sortBy}
-                  onChange={(e) => change(setSortBy, e.target.value)}
-                  className="h-9 rounded-lg border border-[#d8d4d3] px-2 text-xs"
+                  value={company}
+                  onChange={(e) => change(setCompany, e.target.value)}
+                  className={inputClass}
                 >
-                  <option value="recent">
-                    {pds ? "Featured first" : "Recently discovered"}
-                  </option>
-                  <option value="company">
-                    {pds ? "Department AÃ¢â‚¬â€œZ" : "Company AÃ¢â‚¬â€œZ"}
-                  </option>
-                  <option value="title">Job title AÃ¢â‚¬â€œZ</option>
-                  <option value="location">Location AÃ¢â‚¬â€œZ</option>
+                  <option value="All">All companies</option>
+
+                  {companies.map(([key, name]) => (
+                    <option key={key} value={key}>
+                      {name}
+                    </option>
+                  ))}
                 </select>
               </label>
-            </div>
-          </div>
-          {error && !pds && (
-            <p role="alert" className="mt-3 text-sm text-red-700">
-              {error}
-            </p>
-          )}
-        </section>
-        {visible.length === 0 && !loading ? (
-          <div className="mt-5 rounded-xl border border-[#e4e0de] bg-white px-6 py-14 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#f9eaf0] text-[#7d0a2b]">
-              <BriefcaseBusiness size={28} />
-            </div>
-            <h3 className="mt-5 text-xl font-bold">
-              {emptyPds ? "No open roles right now" : "No matching jobs found"}
-            </h3>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#625d60]">
-              {emptyPds
-                ? "There are no published Prime Digital School vacancies at the moment. You can send us your CV for future consideration."
-                : "Try changing your filters or searching for a different role."}
-            </p>
-            <div className="mt-5 flex justify-center gap-3">
-              {pds && (
-                <a href="#apply" className={primary}>
-                  Send your CV
-                </a>
-              )}
-              <button
-                type="button"
-                onClick={pds ? () => switchTab("jobs") : reset}
-                className={outline}
-              >
-                {pds ? "Browse Job Board" : "Reset filters"}
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="mt-5 grid items-start gap-4 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
-            <section
-              aria-label="Job listings"
-              className="space-y-3 lg:max-h-[calc(100vh-130px)] lg:overflow-y-auto lg:pr-2"
-            >
-              {visible.map((j) => {
-                const saved = savedIds.includes(j.key);
-                const active = selected?.key === j.key;
-                const url = https(j.external?.officialUrl);
-                return (
-                  <article
-                    key={j.key}
-                    onClick={() => setSelectedKey(j.key)}
-                    tabIndex={0}
-                    role="button"
-                    aria-label={`View details for ${j.title} at ${j.company}`}
-                    onKeyDown={(event) => {
-                      if (event.target !== event.currentTarget) return;
 
-                      if (event.key === "Enter" || event.key === " ") {
-                        event.preventDefault();
-                        setSelectedKey(j.key);
-                      }
-                    }}
-                    className={`cursor-pointer rounded-[18px] border bg-white p-5 transition-all duration-200 hover:border-[#7d0a2b] hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7d0a2b] ${
-                      active
-                        ? "border-[#7d0a2b] shadow-md"
-                        : "border-[#eadfda] shadow-sm"
+              <div className="border-t border-[#eee7e9] pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    reset();
+                    if (!pds) changeCountry("ALL");
+                  }}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#790021] hover:underline"
+                >
+                  <X size={16} />
+                  Reset filters
+                </button>
+              </div>
+            </div>
+          </aside>
+
+          {/* CENTRAL JOB LISTINGS */}
+          <section className="min-w-0 space-y-4" aria-label="Job opportunities">
+            <div className="rounded-2xl border border-[#eee6e8] bg-white p-4 shadow-[0_4px_24px_rgba(35,0,13,.045)] sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl">
+                    {loading && !pds
+                      ? "Loading jobs..."
+                      : `${total.toLocaleString("en-IN")} jobs found`}
+                  </h2>
+
+                  <p className="mt-1 text-xs text-[#786b70]">
+                    {pds
+                      ? "Official Prime Digital School vacancies"
+                      : countryCode === "ALL"
+                        ? "Explore opportunities across all countries"
+                        : `Opportunities in ${
+                            ALL_JOB_COUNTRIES.find(
+                              (item) => item.code === countryCode,
+                            )?.name ?? "your selected country"
+                          }`}
+                  </p>
+                </div>
+
+                <label className="flex items-center gap-2 text-xs text-[#62565b]">
+                  Sort by
+                  <select
+                    value={sortBy}
+                    onChange={(e) => change(setSortBy, e.target.value)}
+                    className="h-10 max-w-[190px] rounded-lg border border-[#ded6d9] bg-white px-3 text-xs outline-none focus:border-[#790021]"
+                  >
+                    <option value="recent">
+                      {pds ? "Featured first" : "Recently discovered"}
+                    </option>
+                    <option value="company">Company A-Z</option>
+                    <option value="title">Job title A-Z</option>
+                    <option value="location">Location A-Z</option>
+                  </select>
+                </label>
+              </div>
+
+              {/* JOB SOURCE TABS */}
+              <div
+                role="tablist"
+                aria-label="Job source"
+                className="mt-5 flex gap-5 overflow-x-auto border-b border-[#eee7e9] sm:gap-8"
+              >
+                {(
+                  [
+                    ["jobs", "Explore Opportunities"],
+                    ["careers", "Prime Digital School Careers"],
+                  ] as const
+                ).map(([value, label]) => (
+                  <button
+                    key={value}
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === value}
+                    onClick={() => switchTab(value)}
+                    className={`min-h-12 shrink-0 border-b-[3px] px-1 text-xs font-bold transition sm:text-sm ${
+                      tab === value
+                        ? "border-[#790021] text-[#790021]"
+                        : "border-transparent text-[#6d6367] hover:text-[#790021]"
                     }`}
                   >
-                    <div className="flex items-start gap-3">
-                      <Logo name={j.company} />
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                <span className="inline-flex items-center gap-1.5 text-xs text-[#65585d]">
+                  <ShieldCheck size={15} className="text-[#790021]" />
+
+                  {pds
+                    ? "Official PDS career opportunities"
+                    : "Employer career-site links"}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => change(setSavedOnly, !savedOnly)}
+                  className={`inline-flex min-h-9 items-center gap-2 rounded-lg border px-3 text-xs font-bold transition ${
+                    savedOnly
+                      ? "border-[#790021] bg-[#790021] text-white"
+                      : "border-[#eadce1] bg-white text-[#790021] hover:bg-[#fff5f8]"
+                  }`}
+                >
+                  <Bookmark size={15} />
+                  {savedOnly ? "Showing saved" : "Saved jobs"}
+                  <span>({savedCount})</span>
+                </button>
+              </div>
+            </div>
+
+            {error && !pds && (
+              <div
+                role="alert"
+                className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+              >
+                {error}
+              </div>
+            )}
+
+            {loading && !pds && (
+              <div className="rounded-xl border border-[#eee6e8] bg-white p-5 text-sm text-[#6b6064]">
+                Fetching the latest job opportunities...
+              </div>
+            )}
+
+            {!loading && visible.length === 0 && (
+              <div className="rounded-2xl border border-[#eee6e8] bg-white px-6 py-14 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#fbedf1] text-[#790021]">
+                  <BriefcaseBusiness size={28} />
+                </div>
+
+                <h3 className="mt-5 text-xl font-extrabold">
+                  {emptyPds
+                    ? "No open roles right now"
+                    : "No matching jobs found"}
+                </h3>
+
+                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#73696c]">
+                  {emptyPds
+                    ? "There are currently no published Prime Digital School vacancies. You may still submit your CV for future consideration."
+                    : "Try adjusting your search or changing the selected filters."}
+                </p>
+
+                <div className="mt-5 flex flex-wrap justify-center gap-3">
+                  {pds && (
+                    <a href="#apply" className={primary}>
+                      Send your CV
+                    </a>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={pds ? () => switchTab("jobs") : reset}
+                    className={outline}
+                  >
+                    {pds ? "Explore other jobs" : "Reset filters"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* JOB CARDS */}
+            {visible.map((job) => {
+              const saved = savedIds.includes(job.key);
+              const expanded = selectedKey === job.key;
+              const officialUrl = https(job.external?.officialUrl);
+
+              return (
+                <article
+                  key={job.key}
+                  className={`overflow-hidden rounded-2xl border bg-white shadow-[0_4px_22px_rgba(35,0,13,.045)] transition-all duration-200 hover:shadow-[0_8px_30px_rgba(35,0,13,.09)] ${
+                    expanded
+                      ? "border-[#790021]"
+                      : "border-[#eee5e8] hover:border-[#d9b8c2]"
+                  }`}
+                >
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="shrink-0">
+                        <Logo name={job.company} />
+                      </div>
+
                       <div className="min-w-0 flex-1">
                         <button
                           type="button"
-                          className="text-left text-sm font-bold hover:text-[#7d0a2b]"
-                          onClick={() => setSelectedKey(j.key)}
+                          onClick={() =>
+                            setSelectedKey(expanded ? null : job.key)
+                          }
+                          className="text-left text-base font-extrabold leading-6 text-[#231c20] hover:text-[#790021] sm:text-lg"
                         >
-                          {j.title}
+                          {job.title}
                         </button>
-                        <p className="mt-1 text-xs text-[#625d60]">
-                          {j.company}
+
+                        <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-[#655b60]">
+                          <Building2 size={14} />
+                          {job.company}
                         </p>
                       </div>
+
                       <button
                         type="button"
                         aria-label={saved ? "Unsave job" : "Save job"}
                         aria-pressed={saved}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          save(j.key);
-                        }}
-                        className="p-2 text-[#7d0a2b]"
+                        onClick={() => save(job.key)}
+                        className="shrink-0 rounded-lg p-2 text-[#790021] hover:bg-[#fff1f5]"
                       >
                         <Bookmark
-                          size={18}
+                          size={20}
                           fill={saved ? "currentColor" : "none"}
                         />
                       </button>
                     </div>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {[j.location, j.type, j.category]
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {[job.location, job.type, job.mode, job.category]
                         .filter(Boolean)
-                        .map((v, i) => (
+                        .map((value, index) => (
                           <span
-                            key={`${v}-${i}`}
-                            className="rounded bg-[#f6f4f2] px-2 py-1 text-[11px] text-[#625d60]"
+                            key={`${index}-${value}`}
+                            className="inline-flex items-center gap-1 rounded-full bg-[#f7f4f2] px-3 py-1.5 text-[11px] font-medium text-[#625b5e]"
                           >
-                            {v}
+                            {index === 0 && <Building2 size={12} />}
+                            {index === 1 && <BriefcaseBusiness size={12} />}
+                            {value}
                           </span>
                         ))}
                     </div>
-                    <div className="mt-4 flex items-center justify-between gap-2 border-t border-[#f0eeee] pt-3">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedKey(j.key)}
-                        className="flex min-h-10 items-center gap-1 text-xs font-semibold text-[#7d0a2b]"
-                      >
-                        View details <ArrowRight size={13} />
-                      </button>
-                      {j.pds ? (
-                        <button
-                          type="button"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            applyPds(j.id);
-                          }}
-                          className={outline}
-                        >
-                          Apply now <ArrowRight size={13} />
-                        </button>
-                      ) : url ? (
-                        <a
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                          }}
-                          className={outline}
-                        >
-                          Apply now <ArrowUpRight size={13} />
-                        </a>
-                      ) : (
-                        <span className="text-xs text-[#625d60]">
-                          Link unavailable
-                        </span>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-between rounded-lg border border-[#e4e0de] bg-white p-3">
-                  <button
-                    type="button"
-                    disabled={page <= 1 || loading}
-                    onClick={() => {
-                      setPage((v) => Math.max(1, v - 1));
-                      setSelectedKey(null);
-                    }}
-                    className="flex items-center gap-1 text-xs font-semibold text-[#7d0a2b] disabled:opacity-40"
-                  >
-                    <ChevronLeft size={16} />
-                    Previous
-                  </button>
-                  <span className="text-xs">
-                    Page {page} of {totalPages}
-                  </span>
-                  <button
-                    type="button"
-                    disabled={page >= totalPages || loading}
-                    onClick={() => {
-                      setPage((v) => v + 1);
-                      setSelectedKey(null);
-                    }}
-                    className="flex items-center gap-1 text-xs font-semibold text-[#7d0a2b] disabled:opacity-40"
-                  >
-                    Next
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
-              )}
-            </section>
-            <aside
-              aria-label="Selected job details"
-              className="overflow-hidden rounded-xl border border-[#e4e0de] bg-white lg:sticky lg:top-24 lg:max-h-[calc(100vh-130px)] lg:overflow-y-auto"
-            >
-              {selected ? (
-                <>
-                  <div className="h-1 bg-[#7d0a2b]" />
-                  <div className="p-5 sm:p-6">
-                    <div className="flex gap-3">
-                      <Logo name={selected.company} />
-                      <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[.14em] text-[#8f1a3a]">
-                          Opportunity details
-                        </p>
-                        <h3 className="mt-2 text-2xl font-bold">
-                          {selected.title}
-                        </h3>
-                        <p className="mt-1 flex items-center gap-1 text-sm text-[#7d0a2b]">
-                          <Building2 size={15} />
-                          {selected.company}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {selected.pds ? (
-                        <button
-                          type="button"
-                          onClick={() => applyPds(selected.id)}
-                          className={primary}
-                        >
-                          Apply to PDS <ArrowRight size={14} />
-                        </button>
-                      ) : https(selected.external?.officialUrl) ? (
-                        <a
-                          href={https(selected.external?.officialUrl)!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={primary}
-                        >
-                          Apply on company site <ArrowUpRight size={14} />
-                        </a>
-                      ) : (
-                        <span className="text-sm text-[#625d60]">
-                          Application URL unavailable
-                        </span>
-                      )}
-                      {selected.external && (
-                        <a
-                          href={`/job-connect/${encodeURIComponent(selected.id)}`}
-                          className={outline}
-                        >
-                          Full job page <ArrowRight size={14} />
-                        </a>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => save(selected.key)}
-                        className={outline}
-                      >
-                        {savedIds.includes(selected.key) ? (
-                          <Check size={14} />
-                        ) : (
-                          <Bookmark size={14} />
-                        )}{" "}
-                        Save
-                      </button>
-                    </div>
-                    <dl className="mt-5 overflow-hidden rounded-lg border border-[#e4e0de] text-sm">
-                      {[
-                        ["Company", selected.company],
-                        ["Location", selected.location],
-                        ["Employment type", selected.type],
-                        [
-                          selected.pds ? "Department" : "Industry",
-                          selected.category,
-                        ],
-                      ].map(([label, value], i) => (
-                        <div
-                          key={label}
-                          className={`grid grid-cols-[38%_62%] gap-2 px-3 py-2.5 ${i % 2 ? "bg-white" : "bg-[#f8f7f6]"}`}
-                        >
-                          <dt className="text-[#625d60]">{label}</dt>
-                          <dd className="font-semibold">{value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                    <h4 className="mt-6 text-sm font-bold">
-                      About this opportunity
-                    </h4>
-                    <p className="mt-2 whitespace-pre-line text-sm leading-6 text-[#625d60]">
-                      {selected.pds?.description ||
-                        "Review the complete employer listing for responsibilities, eligibility, salary and application status."}
+
+                    <p className="mt-4 line-clamp-2 text-sm leading-6 text-[#6a6064]">
+                      {job.pds?.description ||
+                        "Explore this opportunity, review the complete job requirements, and apply through the employer's official careers website."}
                     </p>
-                    {selected.pds && (
-                      <>
-                        <dl className="mt-4 grid grid-cols-2 gap-3 rounded-lg bg-[#f8f7f6] p-4 text-xs">
-                          {[
-                            [
-                              "Experience",
-                              selected.pds.experience || "Not specified",
-                            ],
-                            ["Vacancies", String(selected.pds.vacancies)],
-                            [
-                              "Compensation",
-                              selected.pds.salary || "Not specified",
-                            ],
-                            ["Deadline", dateLabel(selected.pds.deadline)],
-                          ].map(([l, v]) => (
-                            <div key={l}>
-                              <dt className="text-[#625d60]">{l}</dt>
-                              <dd className="mt-1 font-bold">{v}</dd>
-                            </div>
-                          ))}
-                        </dl>
-                        {[
-                          ["Responsibilities", selected.pds.responsibilities],
-                          ["Requirements", selected.pds.requirements],
-                        ].map(([heading, value]) =>
-                          value ? (
-                            <div key={heading} className="mt-5">
-                              <h4 className="text-sm font-bold">{heading}</h4>
-                              <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-[#625d60]">
-                                {paragraphs(value).map((line, i) => (
-                                  <li key={i}>{line}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          ) : null,
-                        )}
-                      </>
-                    )}
-                    {selected.external && (
-                      <div className="mt-5 rounded-lg border border-[#e4e0de] bg-[#f8f7f6] p-3 text-xs leading-5 text-[#625d60]">
-                        You will complete your application on the
-                        employer&apos;s career site. Please confirm the vacancy
-                        is still open before applying.
-                      </div>
-                    )}
+
+                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[#f0ebed] pt-4">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelectedKey(expanded ? null : job.key)
+                        }
+                        aria-expanded={expanded}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#790021] hover:underline sm:text-sm"
+                      >
+                        {expanded ? "Hide details" : "View details"}
+
+                        <ArrowRight
+                          size={15}
+                          className={expanded ? "rotate-90" : ""}
+                        />
+                      </button>
+
+                      {job.pds ? (
+                        <button
+                          type="button"
+                          onClick={() => applyPds(job.id)}
+                          className={primary}
+                        >
+                          Apply now
+                          <ArrowRight size={14} />
+                        </button>
+                      ) : officialUrl ? (
+                        <a
+                          href={officialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={primary}
+                        >
+                          Apply now
+                          <ArrowUpRight size={14} />
+                        </a>
+                      ) : (
+                        <a
+                          href={`/job-connect/${encodeURIComponent(job.id)}`}
+                          className={outline}
+                        >
+                          View job page
+                          <ArrowRight size={14} />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </>
-              ) : (
-                <div className="p-8 text-sm text-[#625d60]">
-                  Select a job to see details.
+
+                  {/* EXPANDED JOB DETAILS */}
+                  {expanded && (
+                    <div className="border-t border-[#eee4e7] bg-[#fdfbfc] p-5 sm:p-6">
+                      <h3 className="text-lg font-extrabold text-[#790021]">
+                        Opportunity details
+                      </h3>
+
+                      <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+                        {[
+                          ["Company", job.company],
+                          ["Location", job.location],
+                          ["Employment type", job.type],
+                          [job.pds ? "Department" : "Industry", job.category],
+                          ["Work mode", job.mode || "Not specified"],
+                        ].map(([label, value]) => (
+                          <div
+                            key={label}
+                            className="rounded-xl border border-[#eee6e8] bg-white p-3"
+                          >
+                            <dt className="text-[11px] font-semibold uppercase tracking-wide text-[#91858a]">
+                              {label}
+                            </dt>
+
+                            <dd className="mt-1 text-sm font-bold text-[#342a2e]">
+                              {value}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+
+                      <h4 className="mt-5 text-sm font-extrabold">
+                        About this opportunity
+                      </h4>
+
+                      <p className="mt-2 whitespace-pre-line text-sm leading-7 text-[#655a5f]">
+                        {job.pds?.description ||
+                          "Review the official employer listing for the complete responsibilities, experience requirements, eligibility criteria and application details."}
+                      </p>
+
+                      {job.pds && (
+                        <>
+                          <dl className="mt-5 grid gap-3 sm:grid-cols-2">
+                            {[
+                              [
+                                "Experience",
+                                job.pds.experience || "Not specified",
+                              ],
+                              ["Vacancies", String(job.pds.vacancies)],
+                              [
+                                "Compensation",
+                                job.pds.salary || "Not specified",
+                              ],
+                              ["Deadline", dateLabel(job.pds.deadline)],
+                            ].map(([label, value]) => (
+                              <div
+                                key={label}
+                                className="rounded-xl bg-[#f5eff1] p-3"
+                              >
+                                <dt className="text-xs text-[#766a6e]">
+                                  {label}
+                                </dt>
+
+                                <dd className="mt-1 text-sm font-bold">
+                                  {value}
+                                </dd>
+                              </div>
+                            ))}
+                          </dl>
+
+                          {[
+                            ["Responsibilities", job.pds.responsibilities],
+                            ["Requirements", job.pds.requirements],
+                          ].map(([heading, value]) =>
+                            value ? (
+                              <div key={heading} className="mt-5">
+                                <h4 className="text-sm font-extrabold">
+                                  {heading}
+                                </h4>
+
+                                <ul className="mt-2 list-inside list-disc space-y-1 text-sm leading-6 text-[#655a5f]">
+                                  {paragraphs(value).map((line, index) => (
+                                    <li key={index}>{line}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ) : null,
+                          )}
+                        </>
+                      )}
+
+                      {job.external && (
+                        <div className="mt-5 rounded-xl border border-[#eee1e5] bg-white p-4 text-xs leading-6 text-[#6e6368]">
+                          Applications are completed through the employer&apos;s
+                          official career website. Please confirm that the
+                          vacancy remains open before applying.
+                        </div>
+                      )}
+
+                      <div className="mt-5 flex flex-wrap gap-3">
+                        {job.external && (
+                          <a
+                            href={`/job-connect/${encodeURIComponent(job.id)}`}
+                            className={outline}
+                          >
+                            Full job page
+                            <ArrowRight size={14} />
+                          </a>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => save(job.key)}
+                          className={outline}
+                        >
+                          {savedIds.includes(job.key) ? (
+                            <Check size={14} />
+                          ) : (
+                            <Bookmark size={14} />
+                          )}
+
+                          {savedIds.includes(job.key) ? "Saved" : "Save job"}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </article>
+              );
+            })}
+
+            {/* PAGINATION */}
+            {totalPages > 1 && (
+              <nav
+                aria-label="Job pagination"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#eee6e8] bg-white p-4"
+              >
+                <button
+                  type="button"
+                  disabled={page <= 1 || loading}
+                  onClick={() => {
+                    setPage((value) => Math.max(1, value - 1));
+                    setSelectedKey(null);
+                  }}
+                  className="inline-flex items-center gap-1 text-sm font-bold text-[#790021] disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ChevronLeft size={17} />
+                  Previous
+                </button>
+
+                <span className="text-xs font-semibold text-[#63595e]">
+                  Page {page} of {totalPages}
+                </span>
+
+                <button
+                  type="button"
+                  disabled={page >= totalPages || loading}
+                  onClick={() => {
+                    setPage((value) => value + 1);
+                    setSelectedKey(null);
+                  }}
+                  className="inline-flex items-center gap-1 text-sm font-bold text-[#790021] disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Next
+                  <ChevronRight size={17} />
+                </button>
+              </nav>
+            )}
+          </section>
+
+          {/* RIGHT CAREER HUB */}
+          <aside className="space-y-4 lg:col-span-2 xl:col-span-1">
+            <section className="rounded-2xl border border-[#eee6e8] bg-white p-5 shadow-[0_4px_24px_rgba(35,0,13,.045)]">
+              <h3 className="flex items-center gap-2 text-base font-extrabold text-[#790021]">
+                <BriefcaseBusiness size={18} />
+                Featured opportunity
+              </h3>
+
+              {visible.length > 0 ? (
+                <div className="mt-4 rounded-xl border border-[#ebcf9b] bg-[#fffaf0] p-4">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#a86a13]">
+                    Explore this role
+                  </p>
+
+                  <h4 className="mt-2 text-base font-extrabold">
+                    {visible[0].title}
+                  </h4>
+
+                  <p className="mt-1 text-xs text-[#6f6468]">
+                    {visible[0].company}
+                  </p>
+
+                  <p className="mt-2 text-xs text-[#6f6468]">
+                    {visible[0].location}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedKey(visible[0].key);
+                      document.getElementById("browse-jobs")?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }}
+                    className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#790021]"
+                  >
+                    View opportunity
+                    <ArrowRight size={14} />
+                  </button>
                 </div>
+              ) : (
+                <p className="mt-4 text-sm text-[#73676b]">
+                  Featured opportunities will appear when matching jobs are
+                  available.
+                </p>
               )}
-            </aside>
-          </div>
-        )}
+
+              <div className="mt-5 border-t border-[#eee7e9] pt-5">
+                <h3 className="text-sm font-extrabold">
+                  Quick tips for a stronger application
+                </h3>
+
+                <ul className="mt-4 space-y-4">
+                  {[
+                    "Keep your profile and resume up to date",
+                    "Use relevant keywords from the job description",
+                    "Save interesting jobs for future reference",
+                  ].map((tip) => (
+                    <li
+                      key={tip}
+                      className="flex items-start gap-2.5 text-xs leading-5 text-[#61585c]"
+                    >
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#d9a645] text-[#aa761b]">
+                        <Check size={12} />
+                      </span>
+
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+
+            <section className="rounded-2xl bg-gradient-to-br from-[#790021] to-[#4c0016] p-5 text-white">
+              <p className="text-xs font-bold uppercase tracking-[.15em] text-[#f4cad6]">
+                Prime Digital School
+              </p>
+
+              <h3 className="mt-3 text-xl font-extrabold">
+                Build skills for your next career move.
+              </h3>
+
+              <p className="mt-3 text-sm leading-6 text-white/80">
+                Explore professional programmes designed to help you prepare for
+                opportunities in the digital economy.
+              </p>
+
+              <a
+                href="/programs"
+                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#790021] transition hover:bg-[#fff0f5]"
+              >
+                Explore programmes
+                <ArrowRight size={15} />
+              </a>
+            </section>
+          </aside>
+        </div>
+
+        {/* ORIGINAL PDS APPLICATION WORKFLOW */}
         {pds && (
-          <div className="mt-14">
+          <div className="mt-12">
             <CareerApplicationForm jobs={pdsJobs} />
           </div>
         )}

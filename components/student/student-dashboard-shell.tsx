@@ -62,11 +62,19 @@ const learn: NavItem[] = [
   { label: "Live Classes", href: "/dashboard/live-classes", icon: MonitorPlay },
   { label: "Lectures", href: "/dashboard/recorded-lectures", icon: Video },
   { label: "Lessons", href: "/dashboard/lessons", icon: LibraryBig },
-  { label: "Learning Content", href: "/dashboard/learning-content", icon: LibraryBig },
+  {
+    label: "Learning Content",
+    href: "/dashboard/learning-content",
+    icon: LibraryBig,
+  },
   { label: "Assignments", href: "/dashboard/assignments", icon: ClipboardList },
   { label: "Tests", href: "/dashboard/exams", icon: FileQuestion },
   { label: "Doubts", href: "/dashboard/doubts", icon: MessageCircleQuestion },
-  { label: "Learning Progress", href: "/dashboard/learning-progress", icon: TrendingUp },
+  {
+    label: "Learning Progress",
+    href: "/dashboard/learning-progress",
+    icon: TrendingUp,
+  },
 ];
 
 const career: NavItem[] = [
@@ -101,13 +109,7 @@ const more: NavItem[] = [
   { label: "Attendance", href: "/dashboard/attendance", icon: ClipboardCheck },
 ];
 
-const navigation = [
-  ...main,
-  ...learn,
-  ...career,
-  ...finance,
-  ...support,
-];
+const navigation = [...main, ...learn, ...career, ...finance, ...support];
 function initials(name: string) {
   const words = name.trim().split(/\s+/).filter(Boolean);
 
@@ -219,11 +221,11 @@ export default function StudentDashboardShell({ user, children }: Props) {
   const sidebar = (
     <div className="flex h-full min-h-0 flex-col bg-[#510014] text-white">
       <Link
-        href="/dashboard"
+        href="/"
         onClick={() => setMobileOpen(false)}
-        className="flex min-h-[150px] shrink-0 items-center gap-3 border-b border-white/10 px-4"
+        className="flex min-h-[100px] shrink-0 items-center gap-3 border-b border-white/10 px-4 transition-colors hover:bg-white/5"
       >
-        <div className="flex h-[105px] w-[76px] shrink-0 items-center justify-center">
+        <div className="flex h-[70px] w-[56px] shrink-0 items-center justify-center">
           <img
             src="/images/pds-original-logo.png"
             alt="Prime Digital School"
@@ -283,25 +285,15 @@ export default function StudentDashboardShell({ user, children }: Props) {
         </section>
       </nav>
 
-      <div className="shrink-0 border-t border-white/10 px-3 pb-10 pt-3">
-        <Link
-          href="/"
-          rel="noopener noreferrer"
-          onClick={() => setMobileOpen(false)}
-          className="mb-1 flex w-full items-center gap-3 rounded-lg px-3 py-3 text-xs font-bold text-white/80 transition hover:bg-white/10 hover:text-white"
-        >
-          <Globe size={16} />
-          Visit Website
-          <ArrowRight size={14} className="ml-auto opacity-60" />
-        </Link>
+      <div className="shrink-0 border-t border-white/10 px-4 py-3">
         <button
           type="button"
           onClick={() => void logout()}
           disabled={loggingOut}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-xs font-bold text-white/80 hover:bg-white/10 disabled:opacity-50"
+          className="inline-flex min-h-10 w-[180px] items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/10 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:border-red-300/40 hover:bg-red-500/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <LogOut size={16} />
-          {loggingOut ? "Logging out..." : "Logout"}
+          <LogOut size={15} />
+          <span>{loggingOut ? "Logging out..." : "Logout"}</span>
         </button>
       </div>
     </div>
@@ -438,7 +430,7 @@ export default function StudentDashboardShell({ user, children }: Props) {
                     Settings
                   </Link>
 
-                                    <Link
+                  <Link
                     href="/"
                     rel="noopener noreferrer"
                     onClick={() => setProfileOpen(false)}
@@ -447,7 +439,7 @@ export default function StudentDashboardShell({ user, children }: Props) {
                     <Globe size={15} />
                     Visit Website
                   </Link>
-<button
+                  <button
                     type="button"
                     onClick={() => void logout()}
                     disabled={loggingOut}
