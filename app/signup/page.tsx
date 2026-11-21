@@ -45,6 +45,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Junior Robotics & Electronics",
     "Digital Design & Creativity",
     "AI for Young Learners",
+    "Digital Marketing",
   ],
 
   "7th Standard": [
@@ -54,6 +55,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Junior Robotics & Electronics",
     "Digital Design & Creativity",
     "AI for Young Learners",
+    "Digital Marketing",
   ],
 
   "8th Standard": [
@@ -65,6 +67,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Data Skills & Spreadsheets",
     "UI/UX & Product Design",
     "App Building Fundamentals",
+    "Digital Marketing",
   ],
 
   "9th Standard": [
@@ -76,6 +79,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Data Skills & Spreadsheets",
     "UI/UX & Product Design",
     "App Building Fundamentals",
+    "Digital Marketing",
   ],
 
   "10th Standard": [
@@ -88,6 +92,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Digital Product & UI/UX Design",
     "Tech Entrepreneurship",
     "Capstone & Portfolio Development",
+    "Digital Marketing",
   ],
 
   "11th Standard": [
@@ -100,6 +105,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "UI/UX & Digital Product Design",
     "Startup & Tech Entrepreneurship",
     "Career Capstone & Portfolio",
+    "Digital Marketing",
   ],
 
   "12th Standard": [
@@ -112,19 +118,26 @@ const foundationProgramOptions: Record<string, string[]> = {
     "UI/UX & Digital Product Design",
     "Startup & Tech Entrepreneurship",
     "Career Capstone & Portfolio",
+    "Digital Marketing",
   ],
 };
 
 const professionalProgramOptions = [
-  "Technology & Coding",
-  "AI, Robotics & Future Tech",
-  "Business & Digital Marketing",
-  "Design & Creative Arts",
-  "Entrepreneurship & Innovation",
-  "digital marketing",
-  "investment banking",
-  "data science",
-  "cyber security",
+  "AI & Machine Learning",
+  "Full-Stack Web Development",
+  "Data Science",
+  "Cybersecurity",
+  "UI/UX Design",
+  "Data Analytics",
+  "Banking & Investment Management",
+  "Entrepreneurship",
+  "Digital Marketing",
+  "Graphic Design & Motion Graphics",
+  "Software Testing",
+  "Python Programming",
+  "Mobile App Development",
+  "Digital Content Creation",
+  "AWS & DevOps",
 ];
 
 function getProgramOptions(
