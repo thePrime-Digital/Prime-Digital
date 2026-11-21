@@ -45,7 +45,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Junior Robotics & Electronics",
     "Digital Design & Creativity",
     "AI for Young Learners",
-    "Digital Marketing",
+    "Digital Marketing with AI",
   ],
 
   "7th Standard": [
@@ -55,7 +55,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Junior Robotics & Electronics",
     "Digital Design & Creativity",
     "AI for Young Learners",
-    "Digital Marketing",
+    "Digital Marketing with AI",
   ],
 
   "8th Standard": [
@@ -67,7 +67,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Data Skills & Spreadsheets",
     "UI/UX & Product Design",
     "App Building Fundamentals",
-    "Digital Marketing",
+    "Digital Marketing with AI",
   ],
 
   "9th Standard": [
@@ -79,7 +79,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Data Skills & Spreadsheets",
     "UI/UX & Product Design",
     "App Building Fundamentals",
-    "Digital Marketing",
+    "Digital Marketing with AI",
   ],
 
   "10th Standard": [
@@ -92,7 +92,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "Digital Product & UI/UX Design",
     "Tech Entrepreneurship",
     "Capstone & Portfolio Development",
-    "Digital Marketing",
+    "Digital Marketing with AI",
   ],
 
   "11th Standard": [
@@ -105,7 +105,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "UI/UX & Digital Product Design",
     "Startup & Tech Entrepreneurship",
     "Career Capstone & Portfolio",
-    "Digital Marketing",
+    "Digital Marketing with AI",
   ],
 
   "12th Standard": [
@@ -118,7 +118,7 @@ const foundationProgramOptions: Record<string, string[]> = {
     "UI/UX & Digital Product Design",
     "Startup & Tech Entrepreneurship",
     "Career Capstone & Portfolio",
-    "Digital Marketing",
+    "Digital Marketing with AI",
   ],
 };
 
@@ -131,7 +131,7 @@ const professionalProgramOptions = [
   "Data Analytics",
   "Banking & Investment Management",
   "Entrepreneurship",
-  "Digital Marketing",
+  "Digital Marketing with AI",
   "Graphic Design & Motion Graphics",
   "Software Testing",
   "Python Programming",
