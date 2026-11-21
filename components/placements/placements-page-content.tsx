@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import PlacementHeroAnimation from "./placement-hero-animation";
 import {
   ArrowLeft,
   ArrowRight,
@@ -394,7 +395,10 @@ export default function PlacementsPageContent() {
     categories.find((category) => category.id === selectedId) ?? categories[0];
   const students = studentsByCategory[selectedId];
   return (
-    <main data-placements-page className="bg-[#fcfaf8] pt-16 text-[#081a3a] lg:pt-20">
+    <main
+      data-placements-page
+      className="bg-[#fcfaf8] pt-16 text-[#081a3a] lg:pt-20"
+    >
       {/* Existing global site header/footer should be supplied by app/layout.tsx. */}
       <section className="border-b border-slate-100 bg-white">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:py-12">
@@ -413,9 +417,12 @@ export default function PlacementsPageContent() {
             </p>
           </div>
 
+          {/* Professional Career Growth Animation */}
+          <div className="relative flex w-full items-center justify-center lg:pl-4">
+            <PlacementHeroAnimation />
+          </div>
         </div>
       </section>
-
 
       <div className="mx-auto max-w-7xl px-5 pt-14 pb-8 sm:px-8 lg:pt-16 lg:pb-10">
         <section aria-labelledby="programmes-title">
@@ -555,6 +562,3 @@ export default function PlacementsPageContent() {
     </main>
   );
 }
-
-
-
