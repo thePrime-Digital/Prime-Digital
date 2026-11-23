@@ -1,4 +1,5 @@
 ﻿import Link from "next/link";
+import Image from "next/image";
 import AboutHeroAnimation from "@/components/about/AboutHeroAnimation";
 
 const stats = [
@@ -208,7 +209,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-
       {/* STORY TIMELINE */}
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
         <div className="text-center">
@@ -264,6 +264,105 @@ export default function AboutPage() {
               </p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* AWARDS & RECOGNITION */}
+      <section
+        id="awards-recognition"
+        className="relative overflow-hidden bg-[#fffafb] py-16 sm:py-20"
+      >
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          {/* SECTION HEADING */}
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#990024]">
+              Awards & Recognition
+            </p>
+
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+              Recognised for Excellence.
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-600">
+              Celebrating the recognitions and achievements that mark our
+              journey towards quality education and student success.
+            </p>
+          </div>
+
+          {/* AWARD CARDS */}
+          <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-2 lg:gap-8">
+            {/* JUSTDIAL AWARD */}
+            <article className="group flex flex-col overflow-hidden rounded-[1.6rem] border border-[#eadce1] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:p-8">
+              <div className="relative flex h-[300px] items-center justify-center rounded-2xl bg-[#faf5f6] p-4 sm:h-[340px]">
+                <div className="relative h-full w-full">
+                  <Image
+                    src="/about/justdail-award.png"
+                    alt="Prime Digital School Justdial certification 2022"
+                    fill
+                    className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-1 flex-col pt-6">
+                <span className="text-xs font-black uppercase tracking-[0.15em] text-[#990024]">
+                  2022
+                </span>
+
+                <h3 className="mt-3 text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
+                  Justdial Certification
+                </h3>
+
+                <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">
+                  Prime Digital School, Vashi, Navi Mumbai, featured with a
+                  Justdial certification in 2022.
+                </p>
+
+                <div className="mt-5 border-t border-[#eadce1] pt-4">
+                  <span className="text-xs font-bold uppercase tracking-[0.12em] text-[#990024]">
+                    Justdial · 2022
+                  </span>
+                </div>
+              </div>
+            </article>
+
+            {/* URBANPRO AWARD */}
+            <article className="group flex flex-col overflow-hidden rounded-[1.6rem] border border-[#eadce1] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:p-8">
+              <div className="relative flex h-[300px] items-center justify-center rounded-2xl bg-[#faf5f6] p-4 sm:h-[340px]">
+                <div className="relative h-full w-full">
+                  <Image
+                    src="/about/urban-pro.jpeg"
+                    alt="UrbanPro Students Choice Award 2023"
+                    fill
+                    className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-1 flex-col pt-6">
+                <span className="text-xs font-black uppercase tracking-[0.15em] text-[#990024]">
+                  2023
+                </span>
+
+                <h3 className="mt-3 text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
+                  UrbanPro Students' Choice Award
+                </h3>
+
+                <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">
+                  Students' Choice Award 2023 for Digital Marketing, presented
+                  to Prime Digital School, Vashi, Navi Mumbai.
+                </p>
+
+                <div className="mt-5 border-t border-[#eadce1] pt-4">
+                  <span className="text-xs font-bold uppercase tracking-[0.12em] text-[#990024]">
+                    UrbanPro · 2023 Winner
+                  </span>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
