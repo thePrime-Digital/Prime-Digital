@@ -62,9 +62,7 @@ type Category = {
 const studentImages: Record<CategoryId, string[]> = {
   data: [
     "001-kashish-kadam.webp",
-    "002-sara-saxena.webp",
-    "003-manav-kamble.webp",
-    "004-shiv-chaudhary.webp",
+    "002-sumit-saxena.webp",
     "005-akash-singh.webp",
     "006-tanvi-kadam.webp",
     "007-shivani-menon.webp",
