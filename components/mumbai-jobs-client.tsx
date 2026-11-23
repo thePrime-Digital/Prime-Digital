@@ -26,13 +26,6 @@ import CareerApplicationForm from "@/components/careers/career-application-form"
 
 type Tab = "jobs" | "careers";
 
-type JobSuggestion = {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  source: Tab;
-};
 type Props = {
   jobs: JobListing[];
   initialTotal: number;
@@ -63,6 +56,1297 @@ type DisplayJob = {
 };
 const PAGE_SIZE = 20;
 const STORAGE_KEY = "pds-mumbai-saved-jobs-v1";
+
+// PDS ROLE AUTOCOMPLETE V2
+
+// PDS ROLE AUTOCOMPLETE V3
+// Comprehensive job-role suggestions across major professional departments.
+
+const JOB_ROLE_TERMS = [
+  // DATA ANALYTICS & BUSINESS INTELLIGENCE
+  "Data Analyst",
+  "Junior Data Analyst",
+  "Senior Data Analyst",
+  "Lead Data Analyst",
+  "Data Analytics Specialist",
+  "Data Analytics Manager",
+  "Data Analytics Consultant",
+  "Data Visualization Analyst",
+  "Data Visualization Specialist",
+  "Business Analyst",
+  "Junior Business Analyst",
+  "Senior Business Analyst",
+  "Technical Business Analyst",
+  "Business Systems Analyst",
+  "Business Intelligence Analyst",
+  "Business Intelligence Developer",
+  "Business Intelligence Engineer",
+  "Business Intelligence Manager",
+  "BI Consultant",
+  "Power BI Developer",
+  "Power BI Analyst",
+  "Power BI Consultant",
+  "Tableau Developer",
+  "Tableau Analyst",
+  "SQL Analyst",
+  "SQL Developer",
+  "Reporting Analyst",
+  "MIS Executive",
+  "MIS Analyst",
+  "MIS Manager",
+  "Excel Analyst",
+  "Research Analyst",
+  "Operations Analyst",
+  "Product Analyst",
+  "Marketing Analyst",
+  "Sales Analyst",
+  "Financial Data Analyst",
+  "Customer Insights Analyst",
+  "Decision Science Analyst",
+  "Analytics Engineer",
+  "Analytics Manager",
+  "Data Quality Analyst",
+  "Data Governance Analyst",
+  "Data Privacy Analyst",
+
+  // DATA SCIENCE & DATA ENGINEERING
+  "Data Scientist",
+  "Junior Data Scientist",
+  "Senior Data Scientist",
+  "Lead Data Scientist",
+  "Principal Data Scientist",
+  "Data Science Intern",
+  "Data Science Consultant",
+  "Data Science Manager",
+  "Data Engineer",
+  "Junior Data Engineer",
+  "Senior Data Engineer",
+  "Lead Data Engineer",
+  "Big Data Engineer",
+  "Data Platform Engineer",
+  "Data Infrastructure Engineer",
+  "Data Architect",
+  "Big Data Architect",
+  "Data Warehouse Developer",
+  "Data Warehouse Engineer",
+  "ETL Developer",
+  "ETL Engineer",
+  "ETL Tester",
+  "Snowflake Developer",
+  "Snowflake Engineer",
+  "Databricks Engineer",
+  "Apache Spark Developer",
+  "Hadoop Developer",
+  "Kafka Engineer",
+  "Database Developer",
+  "Database Administrator",
+  "Database Engineer",
+  "MongoDB Developer",
+  "PostgreSQL Developer",
+  "MySQL Developer",
+  "Oracle Database Administrator",
+
+  // ARTIFICIAL INTELLIGENCE & MACHINE LEARNING
+  "AI Engineer",
+  "Artificial Intelligence Engineer",
+  "AI Developer",
+  "AI Software Engineer",
+  "AI Research Engineer",
+  "AI Research Scientist",
+  "AI Scientist",
+  "AI Architect",
+  "AI Consultant",
+  "AI Product Manager",
+  "AI Solutions Engineer",
+  "Generative AI Engineer",
+  "Generative AI Developer",
+  "Generative AI Specialist",
+  "LLM Engineer",
+  "Large Language Model Engineer",
+  "Prompt Engineer",
+  "Prompt Engineering Specialist",
+  "Machine Learning Engineer",
+  "Junior Machine Learning Engineer",
+  "Senior Machine Learning Engineer",
+  "Machine Learning Scientist",
+  "Machine Learning Researcher",
+  "Machine Learning Architect",
+  "ML Engineer",
+  "MLOps Engineer",
+  "MLOps Specialist",
+  "Deep Learning Engineer",
+  "Deep Learning Researcher",
+  "Computer Vision Engineer",
+  "Computer Vision Scientist",
+  "NLP Engineer",
+  "Natural Language Processing Engineer",
+  "AI Automation Engineer",
+  "AI Agent Developer",
+  "AI Integration Engineer",
+  "AI Model Trainer",
+  "AI Data Annotator",
+  "AI Quality Analyst",
+  "Robotics AI Engineer",
+  "Responsible AI Specialist",
+
+  // SOFTWARE DEVELOPMENT
+  "Software Engineer",
+  "Junior Software Engineer",
+  "Senior Software Engineer",
+  "Lead Software Engineer",
+  "Principal Software Engineer",
+  "Staff Software Engineer",
+  "Software Developer",
+  "Junior Software Developer",
+  "Senior Software Developer",
+  "Software Development Engineer",
+  "Software Development Engineer I",
+  "Software Development Engineer II",
+  "Software Development Engineer III",
+  "SDE",
+  "SDE 1",
+  "SDE 2",
+  "SDE 3",
+  "Associate Software Engineer",
+  "Graduate Engineer Trainee",
+  "Software Architect",
+  "Solutions Architect",
+  "Technical Architect",
+  "Engineering Manager",
+  "Software Engineering Manager",
+  "Technical Lead",
+  "Tech Lead",
+  "Engineering Lead",
+  "Development Manager",
+  "Application Developer",
+  "Application Engineer",
+  "Application Support Engineer",
+  "Platform Engineer",
+  "Systems Engineer",
+  "Systems Developer",
+  "Embedded Software Engineer",
+  "Firmware Engineer",
+
+  // FRONTEND DEVELOPMENT
+  "Frontend Developer",
+  "Frontend Engineer",
+  "Junior Frontend Developer",
+  "Senior Frontend Developer",
+  "Lead Frontend Developer",
+  "React Developer",
+  "React.js Developer",
+  "Next.js Developer",
+  "Angular Developer",
+  "Vue.js Developer",
+  "JavaScript Developer",
+  "TypeScript Developer",
+  "HTML Developer",
+  "CSS Developer",
+  "Web Developer",
+  "Web Application Developer",
+  "Web Designer",
+  "UI Developer",
+  "Frontend Architect",
+
+  // BACKEND DEVELOPMENT
+  "Backend Developer",
+  "Backend Engineer",
+  "Junior Backend Developer",
+  "Senior Backend Developer",
+  "Lead Backend Engineer",
+  "Node.js Developer",
+  "Express.js Developer",
+  "Python Developer",
+  "Django Developer",
+  "Flask Developer",
+  "FastAPI Developer",
+  "Java Developer",
+  "Spring Boot Developer",
+  "PHP Developer",
+  "Laravel Developer",
+  "Ruby Developer",
+  "Ruby on Rails Developer",
+  "Go Developer",
+  "Golang Developer",
+  "Rust Developer",
+  "C Developer",
+  "C++ Developer",
+  "C# Developer",
+  ".NET Developer",
+  "ASP.NET Developer",
+  "API Developer",
+  "REST API Developer",
+  "GraphQL Developer",
+  "Microservices Developer",
+
+  // FULL STACK DEVELOPMENT
+  "Full Stack Developer",
+  "Full Stack Engineer",
+  "Junior Full Stack Developer",
+  "Senior Full Stack Developer",
+  "Lead Full Stack Developer",
+  "MERN Stack Developer",
+  "MEAN Stack Developer",
+  "MEVN Stack Developer",
+  "Java Full Stack Developer",
+  "Python Full Stack Developer",
+  ".NET Full Stack Developer",
+  "React Node.js Developer",
+  "Next.js Full Stack Developer",
+
+  // MOBILE APPLICATION DEVELOPMENT
+  "Mobile App Developer",
+  "Mobile Application Engineer",
+  "Android Developer",
+  "Senior Android Developer",
+  "iOS Developer",
+  "Senior iOS Developer",
+  "Flutter Developer",
+  "React Native Developer",
+  "Kotlin Developer",
+  "Swift Developer",
+  "Cross Platform App Developer",
+  "Mobile Software Engineer",
+  "Mobile App Tester",
+
+  // CLOUD COMPUTING
+  "Cloud Engineer",
+  "Junior Cloud Engineer",
+  "Senior Cloud Engineer",
+  "Cloud Architect",
+  "Cloud Solutions Architect",
+  "Cloud Administrator",
+  "Cloud Consultant",
+  "Cloud Support Engineer",
+  "Cloud Security Engineer",
+  "Cloud Infrastructure Engineer",
+  "Cloud Platform Engineer",
+  "Cloud Operations Engineer",
+  "AWS Engineer",
+  "AWS Cloud Engineer",
+  "AWS Solutions Architect",
+  "AWS DevOps Engineer",
+  "Azure Engineer",
+  "Azure Cloud Engineer",
+  "Azure Administrator",
+  "Azure Solutions Architect",
+  "Google Cloud Engineer",
+  "GCP Engineer",
+  "GCP Cloud Architect",
+  "Multi Cloud Engineer",
+  "Cloud Migration Engineer",
+  "Cloud Automation Engineer",
+  "Cloud Reliability Engineer",
+  "Cloud FinOps Analyst",
+
+  // DEVOPS & INFRASTRUCTURE
+  "DevOps Engineer",
+  "Junior DevOps Engineer",
+  "Senior DevOps Engineer",
+  "Lead DevOps Engineer",
+  "DevOps Architect",
+  "DevOps Consultant",
+  "Site Reliability Engineer",
+  "SRE Engineer",
+  "Platform Reliability Engineer",
+  "Infrastructure Engineer",
+  "Infrastructure Architect",
+  "Infrastructure Automation Engineer",
+  "Linux Administrator",
+  "Linux Engineer",
+  "Windows Administrator",
+  "System Administrator",
+  "System Engineer",
+  "Network Administrator",
+  "Network Engineer",
+  "Network Security Engineer",
+  "Network Architect",
+  "IT Infrastructure Engineer",
+  "IT Support Engineer",
+  "IT Support Specialist",
+  "IT Administrator",
+  "IT Manager",
+  "IT Operations Manager",
+  "Kubernetes Engineer",
+  "Docker Engineer",
+  "Terraform Engineer",
+  "CI CD Engineer",
+  "Build and Release Engineer",
+  "Release Manager",
+  "Deployment Engineer",
+  "Production Support Engineer",
+
+  // CYBERSECURITY
+  "Cybersecurity Analyst",
+  "Junior Cybersecurity Analyst",
+  "Senior Cybersecurity Analyst",
+  "Cybersecurity Engineer",
+  "Cybersecurity Consultant",
+  "Cybersecurity Specialist",
+  "Cybersecurity Architect",
+  "Cybersecurity Manager",
+  "Cybersecurity Intern",
+  "Information Security Analyst",
+  "Information Security Engineer",
+  "Information Security Manager",
+  "Security Analyst",
+  "Security Engineer",
+  "Security Architect",
+  "SOC Analyst",
+  "SOC Analyst L1",
+  "SOC Analyst L2",
+  "SOC Analyst L3",
+  "SOC Engineer",
+  "SOC Manager",
+  "Security Operations Analyst",
+  "Security Operations Engineer",
+  "Penetration Tester",
+  "Ethical Hacker",
+  "Vulnerability Assessment Analyst",
+  "VAPT Engineer",
+  "Application Security Engineer",
+  "Application Security Analyst",
+  "Cloud Security Analyst",
+  "Cloud Security Architect",
+  "Network Security Analyst",
+  "Incident Response Analyst",
+  "Incident Response Engineer",
+  "Digital Forensics Analyst",
+  "Threat Intelligence Analyst",
+  "Threat Hunter",
+  "Malware Analyst",
+  "Security Researcher",
+  "IAM Engineer",
+  "Identity Access Management Analyst",
+  "GRC Analyst",
+  "IT Risk Analyst",
+  "IT Security Auditor",
+  "Cyber Risk Consultant",
+  "Security Compliance Analyst",
+  "Chief Information Security Officer",
+
+  // SOFTWARE TESTING & QUALITY ASSURANCE
+  "QA Engineer",
+  "QA Analyst",
+  "Quality Assurance Engineer",
+  "Quality Assurance Analyst",
+  "Quality Assurance Manager",
+  "Software Tester",
+  "Software Test Engineer",
+  "Manual Tester",
+  "Automation Tester",
+  "Automation Test Engineer",
+  "Selenium Tester",
+  "Selenium Automation Engineer",
+  "API Tester",
+  "API Test Engineer",
+  "Performance Test Engineer",
+  "Load Test Engineer",
+  "Security Test Engineer",
+  "Mobile App Tester",
+  "Web Application Tester",
+  "SDET",
+  "SDET 1",
+  "SDET 2",
+  "Test Automation Architect",
+  "Test Lead",
+  "Testing Manager",
+  "UAT Analyst",
+  "Regression Tester",
+  "Game Tester",
+
+  // DIGITAL MARKETING
+  "Digital Marketing Executive",
+  "Digital Marketing Specialist",
+  "Digital Marketing Manager",
+  "Digital Marketing Analyst",
+  "Digital Marketing Intern",
+  "Head of Digital Marketing",
+  "SEO Executive",
+  "SEO Specialist",
+  "SEO Analyst",
+  "SEO Manager",
+  "SEM Specialist",
+  "Search Engine Marketing Executive",
+  "Performance Marketing Executive",
+  "Performance Marketing Specialist",
+  "Performance Marketing Manager",
+  "Google Ads Specialist",
+  "Google Ads Executive",
+  "Meta Ads Specialist",
+  "Paid Media Specialist",
+  "PPC Specialist",
+  "PPC Manager",
+  "Social Media Executive",
+  "Social Media Specialist",
+  "Social Media Manager",
+  "Social Media Strategist",
+  "Social Media Analyst",
+  "Content Marketing Executive",
+  "Content Marketing Specialist",
+  "Content Marketing Manager",
+  "Content Strategist",
+  "Content Writer",
+  "SEO Content Writer",
+  "Copywriter",
+  "Email Marketing Specialist",
+  "CRM Marketing Specialist",
+  "Growth Marketing Manager",
+  "Growth Hacker",
+  "Growth Marketing Analyst",
+  "Affiliate Marketing Executive",
+  "Affiliate Marketing Manager",
+  "Influencer Marketing Executive",
+  "Influencer Marketing Manager",
+  "Brand Executive",
+  "Brand Manager",
+  "Brand Strategist",
+  "Marketing Executive",
+  "Marketing Manager",
+  "Marketing Coordinator",
+  "Marketing Research Analyst",
+  "Marketing Operations Analyst",
+  "Marketing Automation Specialist",
+  "Campaign Manager",
+  "Advertising Executive",
+  "Advertising Manager",
+  "Public Relations Executive",
+  "Public Relations Manager",
+  "Communications Specialist",
+  "Corporate Communications Manager",
+
+  // PRODUCT & PROJECT MANAGEMENT
+  "Product Manager",
+  "Associate Product Manager",
+  "Junior Product Manager",
+  "Senior Product Manager",
+  "Technical Product Manager",
+  "AI Product Manager",
+  "Digital Product Manager",
+  "Product Owner",
+  "Product Lead",
+  "Group Product Manager",
+  "Director of Product",
+  "Product Operations Manager",
+  "Product Development Manager",
+  "Product Marketing Manager",
+  "Project Manager",
+  "Junior Project Manager",
+  "Senior Project Manager",
+  "Technical Project Manager",
+  "IT Project Manager",
+  "Project Coordinator",
+  "Project Executive",
+  "Project Lead",
+  "Program Manager",
+  "Technical Program Manager",
+  "Delivery Manager",
+  "Delivery Lead",
+  "Implementation Manager",
+  "Implementation Consultant",
+  "Scrum Master",
+  "Agile Coach",
+  "Agile Project Manager",
+  "PMO Analyst",
+  "PMO Executive",
+  "PMO Manager",
+
+  // UI UX & CREATIVE DESIGN
+  "UI Designer",
+  "UX Designer",
+  "UI UX Designer",
+  "Junior UI UX Designer",
+  "Senior UI UX Designer",
+  "Product Designer",
+  "Digital Product Designer",
+  "Visual Designer",
+  "Visual Communication Designer",
+  "Graphic Designer",
+  "Junior Graphic Designer",
+  "Senior Graphic Designer",
+  "Creative Designer",
+  "Brand Designer",
+  "Logo Designer",
+  "Motion Graphic Designer",
+  "Motion Designer",
+  "Animation Designer",
+  "2D Animator",
+  "3D Animator",
+  "3D Artist",
+  "Illustrator",
+  "Video Editor",
+  "Video Production Specialist",
+  "Video Producer",
+  "Photographer",
+  "Photo Editor",
+  "Creative Director",
+  "Art Director",
+  "Design Lead",
+  "Design Manager",
+  "UX Researcher",
+  "UX Writer",
+  "Interaction Designer",
+  "Web Designer",
+  "Figma Designer",
+  "Game Designer",
+  "Game Developer",
+  "Unity Developer",
+  "Unreal Engine Developer",
+  "AR VR Developer",
+  "3D Modeler",
+  "CAD Designer",
+  "Interior Designer",
+  "Fashion Designer",
+
+  // FINANCE & ACCOUNTING
+  "Financial Analyst",
+  "Junior Financial Analyst",
+  "Senior Financial Analyst",
+  "Finance Executive",
+  "Finance Associate",
+  "Finance Manager",
+  "Senior Finance Manager",
+  "Financial Controller",
+  "Finance Director",
+  "Chief Financial Officer",
+  "Accountant",
+  "Junior Accountant",
+  "Senior Accountant",
+  "Accounts Executive",
+  "Accounts Assistant",
+  "Accounts Manager",
+  "Accounts Payable Executive",
+  "Accounts Receivable Executive",
+  "Tax Analyst",
+  "Tax Consultant",
+  "Tax Accountant",
+  "GST Executive",
+  "GST Consultant",
+  "Audit Associate",
+  "Internal Auditor",
+  "External Auditor",
+  "Audit Manager",
+  "Financial Planning Analyst",
+  "FP&A Analyst",
+  "FP&A Manager",
+  "Treasury Analyst",
+  "Treasury Manager",
+  "Payroll Executive",
+  "Payroll Specialist",
+  "Payroll Manager",
+  "Billing Executive",
+  "Billing Analyst",
+  "Revenue Analyst",
+  "Revenue Manager",
+  "Credit Analyst",
+  "Investment Analyst",
+  "Equity Research Analyst",
+  "Risk Analyst",
+  "Financial Risk Analyst",
+  "Compliance Analyst",
+  "Cost Accountant",
+  "Management Accountant",
+  "Chartered Accountant",
+  "Company Secretary",
+  "Budget Analyst",
+  "Pricing Analyst",
+
+  // BANKING, INSURANCE & FINTECH
+  "Banking Executive",
+  "Banking Associate",
+  "Banking Operations Executive",
+  "Banking Operations Manager",
+  "Relationship Manager",
+  "Assistant Relationship Manager",
+  "Customer Relationship Manager",
+  "Branch Manager",
+  "Assistant Branch Manager",
+  "Bank Teller",
+  "Loan Officer",
+  "Loan Processing Executive",
+  "Credit Officer",
+  "Credit Manager",
+  "Risk Manager",
+  "Fraud Analyst",
+  "Fraud Prevention Analyst",
+  "Fraud Investigation Specialist",
+  "KYC Analyst",
+  "AML Analyst",
+  "Anti Money Laundering Analyst",
+  "Compliance Officer",
+  "Investment Banker",
+  "Investment Banking Analyst",
+  "Investment Banking Associate",
+  "Wealth Manager",
+  "Portfolio Manager",
+  "Portfolio Analyst",
+  "Insurance Advisor",
+  "Insurance Executive",
+  "Insurance Underwriter",
+  "Insurance Claims Analyst",
+  "Claims Processing Executive",
+  "Fintech Analyst",
+  "Fintech Product Manager",
+  "Payments Analyst",
+  "Payment Operations Executive",
+  "UPI Operations Analyst",
+  "Merchant Onboarding Executive",
+  "Merchant Success Manager",
+
+  // HUMAN RESOURCES & RECRUITMENT
+  "HR Executive",
+  "HR Associate",
+  "HR Assistant",
+  "HR Generalist",
+  "HR Specialist",
+  "HR Manager",
+  "Senior HR Manager",
+  "HR Business Partner",
+  "HRBP",
+  "HR Operations Executive",
+  "HR Operations Manager",
+  "HR Analyst",
+  "HR Data Analyst",
+  "HRIS Analyst",
+  "HRIS Specialist",
+  "Talent Acquisition Executive",
+  "Talent Acquisition Specialist",
+  "Talent Acquisition Manager",
+  "Recruiter",
+  "IT Recruiter",
+  "Technical Recruiter",
+  "Non IT Recruiter",
+  "Recruitment Consultant",
+  "Recruitment Specialist",
+  "Recruitment Manager",
+  "Sourcing Specialist",
+  "Talent Sourcer",
+  "Campus Recruiter",
+  "Employee Relations Specialist",
+  "Employee Engagement Executive",
+  "Learning and Development Executive",
+  "Learning and Development Manager",
+  "Training Coordinator",
+  "Training Manager",
+  "Compensation and Benefits Analyst",
+  "People Operations Executive",
+  "People Operations Manager",
+  "People Analytics Analyst",
+  "HR Director",
+  "Head of Human Resources",
+
+  // SALES & BUSINESS DEVELOPMENT
+  "Sales Executive",
+  "Sales Associate",
+  "Sales Representative",
+  "Senior Sales Executive",
+  "Sales Manager",
+  "Senior Sales Manager",
+  "Regional Sales Manager",
+  "Area Sales Manager",
+  "Territory Sales Manager",
+  "National Sales Manager",
+  "Inside Sales Executive",
+  "Inside Sales Representative",
+  "Inside Sales Manager",
+  "Field Sales Executive",
+  "Field Sales Officer",
+  "Field Sales Manager",
+  "Business Development Executive",
+  "Business Development Associate",
+  "Business Development Representative",
+  "Business Development Manager",
+  "Senior Business Development Manager",
+  "Business Development Director",
+  "BDE",
+  "BDM",
+  "Account Executive",
+  "Account Manager",
+  "Key Account Manager",
+  "Strategic Account Manager",
+  "Enterprise Account Executive",
+  "Enterprise Sales Manager",
+  "Sales Development Representative",
+  "SDR",
+  "Lead Generation Executive",
+  "Lead Generation Specialist",
+  "Pre Sales Executive",
+  "Pre Sales Consultant",
+  "Sales Engineer",
+  "Solutions Consultant",
+  "Customer Success Executive",
+  "Customer Success Associate",
+  "Customer Success Manager",
+  "Customer Success Specialist",
+  "Client Relationship Executive",
+  "Client Relationship Manager",
+  "Partnerships Manager",
+  "Channel Sales Manager",
+  "Retail Sales Executive",
+  "Retail Store Manager",
+  "Sales Operations Analyst",
+  "Sales Operations Manager",
+
+  // OPERATIONS & BUSINESS MANAGEMENT
+  "Operations Executive",
+  "Operations Associate",
+  "Operations Analyst",
+  "Operations Coordinator",
+  "Operations Specialist",
+  "Operations Manager",
+  "Senior Operations Manager",
+  "Business Operations Analyst",
+  "Business Operations Manager",
+  "Business Manager",
+  "Business Consultant",
+  "Management Consultant",
+  "Strategy Analyst",
+  "Strategy Consultant",
+  "Strategy Manager",
+  "Business Strategy Manager",
+  "Process Analyst",
+  "Process Associate",
+  "Process Executive",
+  "Process Manager",
+  "Business Process Analyst",
+  "Business Process Manager",
+  "Quality Analyst",
+  "Quality Manager",
+  "Quality Control Executive",
+  "Continuous Improvement Specialist",
+  "Business Excellence Manager",
+  "General Manager",
+  "Assistant General Manager",
+  "Deputy General Manager",
+  "Executive Assistant",
+  "Office Administrator",
+  "Office Manager",
+  "Administrative Executive",
+  "Administrative Assistant",
+  "Management Trainee",
+  "Operations Trainee",
+  "Chief Operating Officer",
+
+  // CUSTOMER SERVICE & BPO
+  "Customer Support Executive",
+  "Customer Support Associate",
+  "Customer Support Specialist",
+  "Customer Support Manager",
+  "Customer Service Executive",
+  "Customer Service Representative",
+  "Customer Service Manager",
+  "Customer Care Executive",
+  "Customer Care Associate",
+  "Customer Experience Executive",
+  "Customer Experience Manager",
+  "Customer Success Analyst",
+  "Technical Support Executive",
+  "Technical Support Engineer",
+  "Help Desk Executive",
+  "Help Desk Technician",
+  "Service Desk Analyst",
+  "Service Desk Engineer",
+  "Service Desk Manager",
+  "Call Center Executive",
+  "Call Center Agent",
+  "Call Center Manager",
+  "BPO Executive",
+  "BPO Associate",
+  "BPO Team Leader",
+  "BPO Operations Manager",
+  "Voice Process Executive",
+  "Non Voice Process Executive",
+  "Chat Support Executive",
+  "Email Support Executive",
+  "International Voice Process Executive",
+  "International Customer Support Executive",
+  "Customer Retention Executive",
+  "Customer Escalation Specialist",
+
+  // CORE ENGINEERING
+  "Mechanical Engineer",
+  "Junior Mechanical Engineer",
+  "Senior Mechanical Engineer",
+  "Mechanical Design Engineer",
+  "Manufacturing Engineer",
+  "Production Engineer",
+  "Industrial Engineer",
+  "Maintenance Engineer",
+  "Automobile Engineer",
+  "Automotive Engineer",
+  "Electrical Engineer",
+  "Junior Electrical Engineer",
+  "Senior Electrical Engineer",
+  "Electrical Design Engineer",
+  "Electronics Engineer",
+  "Electronics Design Engineer",
+  "Electronics and Communication Engineer",
+  "Embedded Systems Engineer",
+  "VLSI Engineer",
+  "VLSI Design Engineer",
+  "Semiconductor Engineer",
+  "Hardware Engineer",
+  "PCB Design Engineer",
+  "Civil Engineer",
+  "Junior Civil Engineer",
+  "Senior Civil Engineer",
+  "Structural Engineer",
+  "Site Engineer",
+  "Construction Engineer",
+  "Construction Manager",
+  "Planning Engineer",
+  "Quantity Surveyor",
+  "Project Engineer",
+  "Chemical Engineer",
+  "Process Engineer",
+  "Instrumentation Engineer",
+  "Control Systems Engineer",
+  "Automation Engineer",
+  "PLC Engineer",
+  "SCADA Engineer",
+  "Robotics Engineer",
+  "Mechatronics Engineer",
+  "Aerospace Engineer",
+  "Aeronautical Engineer",
+  "Biomedical Engineer",
+  "Environmental Engineer",
+  "Energy Engineer",
+  "Solar Engineer",
+  "Renewable Energy Engineer",
+
+  // MANUFACTURING & PRODUCTION
+  "Production Executive",
+  "Production Supervisor",
+  "Production Manager",
+  "Plant Engineer",
+  "Plant Manager",
+  "Factory Manager",
+  "Manufacturing Supervisor",
+  "Manufacturing Manager",
+  "Machine Operator",
+  "CNC Operator",
+  "CNC Programmer",
+  "Quality Control Inspector",
+  "Quality Control Engineer",
+  "Quality Assurance Inspector",
+  "Quality Assurance Manager",
+  "Industrial Maintenance Technician",
+  "Maintenance Supervisor",
+  "Safety Officer",
+  "Safety Engineer",
+  "EHS Executive",
+  "EHS Manager",
+  "Production Planning Executive",
+  "Production Planning Manager",
+  "Materials Manager",
+  "Packaging Engineer",
+
+  // SUPPLY CHAIN, PROCUREMENT & LOGISTICS
+  "Supply Chain Analyst",
+  "Supply Chain Executive",
+  "Supply Chain Specialist",
+  "Supply Chain Manager",
+  "Supply Chain Consultant",
+  "Procurement Executive",
+  "Procurement Analyst",
+  "Procurement Specialist",
+  "Procurement Manager",
+  "Purchase Executive",
+  "Purchase Officer",
+  "Purchase Manager",
+  "Sourcing Executive",
+  "Sourcing Manager",
+  "Vendor Management Executive",
+  "Vendor Manager",
+  "Inventory Executive",
+  "Inventory Analyst",
+  "Inventory Manager",
+  "Warehouse Executive",
+  "Warehouse Supervisor",
+  "Warehouse Manager",
+  "Logistics Executive",
+  "Logistics Coordinator",
+  "Logistics Analyst",
+  "Logistics Manager",
+  "Transportation Coordinator",
+  "Transportation Manager",
+  "Dispatch Executive",
+  "Dispatch Manager",
+  "Fleet Manager",
+  "Freight Forwarding Executive",
+  "Import Export Executive",
+  "Import Export Manager",
+  "Customs Clearance Executive",
+  "Shipping Executive",
+  "Shipping Coordinator",
+  "Delivery Operations Manager",
+  "Demand Planner",
+  "Supply Planner",
+  "Material Planner",
+  "Distribution Manager",
+
+  // E-COMMERCE & RETAIL
+  "Ecommerce Executive",
+  "Ecommerce Specialist",
+  "Ecommerce Manager",
+  "Ecommerce Operations Executive",
+  "Ecommerce Operations Manager",
+  "Marketplace Executive",
+  "Marketplace Manager",
+  "Amazon Marketplace Specialist",
+  "Flipkart Marketplace Specialist",
+  "Shopify Developer",
+  "Shopify Store Manager",
+  "D2C Operations Manager",
+  "D2C Brand Manager",
+  "Category Executive",
+  "Category Analyst",
+  "Category Manager",
+  "Merchandising Executive",
+  "Merchandising Manager",
+  "Retail Executive",
+  "Retail Associate",
+  "Retail Store Manager",
+  "Store Supervisor",
+  "Store Operations Manager",
+  "Retail Operations Manager",
+  "Product Listing Executive",
+  "Catalog Executive",
+  "Catalog Manager",
+  "Order Management Executive",
+  "Fulfillment Executive",
+  "Fulfillment Manager",
+  "Pricing Executive",
+  "Pricing Manager",
+  "Customer Experience Manager",
+
+  // EDUCATION & EDTECH
+  "Teacher",
+  "School Teacher",
+  "Primary School Teacher",
+  "Secondary School Teacher",
+  "English Teacher",
+  "Mathematics Teacher",
+  "Science Teacher",
+  "Computer Science Teacher",
+  "Physics Teacher",
+  "Chemistry Teacher",
+  "Biology Teacher",
+  "Economics Teacher",
+  "Commerce Teacher",
+  "Assistant Teacher",
+  "Teaching Assistant",
+  "Tutor",
+  "Online Tutor",
+  "Academic Tutor",
+  "Subject Matter Expert",
+  "Academic Counselor",
+  "Career Counselor",
+  "Admission Counselor",
+  "Education Counselor",
+  "Student Counselor",
+  "Student Success Executive",
+  "Student Success Manager",
+  "Academic Coordinator",
+  "Academic Manager",
+  "Academic Director",
+  "Curriculum Developer",
+  "Curriculum Designer",
+  "Instructional Designer",
+  "Instructional Content Developer",
+  "Educational Content Writer",
+  "Question Bank Developer",
+  "Assessment Specialist",
+  "Examination Coordinator",
+  "Examination Officer",
+  "EdTech Product Manager",
+  "Learning Experience Designer",
+  "Learning Management System Administrator",
+  "LMS Administrator",
+  "Online Course Instructor",
+  "Technical Trainer",
+  "Corporate Trainer",
+  "Programming Instructor",
+  "Data Science Trainer",
+  "Digital Marketing Trainer",
+  "Training Specialist",
+  "School Administrator",
+  "School Principal",
+  "Vice Principal",
+  "Education Program Manager",
+
+  // LEGAL, RISK & COMPLIANCE
+  "Legal Associate",
+  "Legal Executive",
+  "Legal Advisor",
+  "Legal Counsel",
+  "Corporate Lawyer",
+  "Corporate Legal Counsel",
+  "Legal Manager",
+  "Legal Consultant",
+  "Legal Research Analyst",
+  "Legal Assistant",
+  "Paralegal",
+  "Contract Analyst",
+  "Contract Manager",
+  "Contract Specialist",
+  "Compliance Executive",
+  "Compliance Analyst",
+  "Compliance Officer",
+  "Compliance Manager",
+  "Regulatory Compliance Analyst",
+  "Regulatory Affairs Specialist",
+  "Risk Analyst",
+  "Risk Consultant",
+  "Risk Manager",
+  "Enterprise Risk Manager",
+  "Internal Control Analyst",
+  "Internal Audit Associate",
+  "Internal Audit Manager",
+  "Governance Analyst",
+  "Data Protection Officer",
+  "Privacy Analyst",
+  "Privacy Counsel",
+  "Company Secretary",
+
+  // MEDIA, CONTENT & COMMUNICATIONS
+  "Journalist",
+  "Content Writer",
+  "Technical Writer",
+  "Technical Documentation Specialist",
+  "Creative Writer",
+  "Copywriter",
+  "Script Writer",
+  "Editor",
+  "Content Editor",
+  "Proofreader",
+  "Content Reviewer",
+  "Content Moderator",
+  "Content Strategist",
+  "Digital Content Creator",
+  "Social Media Content Creator",
+  "Video Content Creator",
+  "YouTube Content Manager",
+  "Podcast Producer",
+  "Video Producer",
+  "Film Editor",
+  "News Reporter",
+  "News Editor",
+  "Media Planner",
+  "Media Buyer",
+  "Media Analyst",
+  "Media Relations Executive",
+  "Communications Executive",
+  "Communications Manager",
+  "Community Manager",
+  "Community Executive",
+  "Public Relations Specialist",
+  "Public Relations Manager",
+  "Event Coordinator",
+  "Event Manager",
+  "Event Marketing Specialist",
+
+  // REAL ESTATE & CONSTRUCTION
+  "Real Estate Executive",
+  "Real Estate Consultant",
+  "Real Estate Agent",
+  "Real Estate Sales Executive",
+  "Property Consultant",
+  "Property Manager",
+  "Property Sales Manager",
+  "Leasing Executive",
+  "Leasing Manager",
+  "Facility Executive",
+  "Facility Manager",
+  "Facilities Coordinator",
+  "Construction Project Manager",
+  "Construction Site Supervisor",
+  "Site Engineer",
+  "Site Supervisor",
+  "Civil Site Engineer",
+  "Structural Design Engineer",
+  "Architect",
+  "Junior Architect",
+  "Senior Architect",
+  "Architectural Designer",
+  "Interior Architect",
+  "Interior Designer",
+  "Building Services Engineer",
+  "MEP Engineer",
+  "Quantity Surveyor",
+  "Cost Estimator",
+  "Planning Engineer",
+
+  // AGRICULTURE, ENVIRONMENT & ENERGY
+  "Agriculture Officer",
+  "Agriculture Engineer",
+  "Agronomist",
+  "Agriculture Research Associate",
+  "Agriculture Sales Executive",
+  "Agriculture Field Officer",
+  "Food Technologist",
+  "Food Safety Officer",
+  "Food Quality Analyst",
+  "Food Production Supervisor",
+  "Environmental Engineer",
+  "Environmental Analyst",
+  "Environmental Consultant",
+  "Sustainability Analyst",
+  "Sustainability Consultant",
+  "Sustainability Manager",
+  "ESG Analyst",
+  "ESG Consultant",
+  "ESG Manager",
+  "Energy Analyst",
+  "Energy Engineer",
+  "Energy Manager",
+  "Solar Design Engineer",
+  "Solar Project Engineer",
+  "Wind Energy Engineer",
+  "Renewable Energy Analyst",
+  "Renewable Energy Project Manager",
+  "Climate Risk Analyst",
+  "Carbon Analyst",
+
+  // RESEARCH & SCIENTIFIC ROLES
+  "Research Assistant",
+  "Research Associate",
+  "Research Analyst",
+  "Research Scientist",
+  "Senior Research Scientist",
+  "Research Engineer",
+  "Research Manager",
+  "Market Research Analyst",
+  "Market Research Executive",
+  "Market Research Manager",
+  "User Researcher",
+  "UX Researcher",
+  "Quantitative Researcher",
+  "Quantitative Analyst",
+  "Quantitative Developer",
+  "Quant Researcher",
+  "Statistician",
+  "Statistical Analyst",
+  "Economist",
+  "Economic Research Analyst",
+  "Policy Analyst",
+  "Policy Researcher",
+  "Laboratory Research Associate",
+  "Biotechnology Research Associate",
+  "Bioinformatics Analyst",
+  "Bioinformatics Scientist",
+
+  // BLOCKCHAIN, WEB3 & EMERGING TECHNOLOGY
+  "Blockchain Developer",
+  "Blockchain Engineer",
+  "Blockchain Architect",
+  "Smart Contract Developer",
+  "Solidity Developer",
+  "Web3 Developer",
+  "Web3 Engineer",
+  "Blockchain Security Engineer",
+  "Cryptography Engineer",
+  "Cryptography Researcher",
+  "IoT Developer",
+  "IoT Engineer",
+  "IoT Solutions Architect",
+  "Embedded IoT Engineer",
+  "AR Developer",
+  "VR Developer",
+  "AR VR Engineer",
+  "Robotics Software Engineer",
+  "Robotics Automation Engineer",
+  "Computer Vision Developer",
+  "Digital Twin Engineer",
+  "Edge Computing Engineer",
+
+  // INTERNSHIPS & ENTRY-LEVEL ROLES
+  "Software Development Intern",
+  "Frontend Development Intern",
+  "Backend Development Intern",
+  "Full Stack Development Intern",
+  "Web Development Intern",
+  "Python Development Intern",
+  "Java Development Intern",
+  "Mobile App Development Intern",
+  "Data Analyst Intern",
+  "Data Science Intern",
+  "Data Engineering Intern",
+  "Business Analyst Intern",
+  "AI Intern",
+  "Machine Learning Intern",
+  "Generative AI Intern",
+  "Cybersecurity Intern",
+  "Cloud Computing Intern",
+  "DevOps Intern",
+  "Software Testing Intern",
+  "UI UX Design Intern",
+  "Graphic Design Intern",
+  "Digital Marketing Intern",
+  "Social Media Marketing Intern",
+  "Content Writing Intern",
+  "Marketing Intern",
+  "Finance Intern",
+  "Accounting Intern",
+  "Investment Banking Intern",
+  "HR Intern",
+  "Recruitment Intern",
+  "Sales Intern",
+  "Business Development Intern",
+  "Operations Intern",
+  "Product Management Intern",
+  "Project Management Intern",
+  "Research Intern",
+  "Management Trainee",
+  "Graduate Trainee",
+  "Graduate Engineer Trainee",
+  "Associate Engineer",
+  "Junior Developer",
+  "Junior Analyst",
+  "Junior Executive",
+  "Technical Intern",
+
+  // SENIOR LEADERSHIP & EXECUTIVE ROLES
+  "Team Lead",
+  "Technical Lead",
+  "Engineering Lead",
+  "Project Lead",
+  "Department Head",
+  "Head of Engineering",
+  "Head of Technology",
+  "Head of Data Science",
+  "Head of Analytics",
+  "Head of Marketing",
+  "Head of Sales",
+  "Head of Operations",
+  "Head of Finance",
+  "Head of Human Resources",
+  "Head of Product",
+  "Head of Customer Success",
+  "Head of Information Security",
+  "Director of Engineering",
+  "Director of Technology",
+  "Director of Operations",
+  "Director of Marketing",
+  "Director of Sales",
+  "Director of Product",
+  "Director of Finance",
+  "Vice President Engineering",
+  "Vice President Product",
+  "Vice President Sales",
+  "Vice President Marketing",
+  "Vice President Operations",
+  "Chief Executive Officer",
+  "Chief Technology Officer",
+  "Chief Information Officer",
+  "Chief Information Security Officer",
+  "Chief Operating Officer",
+  "Chief Financial Officer",
+  "Chief Marketing Officer",
+  "Chief Product Officer",
+  "Chief Data Officer",
+] as const;
+
 const inputClass =
   "h-11 w-full rounded-lg border border-[#d8d4d3] bg-white px-3 text-sm text-[#25212a] outline-none focus:border-[#7d0a2b] focus:ring-2 focus:ring-[#7d0a2b]/10";
 const primary =
@@ -286,9 +1570,7 @@ export default function MumbaiJobsClient({
   const [search, setSearch] = useState("");
 
   // PDS LIVE JOB SUGGESTIONS
-  const [suggestions, setSuggestions] = useState<JobSuggestion[]>([]);
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
-  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
   const [debounced, setDebounced] = useState("");
   const [countryCode, setCountryCode] = useState("ALL");
   const [quickLocation, setQuickLocation] = useState("All");
@@ -318,135 +1600,6 @@ export default function MumbaiJobsClient({
     return () => window.clearTimeout(t);
   }, [search]);
 
-  // Fetch live suggestions using the existing jobs API.
-  useEffect(() => {
-    const query = debounced.trim();
-
-    if (query.length < 2) {
-      setSuggestions([]);
-      setSuggestionsLoading(false);
-      return;
-    }
-
-    const controller = new AbortController();
-
-    if (pds) {
-      const matches: JobSuggestion[] = pdsJobs
-        .filter((job) =>
-          [
-            job.title,
-            job.department,
-            job.location,
-          ].some((value) =>
-            value.toLowerCase().includes(query.toLowerCase())
-          )
-        )
-        .slice(0, 6)
-        .map((job) => ({
-          id: job.id,
-          title: job.title,
-          company: "Prime Digital School",
-          location: job.location,
-          source: "careers",
-        }));
-
-      setSuggestions(matches);
-      setSuggestionsLoading(false);
-      return;
-    }
-
-    const params = new URLSearchParams({
-      scope: "global",
-      search: query,
-      page: "1",
-      limit: "6",
-      sortBy: "recent",
-    });
-
-    if (countryCode !== "ALL") {
-      params.set("countryCode", countryCode);
-    }
-
-    if (state !== "All") {
-      params.set("state", state);
-    }
-
-    if (city !== "All") {
-      params.set("city", city);
-    }
-
-    if (company !== "All") {
-      params.set("companyKey", company);
-    }
-
-    if (category !== "All") {
-      params.set("category", category);
-    }
-
-    if (jobType !== "All") {
-      params.set("type", jobType);
-    }
-
-    if (workMode !== "All") {
-      params.set("workMode", workMode);
-    }
-
-    setSuggestionsLoading(true);
-
-    fetch(`/api/jobs?${params.toString()}`, {
-      signal: controller.signal,
-      cache: "no-store",
-    })
-      .then(async (response) => {
-        const data: JobsApi = await response.json();
-
-        if (
-          !response.ok ||
-          !data.success ||
-          !Array.isArray(data.jobs)
-        ) {
-          throw new Error("Suggestions unavailable");
-        }
-
-        return data.jobs;
-      })
-      .then((jobs) => {
-        if (controller.signal.aborted) return;
-
-        setSuggestions(
-          jobs.slice(0, 6).map((job) => ({
-            id: job.id,
-            title: job.title,
-            company: job.company,
-            location: locationOf(job),
-            source: "jobs" as const,
-          }))
-        );
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) {
-          setSuggestions([]);
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) {
-          setSuggestionsLoading(false);
-        }
-      });
-
-    return () => controller.abort();
-  }, [
-    debounced,
-    pds,
-    pdsJobs,
-    countryCode,
-    state,
-    city,
-    company,
-    category,
-    jobType,
-    workMode,
-  ]);
   useEffect(() => {
     try {
       const x: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -798,7 +1951,6 @@ export default function MumbaiJobsClient({
         <div className="mx-auto max-w-[1600px] px-5 pb-7 pt-28 sm:px-8 sm:pt-32 lg:px-10">
           <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(380px,.85fr)]">
             <div>
-
               <h1 className="mt-4 text-[30px] font-extrabold tracking-tight sm:text-[38px] lg:text-[42px]">
                 Discover your next opportunity
               </h1>
@@ -812,7 +1964,11 @@ export default function MumbaiJobsClient({
             <div
               className="relative flex min-w-0 items-center gap-1.5 rounded-xl bg-white p-1.5 shadow-[0_14px_35px_rgba(35,0,13,.15)]"
               onBlur={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                if (
+                  !event.currentTarget.contains(
+                    event.relatedTarget as Node | null,
+                  )
+                ) {
                   setSuggestionsOpen(false);
                 }
               }}
@@ -842,9 +1998,7 @@ export default function MumbaiJobsClient({
                   }}
                   autoComplete="off"
                   aria-autocomplete="list"
-                  aria-expanded={
-                    suggestionsOpen && search.trim().length >= 2
-                  }
+                  aria-expanded={suggestionsOpen && search.trim().length >= 2}
                   placeholder={
                     pds
                       ? "Search PDS jobs or departments"
@@ -873,102 +2027,66 @@ export default function MumbaiJobsClient({
                 <ArrowRight size={16} className="hidden sm:block" />
               </a>
 
-              {suggestionsOpen &&
-                search.trim().length >= 2 &&
-                search.trim() === debounced.trim() && (
-                  <div
-                    role="listbox"
-                    aria-label="Job search suggestions"
-                    className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 max-h-[390px] overflow-y-auto rounded-xl border border-[#eadce1] bg-white p-2 text-[#231c20] shadow-[0_22px_55px_rgba(30,0,12,0.20)]"
-                  >
-                    <div className="border-b border-[#f0e8eb] px-3 py-2">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#790021]">
-                        Suggested opportunities
-                      </p>
-                    </div>
-
-                    {suggestionsLoading ? (
-                      <div className="px-3 py-5 text-center text-sm text-[#776b70]">
-                        Finding matching opportunities...
-                      </div>
-                    ) : suggestions.length > 0 ? (
-                      suggestions.map((suggestion) =>
-                        suggestion.source === "jobs" ? (
-                          <a
-                            key={suggestion.id}
-                            role="option"
-                            aria-selected={false}
-                            href={`/job-connect/${encodeURIComponent(suggestion.id)}`}
-                            className="flex items-start gap-3 rounded-lg px-3 py-3 transition hover:bg-[#fff2f6] focus:bg-[#fff2f6] focus:outline-none"
-                          >
-                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#f8e9ee] text-[#790021]">
-                              <BriefcaseBusiness size={19} />
-                            </span>
-
-                            <span className="min-w-0 flex-1">
-                              <span className="block text-sm font-bold text-[#261b20]">
-                                {suggestion.title}
-                              </span>
-
-                              <span className="mt-1 block text-xs text-[#74696d]">
-                                {suggestion.company}
-                              </span>
-
-                              <span className="mt-1 block text-xs text-[#95878d]">
-                                {suggestion.location}
-                              </span>
-                            </span>
-
-                            <ArrowRight
-                              size={16}
-                              className="mt-2 shrink-0 text-[#790021]"
-                            />
-                          </a>
-                        ) : (
-                          <button
-                            key={suggestion.id}
-                            type="button"
-                            role="option"
-                            aria-selected={false}
-                            onClick={() => {
-                              change(setSearch, suggestion.title);
-                              setSelectedKey(
-                                `pds-career-${suggestion.id}`
-                              );
-                              setSuggestionsOpen(false);
-                              document
-                                .getElementById("browse-jobs")
-                                ?.scrollIntoView({ behavior: "smooth" });
-                            }}
-                            className="flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-[#fff2f6] focus:bg-[#fff2f6] focus:outline-none"
-                          >
-                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#f8e9ee] text-[#790021]">
-                              <BriefcaseBusiness size={19} />
-                            </span>
-
-                            <span className="min-w-0 flex-1">
-                              <span className="block text-sm font-bold">
-                                {suggestion.title}
-                              </span>
-
-                              <span className="mt-1 block text-xs text-[#74696d]">
-                                {suggestion.company} · {suggestion.location}
-                              </span>
-                            </span>
-                          </button>
-                        )
-                      )
-                    ) : (
-                      <div className="px-3 py-5 text-center text-sm text-[#776b70]">
-                        No matching job suggestions found.
-                      </div>
-                    )}
-
-                    <div className="border-t border-[#f0e8eb] px-3 py-2 text-center text-[11px] text-[#877a7f]">
-                      Search results update automatically as you type
-                    </div>
+              {suggestionsOpen && search.trim().length >= 2 && (
+                <div
+                  role="group"
+                  aria-label="Suggested job roles"
+                  className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 max-h-[340px] overflow-y-auto rounded-xl border border-[#eadce1] bg-white p-2 text-[#231c20] shadow-[0_22px_55px_rgba(30,0,12,0.20)]"
+                >
+                  <div className="border-b border-[#f0e8eb] px-3 py-2">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#790021]">
+                      Suggested Job Roles
+                    </p>
                   </div>
-                )}
+                  {[...new Set(JOB_ROLE_TERMS)]
+                    .filter((role) =>
+                      role.toLowerCase().includes(search.trim().toLowerCase()),
+                    )
+                    .slice(0, 8)
+                    .map((role) => (
+                      <button
+                        key={role}
+                        type="button"
+                        onClick={() => {
+                          change(setSearch, role);
+                          setSuggestionsOpen(false);
+
+                          document
+                            .getElementById("browse-jobs")
+                            ?.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
+                        }}
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-[#fff2f6] focus:bg-[#fff2f6] focus:outline-none"
+                      >
+                        <Search size={17} className="shrink-0 text-[#790021]" />
+
+                        <span className="min-w-0 flex-1 text-sm font-semibold text-[#261b20]">
+                          {role}
+                        </span>
+
+                        <ArrowRight
+                          size={15}
+                          className="shrink-0 text-[#790021]"
+                        />
+                      </button>
+                    ))}
+
+                  {!JOB_ROLE_TERMS.some((role) =>
+                    role.toLowerCase().includes(search.trim().toLowerCase()),
+                  ) && (
+                    <div className="px-3 py-4 text-sm text-[#776b70]">
+                      No suggested roles found. Press Search Jobs to search all
+                      vacancies.
+                    </div>
+                  )}
+
+                  <div className="border-t border-[#f0e8eb] px-3 py-2 text-center text-[11px] text-[#877a7f]">
+                    Select a role to search available jobs
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1198,7 +2316,10 @@ export default function MumbaiJobsClient({
           </aside>
 
           {/* CENTRAL JOB LISTINGS */}
-          <section className="min-w-0 w-full space-y-4" aria-label="Job opportunities">
+          <section
+            className="min-w-0 w-full space-y-4"
+            aria-label="Job opportunities"
+          >
             <div className="rounded-2xl border border-[#eee6e8] bg-white p-4 shadow-[0_4px_24px_rgba(35,0,13,.045)] sm:p-5">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
