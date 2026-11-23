@@ -296,7 +296,7 @@ export default function AboutPage() {
               <div className="relative flex h-[300px] items-center justify-center rounded-2xl bg-[#faf5f6] p-4 sm:h-[340px]">
                 <div className="relative h-full w-full">
                   <Image
-                    src="/about/justdail-award-1.png"
+                    src="/about/justdail-award-1.jpeg"
                     alt="Prime Digital School Justdial certification 2022"
                     fill
                     className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
