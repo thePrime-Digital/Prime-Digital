@@ -142,7 +142,6 @@ const studentImages: Record<CategoryId, string[]> = {
   ],
 
   uiux: [
-
     "072-sneha-chaudhary.webp",
 
     "074-pranav-verma.webp",
@@ -171,7 +170,8 @@ const studentImages: Record<CategoryId, string[]> = {
     "091-trisha-kadam.webp",
     "092-rishabh-gokhale.webp",
     "093-soham-naik.webp",
-    "094-ishaan-naik.webp",,
+    "094-ishaan-naik.webp",
+    ,
     "097-karan-pawar.webp",
     "098-sanjana-gokhale.webp",
     "099-tarun-chaudhary.webp",
@@ -668,30 +668,146 @@ const employers: Record<CategoryId, string[]> = {
   ],
 };
 
-// ============================================================
-// EXAMPLE SALARY DATA
-// ============================================================
-
 const salaries: Record<CategoryId, number[]> = {
-  data: [3.2, 3.8, 4.1, 3.5, 4.0, 3.6, 3.9, 4.2, 3.4, 3.7],
+  // DATA ANALYTICS
+  data: [
+    3.5, // Junior Data Analyst
+    5.2, // Business Intelligence Analyst
+    3.2, // Reporting Analyst
+    4.3, // SQL Analyst
+    4.8, // Power BI Analyst
+    4.0, // Business Data Analyst
+    3.6, // Analytics Associate
+    4.5, // Data Visualisation Analyst
+    3.8, // Junior Business Analyst
+    5.0, // Python Data Analyst
+  ],
 
-  marketing: [3.0, 3.2, 2.8, 3.4, 3.1, 3.6, 3.0, 3.5, 3.3, 3.8],
+  // DIGITAL MARKETING
+  marketing: [
+    3.0, // Digital Marketing Associate
+    3.5, // SEO Analyst
+    3.2, // Social Media Executive
+    4.8, // Performance Marketing Associate
+    3.6, // Content Marketing Executive
+    4.2, // Google Ads Associate
+    3.3, // Email Marketing Associate
+    4.5, // Campaign Analyst
+    4.0, // Social Media Strategist
+    5.0, // Marketing Analytics Associate
+  ],
 
-  ai: [3.8, 4.2, 3.6, 4.0, 4.4, 3.9, 4.1, 4.5, 3.7, 4.6],
+  // AI & MACHINE LEARNING
+  ai: [
+    5.5, // Junior AI Engineer
+    6.2, // Machine Learning Associate
+    5.0, // Python AI Developer
+    6.0, // NLP Associate
+    4.2, // AI Research Assistant
+    6.5, // Computer Vision Associate
+    5.4, // Machine Learning Analyst
+    6.0, // AI Software Developer
+    4.8, // Data Science Associate
+    7.0, // Deep Learning Associate
+  ],
 
-  fullstack: [3.4, 3.8, 3.2, 4.0, 3.6, 4.2, 3.9, 3.5, 4.1, 4.4],
+  // FULL-STACK DEVELOPMENT
+  fullstack: [
+    4.5, // React Developer
+    5.5, // Junior Full-Stack Developer
+    4.0, // Frontend Developer
+    5.2, // Node.js Developer
+    3.8, // UI Developer
+    5.8, // Backend Developer
+    5.0, // MERN Developer
+    4.2, // Web App Developer
+    4.5, // JavaScript Developer
+    6.0, // Next.js Developer
+  ],
 
-  cyber: [3.2, 3.5, 3.8, 3.4, 3.6, 4.0, 3.7, 3.3, 4.1, 3.9],
+  // CYBERSECURITY
+  cyber: [
+    4.8, // Cybersecurity Analyst
+    3.8, // Junior Security Analyst
+    4.2, // SOC Analyst
+    4.5, // Network Security Associate
+    5.0, // Information Security Analyst
+    4.5, // Vulnerability Analyst
+    3.8, // Security Operations Associate
+    5.2, // Ethical Hacking Associate
+    4.0, // IT Security Analyst
+    5.8, // Application Security Associate
+  ],
 
-  cloud: [3.6, 4.0, 3.8, 4.2, 3.5, 4.4, 3.9, 4.1, 4.5, 4.0],
+  // CLOUD COMPUTING & DEVOPS
+  cloud: [
+    3.8, // Cloud Support Associate
+    5.0, // AWS Cloud Associate
+    4.2, // Cloud Operations Analyst
+    6.0, // Junior DevOps Engineer
+    4.8, // Azure Cloud Associate
+    5.5, // Cloud Infrastructure Associate
+    6.5, // DevOps Automation Associate
+    3.5, // Linux Systems Associate
+    5.2, // Cloud Deployment Associate
+    4.8, // AWS Operations Analyst
+  ],
 
-  science: [3.6, 4.0, 3.7, 4.2, 3.9, 4.4, 3.8, 4.1, 4.3, 3.5],
+  // DATA SCIENCE
+  science: [
+    5.5, // Junior Data Scientist
+    4.0, // Python Data Associate
+    4.5, // Statistical Analyst
+    4.8, // Data Science Associate
+    5.8, // Predictive Analytics Associate
+    5.5, // ML Data Analyst
+    3.8, // Research Data Analyst
+    5.0, // Data Modelling Associate
+    6.0, // Analytics Engineer Trainee
+    4.8, // Junior BI Scientist
+  ],
 
-  uiux: [3.0, 3.4, 3.2, 3.6, 3.1, 3.8, 3.3, 3.5, 3.7, 3.2],
+  // UI/UX DESIGN
+  uiux: [
+    3.5, // Junior UI Designer
+    3.8, // UX Research Assistant
+    5.0, // Product Design Associate
+    4.5, // Interaction Design Associate
+    4.2, // Visual UI Designer
+    3.2, // Wireframing Associate
+    4.5, // UX Design Associate
+    5.2, // Design Systems Associate
+    4.0, // Prototyping Designer
+    4.8, // User Experience Analyst
+  ],
 
-  banking: [3.1, 3.6, 3.5, 3.2, 3.9, 3.7, 3.4, 4.0, 3.8, 4.2],
+  // BANKING & INVESTMENT MANAGEMENT
+  banking: [
+    3.2, // Banking Operations Associate
+    4.5, // Junior Finance Analyst
+    5.5, // Investment Research Associate
+    3.0, // Client Services Associate
+    4.8, // Financial Data Analyst
+    4.5, // Wealth Management Associate
+    4.0, // Credit Operations Analyst
+    4.2, // Investment Support Associate
+    4.5, // Risk Operations Associate
+    5.8, // Junior Portfolio Analyst
+  ],
 
-  entrepreneur: [3.0, 3.4, 3.1, 3.6, 3.3, 3.8, 3.2, 3.5, 3.7, 3.9],
+  // ENTREPRENEURSHIP
+  entrepreneur: [
+    3.2, // Startup Operations Associate
+    3.8, // Business Development Associate
+    3.5, // Market Research Associate
+    4.8, // Growth Marketing Associate
+    6.0, // Founders Office Associate
+    5.5, // Business Strategy Associate
+    3.0, // Operations Coordinator
+    4.2, // Partnerships Associate
+    4.5, // Venture Research Associate
+    4.8, // Product Operations Associate
+  ],
 };
 
 // Maharashtra locations only.

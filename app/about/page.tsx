@@ -1,10 +1,5 @@
-﻿import Image from "next/image";
-import Link from "next/link";
+﻿import Link from "next/link";
 import AboutHeroAnimation from "@/components/about/AboutHeroAnimation";
-
-const PIC_IMAGE = "/about/pic.jpg";
-const STUDENTS_IMAGE = "/about/strudents.jpg";
-const LAPTOP_HERO_IMAGE = "/about/laptop-hero.jpg";
 
 const stats = [
   { value: "10K+", label: "Students Guided" },
@@ -147,79 +142,72 @@ export default function AboutPage() {
       </section>
 
       {/* WHO WE ARE */}
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
-        <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+      <section className="bg-[#f7f3f4] py-14 sm:py-16">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-10">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[#990024]">
               Who We Are
             </p>
-
-            <h2 className="mt-3 max-w-xl text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+            <h2 className="mt-4 max-w-xl text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl">
               We are building a smarter way for students to learn and grow.
             </h2>
-
-            <p className="mt-5 text-base leading-8 text-slate-600">
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-600">
               Prime Digital School is not just a classroom. It is a complete
               learning platform where students can attend classes, revise
               lessons, track progress, receive feedback, and grow through guided
               mentorship.
             </p>
-
-            <p className="mt-4 text-base leading-8 text-slate-600">
+            <p className="mt-4 max-w-xl text-base leading-8 text-slate-600">
               Our focus is to make education more transparent, more personal,
               and more outcome-driven.
             </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-[2rem] bg-white p-3 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-            <div className="relative h-[340px] overflow-hidden rounded-[1.45rem]">
-              <Image
-                src={PIC_IMAGE}
-                alt="Prime Digital School group"
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover object-center"
-              />
+          <div
+            className="grid gap-3 sm:grid-cols-2"
+            aria-label="Our approach to learning"
+          >
+            <div className="rounded-[1.5rem] bg-[#790021] p-6 text-white shadow-[0_18px_42px_rgba(121,0,33,0.16)] sm:col-span-2">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-[#f0c16b]">
+                  Our approach
+                </span>
+                <span className="text-2xl font-black text-white/30">01</span>
+              </div>
+              <h3 className="mt-4 text-2xl font-black">
+                Student-first. Future-ready.
+              </h3>
+              <p className="mt-2 max-w-md text-sm leading-7 text-white/80">
+                A connected learning experience that brings guidance, technology
+                and progress together.
+              </p>
+            </div>
+            <div className="rounded-[1.5rem] border border-[#eadce1] bg-white p-5 shadow-sm">
+              <span className="text-xs font-black tracking-[0.18em] text-[#990024]">
+                02 / LEARN
+              </span>
+              <h3 className="mt-4 text-lg font-black text-slate-950">
+                Structured Learning
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Clear lessons, resources and practical learning pathways.
+              </p>
+            </div>
+            <div className="rounded-[1.5rem] border border-[#eadce1] bg-white p-5 shadow-sm">
+              <span className="text-xs font-black tracking-[0.18em] text-[#990024]">
+                03 / GROW
+              </span>
+              <h3 className="mt-4 text-lg font-black text-slate-950">
+                Guided Progress
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Mentorship, feedback and greater visibility into progress.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* WHAT DRIVES US */}
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#990024]">
-              What Drives Us
-            </p>
-
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              A school built on clarity, care, and technology.
-            </h2>
-          </div>
-
-          <div className="mt-10 grid gap-5 lg:grid-cols-2">
-            {values.map((item, index) => (
-              <div
-                key={item.title}
-                className="rounded-[1.6rem] border border-[#eadce1] bg-[#fffafb] p-6 shadow-sm"
-              >
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#990024] text-lg font-black text-white">
-                  {index + 1}
-                </div>
-
-                <h3 className="text-xl font-black text-slate-950">
-                  {item.title}
-                </h3>
-
-                <p className="mt-3 text-sm leading-7 text-slate-600">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* STORY TIMELINE */}
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
@@ -321,21 +309,18 @@ export default function AboutPage() {
 
       {/* WHY DIFFERENT */}
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
-        <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[#990024]">
               Why We Are Different
             </p>
-
             <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
               We connect learning, tracking, support, and outcomes.
             </h2>
-
             <p className="mt-5 text-base leading-8 text-slate-600">
               Prime Digital School gives students and parents more visibility,
               more structure, and a more modern learning experience.
             </p>
-
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
               {differences.map((item) => (
                 <div
@@ -353,29 +338,34 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="grid gap-5">
-            <div className="relative overflow-hidden rounded-[2rem] bg-white p-3 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-              <div className="relative h-[245px] overflow-hidden rounded-[1.45rem]">
-                <Image
-                  src={LAPTOP_HERO_IMAGE}
-                  alt="Digital learning on laptop"
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover object-center"
-                />
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-[2rem] bg-white p-3 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-              <div className="relative h-[245px] overflow-hidden rounded-[1.45rem]">
-                <Image
-                  src={STUDENTS_IMAGE}
-                  alt="Students learning zoomed out"
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover object-center"
-                />
-              </div>
+          <div className="overflow-hidden rounded-[2rem] bg-[#790021] p-7 text-white shadow-[0_22px_55px_rgba(121,0,33,0.17)] sm:p-9">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#f0c16b]">
+              A connected experience
+            </p>
+            <h3 className="mt-3 text-2xl font-black leading-tight sm:text-3xl">
+              Everything students need to move forward.
+            </h3>
+            <div className="mt-7 space-y-3">
+              {[
+                ["01", "Learn", "Classes, lessons and digital resources"],
+                ["02", "Track", "Attendance, feedback and learning progress"],
+                ["03", "Grow", "Mentorship and future-focused skills"],
+              ].map(([number, title, description]) => (
+                <div
+                  key={number}
+                  className="flex items-start gap-4 rounded-2xl border border-white/15 bg-white/10 p-4"
+                >
+                  <span className="rounded-lg bg-white px-3 py-2 text-sm font-black text-[#790021]">
+                    {number}
+                  </span>
+                  <div>
+                    <p className="font-extrabold">{title}</p>
+                    <p className="mt-1 text-sm leading-6 text-white/75">
+                      {description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -404,51 +394,45 @@ export default function AboutPage() {
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
-        <div className="grid overflow-hidden rounded-[2rem] bg-[#8f0024] text-white shadow-[0_24px_70px_rgba(155,0,35,0.25)] lg:grid-cols-[1fr_0.75fr]">
-          <div className="p-8 sm:p-10">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-white/70">
-              Join Prime Digital School
-            </p>
-
-            <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-              Ready to experience smarter learning?
-            </h2>
-
-            <p className="mt-4 max-w-xl text-sm leading-7 text-white/80 sm:text-base">
-              Explore our programs, connect with our team, and start your
-              journey with Prime Digital School today.
-            </p>
-
-            <div className="mt-7 flex flex-wrap gap-4">
+        <div className="relative overflow-hidden rounded-[2rem] bg-[#8f0024] px-8 py-10 text-white shadow-[0_24px_70px_rgba(155,0,35,0.25)] sm:px-12 sm:py-12">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-24 -top-28 h-72 w-72 rounded-full border-[38px] border-white/10"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-0 right-16 h-32 w-32 rounded-full bg-[#f0c16b]/10 blur-3xl"
+          />
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-8">
+            <div className="max-w-2xl">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#f0c16b]">
+                Join Prime Digital School
+              </p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+                Ready to experience smarter learning?
+              </h2>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-white/80 sm:text-base">
+                Explore our programs, connect with our team, and start your
+                journey with Prime Digital School today.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
               <Link
                 href="/programs"
-                className="rounded-full bg-white px-6 py-3 text-sm font-bold text-[#990024] transition hover:bg-[#fff4f7]"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-[#990024] transition hover:bg-[#fff4f7]"
               >
                 View Programs
               </Link>
-
               <Link
                 href="/contact"
-                className="rounded-full border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/35 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
               >
                 Talk to Us
               </Link>
             </div>
-          </div>
-
-          <div className="relative min-h-[260px]">
-            <Image
-              src={STUDENTS_IMAGE}
-              alt="Prime Digital School students"
-              fill
-              sizes="(min-width: 1024px) 35vw, 100vw"
-              className="object-cover object-center opacity-80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#8f0024] via-[#8f0024]/40 to-transparent" />
           </div>
         </div>
       </section>
     </main>
   );
 }
-

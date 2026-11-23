@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -25,6 +25,14 @@ import { ALL_JOB_COUNTRIES } from "@/lib/jobs/global-countries";
 import CareerApplicationForm from "@/components/careers/career-application-form";
 
 type Tab = "jobs" | "careers";
+
+type JobSuggestion = {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  source: Tab;
+};
 type Props = {
   jobs: JobListing[];
   initialTotal: number;
@@ -276,6 +284,11 @@ export default function MumbaiJobsClient({
     Math.ceil(initialTotal / PAGE_SIZE),
   );
   const [search, setSearch] = useState("");
+
+  // PDS LIVE JOB SUGGESTIONS
+  const [suggestions, setSuggestions] = useState<JobSuggestion[]>([]);
+  const [suggestionsOpen, setSuggestionsOpen] = useState(false);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
   const [debounced, setDebounced] = useState("");
   const [countryCode, setCountryCode] = useState("ALL");
   const [quickLocation, setQuickLocation] = useState("All");
@@ -304,6 +317,136 @@ export default function MumbaiJobsClient({
     const t = window.setTimeout(() => setDebounced(search), 350);
     return () => window.clearTimeout(t);
   }, [search]);
+
+  // Fetch live suggestions using the existing jobs API.
+  useEffect(() => {
+    const query = debounced.trim();
+
+    if (query.length < 2) {
+      setSuggestions([]);
+      setSuggestionsLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    if (pds) {
+      const matches: JobSuggestion[] = pdsJobs
+        .filter((job) =>
+          [
+            job.title,
+            job.department,
+            job.location,
+          ].some((value) =>
+            value.toLowerCase().includes(query.toLowerCase())
+          )
+        )
+        .slice(0, 6)
+        .map((job) => ({
+          id: job.id,
+          title: job.title,
+          company: "Prime Digital School",
+          location: job.location,
+          source: "careers",
+        }));
+
+      setSuggestions(matches);
+      setSuggestionsLoading(false);
+      return;
+    }
+
+    const params = new URLSearchParams({
+      scope: "global",
+      search: query,
+      page: "1",
+      limit: "6",
+      sortBy: "recent",
+    });
+
+    if (countryCode !== "ALL") {
+      params.set("countryCode", countryCode);
+    }
+
+    if (state !== "All") {
+      params.set("state", state);
+    }
+
+    if (city !== "All") {
+      params.set("city", city);
+    }
+
+    if (company !== "All") {
+      params.set("companyKey", company);
+    }
+
+    if (category !== "All") {
+      params.set("category", category);
+    }
+
+    if (jobType !== "All") {
+      params.set("type", jobType);
+    }
+
+    if (workMode !== "All") {
+      params.set("workMode", workMode);
+    }
+
+    setSuggestionsLoading(true);
+
+    fetch(`/api/jobs?${params.toString()}`, {
+      signal: controller.signal,
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        const data: JobsApi = await response.json();
+
+        if (
+          !response.ok ||
+          !data.success ||
+          !Array.isArray(data.jobs)
+        ) {
+          throw new Error("Suggestions unavailable");
+        }
+
+        return data.jobs;
+      })
+      .then((jobs) => {
+        if (controller.signal.aborted) return;
+
+        setSuggestions(
+          jobs.slice(0, 6).map((job) => ({
+            id: job.id,
+            title: job.title,
+            company: job.company,
+            location: locationOf(job),
+            source: "jobs" as const,
+          }))
+        );
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) {
+          setSuggestions([]);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setSuggestionsLoading(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, [
+    debounced,
+    pds,
+    pdsJobs,
+    countryCode,
+    state,
+    city,
+    company,
+    category,
+    jobType,
+    workMode,
+  ]);
   useEffect(() => {
     try {
       const x: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -655,18 +798,6 @@ export default function MumbaiJobsClient({
         <div className="mx-auto max-w-[1600px] px-5 pb-7 pt-28 sm:px-8 sm:pt-32 lg:px-10">
           <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(380px,.85fr)]">
             <div>
-              <nav
-                aria-label="Breadcrumb"
-                className="flex items-center gap-2 text-xs text-white/80"
-              >
-                <a href="/" className="hover:text-white hover:underline">
-                  Home
-                </a>
-                <span>/</span>
-                <span className="font-semibold text-white">Careers</span>
-              </nav>
-
-              <div className="mt-2 h-0.5 w-9 rounded-full bg-[#e9b24a]" />
 
               <h1 className="mt-4 text-[30px] font-extrabold tracking-tight sm:text-[38px] lg:text-[42px]">
                 Discover your next opportunity
@@ -678,7 +809,14 @@ export default function MumbaiJobsClient({
               </p>
             </div>
 
-            <div className="flex min-w-0 items-center gap-1.5 rounded-xl bg-white p-1.5 shadow-[0_14px_35px_rgba(35,0,13,.15)]">
+            <div
+              className="relative flex min-w-0 items-center gap-1.5 rounded-xl bg-white p-1.5 shadow-[0_14px_35px_rgba(35,0,13,.15)]"
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  setSuggestionsOpen(false);
+                }
+              }}
+            >
               <label className="flex min-w-0 flex-1 items-center gap-3 px-3 text-[#790021]">
                 <Search size={19} className="shrink-0" />
 
@@ -686,7 +824,27 @@ export default function MumbaiJobsClient({
 
                 <input
                   value={search}
-                  onChange={(e) => change(setSearch, e.target.value)}
+                  onChange={(e) => {
+                    change(setSearch, e.target.value);
+                    setSuggestionsOpen(true);
+                  }}
+                  onFocus={() => setSuggestionsOpen(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      setSuggestionsOpen(false);
+                    }
+                    if (e.key === "Enter") {
+                      setSuggestionsOpen(false);
+                      document
+                        .getElementById("browse-jobs")
+                        ?.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                  autoComplete="off"
+                  aria-autocomplete="list"
+                  aria-expanded={
+                    suggestionsOpen && search.trim().length >= 2
+                  }
                   placeholder={
                     pds
                       ? "Search PDS jobs or departments"
@@ -714,6 +872,103 @@ export default function MumbaiJobsClient({
                 Search Jobs
                 <ArrowRight size={16} className="hidden sm:block" />
               </a>
+
+              {suggestionsOpen &&
+                search.trim().length >= 2 &&
+                search.trim() === debounced.trim() && (
+                  <div
+                    role="listbox"
+                    aria-label="Job search suggestions"
+                    className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 max-h-[390px] overflow-y-auto rounded-xl border border-[#eadce1] bg-white p-2 text-[#231c20] shadow-[0_22px_55px_rgba(30,0,12,0.20)]"
+                  >
+                    <div className="border-b border-[#f0e8eb] px-3 py-2">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#790021]">
+                        Suggested opportunities
+                      </p>
+                    </div>
+
+                    {suggestionsLoading ? (
+                      <div className="px-3 py-5 text-center text-sm text-[#776b70]">
+                        Finding matching opportunities...
+                      </div>
+                    ) : suggestions.length > 0 ? (
+                      suggestions.map((suggestion) =>
+                        suggestion.source === "jobs" ? (
+                          <a
+                            key={suggestion.id}
+                            role="option"
+                            aria-selected={false}
+                            href={`/job-connect/${encodeURIComponent(suggestion.id)}`}
+                            className="flex items-start gap-3 rounded-lg px-3 py-3 transition hover:bg-[#fff2f6] focus:bg-[#fff2f6] focus:outline-none"
+                          >
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#f8e9ee] text-[#790021]">
+                              <BriefcaseBusiness size={19} />
+                            </span>
+
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-sm font-bold text-[#261b20]">
+                                {suggestion.title}
+                              </span>
+
+                              <span className="mt-1 block text-xs text-[#74696d]">
+                                {suggestion.company}
+                              </span>
+
+                              <span className="mt-1 block text-xs text-[#95878d]">
+                                {suggestion.location}
+                              </span>
+                            </span>
+
+                            <ArrowRight
+                              size={16}
+                              className="mt-2 shrink-0 text-[#790021]"
+                            />
+                          </a>
+                        ) : (
+                          <button
+                            key={suggestion.id}
+                            type="button"
+                            role="option"
+                            aria-selected={false}
+                            onClick={() => {
+                              change(setSearch, suggestion.title);
+                              setSelectedKey(
+                                `pds-career-${suggestion.id}`
+                              );
+                              setSuggestionsOpen(false);
+                              document
+                                .getElementById("browse-jobs")
+                                ?.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-[#fff2f6] focus:bg-[#fff2f6] focus:outline-none"
+                          >
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#f8e9ee] text-[#790021]">
+                              <BriefcaseBusiness size={19} />
+                            </span>
+
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-sm font-bold">
+                                {suggestion.title}
+                              </span>
+
+                              <span className="mt-1 block text-xs text-[#74696d]">
+                                {suggestion.company} · {suggestion.location}
+                              </span>
+                            </span>
+                          </button>
+                        )
+                      )
+                    ) : (
+                      <div className="px-3 py-5 text-center text-sm text-[#776b70]">
+                        No matching job suggestions found.
+                      </div>
+                    )}
+
+                    <div className="border-t border-[#f0e8eb] px-3 py-2 text-center text-[11px] text-[#877a7f]">
+                      Search results update automatically as you type
+                    </div>
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -724,7 +979,7 @@ export default function MumbaiJobsClient({
         id="browse-jobs"
         className="mx-auto max-w-[1600px] scroll-mt-24 px-4 py-6 sm:px-8 lg:px-10"
       >
-        <div className="grid items-start gap-5 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[270px_minmax(0,1fr)_300px]">
+        <div className="grid items-start gap-5 lg:grid-cols-[270px_minmax(0,1fr)]">
           {/* LEFT FILTER SIDEBAR */}
           <aside
             aria-label="Job filters"
@@ -943,7 +1198,7 @@ export default function MumbaiJobsClient({
           </aside>
 
           {/* CENTRAL JOB LISTINGS */}
-          <section className="min-w-0 space-y-4" aria-label="Job opportunities">
+          <section className="min-w-0 w-full space-y-4" aria-label="Job opportunities">
             <div className="rounded-2xl border border-[#eee6e8] bg-white p-4 shadow-[0_4px_24px_rgba(35,0,13,.045)] sm:p-5">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
@@ -1375,104 +1630,6 @@ export default function MumbaiJobsClient({
               </nav>
             )}
           </section>
-
-          {/* RIGHT CAREER HUB */}
-          <aside className="space-y-4 lg:col-span-2 xl:col-span-1">
-            <section className="rounded-2xl border border-[#eee6e8] bg-white p-5 shadow-[0_4px_24px_rgba(35,0,13,.045)]">
-              <h3 className="flex items-center gap-2 text-base font-extrabold text-[#790021]">
-                <BriefcaseBusiness size={18} />
-                Featured opportunity
-              </h3>
-
-              {visible.length > 0 ? (
-                <div className="mt-4 rounded-xl border border-[#ebcf9b] bg-[#fffaf0] p-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#a86a13]">
-                    Explore this role
-                  </p>
-
-                  <h4 className="mt-2 text-base font-extrabold">
-                    {visible[0].title}
-                  </h4>
-
-                  <p className="mt-1 text-xs text-[#6f6468]">
-                    {visible[0].company}
-                  </p>
-
-                  <p className="mt-2 text-xs text-[#6f6468]">
-                    {visible[0].location}
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedKey(visible[0].key);
-                      document.getElementById("browse-jobs")?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                    }}
-                    className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#790021]"
-                  >
-                    View opportunity
-                    <ArrowRight size={14} />
-                  </button>
-                </div>
-              ) : (
-                <p className="mt-4 text-sm text-[#73676b]">
-                  Featured opportunities will appear when matching jobs are
-                  available.
-                </p>
-              )}
-
-              <div className="mt-5 border-t border-[#eee7e9] pt-5">
-                <h3 className="text-sm font-extrabold">
-                  Quick tips for a stronger application
-                </h3>
-
-                <ul className="mt-4 space-y-4">
-                  {[
-                    "Keep your profile and resume up to date",
-                    "Use relevant keywords from the job description",
-                    "Save interesting jobs for future reference",
-                  ].map((tip) => (
-                    <li
-                      key={tip}
-                      className="flex items-start gap-2.5 text-xs leading-5 text-[#61585c]"
-                    >
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#d9a645] text-[#aa761b]">
-                        <Check size={12} />
-                      </span>
-
-                      <span>{tip}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-
-            <section className="rounded-2xl bg-gradient-to-br from-[#790021] to-[#4c0016] p-5 text-white">
-              <p className="text-xs font-bold uppercase tracking-[.15em] text-[#f4cad6]">
-                Prime Digital School
-              </p>
-
-              <h3 className="mt-3 text-xl font-extrabold">
-                Build skills for your next career move.
-              </h3>
-
-              <p className="mt-3 text-sm leading-6 text-white/80">
-                Explore professional programmes designed to help you prepare for
-                opportunities in the digital economy.
-              </p>
-
-              <a
-                href="/programs"
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-[#790021] transition hover:bg-[#fff0f5]"
-              >
-                Explore programmes
-                <ArrowRight size={15} />
-              </a>
-            </section>
-          </aside>
         </div>
 
         {/* ORIGINAL PDS APPLICATION WORKFLOW */}

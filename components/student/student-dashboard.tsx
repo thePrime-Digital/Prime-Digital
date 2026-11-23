@@ -123,12 +123,6 @@ function Panel({
           <h2 className="text-sm font-extrabold text-[#281c20]">
             {title}
           </h2>
-
-          {subtitle && (
-            <p className="mt-1 text-[11px] text-[#8a8182]">
-              {subtitle}
-            </p>
-          )}
         </div>
 
         {href && (
@@ -252,7 +246,6 @@ export default function StudentDashboard() {
     {
       label: "Enrolled Classes",
       value: summary.enrolledClasses,
-      note: "Active enrolments",
       icon: BookOpen,
       bg: "#fff0eb",
       ink: "#9a432f",
@@ -261,7 +254,6 @@ export default function StudentDashboard() {
     {
       label: "Today's Classes",
       value: summary.classesToday,
-      note: "Sessions scheduled",
       icon: CalendarDays,
       bg: "#f0ecfc",
       ink: "#6945a6",
@@ -273,7 +265,6 @@ export default function StudentDashboard() {
         summary.attendanceRate === null
           ? "—"
           : `${summary.attendanceRate}%`,
-      note: "Present and late",
       icon: TrendingUp,
       bg: "#e8f5ef",
       ink: "#16805b",
@@ -282,7 +273,6 @@ export default function StudentDashboard() {
     {
       label: "Pending Work",
       value: summary.pendingAssignments,
-      note: "Assignments to submit",
       icon: ClipboardList,
       bg: "#fff4d9",
       ink: "#9a6b16",
@@ -293,33 +283,6 @@ export default function StudentDashboard() {
   return (
     <main className="min-h-full bg-[#f8f5f0] px-4 py-5 text-[#281c20] sm:px-6 lg:px-8 lg:py-7">
       <div className="mx-auto max-w-[1450px] space-y-5">
-
-        {/* PAGE HEADING */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8f0024]">
-              Student Portal / Dashboard
-            </p>
-
-            <h1 className="mt-1 text-xl font-extrabold tracking-tight sm:text-2xl">
-              Good to see you,{" "}
-              {student.name.split(" ")[0]}!
-            </h1>
-
-            <p className="mt-1 text-xs text-[#857d80]">
-              Here is an overview of your learning journey.
-            </p>
-          </div>
-
-          <Link
-            href="/dashboard/courses"
-            className="inline-flex items-center gap-2 rounded-lg border border-[#e2c7cf] bg-white px-4 py-2.5 text-xs font-extrabold text-[#8f0024] hover:bg-[#fff1f4]"
-          >
-            <GraduationCap size={15} />
-            My Courses
-            <ArrowRight size={14} />
-          </Link>
-        </div>
 
         {/* MAROON WELCOME CARD */}
         <section className="relative overflow-hidden rounded-xl bg-[#650019] px-5 py-6 text-white shadow-[0_10px_25px_rgba(101,0,25,0.12)] sm:px-7">
@@ -385,7 +348,6 @@ export default function StudentDashboard() {
             ({
               label,
               value,
-              note,
               icon: Icon,
               bg,
               ink,
@@ -417,10 +379,6 @@ export default function StudentDashboard() {
                     <Icon size={18} />
                   </span>
                 </div>
-
-                <p className="mt-3 text-[10px] text-[#938a8c]">
-                  {note}
-                </p>
               </Link>
             ),
           )}
@@ -430,7 +388,6 @@ export default function StudentDashboard() {
         <div className="grid gap-5 xl:grid-cols-[1.5fr_1fr]">
           <Panel
             title="Today's Schedule"
-            subtitle="Classes planned for today"
             href="/dashboard/classes"
           >
             {data.todaySchedule.length === 0 ? (
@@ -476,7 +433,6 @@ export default function StudentDashboard() {
 
           <Panel
             title="My Courses"
-            subtitle="Your currently enrolled classes"
             href="/dashboard/courses"
           >
             {data.classes.length === 0 ? (
@@ -523,7 +479,6 @@ export default function StudentDashboard() {
         <div className="grid gap-5 xl:grid-cols-[1.5fr_1fr]">
           <Panel
             title="Upcoming Assignments"
-            subtitle="Keep track of important due dates"
             href="/dashboard/assignments"
           >
             {data.assignments.length === 0 ? (
@@ -573,7 +528,6 @@ export default function StudentDashboard() {
 
           <Panel
             title="Announcements"
-            subtitle="Latest updates from your school"
             href="/dashboard/notifications"
           >
             {data.announcements.length === 0 ? (
@@ -622,26 +576,22 @@ export default function StudentDashboard() {
               href: "/dashboard/live-classes",
               icon: Video,
               title: "Live Classes",
-              desc: "Join your scheduled classes",
             },
             {
               href: "/dashboard/fees",
               icon: Wallet,
               title: "Fees & Payments",
-              desc: "View invoices and installments",
             },
             {
               href: "/dashboard/performance",
               icon: CheckCircle2,
               title: "Performance",
-              desc: "Track your learning progress",
             },
           ].map(
             ({
               href,
               icon: Icon,
               title,
-              desc,
             }) => (
               <Link
                 href={href}
@@ -655,10 +605,6 @@ export default function StudentDashboard() {
                 <span className="min-w-0 flex-1">
                   <span className="block text-xs font-extrabold">
                     {title}
-                  </span>
-
-                  <span className="mt-1 block text-[10px] text-[#91878a]">
-                    {desc}
                   </span>
                 </span>
 
