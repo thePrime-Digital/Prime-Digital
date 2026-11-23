@@ -97,15 +97,11 @@ export default function StaffDashboardShell({
 
   const sidebar = (
     <div className="flex h-full min-h-0 flex-col bg-[#390b17] text-white">
-      <div className="flex h-20 shrink-0 items-center gap-3 border-b border-white/10 px-5">
-        <div className="grid h-10 w-10 place-items-center rounded-lg bg-white/10">
-          <GraduationCap size={23} />
-        </div>
-        <div>
-          <p className="text-sm font-black">Prime Digital</p>
-          <p className="text-[10px] font-bold tracking-[0.18em] text-white/55">STAFF</p>
-        </div>
-      </div>
+      <div className="flex min-h-[64px] shrink-0 items-center border-b border-white/10 px-4">
+  <span className="whitespace-nowrap text-[17px] font-extrabold leading-tight tracking-[-0.5px] text-[#fff4e7]">
+    Prime Digital <span className="text-[#f3c861]">Staff</span>
+  </span>
+</div>
 
       <nav className="staff-no-scroll min-h-0 flex-1 overflow-y-auto px-3 py-5">
         {groups.map((group) => (
@@ -137,17 +133,17 @@ export default function StaffDashboardShell({
         ))}
       </nav>
 
-      <div className="shrink-0 border-t border-white/10 px-3 pb-9 pt-3">
-        <button
-          type="button"
-          disabled={loggingOut}
-          onClick={() => void logout()}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-bold text-white/75 hover:bg-white/10"
-        >
-          <LogOut size={16} />
-          {loggingOut ? "Logging out..." : "Logout"}
-        </button>
-      </div>
+      <div className="shrink-0 border-t border-white/10 px-4 py-4">
+  <button
+    type="button"
+    onClick={() => void logout()}
+    disabled={loggingOut}
+    className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/25 bg-white/10 px-4 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:border-white/40 hover:bg-white/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    <LogOut size={18} />
+    <span>{loggingOut ? "Logging out..." : "Logout"}</span>
+  </button>
+</div>
     </div>
   );
 

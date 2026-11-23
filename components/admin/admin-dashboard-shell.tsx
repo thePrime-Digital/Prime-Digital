@@ -209,25 +209,13 @@ export default function AdminDashboardShell({
     <div className="flex h-full min-h-0 flex-col bg-[#390c19] text-white">
       {/* ADMIN BRANDING */}
       <Link
-        href="/admin"
-        className="flex min-h-[100px] shrink-0 items-center gap-3 border-b border-white/10 px-4"
-      >
-        <img
-          src="/images/pds-original-logo.png"
-          alt="Prime Digital School"
-          className="h-[78px] w-[62px] shrink-0 object-contain"
-        />
-
-        <div className="min-w-0">
-          <p className="whitespace-nowrap font-serif text-[17px] font-bold text-[#fff4e7]">
-            Prime Digital
-          </p>
-
-          <p className="mt-1 text-[11px] font-extrabold tracking-[0.15em] text-[#f6c44f]">
-            ADMIN
-          </p>
-        </div>
-      </Link>
+  href="/admin"
+  className="flex min-h-[64px] shrink-0 items-center border-b border-white/10 px-4 transition-colors hover:bg-white/5"
+>
+  <span className="whitespace-nowrap text-[17px] font-extrabold leading-tight tracking-[-0.5px] text-[#fff4e7]">
+    Prime Digital <span className="text-[#f3c861]">Admin</span>
+  </span>
+</Link>
 
       {/* ALL NAVIGATION GROUPS */}
       <nav className="admin-hide-scroll min-h-0 flex-1 overflow-y-auto px-3 py-5">
@@ -267,18 +255,17 @@ export default function AdminDashboardShell({
       </nav>
 
       {/* LOGOUT */}
-      <div className="shrink-0 border-t border-white/10 px-3 pb-9 pt-3">
-        <button
-          type="button"
-          disabled={loggingOut}
-          onClick={() => void logout()}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-bold text-white/70 hover:bg-white/10 disabled:opacity-50"
-        >
-          <LogOut size={16} />
-
-          {loggingOut ? "Logging out..." : "Logout"}
-        </button>
-      </div>
+      <div className="shrink-0 border-t border-white/10 px-4 py-4">
+  <button
+    type="button"
+    onClick={() => void logout()}
+    disabled={loggingOut}
+    className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-white/25 bg-white/10 px-4 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:border-white/40 hover:bg-white/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    <LogOut size={18} />
+    <span>{loggingOut ? "Logging out..." : "Logout"}</span>
+  </button>
+</div>
     </div>
   );
 
