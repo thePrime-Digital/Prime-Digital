@@ -296,7 +296,7 @@ export default function AboutPage() {
               <div className="relative flex h-[300px] items-center justify-center rounded-2xl bg-[#faf5f6] p-4 sm:h-[340px]">
                 <div className="relative h-full w-full">
                   <Image
-                    src="/about/justdail-award.png"
+                    src="/about/justdail-award-1.png"
                     alt="Prime Digital School Justdial certification 2022"
                     fill
                     className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
@@ -332,7 +332,7 @@ export default function AboutPage() {
               <div className="relative flex h-[300px] items-center justify-center rounded-2xl bg-[#faf5f6] p-4 sm:h-[340px]">
                 <div className="relative h-full w-full">
                   <Image
-                    src="/about/urban-pro.jpeg"
+                    src="/about/urban-pro-1.jpeg"
                     alt="UrbanPro Students Choice Award 2023"
                     fill
                     className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"

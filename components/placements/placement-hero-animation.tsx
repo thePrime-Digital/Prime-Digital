@@ -111,16 +111,35 @@ export default function PlacementHeroAnimation() {
             </text>
           </g>
         ))}
-        <g className="career-arrow" filter="url(#career-shadow)">
-          <circle cx="629" cy="45" r="29" fill="#fff9ee" />
-          <path
-            d="M618 55L639 34M625 34H639V48"
-            fill="none"
-            stroke="#7c001d"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+
+        {/* FINAL CAREER MILESTONE — JOB */}
+        <g className="career-arrow">
+          <g filter="url(#career-shadow)">
+            <circle cx="629" cy="45" r="29" fill="#fff9ee" />
+
+            <path
+              d="M618 55L639 34M625 34H639V48"
+              fill="none"
+              stroke="#7c001d"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        </g>
+
+        {/* JOB LABEL — APPEARS AFTER OPPORTUNITY */}
+        <g className="career-marker" style={{ animationDelay: "3.9s" }}>
+          <text
+            x="629"
+            y="98"
+            textAnchor="middle"
+            fill="#586171"
+            fontSize="17"
+            fontWeight="500"
+          >
+            Job
+          </text>
         </g>
       </svg>
       <p className="career-caption relative mt-1 flex items-center justify-end gap-2 pr-3 text-right text-xs italic tracking-wide text-[#aaa0a5] sm:text-sm">

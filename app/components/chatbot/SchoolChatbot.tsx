@@ -89,7 +89,6 @@ const quickQuestions = [
 const welcomeLines = [
   "Hello! 👋 Welcome to Prime Digital School.",
   "How may I assist you today?",
-  "Feel free to ask me about our programs, courses, fees, careers, or anything else!",
 ];
 
 const WHATSAPP_URL =
