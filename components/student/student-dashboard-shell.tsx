@@ -225,8 +225,8 @@ export default function StudentDashboardShell({ user, children }: Props) {
         onClick={() => setMobileOpen(false)}
         className="flex min-h-[76px] shrink-0 items-center justify-center border-b border-white/10 px-4 transition-colors"
       >
-        <div className="flex w-full items-center justify-center rounded-xl border border-white/20 bg-white/10 px-3 py-3 shadow-sm transition-all duration-200 hover:border-white/40 hover:bg-white/15">
-          <span className="whitespace-nowrap text-center text-[16px] font-extrabold leading-tight tracking-[-0.5px] text-[#fff4e7]">
+        <div className="flex w-full items-center justify-center rounded-xl border border-white/20 bg-white/10 px-3 py-3.5 shadow-sm transition-all duration-200 hover:border-white/40 hover:bg-white/15">
+        <span className="whitespace-nowrap text-center text-[18px] font-extrabold leading-tight tracking-[-0.5px] text-[#fff4e7]">
             Prime Digital <span className="text-[#f3c861]">Student</span>
           </span>
         </div>

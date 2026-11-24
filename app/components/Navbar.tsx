@@ -20,7 +20,7 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "Courses", href: "/programs" },
   { label: "Placements", href: "/placements" },
-  { label: "Careers", href: "/job-connect" },
+  { label: "Jobs", href: "/job-connect" },
   { label: "Support", href: "/support" },
   { label: "About Us", href: "/about" },
 ];

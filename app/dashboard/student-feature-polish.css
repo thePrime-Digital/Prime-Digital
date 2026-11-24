@@ -5,7 +5,7 @@
 */
 
 .student-dashboard-brand {
-  --student-ink: #390c19;
+  --student-ink: #900020;
   --student-panel: #ffffff;
   --student-surface: #f8f4ee;
   --student-divider: #eee4dd;
@@ -23,20 +23,20 @@
 .student-dashboard-brand .bg-\[\#be123c\],
 .student-dashboard-brand .bg-\[\#c31943\],
 .student-dashboard-brand .bg-\[\#c51b45\] {
-  background-color: #390c19 !important;
+  background-color: #900020 !important;
 }
 
 /* Common maroon text */
 .student-dashboard-brand .text-\[\#8f0024\],
 .student-dashboard-brand .text-\[\#a51c40\],
 .student-dashboard-brand .text-\[\#ad123d\] {
-  color: #390c19 !important;
+  color: #900020 !important;
 }
 
 /* Common border colors */
 .student-dashboard-brand .border-\[\#8f0024\],
 .student-dashboard-brand .border-\[\#ad123d\] {
-  border-color: #390c19 !important;
+  border-color: #900020 !important;
 }
 
 /* Buttons, cards and inputs */
@@ -51,11 +51,11 @@
 .student-dashboard-brand main input,
 .student-dashboard-brand main select,
 .student-dashboard-brand main textarea {
-  accent-color: #390c19;
+  accent-color: #900020;
 }
 
 .student-dashboard-brand main input:focus,
 .student-dashboard-brand main textarea:focus,
 .student-dashboard-brand main select:focus {
-  outline-color: #390c19;
+  outline-color: #900020;
 }

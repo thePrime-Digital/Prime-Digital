@@ -1,6 +1,6 @@
 .student-reference {
-  --ink: #390c19;
-  --accent: #bb173c;
+  --ink: #900020;
+  --accent: #AD123A;
   --gold: #f6c44f;
   --cream: #f8f4ee;
   --line: #eee4dd;
@@ -125,7 +125,7 @@
 .student-reference .sr-tab[data-active="true"] {
   color: var(--ink);
   background: white;
-  box-shadow: 0 2px 8px #390c1912;
+  box-shadow: 0 2px 8px #90002012;
 }
 
 .student-reference .sr-input {
@@ -303,7 +303,7 @@
 }
 
 .student-dashboard-brand .sr-brand-accent {
-  background-color: #390c19 !important;
+  background-color: #900020 !important;
   color: white !important;
 }
 

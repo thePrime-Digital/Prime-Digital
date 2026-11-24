@@ -1,7 +1,7 @@
 
 .student-dashboard-brand {
-  --student-maroon: #390c19;
-  --student-maroon-hover: #501524;
+  --student-maroon: #900020;
+  --student-maroon-hover: #AD123A;
   --student-gold: #f6c44f;
   --student-cream: #f8f5f0;
 }
@@ -13,7 +13,7 @@
 
 /* Active navigation */
 .student-dashboard-brand aside nav a[aria-current="page"] {
-  background-color: #633023 !important;
+  background-color: #AD123A !important;
   color: var(--student-gold) !important;
 }
 
